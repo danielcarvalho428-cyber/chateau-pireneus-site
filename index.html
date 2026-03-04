@@ -1,16 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-  <title>Chateau Pireneus</title>
+<meta charset="UTF-8">
+<title>Chateau Pireneus</title>
+
+<style>
+
+body{
+margin:0;
+font-family: serif;
+background:#f5efe6;
+color:#1d3557;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:white;
+}
+
+.logo{
+height:60px;
+}
+
+nav a{
+margin-left:30px;
+text-decoration:none;
+color:#1d3557;
+font-weight:500;
+}
+
+.hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+background:#eae3d8;
+}
+
+.hero h1{
+font-size:60px;
+margin:10px;
+}
+
+.hero p{
+font-size:20px;
+}
+
+.button{
+margin-top:20px;
+padding:15px 30px;
+background:#1d3557;
+color:white;
+text-decoration:none;
+border-radius:4px;
+}
+
+.section{
+padding:80px 10%;
+}
+
+.rooms{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:40px;
+}
+
+.room{
+background:white;
+padding:30px;
+border-radius:6px;
+}
+
+footer{
+background:#1d3557;
+color:white;
+padding:40px;
+text-align:center;
+}
+
+</style>
 </head>
 
-<body style="font-family: Arial; text-align:center; padding:40px">
+<body>
+
+<header>
+
+<img src="logo.png" class="logo">
+
+<nav>
+<a href="#">Início</a>
+<a href="#">Acomodações</a>
+<a href="#">Galeria</a>
+<a href="#">Localização</a>
+<a href="#">Reservar</a>
+</nav>
+
+</header>
+
+
+<section class="hero">
 
 <h1>Chateau Pireneus</h1>
+<p>Boutique stay em Pirenópolis</p>
 
-<p>Welcome to our boutique stay in Pirenópolis</p>
+<a class="button">Reservar Agora</a>
 
-<p>Website coming soon</p>
+</section>
+
+
+<section class="section">
+
+<h2>A Pousada</h2>
+
+<p>
+A pousada Chateau Pireneus oferece uma experiência tranquila e elegante em Pirenópolis.
+São apenas 6 acomodações cuidadosamente preparadas para proporcionar conforto,
+privacidade e charme em um ambiente acolhedor.
+</p>
+
+</section>
+
+
+<section class="section">
+
+<h2>Acomodações</h2>
+
+<div class="rooms">
+
+<div class="room">
+
+<h3>Suíte Master</h3>
+
+<p>
+Banheira de imersão, cama Queen, lençóis 200 fios,
+ar condicionado, TV, escrivaninha, Wi-Fi,
+frigobar e varanda com mesa.
+</p>
+
+</div>
+
+
+<div class="room">
+
+<h3>Suíte Padrão com TV</h3>
+
+<p>
+Cama Queen, lençóis 200 fios, ar condicionado,
+TV, cortina blackout, Wi-Fi,
+frigobar e varanda com rede.
+</p>
+
+</div>
+
+
+<div class="room">
+
+<h3>Suíte Padrão</h3>
+
+<p>
+Cama Queen, lençóis 200 fios, ar condicionado,
+cortina blackout, Wi-Fi,
+frigobar e varanda com rede.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="section">
+
+<h2>Contato</h2>
+
+<p>
+WhatsApp: (62) 99816-7654
+</p>
+
+<p>
+chateaupireneus@gmail.com
+</p>
+
+<p>
+Rua Tupinambás, Quadra 09, Lote 16  
+Setor Meia Ponte  
+Pirenópolis
+</p>
+
+</section>
+
+
+<footer>
+
+Chateau Pireneus © 2026
+
+</footer>
 
 </body>
 </html>

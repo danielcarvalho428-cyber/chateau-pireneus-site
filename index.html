@@ -187,20 +187,19 @@
 
     /* Title: SPACING GUARANTEED */
     .hero-title{
-  display:flex;
-  flex-direction:column;
-  gap:16px;            /* mais espaço entre as linhas */
-  margin:0;
-}
-
-.hero-title .hero-line{
-  display:block;
-  font-size:80px;
-  letter-spacing:3px;  /* mais respiro entre letras */
-  text-shadow:0 5px 20px rgba(0,0,0,0.4);
-  line-height:1.20;    /* evita encostar/sobrepor */
-  text-transform:uppercase;
-}
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin:0;
+    }
+    .hero-title .hero-line{
+      display:block;
+      font-size:80px;
+      letter-spacing:3px;
+      text-shadow:0 5px 20px rgba(0,0,0,0.4);
+      line-height:1.20;
+      text-transform:uppercase;
+    }
 
     .hero-slogan{
       margin-top:32px;
@@ -220,36 +219,35 @@
       transition:all 0.25s ease;
     }
     .button{
-  margin-top:20px;
-  padding:8px 20px;
-  font-size:11px;
-  letter-spacing:1px;
-  border-radius:10px;
-}
+      margin-top:20px;
+      padding:8px 20px;
+      font-size:11px;
+      letter-spacing:1px;
+      border-radius:10px;
+    }
     .room-button{
-  margin-top:18px;            /* desce um pouco */
-  padding:12px 28px;          /* mantém o tamanho bom */
-  letter-spacing:1px;
-  background:transparent;     /* vira outline */
-  color:var(--blue);
-  border:2px solid var(--beige-dark);  /* borda */
-  border-radius:12px;
-  font-weight:700;
+      margin-top:18px;
+      padding:12px 28px;
+      letter-spacing:1px;
+      background:transparent;
+      color:var(--blue);
+      border:2px solid var(--beige-dark);
+      border-radius:12px;
+      font-weight:700;
     }
     .button:hover{
-  background:var(--beige-dark);
-  box-shadow:0 0 22px rgba(216,199,161,0.65);
-  transform:translateY(-2px);
-}
-
-.room-button:hover{
-  background:var(--beige);
-  border-color:var(--beige);
-  color:#fff;
-  box-shadow:0 0 18px rgba(216,199,161,0.55);
-  transform:translateY(-2px);
-}
+      background:var(--beige-dark);
+      box-shadow:0 0 22px rgba(216,199,161,0.65);
+      transform:translateY(-2px);
     }
+    .room-button:hover{
+      background:var(--beige);
+      border-color:var(--beige);
+      color:#fff;
+      box-shadow:0 0 18px rgba(216,199,161,0.55);
+      transform:translateY(-2px);
+    }
+    /* (CORREÇÃO) removi uma chave "}" sobrando aqui */
 
     /* Fade-in */
     .reveal{
@@ -467,11 +465,11 @@
       <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
       <div class="carousel-track" id="carouselTrack">
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div><h3>Suíte do Divino</h3><a href="#" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div><h3>Suíte das Cavalhadas</h3><a href="#" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div><h3>Suíte do Rosário</h3><a href="#" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div><h3>Suíte Aurora</h3><a href="#" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div><h3>Suíte do Bonfim</h3><a href="#" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div><h3>Suíte do Divino</h3><a href="suite.html?room=divino" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div><h3>Suíte das Cavalhadas</h3><a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div><h3>Suíte do Rosário</h3><a href="suite.html?room=rosario" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div><h3>Suíte Aurora</h3><a href="suite.html?room=aurora" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div><h3>Suíte do Bonfim</h3><a href="suite.html?room=bonfim" class="room-button">Conhecer</a></div></div>
       </div>
     </div>
   </section>

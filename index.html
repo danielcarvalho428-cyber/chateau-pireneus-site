@@ -10,8 +10,6 @@
 
 <style>
 
-/* BODY */
-
 body{
 margin:0;
 font-family:Georgia, serif;
@@ -19,16 +17,16 @@ background:#f5efe6;
 color:#1d3557;
 }
 
-/* HAMBURGER BUTTON */
+/* HAMBURGER */
 
 .menu-button{
 position:fixed;
 top:25px;
 left:25px;
-font-size:30px;
-color:white;
+font-size:32px;
+color:#000;
 cursor:pointer;
-z-index:2000;
+z-index:3000;
 }
 
 /* SIDE MENU */
@@ -41,9 +39,9 @@ width:300px;
 height:100vh;
 background:white;
 padding:80px 40px;
-box-shadow:5px 0 30px rgba(0,0,0,0.1);
+box-shadow:5px 0 30px rgba(0,0,0,0.15);
 transition:0.3s;
-z-index:1500;
+z-index:2500;
 }
 
 .side-menu a{
@@ -140,11 +138,13 @@ font-size:36px;
 margin-bottom:60px;
 }
 
+/* CAROUSEL */
+
 .carousel{
 position:relative;
-overflow:hidden;
 max-width:1200px;
 margin:auto;
+overflow:hidden;
 }
 
 .carousel-track{
@@ -187,21 +187,20 @@ display:inline-block;
 
 .arrow{
 position:absolute;
-top:40%;
+top:45%;
 transform:translateY(-50%);
-font-size:35px;
-background:white;
-padding:10px 15px;
+font-size:40px;
+color:#1d3557;
 cursor:pointer;
-box-shadow:0 5px 15px rgba(0,0,0,0.15);
+z-index:200;
 }
 
 .arrow-left{
-left:0;
+left:-20px;
 }
 
 .arrow-right{
-right:0;
+right:-20px;
 }
 
 /* FOOTER */
@@ -219,13 +218,7 @@ text-align:center;
 
 <body>
 
-<!-- MENU BUTTON -->
-
-<div class="menu-button" onclick="toggleMenu()">
-☰
-</div>
-
-<!-- SIDE MENU -->
+<div class="menu-button" onclick="toggleMenu()">☰</div>
 
 <div class="side-menu" id="sideMenu">
 
@@ -243,8 +236,6 @@ text-align:center;
 <a href="#">Políticas da Pousada</a>
 
 </div>
-
-<!-- HERO -->
 
 <div class="hero">
 
@@ -267,22 +258,16 @@ Reservar Agora
 
 </div>
 
-<!-- ABOUT -->
-
 <section class="section">
 
 <h2>Bem-vindo à Pousada Chateau Pireneus</h2>
 
 <p>
-
-Um refúgio de charme em Pirenópolis
-onde conforto, tranquilidade e natureza se encontram.
-
+Um refúgio de charme em Pirenópolis onde conforto,
+tranquilidade e natureza se encontram.
 </p>
 
 </section>
-
-<!-- SUITES -->
 
 <section class="suites">
 
@@ -354,45 +339,43 @@ WhatsApp: (62) 99816-7654
 
 <script>
 
-/* MENU */
-
 function toggleMenu(){
-
 let menu = document.getElementById("sideMenu");
-
 if(menu.style.left === "0px"){
 menu.style.left = "-300px";
-}
-else{
+}else{
 menu.style.left = "0px";
 }
-
 }
-
-/* CAROUSEL */
 
 let track = document.getElementById("carouselTrack");
 let index = 0;
+const maxIndex = 2;
 
 function moveSlide(direction){
 
 index += direction;
 
-if(index < 0){ index = 0; }
-if(index > 2){ index = 2; }
+if(index < 0){
+index = 0;
+}
+
+if(index > maxIndex){
+index = maxIndex;
+}
 
 track.style.transform =
 "translateX(-" + (index * 33.33) + "%)";
 
 }
 
-/* AUTO ROTATE */
-
 setInterval(()=>{
 
 index++;
 
-if(index > 2){ index = 0; }
+if(index > maxIndex){
+index = 0;
+}
 
 track.style.transform =
 "translateX(-" + (index * 33.33) + "%)";

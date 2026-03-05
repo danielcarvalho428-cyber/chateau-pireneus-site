@@ -2,77 +2,111 @@
 <html lang="pt-BR">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pousada Chateau Pireneus</title>
+
+<title>Chateau Pireneus</title>
 
 <style>
 
 body{
 margin:0;
-font-family:serif;
+font-family:Georgia, serif;
 background:#f5efe6;
 color:#1d3557;
 }
+
+/* HEADER */
 
 header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:20px 40px;
+padding:20px 60px;
 background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
+box-shadow:0 2px 15px rgba(0,0,0,0.08);
 }
 
 .logo{
-height:60px;
+height:70px;
 }
 
 nav a{
-margin-left:20px;
+margin-left:30px;
 text-decoration:none;
 color:#1d3557;
-font-weight:bold;
+font-weight:600;
+letter-spacing:1px;
+font-size:14px;
 }
 
+/* HERO */
+
 .hero{
-height:70vh;
+height:85vh;
 background-image:url("Chateau%20-%201.png");
 background-size:cover;
 background-position:center;
 display:flex;
 align-items:center;
 justify-content:center;
-color:white;
-font-size:40px;
-text-shadow:0 0 10px rgba(0,0,0,0.5);
 text-align:center;
+color:white;
 }
 
+.hero h1{
+font-size:60px;
+margin:0;
+text-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+.hero p{
+font-size:22px;
+margin-top:10px;
+text-shadow:0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* SECTION */
+
 .section{
-padding:80px 20px;
+padding:90px 20px;
 text-align:center;
 max-width:900px;
 margin:auto;
 }
 
+.section h2{
+font-size:34px;
+margin-bottom:20px;
+}
+
+/* BUTTON */
+
 .button{
 display:inline-block;
-margin-top:30px;
-padding:15px 40px;
+margin-top:40px;
+padding:18px 50px;
 background:#1d3557;
 color:white;
 text-decoration:none;
 border-radius:5px;
 font-weight:bold;
+letter-spacing:1px;
 }
+
+.button:hover{
+background:#16314f;
+}
+
+/* FOOTER */
 
 footer{
 background:#1d3557;
 color:white;
-padding:30px;
+padding:40px;
 text-align:center;
-margin-top:40px;
+margin-top:60px;
 }
 
 </style>
@@ -86,42 +120,64 @@ margin-top:40px;
 <img src="logo.png" class="logo">
 
 <nav>
-<a href="index.html">Início</a>
-<a href="acomodacoes.html">Acomodações</a>
-<a href="#">Galeria</a>
-<a href="#">Localização</a>
-<a href="signup.html">Criar Conta</a>
-<a href="login.html">Login</a>
+
+<a href="index.html">INÍCIO</a>
+<a href="acomodacoes.html">ACOMODAÇÕES</a>
+<a href="#">GALERIA</a>
+<a href="#">LOCALIZAÇÃO</a>
+<a href="signup.html">CRIAR CONTA</a>
+<a href="login.html">LOGIN</a>
+<a href="booking.html">RESERVAR</a>
+
 </nav>
 
 </header>
 
 <div class="hero">
+
 <div>
-<h1>Pousada Chateau Pireneus</h1>
+
+<h1>Chateau Pireneus</h1>
+
 <p>Pirenópolis • Goiás</p>
+
+<a href="booking.html" class="button">
+Reservar Agora
+</a>
+
 </div>
+
 </div>
 
 <section class="section">
 
-<h2>Conheça nossas acomodações</h2>
+<h2>Bem-vindo à Pousada Chateau Pireneus</h2>
 
 <p>
-Descubra o conforto e o charme das suítes da Pousada Chateau Pireneus,
-perfeitas para momentos de descanso em meio à natureza de Pirenópolis.
+
+Um refúgio de charme em Pirenópolis, onde conforto, tranquilidade e natureza
+se encontram para proporcionar uma experiência única.
+
+Nossas suítes foram pensadas para oferecer descanso, privacidade
+e momentos inesquecíveis.
+
 </p>
 
 <a href="acomodacoes.html" class="button">
-Ver Suítes
+Conheça as Suítes
 </a>
 
 </section>
 
 <footer>
 
-Pousada Chateau Pireneus • Pirenópolis GO  
-Reservas via WhatsApp • (62) 99816-7654
+Rua Tupinambás, Quadra 09, Lote 16  
+Setor Meia Ponte • Pirenópolis GO  
+
+<br><br>
+
+WhatsApp: (62) 99816-7654  
+chateaupireneus@gmail.com
 
 </footer>
 

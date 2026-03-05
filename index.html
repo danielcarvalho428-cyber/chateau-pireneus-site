@@ -114,7 +114,7 @@ background:#1d3557;
 color:white;
 }
 
-/* ABOUT SECTION */
+/* ABOUT */
 
 .section{
 padding:120px 20px;
@@ -128,52 +128,72 @@ font-size:36px;
 margin-bottom:25px;
 }
 
-/* SUITES SECTION */
+/* ACCOMMODATIONS */
 
 .suites{
-padding:120px 20px;
+padding:120px 0;
 background:white;
 text-align:center;
 }
 
 .suites h2{
 font-size:36px;
-margin-bottom:60px;
+margin-bottom:50px;
 }
 
-.suite-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:40px;
-max-width:1200px;
-margin:auto;
+/* horizontal scroll */
+
+.suite-scroll{
+
+display:flex;
+overflow-x:auto;
+gap:30px;
+padding:0 60px;
+
+scroll-snap-type:x mandatory;
+
 }
 
 .suite-card{
-background:#f9f6f1;
-border-radius:6px;
-overflow:hidden;
-box-shadow:0 10px 25px rgba(0,0,0,0.05);
-transition:transform 0.3s;
-}
 
-.suite-card:hover{
-transform:translateY(-5px);
+min-width:300px;
+height:320px;
+
+border-radius:8px;
+overflow:hidden;
+position:relative;
+
+flex-shrink:0;
+
+scroll-snap-align:start;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
 }
 
 .suite-card img{
+
 width:100%;
-height:220px;
+height:100%;
 object-fit:cover;
+
 }
 
-.suite-card h3{
-margin:20px 0 10px 0;
-}
+.suite-name{
 
-.suite-card p{
-padding:0 20px 20px 20px;
-font-size:14px;
+position:absolute;
+bottom:0;
+width:100%;
+
+background:rgba(0,0,0,0.45);
+
+color:white;
+
+padding:15px;
+
+font-size:18px;
+letter-spacing:1px;
+
 }
 
 /* FOOTER */
@@ -240,33 +260,36 @@ e um ambiente perfeito para descanso.
 
 <section class="suites">
 
-<h2>Nossas Suítes</h2>
+<h2>Nossas Acomodações</h2>
 
-<div class="suite-grid">
+<div class="suite-scroll">
 
 <div class="suite-card">
 <img src="public/suites/divino/divino1.jpeg">
-<h3>Suíte do Divino</h3>
-<p>Suíte padrão com cama Queen, ar condicionado, TV, Wi-Fi e varanda com rede.</p>
+<div class="suite-name">Suíte do Divino</div>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/cavalhadas/cavalhadas1.jpeg">
-<h3>Suíte das Cavalhadas</h3>
-<p>Suíte confortável inspirada nas tradições de Pirenópolis.</p>
+<div class="suite-name">Suíte das Cavalhadas</div>
+</div>
+
+<div class="suite-card">
+<img src="public/suites/rosario/rosario1.jpeg">
+<div class="suite-name">Suíte do Rosário</div>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/aurora/aurora1.jpeg">
-<h3>Suíte Aurora</h3>
-<p>Suíte elegante com todo conforto para um descanso perfeito.</p>
+<div class="suite-name">Suíte Aurora</div>
+</div>
+
+<div class="suite-card">
+<img src="public/suites/bonfim/bonfim1.jpeg">
+<div class="suite-name">Suíte do Bonfim</div>
 </div>
 
 </div>
-
-<a href="acomodacoes.html" class="button">
-Ver Todas as Suítes
-</a>
 
 </section>
 

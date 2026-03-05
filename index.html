@@ -19,6 +19,8 @@ background:#f5efe6;
 color:#1d3557;
 }
 
+/* HAMBURGER */
+
 .menu-button{
 position:fixed;
 top:25px;
@@ -28,6 +30,8 @@ color:black;
 cursor:pointer;
 z-index:3000;
 }
+
+/* SIDE MENU */
 
 .side-menu{
 position:fixed;
@@ -55,6 +59,8 @@ margin:30px 0;
 border:none;
 border-top:1px solid #ddd;
 }
+
+/* HERO */
 
 .hero{
 height:100vh;
@@ -106,12 +112,35 @@ font-weight:bold;
 letter-spacing:2px;
 }
 
+/* INTRO SECTION */
+
 .section{
-padding:120px 20px;
-text-align:center;
-max-width:900px;
-margin:auto;
+padding:120px 10%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:60px;
 }
+
+.section-text{
+max-width:500px;
+}
+
+.section-text h2{
+font-size:40px;
+margin-bottom:20px;
+}
+
+.section-text p{
+font-size:18px;
+line-height:1.6;
+}
+
+.section-image img{
+width:420px;
+}
+
+/* SUITES */
 
 .suites{
 padding:120px 20px;
@@ -188,6 +217,8 @@ left:15px;
 right:15px;
 }
 
+/* FOOTER */
+
 footer{
 background:#1d3557;
 color:white;
@@ -243,12 +274,20 @@ RESERVAR AGORA
 
 <section class="section">
 
+<div class="section-text">
+
 <h2>Bem-vindo à Pousada Chateau Pireneus</h2>
 
 <p>
 Um refúgio de charme em Pirenópolis onde conforto,
 tranquilidade e natureza se encontram.
 </p>
+
+</div>
+
+<div class="section-image">
+<img src="Chateau - 4.png">
+</div>
 
 </section>
 

@@ -1,376 +1,530 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chateau Pireneus</title>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 
-<title>Chateau Pireneus</title>
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:#f5efe6;
+      color:#1d3557;
+      overflow-x:hidden; /* prevents the “beige border” / horizontal scroll */
+    }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    :root{
+      --blue:#1d3557;
+      --beige:#d8c7a1;
+      --beige-dark:#cbb58c;
+      --shadow:0 20px 45px rgba(0,0,0,0.12);
+    }
 
-<style>
+    /* HERO */
+    .hero{
+      height:100vh;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+      background-attachment:fixed;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(0,0,0,0.35);
+    }
 
-body{
-margin:0;
-font-family:Georgia, serif;
-background:#f5efe6;
-color:#1d3557;
-overflow-x:hidden;
-}
+    /* Floating contact bar over hero (NOT fixed on scroll) */
+    .contact-bar{
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      padding:12px 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:var(--blue);
+      color:#fff;
+      z-index:40;
+      font-size:14px;
+    }
+    .contact-left{
+      display:flex;
+      gap:22px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .contact-item{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:#fff;
+      text-decoration:none;
+      white-space:nowrap;
+      opacity:0.98;
+    }
+    .contact-item:hover{ opacity:1; text-decoration:underline; }
+    .contact-right a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:28px;
+      height:28px;
+      border-radius:6px;
+      text-decoration:none;
+      color:#fff;
+    }
+    .contact-right a:hover{
+      background:rgba(255,255,255,0.12);
+    }
+    .icon{
+      width:16px;
+      height:16px;
+      display:inline-block;
+      flex:0 0 auto;
+      fill:currentColor;
+    }
 
-/* CONTACT BAR */
+    /* Hamburger (always visible and clickable) */
+    .menu-button{
+      position:fixed;
+      top:74px;           /* lowered so it’s not glued to top */
+      left:20px;
+      font-size:32px;
+      line-height:1;
+      color:#fff;
+      cursor:pointer;
+      z-index:10000;      /* above everything */
+      user-select:none;
+      padding:8px 10px;
+      border-radius:10px;
+      background:rgba(0,0,0,0.18);
+      backdrop-filter:blur(2px);
+    }
+    .menu-button:hover{ background:rgba(0,0,0,0.28); }
 
-.contact-bar{
-position:absolute;
-top:0;
-width:100%;
-padding:10px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#1d3557;
-color:white;
-font-size:14px;
-z-index:50;
-}
+    /* Backdrop to close menu */
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.35);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:9000;
+    }
+    .backdrop.open{
+      opacity:1;
+      pointer-events:auto;
+    }
 
-.contact-left span{
-margin-right:30px;
-}
+    /* Side Menu (narrower + more spacing before login section) */
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:0;
+      width:240px;                 /* not too wide */
+      height:100vh;
+      background:#fff;
+      padding:110px 28px 30px;
+      box-shadow:5px 0 25px rgba(0,0,0,0.18);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:9500;                /* above backdrop */
+    }
+    .side-menu.open{ transform:translateX(0); }
+    .side-menu a{
+      display:block;
+      margin-bottom:18px;
+      text-decoration:none;
+      color:var(--blue);
+      font-size:16px;
+      letter-spacing:0.2px;
+    }
+    .side-menu a:hover{ text-decoration:underline; }
+    .side-menu hr{
+      margin:56px 0; /* more space before login section */
+      border:none;
+      border-top:1px solid #ddd;
+    }
 
-.contact-bar a{
-color:white;
-text-decoration:none;
-}
+    /* Hero text entrance animation */
+    .hero-content{
+      position:relative;
+      z-index:10;
+      color:#fff;
+      font-family:'Cormorant Garamond', serif;
+      opacity:0;
+      transform:translateY(26px);
+      animation:heroIn 1.2s ease forwards;
+    }
+    @keyframes heroIn{
+      to{ opacity:1; transform:translateY(0); }
+    }
+    .hero-title span{
+      display:block;
+      font-size:80px;
+      letter-spacing:3px;
+      text-shadow:0 5px 20px rgba(0,0,0,0.4);
+      line-height:1.05;
+    }
+    .hero-slogan{
+      margin-top:18px;
+      font-size:24px;
+      text-shadow:0 5px 20px rgba(0,0,0,0.35);
+    }
 
-.contact-bar i{
-margin-right:8px;
-}
+    /* Buttons (gold glow hover) */
+    .button, .room-button{
+      display:inline-block;
+      text-decoration:none;
+      font-weight:bold;
+      letter-spacing:2px;
+      background:var(--beige);
+      color:#fff;
+      transition:all 0.25s ease;
+    }
+    .button{
+      margin-top:30px;
+      padding:16px 50px;
+    }
+    .room-button{
+      margin-top:14px;
+      padding:12px 28px;
+      letter-spacing:1px;
+    }
+    .button:hover, .room-button:hover{
+      background:var(--beige-dark);
+      box-shadow:0 0 22px rgba(216,199,161,0.65);
+      transform:translateY(-2px);
+    }
 
-.contact-right a{
-color:white;
-font-size:18px;
-}
+    /* Fade-in on scroll */
+    .reveal{
+      opacity:0;
+      transform:translateY(28px);
+      transition:0.8s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform:translateY(0);
+    }
 
-/* HERO */
+    /* Welcome section (compact, elegant) */
+    .section{
+      padding:44px 10%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:60px;
+      background:#efe6d7;
+    }
+    .section-text{ max-width:520px; }
+    .section-text h2{ font-size:36px; margin:0 0 12px; }
+    .section-text p{
+      margin:0;
+      font-size:17px;
+      line-height:1.6;
+      color:#333;
+    }
+    .section-image img{ max-width:120px; height:auto; display:block; }
 
-.hero{
-height:100vh;
-background-image:url("hero.jpg.webp");
-background-size:cover;
-background-position:center;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-position:relative;
-}
+    /* Suites carousel */
+    .suites{
+      padding:80px 20px;
+      background:#fff;
+      text-align:center;
+    }
+    .suites h2{
+      margin:0 0 40px;
+      font-size:36px;
+    }
+    .carousel{
+      position:relative;
+      max-width:1200px;
+      margin:0 auto;
+      overflow:hidden;
+      padding:0 10px;
+    }
+    .carousel-track{
+      display:flex;
+      transition:transform 0.5s ease;
+      will-change:transform;
+    }
+    .suite-card{
+      min-width:33.3333%;
+      padding:18px;
+    }
+    .card{
+      background:#fff;
+      padding:22px;
+      box-shadow:var(--shadow);
+      transition:transform 0.25s ease;
+    }
+    .card:hover{ transform:translateY(-6px); }
 
-.hero::after{
-content:"";
-position:absolute;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.35);
-}
+    /* Hover zoom on suite photos */
+    .img-wrap{ overflow:hidden; }
+    .card img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      transform:scale(1);
+      transition:transform 0.55s ease;
+      display:block;
+    }
+    .card:hover img{ transform:scale(1.08); }
 
-.hero-content{
-position:relative;
-z-index:10;
-color:white;
-}
+    .card h3{ margin:14px 0 0; font-size:18px; font-weight:600; }
 
-.hero-title span{
-display:block;
-font-size:80px;
-letter-spacing:3px;
-}
+    /* Arrows */
+    .arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:45px;
+      height:45px;
+      border-radius:50%;
+      background:var(--beige);
+      color:var(--blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      cursor:pointer;
+      box-shadow:0 5px 15px rgba(0,0,0,0.2);
+      z-index:5;
+      user-select:none;
+    }
+    .arrow:hover{
+      background:var(--beige-dark);
+      box-shadow:0 0 18px rgba(216,199,161,0.55);
+    }
+    .arrow-left{ left:10px; }
+    .arrow-right{ right:10px; }
 
-.hero-slogan{
-margin-top:20px;
-font-size:24px;
-}
+    footer{
+      background:var(--blue);
+      color:#fff;
+      padding:40px 20px;
+      text-align:center;
+    }
 
-/* BUTTON */
-
-.button{
-display:inline-block;
-margin-top:30px;
-padding:16px 50px;
-background:#d8c7a1;
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-
-/* HAMBURGER */
-
-.menu-button{
-position:fixed;
-top:80px;
-left:25px;
-font-size:30px;
-color:white;
-cursor:pointer;
-z-index:5000;
-}
-
-/* SIDE MENU */
-
-.side-menu{
-position:fixed;
-top:0;
-left:0;
-width:220px;
-height:100vh;
-background:white;
-padding:100px 35px;
-box-shadow:5px 0 25px rgba(0,0,0,0.2);
-transform:translateX(-100%);
-transition:0.3s;
-z-index:6000;
-}
-
-.side-menu a{
-display:block;
-margin-bottom:20px;
-text-decoration:none;
-color:#1d3557;
-font-size:16px;
-}
-
-.side-menu hr{
-margin:50px 0;
-border:none;
-border-top:1px solid #ddd;
-}
-
-/* WELCOME */
-
-.section{
-padding:50px 10%;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:60px;
-background:#efe6d7;
-}
-
-.section-image img{
-max-width:120px;
-}
-
-/* SUITES */
-
-.suites{
-padding:80px 20px;
-background:white;
-text-align:center;
-}
-
-.rooms{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:30px;
-max-width:1200px;
-margin:auto;
-}
-
-.room{
-background:white;
-box-shadow:0 15px 40px rgba(0,0,0,0.12);
-padding-bottom:20px;
-}
-
-.room img{
-width:100%;
-aspect-ratio:1/1;
-object-fit:cover;
-}
-
-.room-button{
-margin-top:15px;
-padding:12px 30px;
-background:#d8c7a1;
-color:white;
-text-decoration:none;
-display:inline-block;
-}
-
-/* FOOTER */
-
-footer{
-background:#1d3557;
-color:white;
-padding:40px;
-text-align:center;
-}
-
-</style>
-
+    /* Responsive */
+    @media (max-width: 900px){
+      .suite-card{ min-width:100%; }
+      .hero-title span{ font-size:64px; }
+      .section{ flex-direction:column; text-align:left; padding:44px 8%; }
+      .section-image{ order:-1; }
+      .menu-button{ top:76px; }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="contact-bar">
+  <!-- Backdrop for menu -->
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
-<div class="contact-left">
+  <!-- Side menu -->
+  <div class="side-menu" id="sideMenu">
+    <a href="#" onclick="toggleMenu(false)">A pousada</a>
+    <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservas</a>
+    <a href="#" onclick="toggleMenu(false)">Conheça Piri</a>
 
-<span>
-<a href="mailto:chateaupireneus@gmail.com">
-<i class="fa-solid fa-envelope"></i> chateaupireneus@gmail.com
-</a>
-</span>
+    <hr>
 
-<span>
-<a href="https://maps.google.com/?q=Pousada+Chateau+Pireneus+Pirenopolis" target="_blank">
-<i class="fa-solid fa-location-dot"></i> Pirenópolis • Goiás
-</a>
-</span>
+    <a href="login.html" onclick="toggleMenu(false)">Login</a>
+    <a href="signup.html" onclick="toggleMenu(false)">Criar Conta</a>
+    <a href="#" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="#" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </div>
 
-<span>
-<a href="https://wa.me/5562998167654">
-<i class="fa-brands fa-whatsapp"></i> WhatsApp
-</a>
-</span>
+  <!-- Hamburger -->
+  <div class="menu-button" id="menuButton" onclick="toggleMenu()">
+    ☰
+  </div>
 
-</div>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="contact-bar">
+      <div class="contact-left">
+        <a class="contact-item" href="mailto:chateaupireneus@gmail.com">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"/></svg>
+          chateaupireneus@gmail.com
+        </a>
 
-<div class="contact-right">
+        <a class="contact-item" href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5Z"/></svg>
+          Pirenópolis • Goiás
+        </a>
 
-<a href="https://instagram.com/chateaupireneus" target="_blank">
-<i class="fa-brands fa-instagram"></i>
-</a>
+        <a class="contact-item" href="https://wa.me/5562998167654">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11 11 0 0 0 3.3 19.6L2 22l2.5-1.2A11 11 0 0 0 20.5 3.5ZM12 21a9 9 0 0 1-4.6-1.3l-.3-.2-2.7 1.3.7-2.9-.2-.3A9 9 0 1 1 12 21Zm5.1-6.7c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 .1-.2-.3-.8-.5-1.5-1.2-.6-.6-1-1.3-1.2-1.5-.2-.2 0-.4.1-.5l.4-.5c.1-.2.2-.4.3-.6.1-.2 0-.4 0-.6 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.6 5.9 5.1.8.3 1.4.5 1.9.6.8.3 1.5.3 2 .2.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4 0-.2-.3-.3-.6-.4Z"/></svg>
+          WhatsApp
+        </a>
+      </div>
 
-</div>
+      <div class="contact-right">
+        <a href="https://instagram.com/chateaupireneus" target="_blank" aria-label="Instagram">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm5.2-.8a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6Z"/></svg>
+        </a>
+      </div>
+    </div>
 
-</div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span>Chateau</span>
+        <span>Pireneus</span>
+      </h1>
+      <p class="hero-slogan">Uma experiência única e pitoresca</p>
+      <a href="booking.html" class="button">RESERVAR AGORA</a>
+    </div>
+  </div>
 
-<div class="menu-button" onclick="toggleMenu()">☰</div>
+  <!-- Welcome -->
+  <section class="section reveal" id="welcome">
+    <div class="section-text">
+      <h2>Bem-vindo à Pousada Chateau Pireneus</h2>
+      <p>Um refúgio de charme em Pirenópolis onde conforto, tranquilidade e natureza se encontram.</p>
+    </div>
+    <div class="section-image">
+      <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+    </div>
+  </section>
 
-<div class="side-menu" id="sideMenu">
+  <!-- Suites carousel (Pireneus REMOVED as requested) -->
+  <section class="suites reveal" id="suites">
+    <h2>Nossas Acomodações</h2>
 
-<a href="#">A pousada</a>
-<a href="#suites">Acomodações</a>
-<a href="#">Reservas</a>
-<a href="#">Conheça Piri</a>
+    <div class="carousel" aria-label="Carousel de acomodações">
+      <div class="arrow arrow-left" onclick="moveSlide(-1)">‹</div>
+      <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
-<hr>
+      <div class="carousel-track" id="carouselTrack">
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+            </div>
+            <h3>Suíte do Divino</h3>
+            <a href="#" class="room-button">Conhecer</a>
+          </div>
+        </div>
 
-<a href="#">Login</a>
-<a href="#">Criar Conta</a>
-<a href="#">Entre em contato</a>
-<a href="#">Mapa e Localização</a>
-<a href="#">Políticas da Pousada</a>
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+            </div>
+            <h3>Suíte das Cavalhadas</h3>
+            <a href="#" class="room-button">Conhecer</a>
+          </div>
+        </div>
 
-</div>
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+            </div>
+            <h3>Suíte do Rosário</h3>
+            <a href="#" class="room-button">Conhecer</a>
+          </div>
+        </div>
 
-<div class="hero">
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+            </div>
+            <h3>Suíte Aurora</h3>
+            <a href="#" class="room-button">Conhecer</a>
+          </div>
+        </div>
 
-<div class="hero-content">
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+            </div>
+            <h3>Suíte do Bonfim</h3>
+            <a href="#" class="room-button">Conhecer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<h1 class="hero-title">
-<span>Chateau</span>
-<span>Pireneus</span>
-</h1>
+  <footer>
+    Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis GO
+    <br><br>
+    WhatsApp: (62) 99816-7654
+  </footer>
 
-<p class="hero-slogan">
-Uma experiência única e pitoresca
-</p>
+  <script>
+    // MENU: stable open/close (hamburger never disappears)
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu");
+      const backdrop = document.getElementById("backdrop");
+      const isOpen = menu.classList.contains("open");
 
-<a href="booking.html" class="button">
-RESERVAR AGORA
-</a>
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
 
-</div>
+      if(open){
+        menu.classList.add("open");
+        backdrop.classList.add("open");
+      }else{
+        menu.classList.remove("open");
+        backdrop.classList.remove("open");
+      }
+    }
 
-</div>
+    // CAROUSEL: arrows + auto rotate
+    const track = document.getElementById("carouselTrack");
+    let index = 0;
+    const visible = 3;
+    const total = track.children.length;   // 5 cards
+    const maxIndex = Math.max(0, total - visible); // 2
 
-<section class="section">
+    function applySlide(){
+      track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
+    }
 
-<div>
+    function moveSlide(dir){
+      index += dir;
+      if(index < 0) index = 0;
+      if(index > maxIndex) index = maxIndex;
+      applySlide();
+    }
 
-<h2>Bem-vindo à Pousada Chateau Pireneus</h2>
+    setInterval(()=>{
+      index++;
+      if(index > maxIndex) index = 0;
+      applySlide();
+    }, 5000);
 
-<p>
-Um refúgio de charme em Pirenópolis onde conforto,
-tranquilidade e natureza se encontram.
-</p>
+    // FADE-IN on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add("show");
+      });
+    }, { threshold: 0.15 });
 
-</div>
-
-<div class="section-image">
-<img src="Chateau - 4.png">
-</div>
-
-</section>
-
-<section class="suites" id="suites">
-
-<h2>Nossas Acomodações</h2>
-
-<div class="rooms">
-
-<div class="room">
-<img src="public/suites/divino/divino1.jpeg">
-<h3>Suíte do Divino</h3>
-<a class="room-button">Conhecer</a>
-</div>
-
-<div class="room">
-<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
-<h3>Suíte das Cavalhadas</h3>
-<a class="room-button">Conhecer</a>
-</div>
-
-<div class="room">
-<img src="public/suites/rosario/rosario1.jpeg">
-<h3>Suíte do Rosário</h3>
-<a class="room-button">Conhecer</a>
-</div>
-
-<div class="room">
-<img src="public/suites/aurora/aurora1.jpeg">
-<h3>Suíte Aurora</h3>
-<a class="room-button">Conhecer</a>
-</div>
-
-<div class="room">
-<img src="public/suites/bonfim/bonfim1.jpeg">
-<h3>Suíte do Bonfim</h3>
-<a class="room-button">Conhecer</a>
-</div>
-
-</div>
-
-</section>
-
-<footer>
-
-Rua Tupinambás, Quadra 09, Lote 16  
-Setor Meia Ponte • Pirenópolis GO
-
-<br><br>
-
-WhatsApp: (62) 99816-7654
-
-</footer>
-
-<script>
-
-function toggleMenu(){
-let menu = document.getElementById("sideMenu");
-
-if(menu.style.transform === "translateX(0px)"){
-menu.style.transform = "translateX(-100%)";
-}else{
-menu.style.transform = "translateX(0)";
-}
-}
-
-</script>
-
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+  </script>
 </body>
 </html>

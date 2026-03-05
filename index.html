@@ -19,6 +19,7 @@ margin:0;
 font-family:Georgia, serif;
 background:#f5efe6;
 color:#1d3557;
+overflow-x:hidden;
 }
 
 /* TOP BAR */
@@ -64,12 +65,13 @@ z-index:3000;
 .side-menu{
 position:fixed;
 top:0;
-left:-300px;
+left:0;
 width:300px;
 height:100vh;
 background:white;
 padding:80px 40px;
 box-shadow:5px 0 30px rgba(0,0,0,0.15);
+transform:translateX(-100%);
 transition:0.3s;
 z-index:2500;
 }
@@ -80,12 +82,6 @@ margin-bottom:22px;
 text-decoration:none;
 color:#1d3557;
 font-size:17px;
-}
-
-.side-menu hr{
-margin:30px 0;
-border:none;
-border-top:1px solid #ddd;
 }
 
 /* HERO */
@@ -100,6 +96,7 @@ align-items:center;
 justify-content:center;
 text-align:center;
 position:relative;
+background-attachment:fixed;
 }
 
 .hero::after{
@@ -129,6 +126,8 @@ margin-top:20px;
 font-size:24px;
 }
 
+/* BUTTONS */
+
 .button{
 display:inline-block;
 margin-top:35px;
@@ -138,17 +137,48 @@ color:white;
 text-decoration:none;
 font-weight:bold;
 letter-spacing:2px;
+transition:all 0.3s ease;
+}
+
+.button:hover{
+background:#cbb58c;
+box-shadow:0 0 20px rgba(216,199,161,0.6);
+transform:translateY(-2px);
+}
+
+.room-button{
+margin-top:15px;
+padding:12px 30px;
+background:#d8c7a1;
+color:white;
+text-decoration:none;
+display:inline-block;
+transition:all 0.3s ease;
+}
+
+.room-button:hover{
+background:#cbb58c;
+box-shadow:0 0 15px rgba(216,199,161,0.6);
+transform:translateY(-2px);
 }
 
 /* WELCOME */
 
 .section{
-padding:70px 10%;
+padding:40px 10%;
 display:flex;
 align-items:center;
 justify-content:center;
 gap:60px;
 background:#efe6d7;
+opacity:0;
+transform:translateY(40px);
+transition:all 0.8s ease;
+}
+
+.section.show{
+opacity:1;
+transform:translateY(0);
 }
 
 .section-text{
@@ -156,18 +186,18 @@ max-width:520px;
 }
 
 .section-text h2{
-font-size:38px;
-margin-bottom:20px;
+font-size:36px;
+margin-bottom:15px;
 }
 
 .section-text p{
-font-size:18px;
-line-height:1.7;
+font-size:17px;
+line-height:1.6;
 color:#333;
 }
 
 .section-image img{
-max-width:150px;
+max-width:120px;
 }
 
 /* DIVIDER */
@@ -180,19 +210,20 @@ letter-spacing:6px;
 color:#d8c7a1;
 }
 
-.divider-line{
-width:120px;
-height:1px;
-background:#d8c7a1;
-margin:10px auto;
-}
-
 /* SUITES */
 
 .suites{
 padding:80px 20px;
 background:white;
 text-align:center;
+opacity:0;
+transform:translateY(40px);
+transition:all 0.8s ease;
+}
+
+.suites.show{
+opacity:1;
+transform:translateY(0);
 }
 
 .carousel{
@@ -233,15 +264,6 @@ transition:transform 0.5s ease;
 
 .card:hover img{
 transform:scale(1.08);
-}
-
-.room-button{
-margin-top:15px;
-padding:12px 30px;
-background:#d8c7a1;
-color:white;
-text-decoration:none;
-display:inline-block;
 }
 
 /* ARROWS */
@@ -292,7 +314,7 @@ text-align:center;
 </a>
 </span>
 
-<span>📍 Pirenópolis GO</span>
+<span>Pirenópolis • Goiás</span>
 
 <span>
 <a href="mailto:chateaupireneus@gmail.com">
@@ -352,7 +374,7 @@ RESERVAR AGORA
 
 </div>
 
-<section class="section">
+<section class="section" id="welcome">
 
 <div class="section-text">
 
@@ -371,13 +393,7 @@ tranquilidade e natureza se encontram.
 
 </section>
 
-<div class="divider">
-<div class="divider-line"></div>
-❦
-<div class="divider-line"></div>
-</div>
-
-<section class="suites">
+<section class="suites" id="suites">
 
 <h2>Nossas Acomodações</h2>
 
@@ -458,10 +474,10 @@ WhatsApp: (62) 99816-7654
 function toggleMenu(){
 let menu = document.getElementById("sideMenu");
 
-if(menu.style.left === "0px"){
-menu.style.left = "-300px";
+if(menu.style.transform === "translateX(0px)"){
+menu.style.transform = "translateX(-100%)";
 }else{
-menu.style.left = "0px";
+menu.style.transform = "translateX(0)";
 }
 }
 
@@ -490,6 +506,23 @@ track.style.transform =
 "translateX(-" + (index * 36) + "%)";
 
 },5000);
+
+/* FADE IN */
+
+const observer = new IntersectionObserver(entries => {
+
+entries.forEach(entry => {
+
+if(entry.isIntersecting){
+entry.target.classList.add("show")
+}
+
+})
+
+})
+
+observer.observe(document.querySelector("#welcome"))
+observer.observe(document.querySelector("#suites"))
 
 </script>
 

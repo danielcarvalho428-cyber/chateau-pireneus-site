@@ -185,27 +185,41 @@
     }
     @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
 
-    /* Title */
+    /* Title: menor */
     .hero-title{
       display:flex;
       flex-direction:column;
-      gap:16px;            
+      gap:16px;
       margin:0;
     }
     .hero-title .hero-line{
       display:block;
-      font-size:80px;
+      font-size:68px;      /* DIMINUIDO */
       letter-spacing:3px;
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.20;
       text-transform:uppercase;
     }
 
+    /* Slogan row (slogan + png) */
+    .hero-slogan-row{
+      margin-top:28px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
     .hero-slogan{
-      margin-top:32px;
-      font-size:22px;
+      margin-top:0;
+      font-size:18px;      /* DIMINUIDO */
       letter-spacing:0.6px;
       text-shadow:0 5px 20px rgba(0,0,0,0.35);
+    }
+    .hero-badge{
+      width:80px;          /* PNG MAIOR (só ele) */
+      height:auto;
+      display:block;
     }
 
     /* Buttons */
@@ -278,7 +292,7 @@
     }
     .section-image img{ max-width:120px; height:auto; display:block; }
 
-    /* Suites */
+    /* Suites with frame gradient around */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -377,12 +391,13 @@
 
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
-      .hero-title .hero-line{ font-size:64px; }
+      .hero-title .hero-line{ font-size:54px; } /* menor no mobile */
+      .hero-slogan{ font-size:16px; }          /* menor no mobile */
+      .hero-badge{ width:64px; }               /* PNG ajustado no mobile */
       .section{ flex-direction:column; text-align:left; padding:44px 8%; }
       .section-image{ order:-1; }
       .menu-button{ top:76px; }
       .menu-button.menu-open{ left:205px; }
-      .hero-slogan{ font-size:20px; }
     }
   </style>
 </head>
@@ -422,7 +437,11 @@
         </a>
 
         <a class="contact-item" href="https://wa.me/5562998167654">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11 11 0 0 0 3.3 19.6L2 22l2.5-1.2A11 11 0 0 0 20.5 3.5ZM12 21a9 9 0 0 1-4.6-1.3l-.3-.2-2.7 1.3.7-2.9-.2-.3A9 9 0 1 1 12 21Zm5.1-6.7c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 .1-.2-.3-.8-.5-1.5-1.2-.6-.6-1-1.3-1.2-1.5-.2-.2 0-.4.1-.5l.4-.5c.1-.2.2-.4.3-.6.1-.2 0-.4 0-.6 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.6 5.9 5.1.8.3 1.4.5 1.9.6.8.3 1.5.3 2 .2.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4 0-.2-.3-.3-.6-.4Z"/></svg>
+          <!-- WhatsApp icon corrected -->
+          <svg class="icon" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M19.11 17.53c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.91 1.12-.17.19-.33.21-.62.07-.29-.14-1.22-.45-2.33-1.45-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.44.13-.58.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.55-.88-2.12-.23-.56-.47-.49-.64-.5l-.55-.01c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43 0 1.43 1.03 2.82 1.17 3.02.14.19 2.03 3.1 4.93 4.34.69.29 1.22.46 1.64.59.69.22 1.32.19 1.82.12.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.25.17-1.36-.07-.12-.26-.19-.55-.33z"/>
+            <path d="M26.67 5.33A14.9 14.9 0 0016 1.33C7.73 1.33 1 8.06 1 16.33c0 2.64.69 5.21 2 7.48L1 31l7.39-1.94a14.9 14.9 0 007.61 2.07h.01c8.27 0 15-6.73 15-15 0-4-1.56-7.76-4.34-10.8zM16 28.6h-.01a12.2 12.2 0 01-6.22-1.7l-.45-.26-4.38 1.15 1.17-4.26-.29-.44a12.2 12.2 0 01-1.93-6.56C3.89 9.47 9.14 4.22 16 4.22c3.3 0 6.41 1.29 8.74 3.62a12.26 12.26 0 013.62 8.74c0 6.86-5.25 12.02-12.0 12.02z"/>
+          </svg>
           WhatsApp
         </a>
       </div>
@@ -441,7 +460,12 @@
         <span class="hero-line">CHATEAU</span>
         <span class="hero-line">PIRENEUS</span>
       </h1>
-      <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
+
+      <div class="hero-slogan-row">
+        <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
+        <img class="hero-badge" src="Chateau - 4.png" alt="Chateau Pireneus" />
+      </div>
+
       <a href="booking.html" class="button">RESERVAR AGORA</a>
     </div>
   </div>

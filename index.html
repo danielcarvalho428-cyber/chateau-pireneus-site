@@ -128,72 +128,47 @@ font-size:36px;
 margin-bottom:25px;
 }
 
-/* ACCOMMODATIONS */
+/* SUITES CAROUSEL */
 
 .suites{
-padding:120px 0;
+padding:120px 20px;
 background:white;
 text-align:center;
 }
 
 .suites h2{
 font-size:36px;
-margin-bottom:50px;
+margin-bottom:60px;
 }
 
-/* horizontal scroll */
+.carousel{
+overflow:hidden;
+max-width:1200px;
+margin:auto;
+}
 
-.suite-scroll{
-
+.carousel-track{
 display:flex;
-overflow-x:auto;
-gap:30px;
-padding:0 60px;
-
-scroll-snap-type:x mandatory;
-
+transition:transform 0.5s ease;
 }
 
 .suite-card{
-
-min-width:300px;
-height:320px;
-
-border-radius:8px;
-overflow:hidden;
-position:relative;
-
-flex-shrink:0;
-
-scroll-snap-align:start;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.08);
-
+min-width:33.33%;
+padding:20px;
+box-sizing:border-box;
 }
 
 .suite-card img{
-
 width:100%;
-height:100%;
+height:240px;
 object-fit:cover;
-
+border-radius:8px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-.suite-name{
-
-position:absolute;
-bottom:0;
-width:100%;
-
-background:rgba(0,0,0,0.45);
-
-color:white;
-
-padding:15px;
-
-font-size:18px;
-letter-spacing:1px;
-
+.suite-card h3{
+margin-top:15px;
+font-weight:500;
 }
 
 /* FOOTER */
@@ -262,31 +237,35 @@ e um ambiente perfeito para descanso.
 
 <h2>Nossas Acomodações</h2>
 
-<div class="suite-scroll">
+<div class="carousel">
+
+<div class="carousel-track" id="carouselTrack">
 
 <div class="suite-card">
 <img src="public/suites/divino/divino1.jpeg">
-<div class="suite-name">Suíte do Divino</div>
+<h3>Suíte do Divino</h3>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/cavalhadas/cavalhadas1.jpeg">
-<div class="suite-name">Suíte das Cavalhadas</div>
+<h3>Suíte das Cavalhadas</h3>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/rosario/rosario1.jpeg">
-<div class="suite-name">Suíte do Rosário</div>
+<h3>Suíte do Rosário</h3>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/aurora/aurora1.jpeg">
-<div class="suite-name">Suíte Aurora</div>
+<h3>Suíte Aurora</h3>
 </div>
 
 <div class="suite-card">
 <img src="public/suites/bonfim/bonfim1.jpeg">
-<div class="suite-name">Suíte do Bonfim</div>
+<h3>Suíte do Bonfim</h3>
+</div>
+
 </div>
 
 </div>
@@ -306,6 +285,8 @@ WhatsApp: (62) 99816-7654
 
 <script>
 
+/* HEADER SCROLL EFFECT */
+
 window.addEventListener("scroll", function(){
 
 let header = document.getElementById("header");
@@ -318,6 +299,24 @@ header.classList.remove("scrolled");
 }
 
 });
+
+/* AUTO ROTATING CAROUSEL */
+
+let track = document.getElementById("carouselTrack");
+
+let index = 0;
+
+setInterval(()=>{
+
+index++;
+
+if(index > 2){
+index = 0;
+}
+
+track.style.transform = "translateX(-" + (index * 33.33) + "%)";
+
+},4000);
 
 </script>
 

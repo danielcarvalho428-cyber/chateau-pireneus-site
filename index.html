@@ -194,32 +194,19 @@
     }
     .hero-title .hero-line{
       display:block;
-      font-size:68px;      /* DIMINUIDO */
+      font-size:68px;
       letter-spacing:3px;
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.20;
       text-transform:uppercase;
     }
 
-    /* Slogan row (slogan + png) */
-    .hero-slogan-row{
-      margin-top:28px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      flex-wrap:wrap;
-    }
+    /* Slogan (SEM PNG ao lado) */
     .hero-slogan{
-      margin-top:0;
-      font-size:18px;      /* DIMINUIDO */
+      margin-top:28px;
+      font-size:18px;
       letter-spacing:0.6px;
       text-shadow:0 5px 20px rgba(0,0,0,0.35);
-    }
-    .hero-badge{
-      width:80px;          /* PNG MAIOR (só ele) */
-      height:auto;
-      display:block;
     }
 
     /* Buttons */
@@ -290,7 +277,14 @@
       line-height:1.6;
       color:#333;
     }
-    .section-image img{ max-width:120px; height:auto; display:block; }
+
+    /* ✅ AQUI aumenta só o PNG da seção Bem-vindo */
+    .section-image img{
+      max-width:220px;   /* aumentei (antes 120px) */
+      width:100%;
+      height:auto;
+      display:block;
+    }
 
     /* Suites with frame gradient around */
     .suites{
@@ -391,11 +385,11 @@
 
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
-      .hero-title .hero-line{ font-size:54px; } /* menor no mobile */
-      .hero-slogan{ font-size:16px; }          /* menor no mobile */
-      .hero-badge{ width:64px; }               /* PNG ajustado no mobile */
+      .hero-title .hero-line{ font-size:54px; }
+      .hero-slogan{ font-size:16px; }
       .section{ flex-direction:column; text-align:left; padding:44px 8%; }
       .section-image{ order:-1; }
+      .section-image img{ max-width:180px; } /* PNG maior no mobile, mas controlado */
       .menu-button{ top:76px; }
       .menu-button.menu-open{ left:205px; }
     }
@@ -461,10 +455,7 @@
         <span class="hero-line">PIRENEUS</span>
       </h1>
 
-      <div class="hero-slogan-row">
-        <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
-        <img class="hero-badge" src="Chateau - 4.png" alt="Chateau Pireneus" />
-      </div>
+      <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
 
       <a href="booking.html" class="button">RESERVAR AGORA</a>
     </div>

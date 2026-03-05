@@ -8,7 +8,6 @@
 
 <title>Chateau Pireneus</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
@@ -19,6 +18,40 @@ font-family:Georgia, serif;
 background:#f5efe6;
 color:#1d3557;
 overflow-x:hidden;
+}
+
+/* CONTACT BAR */
+
+.contact-bar{
+position:absolute;
+top:0;
+width:100%;
+padding:10px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#1d3557;
+color:white;
+font-size:14px;
+z-index:50;
+}
+
+.contact-left span{
+margin-right:30px;
+}
+
+.contact-bar a{
+color:white;
+text-decoration:none;
+}
+
+.contact-bar i{
+margin-right:8px;
+}
+
+.contact-right a{
+color:white;
+font-size:18px;
 }
 
 /* HERO */
@@ -33,7 +66,6 @@ align-items:center;
 justify-content:center;
 text-align:center;
 position:relative;
-background-attachment:fixed;
 }
 
 .hero::after{
@@ -44,106 +76,16 @@ height:100%;
 background:rgba(0,0,0,0.35);
 }
 
-/* CONTACT BAR */
-
-.contact-bar{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-padding:12px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-color:white;
-z-index:50;
-font-size:14px;
-}
-
-.contact-left span{
-margin-right:28px;
-}
-
-.contact-bar a{
-color:white;
-text-decoration:none;
-}
-
-.contact-bar i{
-margin-right:8px;
-}
-
-.contact-right a{
-font-size:20px;
-color:white;
-}
-
-/* HAMBURGER */
-
-.menu-button{
-position:fixed;
-top:80px;
-left:25px;
-font-size:32px;
-color:white;
-cursor:pointer;
-z-index:5000;
-}
-
-/* MENU */
-
-.side-menu{
-position:fixed;
-top:0;
-left:0;
-width:220px;
-height:100vh;
-background:white;
-padding:100px 40px;
-box-shadow:5px 0 30px rgba(0,0,0,0.15);
-transform:translateX(-100%);
-transition:0.3s;
-z-index:6000;
-}
-
-.side-menu a{
-display:block;
-margin-bottom:22px;
-text-decoration:none;
-color:#1d3557;
-font-size:17px;
-}
-
-.side-menu hr{
-margin:50px 0;
-border:none;
-border-top:1px solid #ddd;
-}
-
-/* HERO TEXT */
-
 .hero-content{
 position:relative;
 z-index:10;
 color:white;
-font-family:'Cormorant Garamond', serif;
-opacity:0;
-transform:translateY(40px);
-animation:heroFade 1.6s ease forwards;
-}
-
-@keyframes heroFade{
-to{
-opacity:1;
-transform:translateY(0);
-}
 }
 
 .hero-title span{
 display:block;
 font-size:80px;
 letter-spacing:3px;
-text-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 
 .hero-slogan{
@@ -155,24 +97,69 @@ font-size:24px;
 
 .button{
 display:inline-block;
-margin-top:35px;
+margin-top:30px;
 padding:16px 50px;
 background:#d8c7a1;
 color:white;
 text-decoration:none;
 font-weight:bold;
-letter-spacing:2px;
+}
+
+/* HAMBURGER */
+
+.menu-button{
+position:fixed;
+top:80px;
+left:25px;
+font-size:30px;
+color:white;
+cursor:pointer;
+z-index:5000;
+}
+
+/* SIDE MENU */
+
+.side-menu{
+position:fixed;
+top:0;
+left:0;
+width:220px;
+height:100vh;
+background:white;
+padding:100px 35px;
+box-shadow:5px 0 25px rgba(0,0,0,0.2);
+transform:translateX(-100%);
+transition:0.3s;
+z-index:6000;
+}
+
+.side-menu a{
+display:block;
+margin-bottom:20px;
+text-decoration:none;
+color:#1d3557;
+font-size:16px;
+}
+
+.side-menu hr{
+margin:50px 0;
+border:none;
+border-top:1px solid #ddd;
 }
 
 /* WELCOME */
 
 .section{
-padding:40px 10%;
+padding:50px 10%;
 display:flex;
 align-items:center;
 justify-content:center;
 gap:60px;
 background:#efe6d7;
+}
+
+.section-image img{
+max-width:120px;
 }
 
 /* SUITES */
@@ -183,31 +170,21 @@ background:white;
 text-align:center;
 }
 
-.carousel{
-position:relative;
-max-width:1300px;
+.rooms{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+max-width:1200px;
 margin:auto;
-overflow:hidden;
 }
 
-.carousel-track{
-display:flex;
-transition:transform 0.5s ease;
-}
-
-.suite-card{
-min-width:36%;
-padding:25px;
-box-sizing:border-box;
-}
-
-.card{
+.room{
 background:white;
-padding:25px;
-box-shadow:0 20px 45px rgba(0,0,0,0.12);
+box-shadow:0 15px 40px rgba(0,0,0,0.12);
+padding-bottom:20px;
 }
 
-.card img{
+.room img{
 width:100%;
 aspect-ratio:1/1;
 object-fit:cover;
@@ -222,34 +199,20 @@ text-decoration:none;
 display:inline-block;
 }
 
-/* ARROWS */
+/* FOOTER */
 
-.arrow{
-position:absolute;
-top:50%;
-transform:translateY(-50%);
-width:45px;
-height:45px;
-background:#d8c7a1;
-color:#1d3557;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-cursor:pointer;
-border-radius:50%;
+footer{
+background:#1d3557;
+color:white;
+padding:40px;
+text-align:center;
 }
-
-.arrow-left{ left:15px; }
-.arrow-right{ right:15px; }
 
 </style>
 
 </head>
 
 <body>
-
-<div class="hero">
 
 <div class="contact-bar">
 
@@ -304,6 +267,8 @@ border-radius:50%;
 
 </div>
 
+<div class="hero">
+
 <div class="hero-content">
 
 <h1 class="hero-title">
@@ -322,6 +287,76 @@ RESERVAR AGORA
 </div>
 
 </div>
+
+<section class="section">
+
+<div>
+
+<h2>Bem-vindo à Pousada Chateau Pireneus</h2>
+
+<p>
+Um refúgio de charme em Pirenópolis onde conforto,
+tranquilidade e natureza se encontram.
+</p>
+
+</div>
+
+<div class="section-image">
+<img src="Chateau - 4.png">
+</div>
+
+</section>
+
+<section class="suites" id="suites">
+
+<h2>Nossas Acomodações</h2>
+
+<div class="rooms">
+
+<div class="room">
+<img src="public/suites/divino/divino1.jpeg">
+<h3>Suíte do Divino</h3>
+<a class="room-button">Conhecer</a>
+</div>
+
+<div class="room">
+<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
+<h3>Suíte das Cavalhadas</h3>
+<a class="room-button">Conhecer</a>
+</div>
+
+<div class="room">
+<img src="public/suites/rosario/rosario1.jpeg">
+<h3>Suíte do Rosário</h3>
+<a class="room-button">Conhecer</a>
+</div>
+
+<div class="room">
+<img src="public/suites/aurora/aurora1.jpeg">
+<h3>Suíte Aurora</h3>
+<a class="room-button">Conhecer</a>
+</div>
+
+<div class="room">
+<img src="public/suites/bonfim/bonfim1.jpeg">
+<h3>Suíte do Bonfim</h3>
+<a class="room-button">Conhecer</a>
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+Rua Tupinambás, Quadra 09, Lote 16  
+Setor Meia Ponte • Pirenópolis GO
+
+<br><br>
+
+WhatsApp: (62) 99816-7654
+
+</footer>
 
 <script>
 

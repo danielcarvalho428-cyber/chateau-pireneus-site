@@ -4,8 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Reservar Suíte</title>
+<title>Reservar Suíte - Chateau Pireneus</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -112,10 +111,10 @@ margin-top:60px;
 </select>
 
 <label>Check-in</label>
-<input type="date" id="checkin">
+<input type="date" id="checkin" required>
 
 <label>Check-out</label>
-<input type="date" id="checkout">
+<input type="date" id="checkout" required>
 
 <button type="submit">Reservar</button>
 
@@ -133,8 +132,8 @@ WhatsApp: (62) 99816-7654
 <script>
 
 const supabase = window.supabase.createClient(
-"YOUR_SUPABASE_URL",
-"YOUR_PUBLIC_ANON_KEY"
+"https://pjxurbtvmzdlpnexfqpd.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
 )
 
 document.getElementById("bookingForm").addEventListener("submit", async (e)=>{

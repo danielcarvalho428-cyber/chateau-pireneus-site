@@ -128,7 +128,7 @@ font-size:36px;
 margin-bottom:25px;
 }
 
-/* SUITES CAROUSEL */
+/* SUITES */
 
 .suites{
 padding:120px 20px;
@@ -154,19 +154,30 @@ transition:transform 0.5s ease;
 
 .suite-card{
 min-width:33.33%;
-padding:20px;
+padding:25px;
 box-sizing:border-box;
 }
 
-.suite-card img{
-width:100%;
-height:240px;
-object-fit:cover;
-border-radius:8px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 15px 35px rgba(0,0,0,0.08);
+transition:transform 0.3s;
 }
 
-.suite-card h3{
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card img{
+width:100%;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:6px;
+}
+
+.card h3{
 margin-top:15px;
 font-weight:500;
 }
@@ -242,28 +253,48 @@ e um ambiente perfeito para descanso.
 <div class="carousel-track" id="carouselTrack">
 
 <div class="suite-card">
+<a href="suite-divino.html">
+<div class="card">
 <img src="public/suites/divino/divino1.jpeg">
 <h3>Suíte do Divino</h3>
 </div>
+</a>
+</div>
 
 <div class="suite-card">
+<a href="suite-cavalhadas.html">
+<div class="card">
 <img src="public/suites/cavalhadas/cavalhadas1.jpeg">
 <h3>Suíte das Cavalhadas</h3>
 </div>
+</a>
+</div>
 
 <div class="suite-card">
+<a href="suite-rosario.html">
+<div class="card">
 <img src="public/suites/rosario/rosario1.jpeg">
 <h3>Suíte do Rosário</h3>
 </div>
-
-<div class="suite-card">
-<img src="public/suites/aurora/aurora1.jpeg">
-<h3>Suíte Aurora</h3>
+</a>
 </div>
 
 <div class="suite-card">
+<a href="suite-aurora.html">
+<div class="card">
+<img src="public/suites/aurora/aurora1.jpeg">
+<h3>Suíte Aurora</h3>
+</div>
+</a>
+</div>
+
+<div class="suite-card">
+<a href="suite-bonfim.html">
+<div class="card">
 <img src="public/suites/bonfim/bonfim1.jpeg">
 <h3>Suíte do Bonfim</h3>
+</div>
+</a>
 </div>
 
 </div>
@@ -285,7 +316,7 @@ WhatsApp: (62) 99816-7654
 
 <script>
 
-/* HEADER SCROLL EFFECT */
+/* HEADER SCROLL */
 
 window.addEventListener("scroll", function(){
 
@@ -300,7 +331,7 @@ header.classList.remove("scrolled");
 
 });
 
-/* AUTO ROTATING CAROUSEL */
+/* CAROUSEL */
 
 let track = document.getElementById("carouselTrack");
 

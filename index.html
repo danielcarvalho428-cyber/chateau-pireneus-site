@@ -19,19 +19,15 @@ background:#f5efe6;
 color:#1d3557;
 }
 
-/* HAMBURGER */
-
 .menu-button{
 position:fixed;
 top:25px;
 left:25px;
 font-size:32px;
-color:#000;
+color:black;
 cursor:pointer;
 z-index:3000;
 }
-
-/* SIDE MENU */
 
 .side-menu{
 position:fixed;
@@ -59,8 +55,6 @@ margin:30px 0;
 border:none;
 border-top:1px solid #ddd;
 }
-
-/* HERO */
 
 .hero{
 height:100vh;
@@ -99,10 +93,7 @@ text-shadow:0 5px 20px rgba(0,0,0,0.4);
 .hero-slogan{
 margin-top:20px;
 font-size:24px;
-letter-spacing:1px;
 }
-
-/* BUTTON */
 
 .button{
 display:inline-block;
@@ -115,8 +106,6 @@ font-weight:bold;
 letter-spacing:2px;
 }
 
-/* SECTION */
-
 .section{
 padding:120px 20px;
 text-align:center;
@@ -124,25 +113,11 @@ max-width:900px;
 margin:auto;
 }
 
-.section h2{
-font-size:36px;
-margin-bottom:25px;
-}
-
-/* SUITES */
-
 .suites{
 padding:120px 20px;
 background:white;
 text-align:center;
 }
-
-.suites h2{
-font-size:36px;
-margin-bottom:60px;
-}
-
-/* CAROUSEL */
 
 .carousel{
 position:relative;
@@ -187,27 +162,31 @@ text-decoration:none;
 display:inline-block;
 }
 
-/* ARROWS */
-
 .arrow{
 position:absolute;
 top:50%;
 transform:translateY(-50%);
-font-size:40px;
+width:45px;
+height:45px;
+background:#d8c7a1;
 color:#1d3557;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
 cursor:pointer;
-z-index:200;
+border-radius:50%;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+z-index:500;
 }
 
 .arrow-left{
-left:-40px;
+left:15px;
 }
 
 .arrow-right{
-right:-40px;
+right:15px;
 }
-
-/* FOOTER */
 
 footer{
 background:#1d3557;
@@ -361,12 +340,10 @@ function moveSlide(direction){
 index += direction;
 
 if(index < 0){ index = 0; }
-
 if(index > maxIndex){ index = maxIndex; }
 
 track.style.transform =
 "translateX(-" + (index * 33.33) + "%)";
-
 }
 
 setInterval(()=>{

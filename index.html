@@ -25,7 +25,7 @@
       --shadow:0 20px 45px rgba(0,0,0,0.12);
     }
 
-    /* Gyahegi Regular (uploaded by you) */
+    /* Gyahegi Regular */
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -54,7 +54,7 @@
       background:rgba(0,0,0,0.35);
     }
 
-    /* Floating contact bar over hero (NOT fixed on scroll) */
+    /* Contact bar */
     .contact-bar{
       position:absolute;
       top:0;
@@ -95,9 +95,7 @@
       text-decoration:none;
       color:#fff;
     }
-    .contact-right a:hover{
-      background:rgba(255,255,255,0.12);
-    }
+    .contact-right a:hover{ background:rgba(255,255,255,0.12); }
     .icon{
       width:16px;
       height:16px;
@@ -130,7 +128,7 @@
       left:255px;
     }
 
-    /* Backdrop to close menu */
+    /* Backdrop */
     .backdrop{
       position:fixed;
       inset:0;
@@ -175,7 +173,7 @@
       border-top:1px solid #ddd;
     }
 
-    /* Hero text entrance */
+    /* Hero content */
     .hero-content{
       position:relative;
       z-index:10;
@@ -185,24 +183,22 @@
       transform:translateY(26px);
       animation:heroIn 1.2s ease forwards;
     }
-    @keyframes heroIn{
-      to{ opacity:1; transform:translateY(0); }
+    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+    /* Title: SPACING GUARANTEED */
+    .hero-title{
+      display:flex;
+      flex-direction:column;
+      gap:12px;     /* ajusta aqui o espaço */
+      margin:0;     /* remove margem padrão do h1 */
     }
-    .hero-title span{
+    .hero-title .hero-line{
       display:block;
       font-size:80px;
       letter-spacing:2px;
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.05;
-    }
-
-    /* FORCE uppercase + spacing between lines */
-    .hero-title .hero-line{
-      display:block;
       text-transform:uppercase;
-    }
-    .hero-title .hero-line + .hero-line{
-      padding-top:10px; /* spacing that won't disappear */
     }
 
     .hero-slogan{
@@ -212,7 +208,7 @@
       text-shadow:0 5px 20px rgba(0,0,0,0.35);
     }
 
-    /* Buttons (gold glow hover) */
+    /* Buttons */
     .button, .room-button{
       display:inline-block;
       text-decoration:none;
@@ -237,7 +233,7 @@
       transform:translateY(-2px);
     }
 
-    /* Fade-in on scroll */
+    /* Fade-in */
     .reveal{
       opacity:0;
       transform:translateY(28px);
@@ -267,7 +263,7 @@
     }
     .section-image img{ max-width:120px; height:auto; display:block; }
 
-    /* Suites section with gradient "frame" around */
+    /* Suites with frame gradient around */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -318,7 +314,6 @@
     }
     .card:hover{ transform:translateY(-6px); }
 
-    /* Hover zoom on suite photos */
     .img-wrap{ overflow:hidden; }
     .card img{
       width:100%;
@@ -367,7 +362,7 @@
 
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
-      .hero-title span{ font-size:64px; }
+      .hero-title .hero-line{ font-size:64px; }
       .section{ flex-direction:column; text-align:left; padding:44px 8%; }
       .section-image{ order:-1; }
       .menu-button{ top:76px; }
@@ -454,55 +449,11 @@
       <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
       <div class="carousel-track" id="carouselTrack">
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
-            </div>
-            <h3>Suíte do Divino</h3>
-            <a href="#" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
-            </div>
-            <h3>Suíte das Cavalhadas</h3>
-            <a href="#" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
-            </div>
-            <h3>Suíte do Rosário</h3>
-            <a href="#" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
-            </div>
-            <h3>Suíte Aurora</h3>
-            <a href="#" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
-            </div>
-            <h3>Suíte do Bonfim</h3>
-            <a href="#" class="room-button">Conhecer</a>
-          </div>
-        </div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div><h3>Suíte do Divino</h3><a href="#" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div><h3>Suíte das Cavalhadas</h3><a href="#" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div><h3>Suíte do Rosário</h3><a href="#" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div><h3>Suíte Aurora</h3><a href="#" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div><h3>Suíte do Bonfim</h3><a href="#" class="room-button">Conhecer</a></div></div>
       </div>
     </div>
   </section>
@@ -534,12 +485,12 @@
       }
     }
 
-    // CAROUSEL: loop infinito
+    // CAROUSEL: loop infinito (setas)
     const track = document.getElementById("carouselTrack");
     let index = 0;
     const visible = 3;
-    const total = track.children.length;            // 5 cards
-    const maxIndex = Math.max(0, total - visible);  // 2
+    const total = track.children.length;
+    const maxIndex = Math.max(0, total - visible);
 
     function applySlide(){
       track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
@@ -558,7 +509,7 @@
       applySlide();
     }, 5000);
 
-    // FADE-IN on scroll
+    // FADE-IN
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting) e.target.classList.add("show");

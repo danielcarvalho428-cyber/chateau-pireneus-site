@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pousada Chateau Pireneus</title>
+<title>Chateau Pireneus</title>
 
 <style>
 
@@ -15,12 +15,13 @@ margin:0;
 font-family:Georgia, serif;
 background:#f5efe6;
 color:#1d3557;
+scroll-behavior:smooth;
 }
 
 /* HEADER */
 
 header{
-position:absolute;
+position:fixed;
 top:0;
 left:0;
 width:100%;
@@ -28,7 +29,14 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:25px 60px;
-z-index:10;
+z-index:1000;
+transition:all 0.3s ease;
+background:transparent;
+}
+
+header.scrolled{
+background:white;
+box-shadow:0 2px 15px rgba(0,0,0,0.1);
 }
 
 nav a{
@@ -38,9 +46,14 @@ color:white;
 font-weight:600;
 letter-spacing:1px;
 font-size:14px;
+transition:color 0.3s;
 }
 
-/* HERO SECTION */
+header.scrolled nav a{
+color:#1d3557;
+}
+
+/* HERO */
 
 .hero{
 height:100vh;
@@ -54,8 +67,6 @@ text-align:center;
 position:relative;
 }
 
-/* DARK OVERLAY */
-
 .hero::after{
 content:"";
 position:absolute;
@@ -65,8 +76,6 @@ width:100%;
 height:100%;
 background:rgba(0,0,0,0.35);
 }
-
-/* HERO CONTENT */
 
 .hero-content{
 position:relative;
@@ -87,8 +96,6 @@ margin-top:10px;
 text-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 
-/* BUTTON */
-
 .button{
 display:inline-block;
 margin-top:40px;
@@ -99,12 +106,18 @@ text-decoration:none;
 border-radius:4px;
 font-weight:bold;
 letter-spacing:1px;
+transition:0.3s;
 }
 
-/* SECTION */
+.button:hover{
+background:#1d3557;
+color:white;
+}
+
+/* ABOUT SECTION */
 
 .section{
-padding:100px 20px;
+padding:120px 20px;
 text-align:center;
 max-width:900px;
 margin:auto;
@@ -113,6 +126,54 @@ margin:auto;
 .section h2{
 font-size:36px;
 margin-bottom:25px;
+}
+
+/* SUITES SECTION */
+
+.suites{
+padding:120px 20px;
+background:white;
+text-align:center;
+}
+
+.suites h2{
+font-size:36px;
+margin-bottom:60px;
+}
+
+.suite-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:40px;
+max-width:1200px;
+margin:auto;
+}
+
+.suite-card{
+background:#f9f6f1;
+border-radius:6px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+transition:transform 0.3s;
+}
+
+.suite-card:hover{
+transform:translateY(-5px);
+}
+
+.suite-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+}
+
+.suite-card h3{
+margin:20px 0 10px 0;
+}
+
+.suite-card p{
+padding:0 20px 20px 20px;
+font-size:14px;
 }
 
 /* FOOTER */
@@ -130,7 +191,7 @@ text-align:center;
 
 <body>
 
-<header>
+<header id="header">
 
 <nav>
 
@@ -166,14 +227,46 @@ Reservar Agora
 
 <p>
 
-Um refúgio de charme em Pirenópolis, onde conforto,
-tranquilidade e natureza se encontram.
+Um refúgio de charme em Pirenópolis,
+onde conforto, tranquilidade e natureza se encontram.
 
 A poucos minutos do centro histórico,
 a pousada oferece suítes elegantes
 e um ambiente perfeito para descanso.
 
 </p>
+
+</section>
+
+<section class="suites">
+
+<h2>Nossas Suítes</h2>
+
+<div class="suite-grid">
+
+<div class="suite-card">
+<img src="public/suites/divino/divino1.jpeg">
+<h3>Suíte do Divino</h3>
+<p>Suíte padrão com cama Queen, ar condicionado, TV, Wi-Fi e varanda com rede.</p>
+</div>
+
+<div class="suite-card">
+<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
+<h3>Suíte das Cavalhadas</h3>
+<p>Suíte confortável inspirada nas tradições de Pirenópolis.</p>
+</div>
+
+<div class="suite-card">
+<img src="public/suites/aurora/aurora1.jpeg">
+<h3>Suíte Aurora</h3>
+<p>Suíte elegante com todo conforto para um descanso perfeito.</p>
+</div>
+
+</div>
+
+<a href="acomodacoes.html" class="button">
+Ver Todas as Suítes
+</a>
 
 </section>
 
@@ -187,6 +280,23 @@ Setor Meia Ponte • Pirenópolis GO
 WhatsApp: (62) 99816-7654
 
 </footer>
+
+<script>
+
+window.addEventListener("scroll", function(){
+
+let header = document.getElementById("header");
+
+if(window.scrollY > 50){
+header.classList.add("scrolled");
+}
+else{
+header.classList.remove("scrolled");
+}
+
+});
+
+</script>
 
 </body>
 

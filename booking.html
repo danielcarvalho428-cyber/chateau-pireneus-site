@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reservar Suíte</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:serif;
+background:#f5efe6;
+color:#1d3557;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+nav a{
+margin-left:20px;
+text-decoration:none;
+color:#1d3557;
+font-weight:bold;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:60px 20px;
+text-align:center;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:20px;
+border-radius:5px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+button{
+padding:15px 30px;
+background:#1d3557;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+footer{
+background:#1d3557;
+color:white;
+padding:30px;
+text-align:center;
+margin-top:60px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h2>Chateau Pireneus</h2>
+
+<nav>
+<a href="index.html">Início</a>
+<a href="acomodacoes.html">Acomodações</a>
+<a href="signup.html">Criar Conta</a>
+<a href="login.html">Login</a>
+</nav>
+
+</header>
+
+<div class="container">
+
+<h1>Reservar Suíte</h1>
+
+<form id="bookingForm">
+
+<label>Escolha a Suíte</label>
+
+<select id="suite">
+
+<option value="1">01 - Suíte do Divino</option>
+<option value="2">02 - Suíte das Cavalhadas</option>
+<option value="3">03 - Suíte do Rosário</option>
+<option value="4">04 - Suíte dos Pireneus (Master)</option>
+<option value="5">05 - Suíte Aurora</option>
+<option value="6">06 - Suíte do Bonfim</option>
+
+</select>
+
+<label>Check-in</label>
+<input type="date" id="checkin">
+
+<label>Check-out</label>
+<input type="date" id="checkout">
+
+<button type="submit">Reservar</button>
+
+</form>
+
+</div>
+
+<footer>
+
+Pousada Chateau Pireneus • Pirenópolis GO  
+WhatsApp: (62) 99816-7654
+
+</footer>
+
+<script>
+
+const supabase = window.supabase.createClient(
+"YOUR_SUPABASE_URL",
+"YOUR_PUBLIC_ANON_KEY"
+)
+
+document.getElementById("bookingForm").addEventListener("submit", async (e)=>{
+
+e.preventDefault()
+
+const suite = document.getElementById("suite").value
+const checkin = document.getElementById("checkin").value
+const checkout = document.getElementById("checkout").value
+
+const { data, error } = await supabase
+.from("reservations")
+.insert([
+{
+suite_id: suite,
+checkin: checkin,
+checkout: checkout
+}
+])
+
+if(error){
+alert("Erro ao reservar")
+console.log(error)
+}else{
+alert("Reserva realizada com sucesso!")
+}
+
+})
+
+</script>
+
+</body>
+</html>

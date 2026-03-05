@@ -122,6 +122,7 @@
       background:rgba(0,0,0,0.18);
       backdrop-filter:blur(2px);
       transition:top 0.25s ease, left 0.25s ease, background 0.25s ease;
+      border:0;
     }
     .menu-button:hover{ background:rgba(0,0,0,0.28); }
     .menu-button.menu-open{
@@ -193,11 +194,16 @@
       letter-spacing:2px;
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.05;
-      .hero-title .hero-line{ text-transform:uppercase; }
-.hero-title .hero-line + .hero-line{ margin-top:10px; }
     }
-    .hero-title .hero-line{ text-transform:uppercase; }
-    .hero-title .hero-line + .hero-line{ margin-top:10px; }
+
+    /* FORCE uppercase + spacing between lines */
+    .hero-title .hero-line{
+      display:block;
+      text-transform:uppercase;
+    }
+    .hero-title .hero-line + .hero-line{
+      padding-top:10px; /* spacing that won't disappear */
+    }
 
     .hero-slogan{
       margin-top:18px;
@@ -261,7 +267,7 @@
     }
     .section-image img{ max-width:120px; height:auto; display:block; }
 
-    /* Suites section with gradient "frame" around (left/right/top/bottom) */
+    /* Suites section with gradient "frame" around */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -413,7 +419,6 @@
 
       <div class="contact-right">
         <a href="https://instagram.com/chateaupireneus" target="_blank" aria-label="Instagram">
-          <!-- Updated Instagram glyph (standard look) -->
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm9 2h-9A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.4-2.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/>
           </svg>
@@ -509,7 +514,7 @@
   </footer>
 
   <script>
-    // MENU: stable open/close + move hamburger so it doesn't overlap menu items
+    // MENU
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
@@ -529,13 +534,12 @@
       }
     }
 
-    // CAROUSEL: arrows + auto rotate (loop infinito e suave)
+    // CAROUSEL: loop infinito
     const track = document.getElementById("carouselTrack");
-
     let index = 0;
     const visible = 3;
-    const total = track.children.length;           // 5 cards
-    const maxIndex = Math.max(0, total - visible); // 2
+    const total = track.children.length;            // 5 cards
+    const maxIndex = Math.max(0, total - visible);  // 2
 
     function applySlide(){
       track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
@@ -543,11 +547,8 @@
 
     function moveSlide(dir){
       index += dir;
-
-      // loop infinito
       if(index < 0) index = maxIndex;
       if(index > maxIndex) index = 0;
-
       applySlide();
     }
 

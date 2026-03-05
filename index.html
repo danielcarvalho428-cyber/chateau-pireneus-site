@@ -19,11 +19,37 @@ background:#f5efe6;
 color:#1d3557;
 }
 
+/* TOP INFO BAR */
+
+.topbar{
+background:#1d3557;
+color:white;
+padding:8px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:14px;
+}
+
+.topbar-left span{
+margin-right:20px;
+}
+
+.topbar a{
+color:white;
+text-decoration:none;
+}
+
+.topbar-right a{
+margin-left:15px;
+font-size:18px;
+}
+
 /* HAMBURGER */
 
 .menu-button{
 position:fixed;
-top:25px;
+top:70px;
 left:25px;
 font-size:32px;
 color:black;
@@ -112,7 +138,7 @@ font-weight:bold;
 letter-spacing:2px;
 }
 
-/* INTRO SECTION */
+/* WELCOME */
 
 .section{
 padding:70px 10%;
@@ -120,44 +146,57 @@ display:flex;
 align-items:center;
 justify-content:center;
 gap:60px;
+background:#efe6d7;
 }
 
 .section-text{
 max-width:520px;
 }
-  .section-text h2{
-font-size:38px;
-margin-bottom:20px;
-}
 
 .section-text h2{
-font-size:40px;
+font-size:38px;
 margin-bottom:20px;
 }
 
 .section-text p{
 font-size:18px;
-line-height:1.6;
+line-height:1.7;
+color:#333;
 }
 
 .section-image img{
-max-width:160px;
+max-width:150px;
 height:auto;
-display:block;
-opacity:0.95;
+}
+
+/* DIVIDER */
+
+.divider{
+text-align:center;
+margin:40px 0 10px 0;
+font-size:22px;
+letter-spacing:6px;
+color:#d8c7a1;
+}
+
+.divider-line{
+width:120px;
+height:1px;
+background:#d8c7a1;
+margin:10px auto;
 }
 
 /* SUITES */
 
 .suites{
-padding:120px 20px;
+padding:80px 20px;
 background:white;
 text-align:center;
 }
 
 .carousel{
 position:relative;
-max-width:1200px;
+max-width:1300px;
 margin:auto;
 overflow:hidden;
 }
@@ -168,7 +207,7 @@ transition:transform 0.5s ease;
 }
 
 .suite-card{
-min-width:33.33%;
+min-width:36%;
 padding:25px;
 box-sizing:border-box;
 }
@@ -176,13 +215,23 @@ box-sizing:border-box;
 .card{
 background:white;
 padding:25px;
-box-shadow:0 15px 35px rgba(0,0,0,0.08);
+box-shadow:0 20px 45px rgba(0,0,0,0.12);
+transition:transform 0.3s ease;
+}
+
+.card:hover{
+transform:translateY(-6px);
 }
 
 .card img{
 width:100%;
 aspect-ratio:1/1;
 object-fit:cover;
+transition:transform 0.5s ease;
+}
+
+.card:hover img{
+transform:scale(1.08);
 }
 
 .card h3{
@@ -197,6 +246,8 @@ color:white;
 text-decoration:none;
 display:inline-block;
 }
+
+/* ARROWS */
 
 .arrow{
 position:absolute;
@@ -223,20 +274,7 @@ left:15px;
 .arrow-right{
 right:15px;
 }
-.divider{
-text-align:center;
-margin:80px 0 20px 0;
-font-size:22px;
-letter-spacing:6px;
-color:#d8c7a1;
-}
 
-.divider-line{
-width:120px;
-height:1px;
-background:#d8c7a1;
-margin:10px auto;
-}
 /* FOOTER */
 
 footer{
@@ -252,24 +290,56 @@ text-align:center;
 
 <body>
 
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+<div class="topbar-left">
+
+<span>
+<a href="https://wa.me/5562998167654">📱 WhatsApp</a>
+</span>
+
+<span>📍 Pirenópolis GO</span>
+
+<span>
+<a href="mailto:contato@chateaupireneus.com.br">
+✉ contato@chateaupireneus.com.br
+</a>
+</span>
+
+</div>
+
+<div class="topbar-right">
+
+<a href="https://instagram.com/chateaupireneus">
+📷
+</a>
+
+</div>
+
+</div>
+
 <div class="menu-button" onclick="toggleMenu()">☰</div>
 
 <div class="side-menu" id="sideMenu">
 
 <a href="#">A pousada</a>
-<a href="acomodacoes.html">Acomodações</a>
-<a href="booking.html">Reservas</a>
+<a href="#">Acomodações</a>
+<a href="#">Reservas</a>
 <a href="#">Conheça Piri</a>
 
 <hr>
 
-<a href="login.html">Login</a>
-<a href="signup.html">Criar Conta</a>
+<a href="#">Login</a>
+<a href="#">Criar Conta</a>
 <a href="#">Entre em contato</a>
 <a href="#">Mapa e Localização</a>
 <a href="#">Políticas da Pousada</a>
 
 </div>
+
+<!-- HERO -->
 
 <div class="hero">
 
@@ -292,6 +362,8 @@ RESERVAR AGORA
 
 </div>
 
+<!-- WELCOME -->
+
 <section class="section">
 
 <div class="section-text">
@@ -310,11 +382,15 @@ tranquilidade e natureza se encontram.
 </div>
 
 </section>
+
 <div class="divider">
 <div class="divider-line"></div>
 ❦
 <div class="divider-line"></div>
 </div>
+
+<!-- SUITES -->
+
 <section class="suites">
 
 <h2>Nossas Acomodações</h2>
@@ -328,41 +404,25 @@ tranquilidade e natureza se encontram.
 
 <div class="suite-card">
 <div class="card">
-<img src="public/suites/divino/divino1.jpeg">
-<h3>Suíte do Divino</h3>
-<a href="suite-divino.html" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
+<img src="Chateau - 1.png">
 <h3>Suíte das Cavalhadas</h3>
-<a href="suite-cavalhadas.html" class="room-button">Conhecer</a>
+<a href="#" class="room-button">Conhecer</a>
 </div>
 </div>
 
 <div class="suite-card">
 <div class="card">
-<img src="public/suites/rosario/rosario1.jpeg">
+<img src="Chateau - 2.png">
 <h3>Suíte do Rosário</h3>
-<a href="suite-rosario.html" class="room-button">Conhecer</a>
+<a href="#" class="room-button">Conhecer</a>
 </div>
 </div>
 
 <div class="suite-card">
 <div class="card">
-<img src="public/suites/aurora/aurora1.jpeg">
+<img src="Chateau - 3.png">
 <h3>Suíte Aurora</h3>
-<a href="suite-aurora.html" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/bonfim/bonfim1.jpeg">
-<h3>Suíte do Bonfim</h3>
-<a href="suite-bonfim.html" class="room-button">Conhecer</a>
+<a href="#" class="room-button">Conhecer</a>
 </div>
 </div>
 
@@ -387,6 +447,7 @@ WhatsApp: (62) 99816-7654
 
 function toggleMenu(){
 let menu = document.getElementById("sideMenu");
+
 if(menu.style.left === "0px"){
 menu.style.left = "-300px";
 }else{

@@ -17,7 +17,6 @@
       color:#1d3557;
       overflow-x:hidden;
     }
-    body.menu-lock{ overflow:hidden; } /* lock scroll when menu open */
 
     :root{
       --blue:#1d3557;
@@ -122,15 +121,9 @@
       border-radius:10px;
       background:rgba(0,0,0,0.18);
       backdrop-filter:blur(2px);
-      transition:top 0.25s ease, left 0.25s ease, background 0.25s ease, transform 0.25s ease;
-      border:0;
+      transition:top 0.25s ease, left 0.25s ease, background 0.25s ease;
     }
     .menu-button:hover{ background:rgba(0,0,0,0.28); }
-    .menu-button:active{ transform:scale(0.98); }
-    .menu-button:focus-visible{
-      outline:2px solid rgba(216,199,161,0.9);
-      outline-offset:4px;
-    }
     .menu-button.menu-open{
       top:28px;
       left:255px;
@@ -201,6 +194,9 @@
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.05;
     }
+    .hero-title .hero-line{ text-transform:uppercase; }
+    .hero-title .hero-line + .hero-line{ margin-top:10px; }
+
     .hero-slogan{
       margin-top:18px;
       font-size:22px;
@@ -263,18 +259,27 @@
     }
     .section-image img{ max-width:120px; height:auto; display:block; }
 
-    /* Suites section with lateral gradient (only edges) */
+    /* Suites section with gradient "frame" around (left/right/top/bottom) */
     .suites{
       padding:80px 20px;
       text-align:center;
-      background:
-        linear-gradient(to right,
-          rgba(29,53,87,0.10) 0%,
-          rgba(255,255,255,0) 14%,
-          rgba(255,255,255,0) 86%,
-          rgba(29,53,87,0.10) 100%
-        );
+      position:relative;
+      background:#f5efe6;
+      overflow:hidden;
     }
+    .suites::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(to right, rgba(29,53,87,0.10), rgba(255,255,255,0) 18%),
+        linear-gradient(to left,  rgba(29,53,87,0.10), rgba(255,255,255,0) 18%),
+        linear-gradient(to bottom,rgba(29,53,87,0.07), rgba(255,255,255,0) 22%),
+        linear-gradient(to top,   rgba(29,53,87,0.07), rgba(255,255,255,0) 22%);
+    }
+    .suites > *{ position:relative; z-index:1; }
+
     .suites h2{
       margin:0 0 40px;
       font-size:36px;
@@ -366,26 +371,24 @@
 
 <body>
 
-  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
-  <nav class="side-menu" id="sideMenu" aria-label="Menu lateral">
-    <a href="#" data-close-menu>A pousada</a>
-    <a href="#suites" data-close-menu>Acomodações</a>
-    <a href="booking.html" data-close-menu>Reservas</a>
-    <a href="#" data-close-menu>Conheça Piri</a>
+  <div class="side-menu" id="sideMenu">
+    <a href="#" onclick="toggleMenu(false)">A pousada</a>
+    <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservas</a>
+    <a href="#" onclick="toggleMenu(false)">Conheça Piri</a>
 
     <hr>
 
-    <a href="login.html" data-close-menu>Login</a>
-    <a href="signup.html" data-close-menu>Criar Conta</a>
-    <a href="#" data-close-menu>Entre em contato</a>
-    <a href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" rel="noopener" data-close-menu>Mapa e Localização</a>
-    <a href="#" data-close-menu>Políticas da Pousada</a>
-  </nav>
+    <a href="login.html" onclick="toggleMenu(false)">Login</a>
+    <a href="signup.html" onclick="toggleMenu(false)">Criar Conta</a>
+    <a href="#" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="#" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </div>
 
-  <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menu" aria-controls="sideMenu" aria-expanded="false">
-    ☰
-  </button>
+  <div class="menu-button" id="menuButton" onclick="toggleMenu()">☰</div>
 
   <div class="hero">
     <div class="contact-bar">
@@ -395,21 +398,22 @@
           chateaupireneus@gmail.com
         </a>
 
-        <a class="contact-item" href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" rel="noopener">
+        <a class="contact-item" href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5Z"/></svg>
           Pirenópolis • Goiás
         </a>
 
-        <a class="contact-item" href="https://wa.me/5562998167654" target="_blank" rel="noopener">
+        <a class="contact-item" href="https://wa.me/5562998167654">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11 11 0 0 0 3.3 19.6L2 22l2.5-1.2A11 11 0 0 0 20.5 3.5ZM12 21a9 9 0 0 1-4.6-1.3l-.3-.2-2.7 1.3.7-2.9-.2-.3A9 9 0 1 1 12 21Zm5.1-6.7c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-1 .1-.2-.3-.8-.5-1.5-1.2-.6-.6-1-1.3-1.2-1.5-.2-.2 0-.4.1-.5l.4-.5c.1-.2.2-.4.3-.6.1-.2 0-.4 0-.6 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.4 1.4 3.6c.2.2 2.4 3.6 5.9 5.1.8.3 1.4.5 1.9.6.8.3 1.5.3 2 .2.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4 0-.2-.3-.3-.6-.4Z"/></svg>
           WhatsApp
         </a>
       </div>
 
       <div class="contact-right">
-        <a href="https://instagram.com/chateaupireneus" target="_blank" rel="noopener" aria-label="Instagram">
+        <a href="https://instagram.com/chateaupireneus" target="_blank" aria-label="Instagram">
+          <!-- Updated Instagram glyph (standard look) -->
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm5.2-.8a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6Z"/>
+            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm9 2h-9A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.4-2.2a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/>
           </svg>
         </a>
       </div>
@@ -417,8 +421,8 @@
 
     <div class="hero-content">
       <h1 class="hero-title">
-        <span>Chateau</span>
-        <span>Pireneus</span>
+        <span class="hero-line">CHATEAU</span>
+        <span class="hero-line">PIRENEUS</span>
       </h1>
       <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
       <a href="booking.html" class="button">RESERVAR AGORA</a>
@@ -439,8 +443,8 @@
     <h2>Nossas Acomodações</h2>
 
     <div class="carousel" aria-label="Carousel de acomodações">
-      <div class="arrow arrow-left" id="arrowLeft" aria-label="Anterior" role="button" tabindex="0">‹</div>
-      <div class="arrow arrow-right" id="arrowRight" aria-label="Próximo" role="button" tabindex="0">›</div>
+      <div class="arrow arrow-left" onclick="moveSlide(-1)">‹</div>
+      <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
       <div class="carousel-track" id="carouselTrack">
         <div class="suite-card">
@@ -503,72 +507,47 @@
   </footer>
 
   <script>
-    // MENU: stable open/close + esc + backdrop + lock scroll + close on link click
-    const menu = document.getElementById("sideMenu");
-    const backdrop = document.getElementById("backdrop");
-    const button = document.getElementById("menuButton");
-
-    function setMenu(open){
-      menu.classList.toggle("open", open);
-      backdrop.classList.toggle("open", open);
-      button.classList.toggle("menu-open", open);
-      document.body.classList.toggle("menu-lock", open);
-
-      button.setAttribute("aria-expanded", open ? "true" : "false");
-      button.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
-      backdrop.setAttribute("aria-hidden", open ? "false" : "true");
-    }
-
+    // MENU: stable open/close + move hamburger so it doesn't overlap menu items
     function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu");
+      const backdrop = document.getElementById("backdrop");
+      const button = document.getElementById("menuButton");
       const isOpen = menu.classList.contains("open");
+
       const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
-      setMenu(open);
+
+      if(open){
+        menu.classList.add("open");
+        backdrop.classList.add("open");
+        button.classList.add("menu-open");
+      }else{
+        menu.classList.remove("open");
+        backdrop.classList.remove("open");
+        button.classList.remove("menu-open");
+      }
     }
 
-    button.addEventListener("click", ()=> toggleMenu());
-
-    backdrop.addEventListener("click", ()=> setMenu(false));
-
-    document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") setMenu(false);
-    });
-
-    document.querySelectorAll("[data-close-menu]").forEach(a=>{
-      a.addEventListener("click", ()=> setMenu(false));
-    });
-
-    // CAROUSEL: arrows + auto rotate (keeps your % logic)
+    // CAROUSEL: arrows + auto rotate (loop infinito e suave)
     const track = document.getElementById("carouselTrack");
-    const arrowLeft = document.getElementById("arrowLeft");
-    const arrowRight = document.getElementById("arrowRight");
 
     let index = 0;
     const visible = 3;
-    const total = track.children.length;         // 5 cards
+    const total = track.children.length;           // 5 cards
     const maxIndex = Math.max(0, total - visible); // 2
 
     function applySlide(){
       track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
     }
+
     function moveSlide(dir){
       index += dir;
-      if(index < 0) index = 0;
-      if(index > maxIndex) index = maxIndex;
+
+      // loop infinito
+      if(index < 0) index = maxIndex;
+      if(index > maxIndex) index = 0;
+
       applySlide();
     }
-
-    arrowLeft.addEventListener("click", ()=> moveSlide(-1));
-    arrowRight.addEventListener("click", ()=> moveSlide(1));
-
-    // allow enter/space on arrows
-    [arrowLeft, arrowRight].forEach(el=>{
-      el.addEventListener("keydown", (e)=>{
-        if(e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          el.click();
-        }
-      });
-    });
 
     setInterval(()=>{
       index++;

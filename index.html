@@ -187,19 +187,20 @@
 
     /* Title: SPACING GUARANTEED */
     .hero-title{
-      display:flex;
-      flex-direction:column;
-      gap:12px;     /* ajusta aqui o espaço */
-      margin:0;     /* remove margem padrão do h1 */
-    }
-    .hero-title .hero-line{
-      display:block;
-      font-size:80px;
-      letter-spacing:2px;
-      text-shadow:0 5px 20px rgba(0,0,0,0.4);
-      line-height:1.05;
-      text-transform:uppercase;
-    }
+  display:flex;
+  flex-direction:column;
+  gap:16px;            /* mais espaço entre as linhas */
+  margin:0;
+}
+
+.hero-title .hero-line{
+  display:block;
+  font-size:80px;
+  letter-spacing:3px;  /* mais respiro entre letras */
+  text-shadow:0 5px 20px rgba(0,0,0,0.4);
+  line-height:1.12;    /* evita encostar/sobrepor */
+  text-transform:uppercase;
+}
 
     .hero-slogan{
       margin-top:18px;

@@ -9,7 +9,7 @@
 
 body{
 margin:0;
-font-family: serif;
+font-family:serif;
 background:#f5efe6;
 color:#1d3557;
 }
@@ -20,6 +20,7 @@ justify-content:space-between;
 align-items:center;
 padding:20px 40px;
 background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
 }
 
 .logo{
@@ -27,64 +28,69 @@ height:60px;
 }
 
 nav a{
-margin-left:30px;
+margin-left:20px;
 text-decoration:none;
 color:#1d3557;
-font-weight:500;
+font-weight:bold;
 }
 
 .hero{
-height:80vh;
+height:70vh;
+background-image:url("Chateau - 1.png");
+background-size:cover;
+background-position:center;
 display:flex;
-flex-direction:column;
-justify-content:center;
 align-items:center;
-text-align:center;
-background:#eae3d8;
-}
-
-.hero h1{
-font-size:60px;
-margin:10px;
-}
-
-.hero p{
-font-size:20px;
-}
-
-.button{
-margin-top:20px;
-padding:15px 30px;
-background:#1d3557;
+justify-content:center;
 color:white;
-text-decoration:none;
-border-radius:4px;
+font-size:40px;
+text-shadow:0 0 10px rgba(0,0,0,0.5);
 }
 
 .section{
-padding:80px 10%;
+padding:60px 20px;
+text-align:center;
 }
 
 .rooms{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:40px;
+gap:30px;
+max-width:1200px;
+margin:auto;
 }
 
 .room{
 background:white;
-padding:30px;
-border-radius:6px;
+border-radius:10px;
+box-shadow:0 10px 20px rgba(0,0,0,0.05);
+padding-bottom:20px;
+}
+
+.room img{
+width:100%;
+border-radius:10px 10px 0 0;
+}
+
+.room h3{
+margin:15px 0 10px;
+}
+
+.room p{
+padding:0 15px;
+font-size:14px;
 }
 
 footer{
 background:#1d3557;
 color:white;
-padding:40px;
+padding:30px;
 text-align:center;
+margin-top:40px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -95,156 +101,71 @@ text-align:center;
 
 <nav>
 <a href="#">Início</a>
-<a href="#">Acomodações</a>
+<a href="#acomodacoes">Acomodações</a>
 <a href="#">Galeria</a>
 <a href="#">Localização</a>
 <a href="#">Reservar</a>
 </nav>
 
 </header>
-  <section id="acomodacoes" style="padding:60px;text-align:center;background:#f5efe6;">
-<h2 style="font-size:36px;margin-bottom:40px;">Acomodações</h2>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;max-width:1200px;margin:auto;">
-
-<div>
-<img src="public/suites/divino/divino1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte do Divino</h3>
-<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
+<div class="hero">
+Chateau Pireneus
 </div>
 
-<div>
-<img src="public/suites/cavalhadas/cavalhadas1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte das Cavalhadas</h3>
-<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
-</div>
-
-<div>
-<img src="public/suites/rosario/rosario1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte do Rosário</h3>
-<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
-</div>
-
-<div>
-<img src="public/suites/aurora/aurora1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte Aurora</h3>
-<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
-</div>
-
-<div>
-<img src="public/suites/bonfim/bonfim1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte do Bonfim</h3>
-<p>Suíte padrão sem TV, cama Queen, lençóis 200 fios, ar condicionado, Wi-Fi, frigobar e varanda com rede.</p>
-</div>
-
-<div>
-<img src="public/suites/master/master1.jpeg" style="width:100%;border-radius:8px;">
-<h3>Suíte dos Pireneus</h3>
-<p>Suíte master com banheira de imersão, cama Queen e varanda privativa.</p>
-</div>
-
-</div>
-</section>
-
-
-<section class="hero">
-
-<h1>Chateau Pireneus</h1>
-<p>Boutique stay em Pirenópolis</p>
-
-<a class="button">Reservar Agora</a>
-
-</section>
-
-
-<section class="section">
-
-<h2>A Pousada</h2>
-
-<p>
-A pousada Chateau Pireneus oferece uma experiência tranquila e elegante em Pirenópolis.
-São apenas 6 acomodações cuidadosamente preparadas para proporcionar conforto,
-privacidade e charme em um ambiente acolhedor.
-</p>
-
-</section>
-
-
-<section class="section">
+<section class="section" id="acomodacoes">
 
 <h2>Acomodações</h2>
 
 <div class="rooms">
 
 <div class="room">
-
-<h3>Suíte Master</h3>
-
-<p>
-Banheira de imersão, cama Queen, lençóis 200 fios,
-ar condicionado, TV, escrivaninha, Wi-Fi,
-frigobar e varanda com mesa.
-</p>
-
+<img src="public/suites/divino/divino1.jpeg">
+<h3>01 - Suíte do Divino</h3>
+<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
 </div>
 
-
 <div class="room">
-
-<h3>Suíte Padrão com TV</h3>
-
-<p>
-Cama Queen, lençóis 200 fios, ar condicionado,
-TV, cortina blackout, Wi-Fi,
-frigobar e varanda com rede.
-</p>
-
+<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
+<h3>02 - Suíte das Cavalhadas</h3>
+<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
 </div>
 
+<div class="room">
+<img src="public/suites/rosario/rosario1.jpeg">
+<h3>03 - Suíte do Rosário</h3>
+<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
+</div>
 
 <div class="room">
+<img src="public/suites/aurora/aurora1.jpeg">
+<h3>05 - Suíte Aurora</h3>
+<p>Suíte padrão com cama Queen, lençóis 200 fios, ar condicionado, TV, Wi-Fi, frigobar e varanda com rede.</p>
+</div>
 
-<h3>Suíte Padrão</h3>
+<div class="room">
+<img src="public/suites/bonfim/bonfim1.jpeg">
+<h3>06 - Suíte do Bonfim</h3>
+<p>Suíte padrão sem TV, cama Queen, lençóis 200 fios, ar condicionado, Wi-Fi, frigobar e varanda com rede.</p>
+</div>
 
-<p>
-Cama Queen, lençóis 200 fios, ar condicionado,
-cortina blackout, Wi-Fi,
-frigobar e varanda com rede.
-</p>
-
+<div class="room">
+<img src="public/suites/master/master1.jpeg">
+<h3>04 - Suíte dos Pireneus (Master)</h3>
+<p>Suíte master com banheira de imersão, cama Queen, escrivaninha, varanda com mesa e vista para os Pireneus.</p>
 </div>
 
 </div>
 
 </section>
-
-
-<section class="section">
-
-<h2>Contato</h2>
-
-<p>
-WhatsApp: (62) 99816-7654
-</p>
-
-<p>
-chateaupireneus@gmail.com
-</p>
-
-<p>
-Rua Tupinambás, Quadra 09, Lote 16  
-Setor Meia Ponte  
-Pirenópolis
-</p>
-
-</section>
-
 
 <footer>
 
-Chateau Pireneus © 2026
+Chateau Pireneus • Pirenópolis GO  
+Reservas via WhatsApp
 
 </footer>
 
 </body>
+
 </html>

@@ -25,6 +25,15 @@
       --shadow:0 20px 45px rgba(0,0,0,0.12);
     }
 
+    /* Gyahegi Regular (uploaded by you) */
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
     /* HERO */
     .hero{
       height:100vh;
@@ -45,7 +54,7 @@
       background:rgba(0,0,0,0.35);
     }
 
-    /* Floating contact bar over hero */
+    /* Floating contact bar over hero (NOT fixed on scroll) */
     .contact-bar{
       position:absolute;
       top:0;
@@ -170,7 +179,7 @@
       position:relative;
       z-index:10;
       color:#fff;
-      font-family:'Cormorant Garamond', serif;
+      font-family:"Gyahegi", "Cormorant Garamond", serif; /* APPLY GYAHEGI HERE */
       opacity:0;
       transform:translateY(26px);
       animation:heroIn 1.2s ease forwards;
@@ -181,13 +190,14 @@
     .hero-title span{
       display:block;
       font-size:80px;
-      letter-spacing:3px;
+      letter-spacing:2px;
       text-shadow:0 5px 20px rgba(0,0,0,0.4);
       line-height:1.05;
     }
     .hero-slogan{
       margin-top:18px;
-      font-size:24px;
+      font-size:22px;
+      letter-spacing:0.6px;
       text-shadow:0 5px 20px rgba(0,0,0,0.35);
     }
 
@@ -246,16 +256,24 @@
     }
     .section-image img{ max-width:120px; height:auto; display:block; }
 
-    /* Suites carousel */
+    /* Suites section with lateral gradient (only edges) */
     .suites{
       padding:80px 20px;
-      background:#fff;
       text-align:center;
+      background:
+        linear-gradient(to right,
+          rgba(29,53,87,0.10) 0%,
+          rgba(255,255,255,0) 14%,
+          rgba(255,255,255,0) 86%,
+          rgba(29,53,87,0.10) 100%
+        );
     }
     .suites h2{
       margin:0 0 40px;
       font-size:36px;
     }
+
+    /* Carousel */
     .carousel{
       position:relative;
       max-width:1200px;
@@ -333,7 +351,8 @@
       .section{ flex-direction:column; text-align:left; padding:44px 8%; }
       .section-image{ order:-1; }
       .menu-button{ top:76px; }
-      .menu-button.menu-open{ left:205px; } /* narrower shift for mobile */
+      .menu-button.menu-open{ left:205px; }
+      .hero-slogan{ font-size:20px; }
     }
   </style>
 </head>
@@ -380,7 +399,10 @@
 
       <div class="contact-right">
         <a href="https://instagram.com/chateaupireneus" target="_blank" aria-label="Instagram">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm5.2-.8a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6Z"/></svg>
+          <!-- Official-style Instagram glyph -->
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-5 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm5.2-.8a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6Z"/>
+          </svg>
         </a>
       </div>
     </div>
@@ -390,7 +412,7 @@
         <span>Chateau</span>
         <span>Pireneus</span>
       </h1>
-      <p class="hero-slogan">Uma experiência única e pitoresca</p>
+      <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
       <a href="booking.html" class="button">RESERVAR AGORA</a>
     </div>
   </div>

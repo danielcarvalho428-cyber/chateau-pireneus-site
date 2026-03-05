@@ -8,6 +8,8 @@
 
 <title>Chateau Pireneus</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
 
 body{
@@ -84,18 +86,19 @@ background:rgba(0,0,0,0.35);
 position:relative;
 z-index:10;
 color:white;
+font-family:'Cormorant Garamond', serif;
 }
 
 .hero-title span{
 display:block;
-font-size:70px;
+font-size:80px;
 letter-spacing:3px;
 text-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 
 .hero-slogan{
 margin-top:20px;
-font-size:20px;
+font-size:24px;
 letter-spacing:1px;
 }
 
@@ -109,6 +112,7 @@ background:#d8c7a1;
 color:white;
 text-decoration:none;
 font-weight:bold;
+letter-spacing:2px;
 }
 
 /* SECTION */
@@ -144,7 +148,7 @@ margin-bottom:60px;
 position:relative;
 max-width:1200px;
 margin:auto;
-overflow:visible;
+overflow:hidden;
 }
 
 .carousel-track{
@@ -187,7 +191,7 @@ display:inline-block;
 
 .arrow{
 position:absolute;
-top:45%;
+top:50%;
 transform:translateY(-50%);
 font-size:40px;
 color:#1d3557;
@@ -196,11 +200,11 @@ z-index:200;
 }
 
 .arrow-left{
-left:-20px;
+left:-40px;
 }
 
 .arrow-right{
-right:-20px;
+right:-40px;
 }
 
 /* FOOTER */
@@ -251,7 +255,7 @@ Uma experiência única e pitoresca
 </p>
 
 <a href="booking.html" class="button">
-Reservar Agora
+RESERVAR AGORA
 </a>
 
 </div>
@@ -356,13 +360,9 @@ function moveSlide(direction){
 
 index += direction;
 
-if(index < 0){
-index = 0;
-}
+if(index < 0){ index = 0; }
 
-if(index > maxIndex){
-index = maxIndex;
-}
+if(index > maxIndex){ index = maxIndex; }
 
 track.style.transform =
 "translateX(-" + (index * 33.33) + "%)";
@@ -373,9 +373,7 @@ setInterval(()=>{
 
 index++;
 
-if(index > maxIndex){
-index = 0;
-}
+if(index > maxIndex){ index = 0; }
 
 track.style.transform =
 "translateX(-" + (index * 33.33) + "%)";

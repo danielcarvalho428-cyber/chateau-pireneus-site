@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Criar Conta</title>
+</head>
+
+<body>
+
+<h2>Criar Conta</h2>
+
+<form id="signup-form">
+
+<input type="email" id="email" placeholder="Email" required>
+<br><br>
+
+<input type="password" id="password" placeholder="Senha" required>
+<br><br>
+
+<button type="submit">Criar Conta</button>
+
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script>
+
+const supabase = supabase.createClient(
+"YOUR_PROJECT_URL",
+"YOUR_PUBLIC_KEY"
+)
+
+document.getElementById("signup-form").addEventListener("submit", async (e) => {
+
+e.preventDefault()
+
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+
+const { data, error } = await supabase.auth.signUp({
+email: email,
+password: password
+})
+
+if(error){
+alert(error.message)
+}else{
+alert("Conta criada com sucesso!")
+}
+
+})
+
+</script>
+
+</body>
+</html>

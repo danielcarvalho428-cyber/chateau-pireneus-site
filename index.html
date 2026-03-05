@@ -9,14 +9,9 @@
 <title>Chateau Pireneus</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
-html{
-scroll-behavior:smooth;
-}
 
 body{
 margin:0;
@@ -24,71 +19,6 @@ font-family:Georgia, serif;
 background:#f5efe6;
 color:#1d3557;
 overflow-x:hidden;
-}
-
-/* TOP BAR */
-
-.topbar{
-background:#1d3557;
-color:white;
-padding:8px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-font-size:14px;
-position:fixed;
-width:100%;
-top:0;
-z-index:2000;
-}
-
-.topbar-left span{
-margin-right:25px;
-}
-
-.topbar a{
-color:white;
-text-decoration:none;
-}
-
-.topbar-right a{
-font-size:18px;
-}
-
-/* HAMBURGER */
-
-.menu-button{
-position:fixed;
-top:50px;
-left:25px;
-font-size:32px;
-color:black;
-cursor:pointer;
-z-index:3000;
-}
-
-/* SIDE MENU */
-
-.side-menu{
-position:fixed;
-top:0;
-left:0;
-width:300px;
-height:100vh;
-background:white;
-padding:80px 40px;
-box-shadow:5px 0 30px rgba(0,0,0,0.15);
-transform:translateX(-100%);
-transition:0.3s;
-z-index:2500;
-}
-
-.side-menu a{
-display:block;
-margin-bottom:22px;
-text-decoration:none;
-color:#1d3557;
-font-size:17px;
 }
 
 /* HERO */
@@ -104,7 +34,6 @@ justify-content:center;
 text-align:center;
 position:relative;
 background-attachment:fixed;
-margin-top:40px;
 }
 
 .hero::after{
@@ -115,6 +44,84 @@ height:100%;
 background:rgba(0,0,0,0.35);
 }
 
+/* CONTACT BAR */
+
+.contact-bar{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+padding:12px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+z-index:50;
+font-size:14px;
+}
+
+.contact-left span{
+margin-right:28px;
+}
+
+.contact-bar a{
+color:white;
+text-decoration:none;
+}
+
+.contact-bar i{
+margin-right:8px;
+}
+
+.contact-right a{
+font-size:20px;
+color:white;
+}
+
+/* HAMBURGER */
+
+.menu-button{
+position:fixed;
+top:80px;
+left:25px;
+font-size:32px;
+color:white;
+cursor:pointer;
+z-index:5000;
+}
+
+/* MENU */
+
+.side-menu{
+position:fixed;
+top:0;
+left:0;
+width:220px;
+height:100vh;
+background:white;
+padding:100px 40px;
+box-shadow:5px 0 30px rgba(0,0,0,0.15);
+transform:translateX(-100%);
+transition:0.3s;
+z-index:6000;
+}
+
+.side-menu a{
+display:block;
+margin-bottom:22px;
+text-decoration:none;
+color:#1d3557;
+font-size:17px;
+}
+
+.side-menu hr{
+margin:50px 0;
+border:none;
+border-top:1px solid #ddd;
+}
+
+/* HERO TEXT */
+
 .hero-content{
 position:relative;
 z-index:10;
@@ -122,7 +129,7 @@ color:white;
 font-family:'Cormorant Garamond', serif;
 opacity:0;
 transform:translateY(40px);
-animation:heroFade 1.8s ease forwards;
+animation:heroFade 1.6s ease forwards;
 }
 
 @keyframes heroFade{
@@ -144,7 +151,7 @@ margin-top:20px;
 font-size:24px;
 }
 
-/* BUTTONS */
+/* BUTTON */
 
 .button{
 display:inline-block;
@@ -155,29 +162,6 @@ color:white;
 text-decoration:none;
 font-weight:bold;
 letter-spacing:2px;
-transition:all 0.3s ease;
-}
-
-.button:hover{
-background:#cbb58c;
-box-shadow:0 0 20px rgba(216,199,161,0.6);
-transform:translateY(-2px);
-}
-
-.room-button{
-margin-top:15px;
-padding:12px 30px;
-background:#d8c7a1;
-color:white;
-text-decoration:none;
-display:inline-block;
-transition:all 0.3s ease;
-}
-
-.room-button:hover{
-background:#cbb58c;
-box-shadow:0 0 15px rgba(216,199,161,0.6);
-transform:translateY(-2px);
 }
 
 /* WELCOME */
@@ -189,33 +173,6 @@ align-items:center;
 justify-content:center;
 gap:60px;
 background:#efe6d7;
-opacity:0;
-transform:translateY(40px);
-transition:all 0.8s ease;
-}
-
-.section.show{
-opacity:1;
-transform:translateY(0);
-}
-
-.section-text{
-max-width:520px;
-}
-
-.section-text h2{
-font-size:36px;
-margin-bottom:15px;
-}
-
-.section-text p{
-font-size:17px;
-line-height:1.6;
-color:#333;
-}
-
-.section-image img{
-max-width:120px;
 }
 
 /* SUITES */
@@ -224,14 +181,6 @@ max-width:120px;
 padding:80px 20px;
 background:white;
 text-align:center;
-opacity:0;
-transform:translateY(40px);
-transition:all 0.8s ease;
-}
-
-.suites.show{
-opacity:1;
-transform:translateY(0);
 }
 
 .carousel{
@@ -256,22 +205,21 @@ box-sizing:border-box;
 background:white;
 padding:25px;
 box-shadow:0 20px 45px rgba(0,0,0,0.12);
-transition:transform 0.3s ease;
-}
-
-.card:hover{
-transform:translateY(-6px);
 }
 
 .card img{
 width:100%;
 aspect-ratio:1/1;
 object-fit:cover;
-transition:transform 0.5s ease;
 }
 
-.card:hover img{
-transform:scale(1.08);
+.room-button{
+margin-top:15px;
+padding:12px 30px;
+background:#d8c7a1;
+color:white;
+text-decoration:none;
+display:inline-block;
 }
 
 /* ARROWS */
@@ -290,21 +238,10 @@ justify-content:center;
 font-size:22px;
 cursor:pointer;
 border-radius:50%;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
-z-index:500;
 }
 
 .arrow-left{ left:15px; }
 .arrow-right{ right:15px; }
-
-/* FOOTER */
-
-footer{
-background:#1d3557;
-color:white;
-padding:40px;
-text-align:center;
-}
 
 </style>
 
@@ -312,9 +249,11 @@ text-align:center;
 
 <body>
 
-<div class="topbar">
+<div class="hero">
 
-<div class="topbar-left">
+<div class="contact-bar">
+
+<div class="contact-left">
 
 <span>
 <a href="mailto:chateaupireneus@gmail.com">
@@ -323,7 +262,7 @@ text-align:center;
 </span>
 
 <span>
-<a href="https://www.google.com/maps/search/?api=1&query=Pousada+Chateau+Pireneus+Pirenopolis" target="_blank">
+<a href="https://maps.google.com/?q=Pousada+Chateau+Pireneus+Pirenopolis" target="_blank">
 <i class="fa-solid fa-location-dot"></i> Pirenópolis • Goiás
 </a>
 </span>
@@ -336,7 +275,7 @@ text-align:center;
 
 </div>
 
-<div class="topbar-right">
+<div class="contact-right">
 
 <a href="https://instagram.com/chateaupireneus" target="_blank">
 <i class="fa-brands fa-instagram"></i>
@@ -365,8 +304,6 @@ text-align:center;
 
 </div>
 
-<div class="hero">
-
 <div class="hero-content">
 
 <h1 class="hero-title">
@@ -386,93 +323,6 @@ RESERVAR AGORA
 
 </div>
 
-<section class="section" id="welcome">
-
-<div class="section-text">
-
-<h2>Bem-vindo à Pousada Chateau Pireneus</h2>
-
-<p>
-Um refúgio de charme em Pirenópolis onde conforto,
-tranquilidade e natureza se encontram.
-</p>
-
-</div>
-
-<div class="section-image">
-<img src="Chateau - 4.png">
-</div>
-
-</section>
-
-<section class="suites" id="suites">
-
-<h2>Nossas Acomodações</h2>
-
-<div class="carousel">
-
-<div class="arrow arrow-left" onclick="moveSlide(-1)">‹</div>
-<div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
-
-<div class="carousel-track" id="carouselTrack">
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/divino/divino1.jpeg">
-<h3>Suíte do Divino</h3>
-<a href="#" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/cavalhadas/cavalhadas1.jpeg">
-<h3>Suíte das Cavalhadas</h3>
-<a href="#" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/rosario/rosario1.jpeg">
-<h3>Suíte do Rosário</h3>
-<a href="#" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/aurora/aurora1.jpeg">
-<h3>Suíte Aurora</h3>
-<a href="#" class="room-button">Conhecer</a>
-</div>
-</div>
-
-<div class="suite-card">
-<div class="card">
-<img src="public/suites/bonfim/bonfim1.jpeg">
-<h3>Suíte do Bonfim</h3>
-<a href="#" class="room-button">Conhecer</a>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<footer>
-
-Rua Tupinambás, Quadra 09, Lote 16  
-Setor Meia Ponte • Pirenópolis GO
-
-<br><br>
-
-WhatsApp: (62) 99816-7654
-
-</footer>
-
 <script>
 
 function toggleMenu(){
@@ -484,49 +334,6 @@ menu.style.transform = "translateX(-100%)";
 menu.style.transform = "translateX(0)";
 }
 }
-
-let track = document.getElementById("carouselTrack");
-let index = 0;
-const maxIndex = 2;
-
-function moveSlide(direction){
-
-index += direction;
-
-if(index < 0){ index = 0; }
-if(index > maxIndex){ index = maxIndex; }
-
-track.style.transform =
-"translateX(-" + (index * 36) + "%)";
-}
-
-setInterval(()=>{
-
-index++;
-
-if(index > maxIndex){ index = 0; }
-
-track.style.transform =
-"translateX(-" + (index * 36) + "%)";
-
-},5000);
-
-/* FADE IN */
-
-const observer = new IntersectionObserver(entries => {
-
-entries.forEach(entry => {
-
-if(entry.isIntersecting){
-entry.target.classList.add("show")
-}
-
-})
-
-})
-
-observer.observe(document.querySelector("#welcome"))
-observer.observe(document.querySelector("#suites"))
 
 </script>
 

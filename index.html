@@ -15,7 +15,7 @@
       font-family:Georgia, serif;
       background:#f5efe6;
       color:#1d3557;
-      overflow-x:hidden; /* prevents the “beige border” / horizontal scroll */
+      overflow-x:hidden;
     }
 
     :root{
@@ -45,7 +45,7 @@
       background:rgba(0,0,0,0.35);
     }
 
-    /* Floating contact bar over hero (NOT fixed on scroll) */
+    /* Floating contact bar over hero */
     .contact-bar{
       position:absolute;
       top:0;
@@ -97,23 +97,28 @@
       fill:currentColor;
     }
 
-    /* Hamburger (always visible and clickable) */
+    /* Hamburger */
     .menu-button{
       position:fixed;
-      top:74px;           /* lowered so it’s not glued to top */
+      top:80px;
       left:20px;
-      font-size:32px;
+      font-size:30px;
       line-height:1;
-      color:#fff;
+      color:white;
       cursor:pointer;
-      z-index:10000;      /* above everything */
+      z-index:10000;
       user-select:none;
       padding:8px 10px;
       border-radius:10px;
       background:rgba(0,0,0,0.18);
       backdrop-filter:blur(2px);
+      transition:top 0.25s ease, left 0.25s ease, background 0.25s ease;
     }
     .menu-button:hover{ background:rgba(0,0,0,0.28); }
+    .menu-button.menu-open{
+      top:28px;
+      left:255px;
+    }
 
     /* Backdrop to close menu */
     .backdrop{
@@ -130,19 +135,19 @@
       pointer-events:auto;
     }
 
-    /* Side Menu (narrower + more spacing before login section) */
+    /* Side Menu */
     .side-menu{
       position:fixed;
       top:0;
       left:0;
-      width:240px;                 /* not too wide */
+      width:240px;
       height:100vh;
       background:#fff;
       padding:110px 28px 30px;
       box-shadow:5px 0 25px rgba(0,0,0,0.18);
       transform:translateX(-100%);
       transition:0.3s ease;
-      z-index:9500;                /* above backdrop */
+      z-index:9500;
     }
     .side-menu.open{ transform:translateX(0); }
     .side-menu a{
@@ -155,12 +160,12 @@
     }
     .side-menu a:hover{ text-decoration:underline; }
     .side-menu hr{
-      margin:56px 0; /* more space before login section */
+      margin:56px 0;
       border:none;
       border-top:1px solid #ddd;
     }
 
-    /* Hero text entrance animation */
+    /* Hero text entrance */
     .hero-content{
       position:relative;
       z-index:10;
@@ -222,7 +227,7 @@
       transform:translateY(0);
     }
 
-    /* Welcome section (compact, elegant) */
+    /* Welcome */
     .section{
       padding:44px 10%;
       display:flex;
@@ -322,23 +327,21 @@
       text-align:center;
     }
 
-    /* Responsive */
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
       .hero-title span{ font-size:64px; }
       .section{ flex-direction:column; text-align:left; padding:44px 8%; }
       .section-image{ order:-1; }
       .menu-button{ top:76px; }
+      .menu-button.menu-open{ left:205px; } /* narrower shift for mobile */
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Backdrop for menu -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
-  <!-- Side menu -->
   <div class="side-menu" id="sideMenu">
     <a href="#" onclick="toggleMenu(false)">A pousada</a>
     <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
@@ -354,12 +357,8 @@
     <a href="#" onclick="toggleMenu(false)">Políticas da Pousada</a>
   </div>
 
-  <!-- Hamburger -->
-  <div class="menu-button" id="menuButton" onclick="toggleMenu()">
-    ☰
-  </div>
+  <div class="menu-button" id="menuButton" onclick="toggleMenu()">☰</div>
 
-  <!-- Hero -->
   <div class="hero">
     <div class="contact-bar">
       <div class="contact-left">
@@ -396,7 +395,6 @@
     </div>
   </div>
 
-  <!-- Welcome -->
   <section class="section reveal" id="welcome">
     <div class="section-text">
       <h2>Bem-vindo à Pousada Chateau Pireneus</h2>
@@ -407,7 +405,6 @@
     </div>
   </section>
 
-  <!-- Suites carousel (Pireneus REMOVED as requested) -->
   <section class="suites reveal" id="suites">
     <h2>Nossas Acomodações</h2>
 
@@ -476,10 +473,11 @@
   </footer>
 
   <script>
-    // MENU: stable open/close (hamburger never disappears)
+    // MENU: stable open/close + move hamburger so it doesn't overlap menu items
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
+      const button = document.getElementById("menuButton");
       const isOpen = menu.classList.contains("open");
 
       const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
@@ -487,9 +485,11 @@
       if(open){
         menu.classList.add("open");
         backdrop.classList.add("open");
+        button.classList.add("menu-open");
       }else{
         menu.classList.remove("open");
         backdrop.classList.remove("open");
+        button.classList.remove("menu-open");
       }
     }
 

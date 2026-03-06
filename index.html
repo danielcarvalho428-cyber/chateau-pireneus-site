@@ -11,10 +11,11 @@
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
 
+    /* ✅ Menos bege no geral (mais neutro) */
     body{
       margin:0;
       font-family:Georgia, serif;
-      background:#efe6d7;
+      background:#f5efe6;
       color:#1d3557;
       overflow-x:hidden;
     }
@@ -26,7 +27,6 @@
       --shadow:0 20px 45px rgba(0,0,0,0.12);
     }
 
-    /* Gyahegi Regular */
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -259,7 +259,7 @@
       transform:translateY(0);
     }
 
-    /* ====== Section rhythm ====== */
+    /* ====== Section system ====== */
     .container{
       max-width:1200px;
       margin:0 auto;
@@ -267,18 +267,24 @@
     }
 
     .section-block{
-      padding:34px 0;
+      padding:44px 0;
     }
 
-    /* Azul para quebrar o “bege contínuo” */
-    .section-block.blue-band{
-      background:rgba(29,53,87,0.08);
+    /* ✅ Azul elegante (degradê sutil nas laterais) */
+    .blue-band{
+      background:
+        linear-gradient(to right,
+          rgba(29,53,87,0.12),
+          rgba(255,255,255,0) 18%,
+          rgba(255,255,255,0) 82%,
+          rgba(29,53,87,0.12)
+        );
     }
 
     .divider{
       height:1px;
       background:linear-gradient(to right, transparent, rgba(29,53,87,0.18), transparent);
-      margin:22px auto 0;
+      margin:26px auto 0;
       max-width:980px;
     }
 
@@ -304,15 +310,14 @@
       max-width:760px;
     }
 
-    /* Welcome revamped (bordas quadradas) */
+    /* Welcome */
     .welcome-card{
       background:#efe6d7;
       border:1px solid rgba(29,53,87,0.10);
-      border-radius:0;                 /* QUADRADO */
+      border-radius:0; /* quadrado */
       box-shadow:0 10px 25px rgba(0,0,0,0.06);
       overflow:hidden;
     }
-
     .welcome-inner{
       display:grid;
       grid-template-columns: 1.2fr 0.8fr;
@@ -320,7 +325,6 @@
       padding:18px 18px;
       align-items:center;
     }
-
     .welcome-logo{
       display:flex;
       justify-content:center;
@@ -331,7 +335,6 @@
       height:auto;
       display:block;
     }
-
     .highlights{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -359,44 +362,79 @@
       line-height:1.45;
     }
 
-    /* Experiências cards */
-    .grid-3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:16px;
+    /* ✅ NEW: Elegant 3-photo gallery */
+    .gallery-grid{
       margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap:14px;
     }
-    .exp-card{
-      background:#fff;
-      border:1px solid rgba(29,53,87,0.08);
-      border-radius:18px;
+    .g-card{
+      position:relative;
       overflow:hidden;
+      border-radius:18px;
+      border:1px solid rgba(29,53,87,0.10);
       box-shadow:var(--shadow);
-      transition:transform 0.25s ease;
+      background:#fff;
+      min-height:220px;
     }
-    .exp-card:hover{ transform:translateY(-6px); }
-    .exp-card img{
+    .g-card img{
       width:100%;
-      height:190px;
+      height:100%;
       object-fit:cover;
       display:block;
+      transform:scale(1);
+      transition:transform 0.55s ease;
     }
-    .exp-body{
-      padding:16px 16px 18px;
+    .g-card:hover img{ transform:scale(1.06); }
+
+    .g-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.05) 55%);
+      opacity:0.95;
+      pointer-events:none;
     }
-    .exp-body h3{
-      margin:0 0 8px;
-      font-size:18px;
-      color:var(--blue);
-    }
-    .exp-body p{
-      margin:0;
+    .g-label{
+      position:absolute;
+      left:14px;
+      bottom:12px;
+      right:14px;
+      color:#fff;
       font-size:14px;
-      line-height:1.55;
-      color:#333;
+      letter-spacing:0.4px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      text-shadow:0 6px 18px rgba(0,0,0,0.5);
+    }
+    .g-label b{
+      font-size:16px;
+      letter-spacing:0.6px;
+    }
+    .g-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(216,199,161,0.92);
+      color:var(--blue);
+      font-weight:800;
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      box-shadow:0 10px 22px rgba(0,0,0,0.18);
     }
 
-    /* Suites section (seu original) */
+    .gallery-right{
+      display:grid;
+      grid-template-rows: 1fr 1fr;
+      gap:14px;
+    }
+
+    /* Suites section (your existing) */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -410,10 +448,8 @@
       inset:0;
       pointer-events:none;
       background:
-        linear-gradient(to right, rgba(29,53,87,0.10), rgba(255,255,255,0) 18%),
-        linear-gradient(to left,  rgba(29,53,87,0.10), rgba(255,255,255,0) 18%),
-        linear-gradient(to bottom,rgba(29,53,87,0.07), rgba(255,255,255,0) 22%),
-        linear-gradient(to top,   rgba(29,53,87,0.07), rgba(255,255,255,0) 22%);
+        linear-gradient(to right, rgba(29,53,87,0.08), rgba(255,255,255,0) 18%),
+        linear-gradient(to left,  rgba(29,53,87,0.08), rgba(255,255,255,0) 18%);
     }
     .suites > *{ position:relative; z-index:1; }
 
@@ -486,6 +522,43 @@
     .arrow-left{ left:10px; }
     .arrow-right{ right:10px; }
 
+    /* Experiences */
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+    .exp-card{
+      background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform 0.25s ease;
+    }
+    .exp-card:hover{ transform:translateY(-6px); }
+    .exp-card img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      display:block;
+    }
+    .exp-body{
+      padding:16px 16px 18px;
+    }
+    .exp-body h3{
+      margin:0 0 8px;
+      font-size:18px;
+      color:var(--blue);
+    }
+    .exp-body p{
+      margin:0;
+      font-size:14px;
+      line-height:1.55;
+      color:#333;
+    }
+
     footer{
       background:var(--blue);
       color:#fff;
@@ -494,12 +567,18 @@
     }
 
     @media (max-width: 980px){
-      .welcome-inner{
-        grid-template-columns:1fr;
-        text-align:left;
-      }
+      .welcome-inner{ grid-template-columns:1fr; text-align:left; }
       .welcome-logo{ justify-content:flex-start; }
       .highlights{ grid-template-columns:1fr; }
+
+      .gallery-grid{
+        grid-template-columns:1fr;
+      }
+      .gallery-right{
+        grid-template-rows:none;
+        grid-template-columns:1fr 1fr;
+      }
+
       .grid-3{ grid-template-columns:1fr; }
       .exp-card img{ height:180px; }
     }
@@ -553,7 +632,6 @@
         </a>
 
         <a class="contact-item" href="https://wa.me/5562998167654">
-          <!-- WhatsApp (logo estilo oficial) -->
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12.04 2C6.58 2 2.15 6.43 2.15 11.89c0 1.97.58 3.87 1.68 5.5L2 22l4.77-1.76a9.82 9.82 0 0 0 5.27 1.53h.01c5.46 0 9.89-4.43 9.89-9.89C21.93 6.43 17.5 2 12.04 2Zm0 17.95h-.01a8.16 8.16 0 0 1-4.16-1.14l-.3-.18-2.83 1.05.76-2.76-.2-.29a8.17 8.17 0 1 1 6.74 3.32Zm4.75-6.11c-.26-.13-1.53-.76-1.77-.85-.24-.09-.42-.13-.6.13-.18.26-.69.85-.85 1.03-.16.17-.31.2-.57.07-.26-.13-1.1-.41-2.1-1.31-.78-.69-1.3-1.55-1.45-1.81-.15-.26-.02-.4.11-.53.12-.12.26-.31.39-.46.13-.16.17-.26.26-.44.09-.17.04-.33-.02-.46-.06-.13-.6-1.45-.82-1.99-.22-.53-.44-.46-.6-.46h-.52c-.17 0-.46.07-.7.33-.24.26-.92.9-.92 2.19 0 1.29.94 2.54 1.07 2.72.13.17 1.85 2.83 4.48 3.97.63.27 1.13.44 1.51.56.63.2 1.2.17 1.65.1.5-.07 1.53-.63 1.75-1.23.22-.6.22-1.13.15-1.23-.07-.1-.24-.16-.5-.29Z"/>
           </svg>
@@ -582,7 +660,7 @@
     </div>
   </div>
 
-  <!-- Welcome + highlights (com bordas quadradas) -->
+  <!-- Welcome + highlights -->
   <section class="section-block reveal blue-band" id="welcome">
     <div class="container">
       <div class="welcome-card">
@@ -621,7 +699,51 @@
     </div>
   </section>
 
-  <!-- Suites (mantém como está) -->
+  <!-- ✅ NEW: Galeria (3 fotos elegantes) -->
+  <section class="section-block reveal" id="galeria">
+    <div class="container">
+      <p class="eyebrow">Ambientes</p>
+      <h2 class="h2">Detalhes que fazem a experiência</h2>
+      <p class="lead">Três espaços para sentir o clima do Chateau Pireneus — com charme, conforto e beleza.</p>
+
+      <div class="gallery-grid">
+        <!-- Grande: Piscina -->
+        <div class="g-card">
+          <img src="public/galeria/piscina.jpg" alt="Piscina">
+          <div class="g-overlay"></div>
+          <div class="g-label">
+            <b>Piscina</b>
+            <span class="g-pill">Relax</span>
+          </div>
+        </div>
+
+        <!-- Direita: duas menores -->
+        <div class="gallery-right">
+          <div class="g-card">
+            <img src="public/galeria/sala-jantar.jpg" alt="Sala de jantar">
+            <div class="g-overlay"></div>
+            <div class="g-label">
+              <b>Sala de jantar</b>
+              <span class="g-pill">Charme</span>
+            </div>
+          </div>
+
+          <div class="g-card">
+            <img src="public/galeria/externa.jpg" alt="Área externa">
+            <div class="g-overlay"></div>
+            <div class="g-label">
+              <b>Área externa</b>
+              <span class="g-pill">Piri</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+    </div>
+  </section>
+
+  <!-- Suites -->
   <section class="suites reveal" id="suites">
     <h2>Nossas Acomodações</h2>
 
@@ -683,7 +805,7 @@
     </div>
   </section>
 
-  <!-- Experiências (AGORA DEPOIS de Nossas Acomodações) -->
+  <!-- Experiências (depois das acomodações) -->
   <section class="section-block reveal blue-band" id="experiencias">
     <div class="container">
       <p class="eyebrow">Conheça Piri</p>

@@ -355,73 +355,95 @@
        BELOW HERO (free to change later)
        ========================= */
 
-    /* Welcome (kept premium, clean) */
+        /* Welcome */
     .welcome{
       background:
-        radial-gradient(1100px 420px at 18% 20%, rgba(29,53,87,0.10), transparent 60%),
-        radial-gradient(1100px 420px at 82% 80%, rgba(29,53,87,0.06), transparent 60%),
-        linear-gradient(to bottom, rgba(246,241,230,0.96), rgba(246,241,230,1));
-      border-top:1px solid rgba(29,53,87,0.10);
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      padding:72px 0;
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding:46px 0 42px;
+      overflow:hidden;
     }
     .welcome-grid{
       display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap:44px;
-      align-items:center;
+      grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
+      gap:24px;
+      align-items:start;
+    }
+    .welcome-copy{
+      position:relative;
+      z-index:2;
+      max-width:720px;
     }
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
-      font-size:24px;
+      font-size:21px;
       color:#111;
-      letter-spacing:0.4px;
-      margin:0 0 10px;
+      letter-spacing:0.35px;
+      margin:0 0 6px;
+      line-height:1.05;
     }
     .welcome-title-big{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:42px;
+      font-size:40px;
       color:var(--navy);
-      letter-spacing:2px;
+      letter-spacing:1.8px;
       text-transform:uppercase;
       margin:0;
       white-space:nowrap;
-      line-height:1.15;
+      line-height:1.02;
+    }
+    .welcome .orn{
+      margin:12px 0 0;
+      width:150px;
     }
     .welcome-columns{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:18px 22px;
-      margin-top:18px;
+      gap:14px 20px;
+      margin-top:14px;
+      align-items:start;
     }
     .welcome-text{
-      color:rgba(22,37,58,0.84);
-      line-height:1.95;
-      font-size:15.5px;
+      color:rgba(22,37,58,0.82);
+      line-height:1.8;
+      font-size:14.6px;
     }
-    .welcome-text p{ margin:0 0 14px; }
+    .welcome-text p{ margin:0 0 11px; }
     .welcome-text p:last-child{ margin-bottom:0; }
     .welcome-text.dropcap p:first-child::first-letter{
       float:left;
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
-      font-size:44px;
-      line-height:0.95;
-      margin:6px 10px 0 0;
-      color:rgba(29,53,87,0.85);
+      font-size:38px;
+      line-height:0.92;
+      margin:5px 8px 0 0;
+      color:rgba(29,53,87,0.84);
     }
+
     .welcome-logo{
+      position:relative;
+      min-height:260px;
       display:flex;
-      align-items:center;
-      justify-content:center;
+      align-items:flex-start;
+      justify-content:flex-start;
     }
     .welcome-logo img{
-      width:min(360px, 26vw);
+      position:absolute;
+      top:-18px;
+      left:-138px;
+      width:min(460px, 34vw);
+      max-width:none;
       height:auto;
       display:block;
-      filter: drop-shadow(0 18px 26px rgba(0,0,0,0.12));
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
+      opacity:0.98;
+      pointer-events:none;
+      user-select:none;
     }
 
     /* Ambientes */

@@ -694,44 +694,83 @@
 
   <!-- WELCOME (premium + your text) -->
   <section class="section welcome reveal" id="welcome">
-    <div class="wrap">
-      <div class="welcome-shell">
-        <div class="welcome-card">
-          <div class="welcome-inner">
-            <p class="kicker">Hospedagem Boutique</p>
-            <h2 class="title">Seja Bem-Vindo à Pousada Chateau Pireneus</h2>
-            <p class="sub">
-              Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois.
+  <div class="wrap">
+    <div class="welcome-shell">
+      <div class="welcome-card">
+        <div class="welcome-inner">
+
+          <div class="welcome-title">
+            <div class="welcome-title-small">Bem-vindo à Pousada</div>
+            <div class="welcome-title-big">CHATEAU PIRENEUS</div>
+          </div>
+
+          <p class="sub">
+            Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois.
+          </p>
+
+          <div class="orn"></div>
+
+          <div class="welcome-text">
+            <p>
+              Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
             </p>
-            <div class="orn"></div>
-
-            <div class="welcome-text">
-              <p>
-                Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
-              </p>
-              <p>
-                Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
-              </p>
-              <p>
-                Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!
-              </p>
-            </div>
+            <p>
+              Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
+            </p>
+            <p>
+              Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!
+            </p>
           </div>
 
-          <div class="welcome-highlights" aria-label="Destaques">
-            <span><i class="dot"></i> Apenas seis acomodações</span>
-            <span><i class="dot"></i> Privacidade e atmosfera acolhedora</span>
-            <span><i class="dot"></i> Áreas de lazer e espaço gourmet</span>
-            <span><i class="dot"></i> Conforto e cuidado nos detalhes</span>
-          </div>
-        </div>
-
-        <div class="welcome-logo">
-          <img src="Chateau - 4.png" alt="Chateau Pireneus" />
         </div>
       </div>
+
+      <div class="welcome-logo">
+        <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+      </div>
     </div>
-  </section>
+  </div>
+</section>/* ===== Welcome premium title ===== */
+.welcome-title{
+  margin:0 0 14px;
+}
+
+.welcome-title-small{
+  font-family:"Cormorant Garamond", serif; /* manter fonte usada */
+  font-weight:500;
+  font-size:20px;                          /* menor */
+  letter-spacing:0.8px;
+  color:rgba(22,37,58,0.72);
+}
+
+.welcome-title-big{
+  font-family:"Gyahegi", "Cormorant Garamond", serif;
+  font-weight:400;
+  font-size:58px;                          /* maior */
+  letter-spacing:2px;
+  line-height:1.05;
+  margin-top:8px;
+  color:#8FB4D9;                           /* azul claro (ajustável) */
+  text-transform:uppercase;
+  text-shadow:0 18px 30px rgba(0,0,0,0.10);
+}
+
+/* Ajuste do texto pra ficar mais “luxo” (mais respiro) */
+.welcome-text{
+  margin-top:16px;
+  color:rgba(22,37,58,0.78);
+  line-height:1.95;
+  font-size:15px;
+}
+
+.welcome-text p{ margin:0 0 14px; }
+.welcome-text p:last-child{ margin-bottom:0; }
+
+/* Mobile */
+@media (max-width: 900px){
+  .welcome-title-small{ font-size:18px; }
+  .welcome-title-big{ font-size:44px; }
+}
 
   <!-- GALLERY -->
   <section class="section gallery reveal" id="galeria">

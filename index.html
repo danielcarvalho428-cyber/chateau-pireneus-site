@@ -14,7 +14,7 @@
     body{
       margin:0;
       font-family:Georgia, serif;
-      background:#efe6d7; /* fundo alinhado com o bege (sem “branco” nas laterais) */
+      background:#efe6d7;
       color:#1d3557;
       overflow-x:hidden;
     }
@@ -186,7 +186,6 @@
     }
     @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
 
-    /* Title (menor) */
     .hero-title{
       display:flex;
       flex-direction:column;
@@ -202,7 +201,6 @@
       text-transform:uppercase;
     }
 
-    /* Slogan (sem PNG ao lado) */
     .hero-slogan{
       margin-top:24px;
       font-size:18px;
@@ -261,39 +259,173 @@
       transform:translateY(0);
     }
 
-    /* ✅ Welcome COMPACTA (bem menor) */
-    .section{
-      padding:6px 10%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      background:#efe6d7;
+    /* ====== NEW: Section rhythm & premium layout ====== */
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:0 20px;
     }
-    .section-text{ max-width:560px; }
-    .section-text h2{
-      font-size:22px;
-      margin:0 0 4px;
-      line-height:1.15;
+
+    .divider{
+      height:1px;
+      background:linear-gradient(to right, transparent, rgba(29,53,87,0.18), transparent);
+      margin:26px auto;
+      max-width:980px;
     }
-    .section-text p{
+
+    .section-block{
+      padding:34px 0;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.75);
+      margin:0 0 10px;
+    }
+
+    .h2{
+      margin:0 0 10px;
+      font-size:34px;
+      color:var(--blue);
+    }
+
+    .lead{
       margin:0;
-      font-size:13px;
-      line-height:1.35;
       color:#333;
+      line-height:1.6;
+      font-size:15px;
+      max-width:760px;
     }
-    .section-image{
-      display:flex;
+
+    /* Welcome revamped */
+    .welcome-card{
+      background:#efe6d7;
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:18px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.06);
+      overflow:hidden;
+    }
+
+    .welcome-inner{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap:16px;
+      padding:18px 18px;
       align-items:center;
     }
-    .section-image img{
-      max-width:95px; /* isso reduz de verdade a altura */
-      width:100%;
+
+    .welcome-logo{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .welcome-logo img{
+      width:92px;
       height:auto;
       display:block;
     }
 
-    /* Suites with frame gradient around */
+    .highlights{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+      padding:0 18px 18px;
+    }
+    .mini-card{
+      background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:14px;
+      padding:14px 14px;
+      box-shadow:0 10px 22px rgba(0,0,0,0.06);
+    }
+    .mini-card b{
+      display:block;
+      color:var(--blue);
+      font-size:14px;
+      margin-bottom:6px;
+      letter-spacing:0.2px;
+    }
+    .mini-card span{
+      display:block;
+      color:#333;
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    /* Experience cards */
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+    .exp-card{
+      background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:transform 0.25s ease;
+    }
+    .exp-card:hover{ transform:translateY(-6px); }
+    .exp-card img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      display:block;
+    }
+    .exp-body{
+      padding:16px 16px 18px;
+    }
+    .exp-body h3{
+      margin:0 0 8px;
+      font-size:18px;
+      color:var(--blue);
+    }
+    .exp-body p{
+      margin:0;
+      font-size:14px;
+      line-height:1.55;
+      color:#333;
+    }
+
+    /* Why choose */
+    .grid-4{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:14px;
+      margin-top:18px;
+    }
+    .why{
+      background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:16px;
+      padding:16px 14px;
+      box-shadow:0 10px 22px rgba(0,0,0,0.06);
+    }
+    .why .tag{
+      display:inline-block;
+      font-size:11px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.75);
+      margin-bottom:8px;
+    }
+    .why h4{
+      margin:0 0 6px;
+      color:var(--blue);
+      font-size:15px;
+    }
+    .why p{
+      margin:0;
+      color:#333;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    /* Suites section (keep yours) */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -390,18 +522,22 @@
       text-align:center;
     }
 
+    @media (max-width: 980px){
+      .welcome-inner{
+        grid-template-columns:1fr;
+        text-align:left;
+      }
+      .welcome-logo{ justify-content:flex-start; }
+      .highlights{ grid-template-columns:1fr; }
+      .grid-3{ grid-template-columns:1fr; }
+      .grid-4{ grid-template-columns:1fr; }
+      .exp-card img{ height:180px; }
+    }
+
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
       .hero-title .hero-line{ font-size:46px; }
       .hero-slogan{ font-size:16px; }
-
-      .section{
-        flex-direction:row;
-        padding:6px 8%;
-        gap:10px;
-      }
-      .section-image img{ max-width:80px; }
-
       .menu-button{ top:76px; }
       .menu-button.menu-open{ left:205px; }
     }
@@ -476,16 +612,122 @@
     </div>
   </div>
 
-  <section class="section reveal" id="welcome">
-    <div class="section-text">
-      <h2>Bem-vindo à Pousada Chateau Pireneus</h2>
-      <p>Um refúgio de charme em Pirenópolis onde conforto, tranquilidade e natureza se encontram.</p>
-    </div>
-    <div class="section-image">
-      <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+  <!-- NEW: Welcome + highlights -->
+  <section class="section-block reveal" id="welcome">
+    <div class="container">
+      <div class="welcome-card">
+        <div class="welcome-inner">
+          <div>
+            <p class="eyebrow">Charme & história</p>
+            <h2 class="h2">Um refúgio romântico no coração de Pirenópolis</h2>
+            <p class="lead">
+              A Pousada Chateau Pireneus combina o clima acolhedor de uma hospedagem boutique com o encanto histórico de Piri —
+              ideal para casais que buscam tranquilidade, conforto e uma experiência memorável.
+            </p>
+          </div>
+
+          <div class="welcome-logo">
+            <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+          </div>
+        </div>
+
+        <div class="highlights">
+          <div class="mini-card">
+            <b>Varanda com rede</b>
+            <span>Um cantinho perfeito para relaxar, ler e curtir a atmosfera de Piri.</span>
+          </div>
+          <div class="mini-card">
+            <b>Conforto premium</b>
+            <span>Enxoval 200 fios e detalhes pensados para uma estadia leve e romântica.</span>
+          </div>
+          <div class="mini-card">
+            <b>Clima histórico</b>
+            <span>Viva o charme do centro histórico e as tradições que fazem Pirenópolis única.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
     </div>
   </section>
 
+  <!-- NEW: Experiences in Piri -->
+  <section class="section-block reveal" id="experiencias">
+    <div class="container">
+      <p class="eyebrow">Conheça Piri</p>
+      <h2 class="h2">Experiências em Pirenópolis</h2>
+      <p class="lead">
+        Um roteiro com charme histórico, natureza e gastronomia — perfeito para curtir a dois.
+      </p>
+
+      <div class="grid-3">
+        <article class="exp-card">
+          <img src="public/experiencias/centro-historico.jpg" alt="Centro histórico de Pirenópolis">
+          <div class="exp-body">
+            <h3>Centro histórico</h3>
+            <p>Ruas de pedra, igrejas e arquitetura colonial — cenário perfeito para passeios ao fim da tarde.</p>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <img src="public/experiencias/cachoeiras.jpg" alt="Cachoeiras em Pirenópolis">
+          <div class="exp-body">
+            <h3>Cachoeiras & natureza</h3>
+            <p>Trilhas leves, banhos refrescantes e paisagens lindas para desacelerar e respirar.</p>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <img src="public/experiencias/gastronomia.jpg" alt="Gastronomia em Pirenópolis">
+          <div class="exp-body">
+            <h3>Gastronomia & vinhos</h3>
+            <p>Cafés charmosos, restaurantes e experiências gastronômicas para uma noite especial.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="divider"></div>
+    </div>
+  </section>
+
+  <!-- NEW: Why choose -->
+  <section class="section-block reveal" id="porque">
+    <div class="container">
+      <p class="eyebrow">Por que ficar aqui</p>
+      <h2 class="h2">Por que escolher o Chateau Pireneus</h2>
+      <p class="lead">
+        Uma experiência com personalidade, pensada para quem valoriza conforto, estética e clima romântico.
+      </p>
+
+      <div class="grid-4">
+        <div class="why">
+          <span class="tag">Atmosfera</span>
+          <h4>Romântica e acolhedora</h4>
+          <p>Ambientes com charme e tranquilidade para aproveitar a dois.</p>
+        </div>
+
+        <div class="why">
+          <span class="tag">Conforto</span>
+          <h4>Detalhes que importam</h4>
+          <p>Enxoval 200 fios, ar-condicionado e varanda privativa com rede.</p>
+        </div>
+
+        <div class="why">
+          <span class="tag">Estilo</span>
+          <h4>Identidade de Piri</h4>
+          <p>Uma pousada com alma, conectada ao encanto histórico da cidade.</p>
+        </div>
+
+        <div class="why">
+          <span class="tag">Praticidade</span>
+          <h4>Reserva fácil</h4>
+          <p>Reserve pelo site ou fale direto no WhatsApp para dúvidas e disponibilidade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suites (your existing section) -->
   <section class="suites reveal" id="suites">
     <h2>Nossas Acomodações</h2>
 
@@ -494,11 +736,55 @@
       <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
       <div class="carousel-track" id="carouselTrack">
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div><h3>Suíte do Divino</h3><a href="suite.html?room=divino" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div><h3>Suíte das Cavalhadas</h3><a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div><h3>Suíte do Rosário</h3><a href="suite.html?room=rosario" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div><h3>Suíte Aurora</h3><a href="suite.html?room=aurora" class="room-button">Conhecer</a></div></div>
-        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div><h3>Suíte do Bonfim</h3><a href="suite.html?room=bonfim" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+            </div>
+            <h3>Suíte do Divino</h3>
+            <a href="suite.html?room=divino" class="room-button">Conhecer</a>
+          </div>
+        </div>
+
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+            </div>
+            <h3>Suíte das Cavalhadas</h3>
+            <a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a>
+          </div>
+        </div>
+
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+            </div>
+            <h3>Suíte do Rosário</h3>
+            <a href="suite.html?room=rosario" class="room-button">Conhecer</a>
+          </div>
+        </div>
+
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+            </div>
+            <h3>Suíte Aurora</h3>
+            <a href="suite.html?room=aurora" class="room-button">Conhecer</a>
+          </div>
+        </div>
+
+        <div class="suite-card">
+          <div class="card">
+            <div class="img-wrap">
+              <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+            </div>
+            <h3>Suíte do Bonfim</h3>
+            <a href="suite.html?room=bonfim" class="room-button">Conhecer</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>

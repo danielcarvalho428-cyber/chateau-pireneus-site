@@ -235,7 +235,11 @@
         divino: {
           name: "Suíte do Divino",
           desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: ["public/suites/divino/divino1.jpeg"],
+          photos: [
+            "public/suites/divino/divino1.jpeg",
+            "public/suites/divino/divino2.jpeg",
+            "public/suites/divino/divino3.jpeg"
+          ],
           amenities: [
             "Cama Queen",
             "Enxoval 200 fios",
@@ -254,7 +258,11 @@
         cavalhadas: {
           name: "Suíte das Cavalhadas",
           desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: ["public/suites/cavalhadas/cavalhadas1.jpeg"],
+          photos: [
+            "public/suites/cavalhadas/cavalhadas1.jpeg",
+            "public/suites/cavalhadas/cavalhadas2.jpeg",
+            "public/suites/cavalhadas/cavalhadas3.jpeg"
+          ],
           amenities: [
             "Cama Queen",
             "Enxoval 200 fios",
@@ -273,7 +281,11 @@
         rosario: {
           name: "Suíte do Rosário",
           desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: ["public/suites/rosario/rosario1.jpeg"],
+          photos: [
+            "public/suites/rosario/rosario1.jpeg",
+            "public/suites/rosario/rosario2.jpeg",
+            "public/suites/rosario/rosario3.jpeg"
+          ],
           amenities: [
             "Cama Queen",
             "Enxoval 200 fios",
@@ -292,7 +304,11 @@
         aurora: {
           name: "Suíte Aurora",
           desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: ["public/suites/aurora/aurora1.jpeg"],
+          photos: [
+            "public/suites/aurora/aurora1.jpeg",
+            "public/suites/aurora/aurora2.jpeg",
+            "public/suites/aurora/aurora3.jpeg"
+          ],
           amenities: [
             "Cama Queen",
             "Enxoval 200 fios",
@@ -311,7 +327,11 @@
         bonfim: {
           name: "Suíte do Bonfim",
           desc: "(suíte padrão sem Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: ["public/suites/bonfim/bonfim1.jpeg"],
+          photos: [
+            "public/suites/bonfim/bonfim1.jpeg",
+            "public/suites/bonfim/bonfim2.jpeg",
+            "public/suites/bonfim/bonfim3.jpeg"
+          ],
           amenities: [
             "Cama Queen",
             "Enxoval 200 fios",
@@ -334,7 +354,7 @@
       }
 
       const params = new URLSearchParams(location.search);
-     const key = (params.get("room") || "divino").toLowerCase().trim();
+      const key = (params.get("room") || "divino").toLowerCase().trim();
       const room = ROOMS[key];
 
       if (!room){
@@ -345,7 +365,6 @@
       document.title = room.name + " • Chateau Pireneus";
       document.getElementById("roomName").textContent = room.name;
 
-      // Preserve line breaks in description
       document.getElementById("roomDesc").innerHTML = room.desc.replace(/\n/g, "<br>");
 
       document.getElementById("amenities").innerHTML =

@@ -612,16 +612,20 @@
       padding:14px;
     }
     .suite-card .card{
-      background:#fff;
-      border-radius:18px;
-      box-shadow:var(--shadowSoft);
-      overflow:hidden;
-      transition:0.25s ease;
-      border:1px solid rgba(29,53,87,0.10);
-      display:flex;
-      flex-direction:column;
-      height:100%;
-    }
+  background:#fff;
+  border-radius:18px;
+  box-shadow:none;
+  overflow:hidden;
+  transition:0.25s ease;
+  border:1px solid rgba(29,53,87,0.10);
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+.suite-card .card:hover{
+  transform:translateY(-6px);
+  box-shadow:none;
+}
     .suite-card .card:hover{
       transform:translateY(-6px);
       box-shadow:var(--shadow);

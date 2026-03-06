@@ -259,22 +259,27 @@
       transform:translateY(0);
     }
 
-    /* ====== NEW: Section rhythm & premium layout ====== */
+    /* ====== Section rhythm ====== */
     .container{
       max-width:1200px;
       margin:0 auto;
       padding:0 20px;
     }
 
+    .section-block{
+      padding:34px 0;
+    }
+
+    /* Azul para quebrar o “bege contínuo” */
+    .section-block.blue-band{
+      background:rgba(29,53,87,0.08);
+    }
+
     .divider{
       height:1px;
       background:linear-gradient(to right, transparent, rgba(29,53,87,0.18), transparent);
-      margin:26px auto;
+      margin:22px auto 0;
       max-width:980px;
-    }
-
-    .section-block{
-      padding:34px 0;
     }
 
     .eyebrow{
@@ -299,11 +304,11 @@
       max-width:760px;
     }
 
-    /* Welcome revamped */
+    /* Welcome revamped (bordas quadradas) */
     .welcome-card{
       background:#efe6d7;
       border:1px solid rgba(29,53,87,0.10);
-      border-radius:18px;
+      border-radius:0;                 /* QUADRADO */
       box-shadow:0 10px 25px rgba(0,0,0,0.06);
       overflow:hidden;
     }
@@ -354,7 +359,7 @@
       line-height:1.45;
     }
 
-    /* Experience cards */
+    /* Experiências cards */
     .grid-3{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -391,41 +396,7 @@
       color:#333;
     }
 
-    /* Why choose */
-    .grid-4{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:14px;
-      margin-top:18px;
-    }
-    .why{
-      background:#fff;
-      border:1px solid rgba(29,53,87,0.08);
-      border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 10px 22px rgba(0,0,0,0.06);
-    }
-    .why .tag{
-      display:inline-block;
-      font-size:11px;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.75);
-      margin-bottom:8px;
-    }
-    .why h4{
-      margin:0 0 6px;
-      color:var(--blue);
-      font-size:15px;
-    }
-    .why p{
-      margin:0;
-      color:#333;
-      font-size:13px;
-      line-height:1.5;
-    }
-
-    /* Suites section (keep yours) */
+    /* Suites section (seu original) */
     .suites{
       padding:80px 20px;
       text-align:center;
@@ -530,7 +501,6 @@
       .welcome-logo{ justify-content:flex-start; }
       .highlights{ grid-template-columns:1fr; }
       .grid-3{ grid-template-columns:1fr; }
-      .grid-4{ grid-template-columns:1fr; }
       .exp-card img{ height:180px; }
     }
 
@@ -612,8 +582,8 @@
     </div>
   </div>
 
-  <!-- NEW: Welcome + highlights -->
-  <section class="section-block reveal" id="welcome">
+  <!-- Welcome + highlights (com bordas quadradas) -->
+  <section class="section-block reveal blue-band" id="welcome">
     <div class="container">
       <div class="welcome-card">
         <div class="welcome-inner">
@@ -651,83 +621,7 @@
     </div>
   </section>
 
-  <!-- NEW: Experiences in Piri -->
-  <section class="section-block reveal" id="experiencias">
-    <div class="container">
-      <p class="eyebrow">Conheça Piri</p>
-      <h2 class="h2">Experiências em Pirenópolis</h2>
-      <p class="lead">
-        Um roteiro com charme histórico, natureza e gastronomia — perfeito para curtir a dois.
-      </p>
-
-      <div class="grid-3">
-        <article class="exp-card">
-          <img src="public/experiencias/centro-historico.jpg" alt="Centro histórico de Pirenópolis">
-          <div class="exp-body">
-            <h3>Centro histórico</h3>
-            <p>Ruas de pedra, igrejas e arquitetura colonial — cenário perfeito para passeios ao fim da tarde.</p>
-          </div>
-        </article>
-
-        <article class="exp-card">
-          <img src="public/experiencias/cachoeiras.jpg" alt="Cachoeiras em Pirenópolis">
-          <div class="exp-body">
-            <h3>Cachoeiras & natureza</h3>
-            <p>Trilhas leves, banhos refrescantes e paisagens lindas para desacelerar e respirar.</p>
-          </div>
-        </article>
-
-        <article class="exp-card">
-          <img src="public/experiencias/gastronomia.jpg" alt="Gastronomia em Pirenópolis">
-          <div class="exp-body">
-            <h3>Gastronomia & vinhos</h3>
-            <p>Cafés charmosos, restaurantes e experiências gastronômicas para uma noite especial.</p>
-          </div>
-        </article>
-      </div>
-
-      <div class="divider"></div>
-    </div>
-  </section>
-
-  <!-- NEW: Why choose -->
-  <section class="section-block reveal" id="porque">
-    <div class="container">
-      <p class="eyebrow">Por que ficar aqui</p>
-      <h2 class="h2">Por que escolher o Chateau Pireneus</h2>
-      <p class="lead">
-        Uma experiência com personalidade, pensada para quem valoriza conforto, estética e clima romântico.
-      </p>
-
-      <div class="grid-4">
-        <div class="why">
-          <span class="tag">Atmosfera</span>
-          <h4>Romântica e acolhedora</h4>
-          <p>Ambientes com charme e tranquilidade para aproveitar a dois.</p>
-        </div>
-
-        <div class="why">
-          <span class="tag">Conforto</span>
-          <h4>Detalhes que importam</h4>
-          <p>Enxoval 200 fios, ar-condicionado e varanda privativa com rede.</p>
-        </div>
-
-        <div class="why">
-          <span class="tag">Estilo</span>
-          <h4>Identidade de Piri</h4>
-          <p>Uma pousada com alma, conectada ao encanto histórico da cidade.</p>
-        </div>
-
-        <div class="why">
-          <span class="tag">Praticidade</span>
-          <h4>Reserva fácil</h4>
-          <p>Reserve pelo site ou fale direto no WhatsApp para dúvidas e disponibilidade.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Suites (your existing section) -->
+  <!-- Suites (mantém como está) -->
   <section class="suites reveal" id="suites">
     <h2>Nossas Acomodações</h2>
 
@@ -786,6 +680,45 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Experiências (AGORA DEPOIS de Nossas Acomodações) -->
+  <section class="section-block reveal blue-band" id="experiencias">
+    <div class="container">
+      <p class="eyebrow">Conheça Piri</p>
+      <h2 class="h2">Experiências em Pirenópolis</h2>
+      <p class="lead">
+        Um roteiro com charme histórico, natureza e gastronomia — perfeito para curtir a dois.
+      </p>
+
+      <div class="grid-3">
+        <article class="exp-card">
+          <img src="public/experiencias/centro-historico.jpg" alt="Centro histórico de Pirenópolis">
+          <div class="exp-body">
+            <h3>Centro histórico</h3>
+            <p>Ruas de pedra, igrejas e arquitetura colonial — cenário perfeito para passeios ao fim da tarde.</p>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <img src="public/experiencias/cachoeiras.jpg" alt="Cachoeiras em Pirenópolis">
+          <div class="exp-body">
+            <h3>Cachoeiras & natureza</h3>
+            <p>Trilhas leves, banhos refrescantes e paisagens lindas para desacelerar e respirar.</p>
+          </div>
+        </article>
+
+        <article class="exp-card">
+          <img src="public/experiencias/gastronomia.jpg" alt="Gastronomia em Pirenópolis">
+          <div class="exp-body">
+            <h3>Gastronomia & vinhos</h3>
+            <p>Cafés charmosos, restaurantes e experiências gastronômicas para uma noite especial.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="divider"></div>
     </div>
   </section>
 

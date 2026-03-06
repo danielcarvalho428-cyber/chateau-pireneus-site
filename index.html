@@ -355,7 +355,7 @@
        BELOW HERO (free to change later)
        ========================= */
 
-          /* Welcome */
+             /* Welcome */
     .welcome{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -363,19 +363,40 @@
         linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
       border-top:1px solid rgba(29,53,87,0.08);
       border-bottom:1px solid rgba(29,53,87,0.08);
-      padding:46px 0 42px;
+      padding:42px 0 38px;
     }
-    .welcome-grid{
-      display:grid;
-      grid-template-columns:minmax(0, 1.08fr) minmax(320px, 0.92fr);
+
+    .welcome-shell{
+      max-width:980px;
+    }
+
+    .welcome-head{
+      display:flex;
+      align-items:flex-start;
       gap:18px;
-      align-items:start;
+      margin-bottom:14px;
     }
-    .welcome-copy{
-      position:relative;
-      z-index:2;
-      max-width:760px;
+
+    .welcome-logo{
+      flex:0 0 auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
     }
+
+    .welcome-logo img{
+      width:150px;
+      height:auto;
+      display:block;
+      margin-top:-6px;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
+      opacity:0.98;
+    }
+
+    .welcome-heading{
+      min-width:0;
+    }
+
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
@@ -385,6 +406,7 @@
       margin:0 0 6px;
       line-height:1.05;
     }
+
     .welcome-title-big{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
@@ -393,49 +415,29 @@
       letter-spacing:1.8px;
       text-transform:uppercase;
       margin:0;
-      white-space:nowrap;
       line-height:1.02;
-    }
-    .welcome .orn{
-      margin:12px 0 0;
-      width:150px;
-    }
-    .welcome-text{
-      margin-top:14px;
-      max-width:100%;
-      color:rgba(22,37,58,0.82);
-      line-height:1.85;
-      font-size:14.8px;
-    }
-    .welcome-text p{ margin:0 0 12px; }
-    .welcome-text p:last-child{ margin-bottom:0; }
-    .welcome-text.dropcap p:first-child::first-letter{
-      float:left;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      font-size:38px;
-      line-height:0.92;
-      margin:5px 8px 0 0;
-      color:rgba(29,53,87,0.84);
+      white-space:nowrap;
     }
 
-    .welcome-logo{
-      position:relative;
-      min-height:250px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
+    .welcome .orn{
+      margin:10px 0 0;
+      width:150px;
     }
-    .welcome-logo img{
-      position:relative;
-      width:min(420px, 31vw);
-      height:auto;
-      display:block;
-      margin-top:-14px;
-      margin-left:-88px;
-      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
-      opacity:0.98;
+
+    .welcome-text{
+      width:100%;
       max-width:none;
+      color:rgba(22,37,58,0.82);
+      line-height:1.85;
+      font-size:14.9px;
+    }
+
+    .welcome-text p{
+      margin:0 0 12px;
+    }
+
+    .welcome-text p:last-child{
+      margin-bottom:0;
     }
     /* Ambientes */
     .gallery{

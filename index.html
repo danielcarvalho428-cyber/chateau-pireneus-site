@@ -692,98 +692,148 @@
     </div>
   </div>
 
-  <!-- WELCOME (premium + your text) -->
-<!-- WELCOME (UPDATED WITH EXTRA VERTICAL SPACING) -->
+  <!-- WELCOME (FINAL PREMIUM VERSION) -->
 <section class="section welcome reveal" id="welcome">
   <div class="wrap">
     <div class="welcome-shell">
-      <div class="welcome-card">
-        <div class="welcome-inner">
 
-          <div class="welcome-title">
-            <div class="welcome-title-small">Bem-vindo à Pousada</div>
-            <div class="welcome-title-big">CHATEAU PIRENEUS</div>
-          </div>
+      <div class="welcome-content">
+        <div class="welcome-title">
+          <div class="welcome-title-small">Bem-vindo à Pousada</div>
+          <div class="welcome-title-big">CHATEAU PIRENEUS</div>
+        </div>
 
-          <p class="sub">
+        <div class="welcome-sep" aria-hidden="true"></div>
+
+        <div class="welcome-text">
+          <p>
             Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois.
           </p>
-
-          <div class="orn"></div>
-
-          <div class="welcome-text">
-            <p>
-              Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
-            </p>
-            <p>
-              Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
-            </p>
-            <p>
-              Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!
-            </p>
-          </div>
-
+          <p>
+            Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
+          </p>
+          <p>
+            Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
+          </p>
+          <p>
+            Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!
+          </p>
         </div>
       </div>
 
       <div class="welcome-logo">
         <img src="Chateau - 4.png" alt="Chateau Pireneus" />
       </div>
+
     </div>
   </div>
 </section>
 
 <style>
-  /* ===== Welcome premium title ===== */
+  /* ===== Welcome: beige very light background (no box) ===== */
+  .welcome{
+    background:#f6f1e6; /* bege bem clarinho */
+    border-top:1px solid rgba(29,53,87,0.10);
+    border-bottom:1px solid rgba(29,53,87,0.10);
+  }
+
+  .welcome-shell{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap:28px;
+    align-items:center;
+    padding:34px 0;             /* segurança menor (não cria “vácuo”) */
+  }
+
+  /* remove “quadrado do texto” (agora é só conteúdo) */
+  .welcome-content{
+    padding:0;
+  }
+
+  /* Title styling requested */
   .welcome-title{
-    margin:0 0 14px;
+    margin:0 0 12px;
   }
 
   .welcome-title-small{
     font-family:"Cormorant Garamond", serif;
-    font-weight:500;
-    font-size:20px;
-    letter-spacing:0.8px;
-    color:rgba(22,37,58,0.72);
+    font-weight:700;             /* negrito */
+    font-size:24px;              /* maior que o texto, menor que o título */
+    letter-spacing:0.4px;
+    color:#111;                  /* “preto” */
   }
 
   .welcome-title-big{
-    font-family:"Gyahegi", "Cormorant Garamond", serif;
+    font-family:"Gyahegi","Cormorant Garamond", serif;
     font-weight:400;
-    font-size:58px;
+    font-size:46px;              /* menor que antes */
     letter-spacing:2px;
-
-    /* ✅ extra vertical breathing room */
-    line-height:1.18;      /* was 1.05 */
-    margin-top:20px;       /* more space under “Bem-vindo à Pousada” */
-    padding-top:4px;
-
-    color:#8FB4D9;         /* azul claro */
+    line-height:1.15;
+    margin-top:8px;
+    color:#1d3557;               /* azul marinho */
     text-transform:uppercase;
-    text-shadow:0 18px 30px rgba(0,0,0,0.10);
+
+    /* força as duas palavras na mesma linha */
+    white-space:nowrap;
   }
 
+  /* Gold divider line */
+  .welcome-sep{
+    width:160px;
+    height:1px;
+    background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+    margin:16px 0 18px;
+  }
+
+  /* Text: slightly wider + refined so panel feels smaller */
   .welcome-text{
-    margin-top:16px;
-    color:rgba(22,37,58,0.78);
+    color:rgba(22,37,58,0.82);
     line-height:1.95;
-    font-size:15px;
+    font-size:15.5px;
+    max-width:860px;             /* aumenta “comprimento do texto” */
   }
-
   .welcome-text p{ margin:0 0 14px; }
   .welcome-text p:last-child{ margin-bottom:0; }
 
-  @media (max-width: 900px){
-    .welcome-title-small{ font-size:18px; }
+  /* PNG larger (~< 1/4 screen) without adding vertical vacuum */
+  .welcome-logo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;                   /* remove espaço extra */
+  }
+  .welcome-logo img{
+    width:min(320px, 24vw);      /* pouco menos de 1/4 da tela */
+    height:auto;
+    display:block;
+    filter: drop-shadow(0 18px 26px rgba(0,0,0,0.12));
+  }
+
+  /* Responsive */
+  @media (max-width: 980px){
+    .welcome-shell{
+      grid-template-columns:1fr;
+      gap:18px;
+      padding:26px 0;
+    }
+    .welcome-logo{
+      justify-content:flex-start;
+    }
+    .welcome-logo img{
+      width:200px;
+    }
     .welcome-title-big{
-      font-size:44px;
-      line-height:1.20;
-      margin-top:10px;
-      padding-top:3px;
+      font-size:40px;
+      white-space:normal; /* se precisar quebrar no mobile */
     }
   }
-</style>
 
+  @media (max-width: 520px){
+    .welcome-title-small{ font-size:21px; }
+    .welcome-title-big{ font-size:36px; }
+    .welcome-sep{ width:130px; }
+  }
+</style>
   <!-- GALLERY -->
   <section class="section gallery reveal" id="galeria">
     <div class="wrap">

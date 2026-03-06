@@ -17,9 +17,6 @@
       --gold:#d8c7a1;
       --gold-2:#cbb58c;
       --bg:#f7f6f2;
-      --paper:#ffffff;
-      --ink:#16253a;
-      --muted:rgba(22,37,58,0.72);
       --line:rgba(29,53,87,0.14);
       --shadow:0 26px 70px rgba(0,0,0,0.16);
       --shadow-soft:0 16px 42px rgba(0,0,0,0.10);
@@ -284,7 +281,7 @@
     .sub{
       margin:0;
       max-width:900px;
-      color:var(--muted);
+      color:rgba(22,37,58,0.72);
       line-height:1.9;
       font-size:15px;
     }
@@ -296,13 +293,12 @@
       margin:22px 0 0;
     }
 
-    /* ===== WELCOME (ajustado conforme pedido) ===== */
+    /* ===== WELCOME ===== */
     .welcome{
       background:#f6f1e6; /* bege bem clarinho */
       border-top:1px solid rgba(29,53,87,0.10);
       border-bottom:1px solid rgba(29,53,87,0.10);
     }
-    /* reduzir MUITO o espaço acima/abaixo */
     .welcome.section{ padding:22px 0; }
 
     .welcome-shell{
@@ -310,14 +306,10 @@
       grid-template-columns: 1.15fr 0.85fr;
       gap:28px;
       align-items:center;
-      padding:10px 0;  /* menos “vácuo” */
+      padding:10px 0;
     }
 
-    /* sem quadrado do texto */
-    .welcome-content{ padding:0; }
-
     .welcome-title{ margin:0 0 12px; }
-
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
@@ -325,17 +317,16 @@
       letter-spacing:0.4px;
       color:#111;
     }
-
     .welcome-title-big{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:42px;          /* menor */
+      font-size:42px;
       letter-spacing:2px;
       line-height:1.15;
       margin-top:8px;
-      color:var(--navy);       /* azul marinho */
+      color:var(--navy);
       text-transform:uppercase;
-      white-space:nowrap;      /* mesma linha */
+      white-space:nowrap;
     }
 
     .welcome-sep{
@@ -349,12 +340,11 @@
       color:rgba(22,37,58,0.82);
       line-height:1.95;
       font-size:15.5px;
-      max-width:960px; /* “aumentar comprimento” pra dar sensação menor do painel */
+      max-width:960px;
     }
     .welcome-text p{ margin:0 0 14px; }
     .welcome-text p:last-child{ margin-bottom:0; }
 
-    /* PNG maior sem aumentar espaço vertical */
     .welcome-logo{
       display:flex;
       align-items:center;
@@ -362,25 +352,21 @@
       padding:0;
     }
     .welcome-logo img{
-      width:min(360px, 24vw); /* ~ pouco menos de 1/4 da tela */
+      width:min(360px, 24vw);
       height:auto;
       display:block;
       filter: drop-shadow(0 18px 26px rgba(0,0,0,0.12));
     }
 
-    /* ===== GALLERY (painel de ambientes) ===== */
+    /* ===== GALLERY (AMBIENTES) ===== */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
       color:#fff;
     }
-    /* tirar a palavra "AMBIENTES" (kicker) — não vamos usar kicker aqui */
-    .gallery .kicker{ display:none; }
-
-    /* título agora: AMBIENTES em Gyahegi */
     .gallery-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:52px;
+      font-size:44px; /* menor */
       letter-spacing:2px;
       margin:0 0 10px;
       color:#fff;
@@ -443,44 +429,23 @@
       text-shadow:0 10px 24px rgba(0,0,0,0.55);
     }
     .cap b{ font-size:17px; letter-spacing:0.6px; }
-    /* remover RELAX/CHARME/PIRI */
-    .cap .pill{ display:none; }
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 10px;
-      border-radius:999px;
-      background:rgba(216,199,161,0.96);
-      color:var(--navy);
-      font-weight:900;
-      font-size:11px;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      box-shadow:0 10px 22px rgba(0,0,0,0.25);
-    }
     .gallery-right{
       display:grid;
       grid-template-rows: 1fr 1fr;
       gap:14px;
     }
 
-    /* ===== SUITES (acomodações) ===== */
+    /* ===== SUITES ===== */
     .suites{
-      /* tirar “moldura/degradê em volta do carrossel” e usar fundo elegante */
       background:linear-gradient(to bottom, #fbfaf7 0%, #f3ecdf 100%);
       border-top:1px solid rgba(29,53,87,0.10);
       border-bottom:1px solid rgba(29,53,87,0.10);
     }
-    /* tirar a palavra "ACOMODAÇÕES" (kicker) */
-    .suites .kicker{ display:none; }
-
-    /* título em caixa alta + Gyahegi */
     .suites-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:52px;
+      font-size:44px; /* menor */
       letter-spacing:2px;
       margin:0 0 10px;
       color:var(--navy);
@@ -494,6 +459,9 @@
       margin:32px auto 0;
       overflow:hidden;
       padding:0 10px;
+      background:transparent; /* remove qualquer moldura extra */
+      border:none;
+      box-shadow:none;
     }
     .carousel-track{
       display:flex;
@@ -504,6 +472,8 @@
       min-width:33.3333%;
       padding:18px;
     }
+
+    /* padroniza tamanho dos cards */
     .suite-card .card{
       background:#fff;
       border-radius:18px;
@@ -511,6 +481,10 @@
       overflow:hidden;
       transition:0.25s ease;
       border:1px solid rgba(29,53,87,0.10);
+
+      display:flex;
+      flex-direction:column;
+      height:100%;
     }
     .suite-card .card:hover{
       transform:translateY(-6px);
@@ -530,6 +504,11 @@
     .card-body{
       padding:16px 18px 18px;
       text-align:left;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      flex:1;
+      min-height:150px;
     }
     .suite-card h3{
       margin:0;
@@ -542,6 +521,7 @@
       margin-top:6px;
       color:rgba(22,37,58,0.70);
       line-height:1.6;
+      min-height:42px;
     }
     .room-button{
       margin-top:14px;
@@ -557,6 +537,7 @@
       letter-spacing:1px;
       text-decoration:none;
       transition:0.2s ease;
+      width:fit-content;
     }
     .room-button:hover{
       background:var(--gold);
@@ -630,17 +611,15 @@
       margin-top:0;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .welcome-shell{ grid-template-columns:1fr; gap:18px; padding:6px 0; }
       .welcome-logo{ justify-content:flex-start; }
       .welcome-logo img{ width:220px; }
       .welcome-title-big{ white-space:normal; }
+
       .gallery-grid{ grid-template-columns:1fr; }
       .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
       .exp-grid{ grid-template-columns:1fr; }
-      .suites-title{ font-size:44px; }
-      .gallery-title{ font-size:44px; }
     }
 
     @media (max-width: 900px){
@@ -649,6 +628,10 @@
       .hero-slogan{ font-size:16px; }
       .menu-button{ top:76px; }
       .menu-button.menu-open{ left:205px; }
+
+      .gallery-title{ font-size:38px; }
+      .suites-title{ font-size:38px; }
+
       .welcome-title-small{ font-size:21px; }
       .welcome-title-big{ font-size:38px; }
     }
@@ -726,8 +709,7 @@
   <section class="section welcome reveal" id="welcome">
     <div class="wrap">
       <div class="welcome-shell">
-
-        <div class="welcome-content">
+        <div>
           <div class="welcome-title">
             <div class="welcome-title-small">Bem-vindo à Pousada</div>
             <div class="welcome-title-big">CHATEAU PIRENEUS</div>
@@ -751,12 +733,11 @@
         <div class="welcome-logo">
           <img src="Chateau - 4.png" alt="Chateau Pireneus" />
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- GALLERY (AMBIENTES) -->
+  <!-- GALLERY -->
   <section class="section gallery reveal" id="galeria">
     <div class="wrap">
       <h2 class="gallery-title">AMBIENTES</h2>
@@ -766,17 +747,17 @@
       <div class="gallery-grid">
         <div class="photo">
           <img src="public/galeria/piscina.jpeg" alt="Piscina">
-          <div class="cap"><b>Piscina</b><span class="pill"> </span></div>
+          <div class="cap"><b>Piscina</b></div>
         </div>
 
         <div class="gallery-right">
           <div class="photo">
             <img src="public/galeria/sala-jantar.jpeg" alt="Sala de jantar">
-            <div class="cap"><b>Sala de jantar</b><span class="pill"> </span></div>
+            <div class="cap"><b>Sala de jantar</b></div>
           </div>
           <div class="photo">
             <img src="public/galeria/externa.jpeg" alt="Área externa">
-            <div class="cap"><b>Área externa</b><span class="pill"> </span></div>
+            <div class="cap"><b>Área externa</b></div>
           </div>
         </div>
       </div>

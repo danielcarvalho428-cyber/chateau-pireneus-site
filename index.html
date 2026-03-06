@@ -49,7 +49,9 @@
       font-display:swap;
     }
 
-    /* ===== Sticky luxury header ===== */
+    /* =========================
+       LOCKED PREMIUM HEADER
+       ========================= */
     .top-header{
       position:fixed;
       top:0;
@@ -104,12 +106,12 @@
       line-height:1;
     }
 
+    /* ✅ RESERVAR stays in top bar */
     .header-actions{
       display:flex;
       align-items:center;
       gap:12px;
     }
-
     .reserve-btn{
       text-decoration:none;
       font-weight:900;
@@ -130,7 +132,6 @@
       box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
 
-    /* Hamburger */
     .menu-button{
       font-size:28px;
       line-height:1;
@@ -191,7 +192,9 @@
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    /* ===== HERO ===== */
+    /* =========================
+       LOCKED HERO
+       ========================= */
     .hero{
       height:100vh;
       position:relative;
@@ -230,7 +233,7 @@
       color:#fff;
       font-family:"Gyahegi","Cormorant Garamond", serif;
       padding:0 18px;
-      margin-top:36px; /* space under fixed header */
+      margin-top:36px;
       opacity:0;
       transform:translateY(18px);
       animation:heroIn 1.2s ease forwards;
@@ -278,16 +281,8 @@
       border-radius:12px;
       transition:0.22s ease;
     }
-    .hero-cta .primary{
-      background:rgba(216,199,161,0.92);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      box-shadow:0 18px 40px rgba(0,0,0,0.20);
-    }
-    .hero-cta .primary:hover{
-      background:rgba(203,181,140,0.98);
-      transform:translateY(-1px);
-    }
+
+    /* ✅ Only ONE button now (no reservar in hero) */
     .hero-cta .ghost{
       background:rgba(255,255,255,0.10);
       color:#fff;
@@ -329,44 +324,51 @@
       100%{ transform:translateY(0); opacity:1; }
     }
 
-    /* ===== Sections ===== */
-    .section{
-      padding:86px 0;
-    }
+    /* ===== Shared section helpers ===== */
+    .section{ padding:92px 0; }
     .wrap{
       max-width:var(--max);
       margin:0 auto;
       padding:0 22px;
     }
-
     .orn{
       width:160px;
       height:1px;
       background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
       margin:18px 0 0;
     }
+    .sub{
+      margin:0;
+      max-width:900px;
+      color:rgba(22,37,58,0.72);
+      line-height:1.9;
+      font-size:15px;
+    }
 
-    /* ===== Welcome: premium, no box, tighter vertical ===== */
+    /* =========================
+       BELOW HERO — PREMIUM SECTION SET
+       ========================= */
+
+    /* Welcome */
     .welcome{
-      background:#f6f1e6;
+      background:linear-gradient(to bottom, rgba(246,241,230,0.95), rgba(246,241,230,1));
       border-top:1px solid rgba(29,53,87,0.10);
       border-bottom:1px solid rgba(29,53,87,0.10);
-      padding:46px 0; /* not huge */
+      padding:58px 0;
     }
     .welcome-grid{
       display:grid;
-      grid-template-columns: 1.25fr 0.75fr;
-      gap:34px;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap:38px;
       align-items:center;
     }
-
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
       font-size:24px;
       color:#111;
       letter-spacing:0.4px;
-      margin:0 0 8px;
+      margin:0 0 10px;
     }
     .welcome-title-big{
       font-family:"Gyahegi","Cormorant Garamond", serif;
@@ -379,9 +381,8 @@
       white-space:nowrap;
       line-height:1.15;
     }
-
     .welcome-text{
-      margin-top:16px;
+      margin-top:18px;
       color:rgba(22,37,58,0.84);
       line-height:1.95;
       font-size:15.5px;
@@ -389,35 +390,60 @@
     }
     .welcome-text p{ margin:0 0 14px; }
     .welcome-text p:last-child{ margin-bottom:0; }
-
     .welcome-logo{
       display:flex;
       justify-content:center;
       align-items:center;
     }
     .welcome-logo img{
-      width:min(360px, 24vw);
+      width:min(380px, 26vw);
       height:auto;
       display:block;
       filter: drop-shadow(0 18px 26px rgba(0,0,0,0.12));
     }
 
-    /* ===== Ambientes: Fasano-like clustering, minimal text ===== */
+    /* Signature strip */
+    .signature{
+      background:var(--ivory);
+      border-bottom:1px solid rgba(29,53,87,0.10);
+      padding:34px 0;
+    }
+    .signature-row{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:16px;
+      align-items:center;
+    }
+    .sig-item{
+      padding:18px 14px;
+      border-left:1px solid rgba(29,53,87,0.10);
+    }
+    .sig-item:first-child{ border-left:none; }
+    .sig-item b{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      letter-spacing:0.6px;
+      color:var(--navy);
+      font-size:16px;
+      margin-bottom:6px;
+    }
+    .sig-item span{
+      display:block;
+      color:rgba(22,37,58,0.72);
+      line-height:1.6;
+      font-size:13.5px;
+    }
+
+    /* Ambientes */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
       color:#fff;
     }
-    .gallery-head{
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:18px;
-      flex-wrap:wrap;
-    }
     .gallery-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:44px;
+      font-size:42px;
       letter-spacing:2px;
       margin:0;
       text-transform:uppercase;
@@ -480,7 +506,7 @@
       gap:14px;
     }
 
-    /* ===== Suites: calm ivory → beige gradient, no extra frame ===== */
+    /* Suites */
     .suites{
       background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
       border-top:1px solid rgba(29,53,87,0.10);
@@ -489,18 +515,11 @@
     .suites-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:44px;
+      font-size:42px;
       letter-spacing:2px;
       margin:0 0 10px;
       color:var(--navy);
       text-transform:uppercase;
-    }
-    .sub{
-      margin:0;
-      max-width:900px;
-      color:rgba(22,37,58,0.72);
-      line-height:1.9;
-      font-size:15px;
     }
 
     .carousel{
@@ -522,8 +541,6 @@
       min-width:33.3333%;
       padding:18px;
     }
-
-    /* uniform cards */
     .suite-card .card{
       background:#fff;
       border-radius:18px;
@@ -550,11 +567,9 @@
       display:block;
     }
     .suite-card .card:hover img{ transform:scale(1.06); }
-
     .card-body{
       padding:16px 18px 18px;
       text-align:left;
-
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -574,7 +589,6 @@
       line-height:1.6;
       min-height:42px;
     }
-
     .room-button{
       margin-top:14px;
       display:inline-flex;
@@ -625,47 +639,91 @@
     .arrow-left{ left:10px; }
     .arrow-right{ right:10px; }
 
-    /* ===== Experiences (kept minimal) ===== */
-    .experiences .kicker{
-      text-transform:uppercase;
-      letter-spacing:2.4px;
-      font-size:12px;
-      color:rgba(22,37,58,0.60);
-      margin:0 0 12px;
+    /* Location band */
+    .location{
+      background:var(--ivory);
+      border-top:1px solid rgba(29,53,87,0.10);
     }
-    .title{
+    .location-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:22px;
+      align-items:center;
+    }
+    .location-title{
       font-family:"Cormorant Garamond", serif;
-      font-weight:600;
-      font-size:40px;
+      font-weight:700;
+      font-size:34px;
       margin:0 0 10px;
       color:var(--navy);
     }
-    .exp-grid{
-      margin-top:26px;
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:18px;
-    }
-    .exp-item{
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:18px 18px;
-      background:rgba(255,255,255,0.78);
-      box-shadow:0 10px 22px rgba(0,0,0,0.05);
-    }
-    .exp-item b{
-      display:block;
-      color:var(--navy);
-      font-size:16px;
-      margin-bottom:8px;
-      letter-spacing:0.2px;
-    }
-    .exp-item p{
+    .location p{
       margin:0;
-      color:rgba(22,37,58,0.75);
-      line-height:1.75;
+      color:rgba(22,37,58,0.74);
+      line-height:1.8;
+      font-size:14.5px;
+      max-width:520px;
+    }
+    .location-actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .loc-btn{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.2px;
+      font-size:11px;
+      padding:10px 14px;
+      border-radius:12px;
+      transition:0.2s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .loc-btn.primary{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+    }
+    .loc-btn.primary:hover{ background:rgba(203,181,140,0.98); transform:translateY(-1px); }
+    .loc-btn.ghost{
+      background:transparent;
+      border:1px solid rgba(29,53,87,0.16);
+      color:var(--navy);
+    }
+    .loc-btn.ghost:hover{ background:rgba(29,53,87,0.06); transform:translateY(-1px); }
+
+    .location-panel{
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:var(--shadowSoft);
+      min-height:260px;
+      background:
+        linear-gradient(135deg, rgba(29,53,87,0.08), rgba(216,199,161,0.10)),
+        radial-gradient(900px 360px at 50% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.10));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+    }
+    .location-panel span{
+      display:block;
+      color:rgba(22,37,58,0.70);
+      line-height:1.7;
       font-size:14px;
     }
+
+    /* Reveal */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:0.95s ease;
+    }
+    .reveal.show{ opacity:1; transform:translateY(0); }
 
     footer{
       background:var(--navy);
@@ -674,40 +732,39 @@
       text-align:center;
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 980px){
-      .top-header{ padding:12px 14px; }
       .hero-title span{ font-size:46px; }
       .welcome-grid{ grid-template-columns:1fr; gap:18px; }
       .welcome-logo{ justify-content:flex-start; }
       .welcome-logo img{ width:220px; }
       .welcome-title-big{ white-space:normal; }
 
+      .signature-row{ grid-template-columns:1fr 1fr; }
+      .sig-item{ border-left:none; border-top:1px solid rgba(29,53,87,0.10); }
+      .sig-item:nth-child(1), .sig-item:nth-child(2){ border-top:none; }
+
       .gallery-grid{ grid-template-columns:1fr; }
       .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
 
-      .exp-grid{ grid-template-columns:1fr; }
+      .location-grid{ grid-template-columns:1fr; }
     }
 
     @media (max-width: 900px){
       .suite-card{ min-width:100%; }
       .gallery-title{ font-size:38px; }
       .suites-title{ font-size:38px; }
-      .title{ font-size:36px; }
     }
-
   </style>
 </head>
 
 <body>
 
-  <!-- Side menu + backdrop -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
     <a href="#welcome" onclick="toggleMenu(false)">A pousada</a>
     <a href="#galeria" onclick="toggleMenu(false)">Ambientes</a>
     <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
-    <a href="#experiencias" onclick="toggleMenu(false)">Conheça Piri</a>
+    <a href="#localizacao" onclick="toggleMenu(false)">Localização</a>
 
     <hr>
 
@@ -717,7 +774,7 @@
     <a href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
   </nav>
 
-  <!-- Premium header -->
+  <!-- Header: RESERVAR stays here -->
   <header class="top-header" id="topHeader">
     <div class="top-header-inner">
       <a class="brand" href="#top" aria-label="Chateau Pireneus">
@@ -732,7 +789,7 @@
     </div>
   </header>
 
-  <!-- HERO -->
+  <!-- HERO: remove reservar, keep only “CONHEÇA AS ACOMODAÇÕES” -->
   <section class="hero" id="top" aria-label="Hero">
     <div class="hero-content">
       <h1 class="hero-title">
@@ -743,15 +800,14 @@
       <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
 
       <div class="hero-cta">
-        <a class="primary" href="booking.html">RESERVAR AGORA</a>
-        <a class="ghost" href="#suites">VER ACOMODAÇÕES</a>
+        <a class="ghost" href="#suites">CONHEÇA AS ACOMODAÇÕES</a>
       </div>
     </div>
 
     <div class="scroll-cue" aria-hidden="true"></div>
   </section>
 
-  <!-- WELCOME -->
+  <!-- BELOW HERO (same premium bottom) -->
   <section class="welcome reveal" id="welcome">
     <div class="wrap">
       <div class="welcome-grid">
@@ -780,16 +836,34 @@
     </div>
   </section>
 
-  <!-- AMBIENTES -->
-  <section class="section gallery reveal" id="galeria">
+  <section class="signature reveal">
     <div class="wrap">
-      <div class="gallery-head">
-        <div>
-          <h2 class="gallery-title">AMBIENTES</h2>
-          <p class="gallery-sub">Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!</p>
-          <div class="orn"></div>
+      <div class="signature-row">
+        <div class="sig-item">
+          <b>Somente 6 suítes</b>
+          <span>Privacidade e atmosfera acolhedora.</span>
+        </div>
+        <div class="sig-item">
+          <b>Varanda com rede</b>
+          <span>Seu ritual de descanso em Piri.</span>
+        </div>
+        <div class="sig-item">
+          <b>Conforto & detalhes</b>
+          <span>Enxoval e cuidado em cada espaço.</span>
+        </div>
+        <div class="sig-item">
+          <b>Charme cultural</b>
+          <span>A essência pitoresca de Pirenópolis.</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section gallery reveal" id="galeria">
+    <div class="wrap">
+      <h2 class="gallery-title">AMBIENTES</h2>
+      <p class="gallery-sub">Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!</p>
+      <div class="orn"></div>
 
       <div class="gallery-grid">
         <div class="photo">
@@ -811,7 +885,6 @@
     </div>
   </section>
 
-  <!-- SUITES -->
   <section class="section suites reveal" id="suites">
     <div class="wrap">
       <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
@@ -893,26 +966,24 @@
     </div>
   </section>
 
-  <!-- EXPERIENCES -->
-  <section class="section experiences reveal" id="experiencias">
+  <section class="section location reveal" id="localizacao">
     <div class="wrap">
-      <p class="kicker">Conheça Piri</p>
-      <h2 class="title">Experiências em Pirenópolis</h2>
-      <p class="sub">Charme histórico, natureza e gastronomia — perfeito para curtir a dois.</p>
-      <div class="orn"></div>
+      <div class="location-grid">
+        <div>
+          <h2 class="location-title">Localização</h2>
+          <p>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis GO</p>
 
-      <div class="exp-grid">
-        <div class="exp-item">
-          <b>Centro histórico</b>
-          <p>Passeie pelas ruas de pedra, igrejas e arquitetura colonial — perfeito no fim da tarde.</p>
+          <div class="location-actions">
+            <a class="loc-btn primary" href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" rel="noopener">VER NO MAPA</a>
+            <a class="loc-btn ghost" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
+          </div>
         </div>
-        <div class="exp-item">
-          <b>Cachoeiras & natureza</b>
-          <p>Trilhas leves e banhos refrescantes para desacelerar e renovar as energias.</p>
-        </div>
-        <div class="exp-item">
-          <b>Gastronomia</b>
-          <p>Cafés charmosos e restaurantes para fechar o dia com uma noite especial.</p>
+
+        <div class="location-panel">
+          <span>
+            Clique em “Ver no mapa” para abrir o trajeto.<br>
+            Se preferir, fale conosco via WhatsApp.
+          </span>
         </div>
       </div>
     </div>

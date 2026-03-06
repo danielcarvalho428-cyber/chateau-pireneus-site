@@ -355,7 +355,7 @@
        BELOW HERO (free to change later)
        ========================= */
 
-        /* Welcome */
+          /* Welcome */
     .welcome{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -364,18 +364,17 @@
       border-top:1px solid rgba(29,53,87,0.08);
       border-bottom:1px solid rgba(29,53,87,0.08);
       padding:46px 0 42px;
-      overflow:hidden;
     }
     .welcome-grid{
       display:grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(290px, 0.92fr);
-      gap:24px;
+      grid-template-columns:minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap:18px;
       align-items:start;
     }
     .welcome-copy{
       position:relative;
       z-index:2;
-      max-width:720px;
+      max-width:760px;
     }
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
@@ -401,19 +400,14 @@
       margin:12px 0 0;
       width:150px;
     }
-    .welcome-columns{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px 20px;
-      margin-top:14px;
-      align-items:start;
-    }
     .welcome-text{
+      margin-top:14px;
+      max-width:100%;
       color:rgba(22,37,58,0.82);
-      line-height:1.8;
-      font-size:14.6px;
+      line-height:1.85;
+      font-size:14.8px;
     }
-    .welcome-text p{ margin:0 0 11px; }
+    .welcome-text p{ margin:0 0 12px; }
     .welcome-text p:last-child{ margin-bottom:0; }
     .welcome-text.dropcap p:first-child::first-letter{
       float:left;
@@ -427,25 +421,22 @@
 
     .welcome-logo{
       position:relative;
-      min-height:260px;
+      min-height:250px;
       display:flex;
       align-items:flex-start;
       justify-content:flex-start;
     }
     .welcome-logo img{
-      position:absolute;
-      top:-18px;
-      left:-138px;
-      width:min(460px, 34vw);
-      max-width:none;
+      position:relative;
+      width:min(420px, 31vw);
       height:auto;
       display:block;
+      margin-top:-14px;
+      margin-left:-88px;
       filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
       opacity:0.98;
-      pointer-events:none;
-      user-select:none;
+      max-width:none;
     }
-
     /* Ambientes */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);

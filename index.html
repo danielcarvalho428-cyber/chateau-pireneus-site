@@ -355,7 +355,7 @@
        BELOW HERO (free to change later)
        ========================= */
 
-             /* Welcome */
+    /* Welcome */
     .welcome{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -439,6 +439,7 @@
     .welcome-text p:last-child{
       margin-bottom:0;
     }
+
     /* Ambientes */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
@@ -521,19 +522,19 @@
       background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
       border-top:1px solid rgba(29,53,87,0.10);
       border-bottom:1px solid rgba(29,53,87,0.10);
-      padding:44px 0; /* ✅ much smaller than before */
+      padding:44px 0;
     }
     .suites-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:30px;  /* ✅ smaller (about half feel) */
+      font-size:30px;
       letter-spacing:2px;
       margin:0 0 8px;
       color:var(--navy);
       text-transform:uppercase;
     }
     .suites .sub{
-      font-size:14px;   /* tighter */
+      font-size:14px;
       line-height:1.8;
       margin-top:0;
       max-width:860px;
@@ -543,7 +544,7 @@
     .carousel{
       position:relative;
       max-width:1200px;
-      margin:18px auto 0; /* tighter */
+      margin:18px auto 0;
       overflow:hidden;
       padding:0 10px;
       background:transparent;
@@ -557,7 +558,7 @@
     }
     .suite-card{
       min-width:33.3333%;
-      padding:14px; /* tighter */
+      padding:14px;
     }
     .suite-card .card{
       background:#fff;
@@ -720,11 +721,21 @@
     /* Responsive */
     @media (max-width: 980px){
       .hero-title span{ font-size:46px; }
-      .welcome-grid{ grid-template-columns:1fr; gap:18px; }
-      .welcome-title-big{ white-space:normal; }
-      .welcome-columns{ grid-template-columns:1fr; }
-      .welcome-logo{ justify-content:flex-start; }
-      .welcome-logo img{ width:220px; }
+
+      .welcome{ padding:38px 0 34px; }
+      .welcome-shell{ max-width:none; }
+      .welcome-head{
+        gap:12px;
+        margin-bottom:12px;
+      }
+      .welcome-logo img{
+        width:92px;
+        margin-top:-2px;
+      }
+      .welcome-title-big{
+        white-space:normal;
+        font-size:34px;
+      }
 
       .gallery-grid{ grid-template-columns:1fr; }
       .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
@@ -734,7 +745,7 @@
       .piri-grid{ grid-template-columns:1fr; }
 
       .suites{ padding:38px 0; }
-      .suite-card{ min-width:100%; } /* carousel becomes single card on mobile */
+      .suite-card{ min-width:100%; }
       .suites-title{ font-size:28px; }
     }
   </style>
@@ -794,35 +805,26 @@
   <!-- WELCOME -->
   <section class="welcome reveal" id="welcome">
     <div class="wrap">
-      <div class="welcome-grid">
-        <div>
-          <div class="welcome-title-small">Bem-vindo à Pousada</div>
-          <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
-          <div class="orn"></div>
+      <div class="welcome-shell">
+        <div class="welcome-head">
+          <div class="welcome-logo" aria-hidden="true">
+            <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+          </div>
 
-          <div class="welcome-columns">
-            <div class="welcome-text dropcap">
-              <p>
-                Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois.
-              </p>
-              <p>
-                Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
-              </p>
-            </div>
-
-            <div class="welcome-text">
-              <p>
-                Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
-              </p>
-              <p>
-                Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência feita para desacelerar.
-              </p>
-            </div>
+          <div class="welcome-heading">
+            <div class="welcome-title-small">Bem-vindo à Pousada</div>
+            <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
+            <div class="orn"></div>
           </div>
         </div>
 
-        <div class="welcome-logo">
-          <img src="Chateau - 4.png" alt="Chateau Pireneus" />
+        <div class="welcome-text">
+          <p>
+            Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois. Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
+          </p>
+          <p>
+            Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes. Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência feita para desacelerar.
+          </p>
         </div>
       </div>
     </div>

@@ -352,7 +352,7 @@
     .reveal.show{ opacity:1; transform:translateY(0); }
 
     /* =========================
-       BELOW HERO (free to change later)
+       BELOW HERO
        ========================= */
 
     /* Welcome */
@@ -371,30 +371,8 @@
     }
 
     .welcome-head{
-      display:flex;
-      align-items:flex-start;
-      gap:18px;
-      margin-bottom:14px;
-    }
-
-    .welcome-logo{
-      flex:0 0 auto;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
-    }
-
-    .welcome-logo img{
-      width:150px;
-      height:auto;
       display:block;
-      margin-top:-6px;
-      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
-      opacity:0.98;
-    }
-
-    .welcome-heading{
-      min-width:0;
+      margin-bottom:14px;
     }
 
     .welcome-title-small{
@@ -514,9 +492,7 @@
     }
 
     /* =========================
-       NOSSAS ACOMODAÇÕES (LOCKED after this)
-       - Reverted to CAROUSEL
-       - "at least half size" => reduced padding + smaller headings + tighter spacing
+       NOSSAS ACOMODAÇÕES (LOCKED)
        ========================= */
     .suites{
       background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
@@ -567,7 +543,6 @@
       overflow:hidden;
       transition:0.25s ease;
       border:1px solid rgba(29,53,87,0.10);
-
       display:flex;
       flex-direction:column;
       height:100%;
@@ -659,9 +634,7 @@
     .arrow-left{ left:10px; }
     .arrow-right{ right:10px; }
 
-    /* =========================
-       Conheça Piri (restored)
-       ========================= */
+    /* Conheça Piri */
     .piri{
       background:var(--bg);
       border-top:1px solid rgba(29,53,87,0.08);
@@ -718,20 +691,11 @@
       text-align:center;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .hero-title span{ font-size:46px; }
 
       .welcome{ padding:38px 0 34px; }
       .welcome-shell{ max-width:none; }
-      .welcome-head{
-        gap:12px;
-        margin-bottom:12px;
-      }
-      .welcome-logo img{
-        width:92px;
-        margin-top:-2px;
-      }
       .welcome-title-big{
         white-space:normal;
         font-size:34px;
@@ -769,7 +733,6 @@
     <a href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
   </nav>
 
-  <!-- Glass header -->
   <header class="top-header" id="topHeader">
     <div class="top-header-inner">
       <a class="brand" href="#top" aria-label="Chateau Pireneus">
@@ -784,7 +747,6 @@
     </div>
   </header>
 
-  <!-- HERO (locked) -->
   <section class="hero" id="top" aria-label="Hero">
     <div class="hero-content">
       <h1 class="hero-title">
@@ -807,15 +769,9 @@
     <div class="wrap">
       <div class="welcome-shell">
         <div class="welcome-head">
-          <div class="welcome-logo" aria-hidden="true">
-            <img src="Chateau - 4.png" alt="Chateau Pireneus" />
-          </div>
-
-          <div class="welcome-heading">
-            <div class="welcome-title-small">Bem-vindo à Pousada</div>
-            <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
-            <div class="orn"></div>
-          </div>
+          <div class="welcome-title-small">Bem-vindo à Pousada</div>
+          <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
+          <div class="orn"></div>
         </div>
 
         <div class="welcome-text">
@@ -830,7 +786,6 @@
     </div>
   </section>
 
-  <!-- AMBIENTES -->
   <section class="section gallery reveal" id="galeria">
     <div class="wrap">
       <h2 class="gallery-title">AMBIENTES</h2>
@@ -857,7 +812,6 @@
     </div>
   </section>
 
-  <!-- NOSSAS ACOMODAÇÕES (LOCK THIS AFTER) -->
   <section class="suites reveal" id="suites">
     <div class="wrap">
       <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
@@ -939,7 +893,6 @@
     </div>
   </section>
 
-  <!-- CONHEÇA PIRI (restored) -->
   <section class="section piri reveal" id="piri">
     <div class="wrap">
       <h2 class="piri-title">CONHEÇA PIRI</h2>
@@ -970,7 +923,6 @@
   </footer>
 
   <script>
-    // Header solid on scroll
     const topHeader = document.getElementById("topHeader");
     function onScrollHeader(){
       const y = window.scrollY || document.documentElement.scrollTop;
@@ -979,7 +931,6 @@
     window.addEventListener("scroll", onScrollHeader);
     onScrollHeader();
 
-    // MENU
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
@@ -995,7 +946,6 @@
       }
     }
 
-    // CAROUSEL: loop infinito (setas)
     const track = document.getElementById("carouselTrack");
     let index = 0;
     const visible = 3;
@@ -1019,7 +969,6 @@
       applySlide();
     }, 5500);
 
-    // Fade-in
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting) e.target.classList.add("show");

@@ -10,7 +10,7 @@
     body{
       margin:0;
       font-family:Georgia, serif;
-      background:#f5efe6;
+      background:#f6f1e6; /* bege claro */
       color:#1d3557;
     }
 
@@ -33,7 +33,7 @@
       position:sticky;
       top:0;
       z-index:50;
-      background:rgba(245,239,230,0.92);
+      background:rgba(246,241,230,0.92);
       backdrop-filter: blur(6px);
       border-bottom:1px solid rgba(29,53,87,0.10);
     }
@@ -65,17 +65,17 @@
     .wrap{
       max-width:1100px;
       margin:0 auto;
-      padding:32px 18px 60px;
+      padding:28px 18px 60px;
       display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 1.25fr 0.75fr;
       gap:26px;
+      align-items:start;
     }
 
-    .card{
-      background:#fff;
-      box-shadow:var(--shadow);
-      border-radius:16px;
-      overflow:hidden;
+    /* ===== LEFT: Image Carousel (square corners) ===== */
+    .carousel-box{
+      position:relative;
+      width:100%;
     }
 
     .hero-img{
@@ -84,57 +84,115 @@
       object-fit:cover;
       display:block;
       background:#eee;
-    }
-    .thumbs{
-      display:flex;
-      gap:10px;
-      padding:14px;
-      overflow:auto;
-      border-top:1px solid rgba(0,0,0,0.06);
-    }
-    .thumbs img{
-      width:84px;
-      height:64px;
-      object-fit:cover;
-      border-radius:10px;
-      cursor:pointer;
-      opacity:0.85;
-      border:2px solid transparent;
-      flex:0 0 auto;
-    }
-    .thumbs img:hover{ opacity:1; }
-    .thumbs img.active{
-      opacity:1;
-      border-color:var(--beige-dark);
+      border-radius:0;              /* cantos retos */
+      box-shadow: var(--shadow);
     }
 
-    .info{ padding:22px; }
-    h1{
+    .img-arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      background:rgba(216,199,161,0.95);
+      color:var(--blue);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+      transition:0.2s ease;
+    }
+    .img-arrow:hover{
+      background:#fff;
+      transform:translateY(-50%) scale(1.04);
+    }
+    .img-arrow.left{ left:12px; }
+    .img-arrow.right{ right:12px; }
+
+    .dots{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:14px;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:rgba(29,53,87,0.22);
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+    .dot.active{
+      background:rgba(216,199,161,0.98); /* dourado */
+      transform:scale(1.15);
+    }
+
+    /* ===== RIGHT: Info (NO white card) ===== */
+    .info{
+      padding:0; /* sem cartão branco */
+    }
+
+    /* Subtitle ABOVE title */
+    .room-subtitle{
+      color:var(--beige-dark); /* dourado */
+      font-size:14px;
+      letter-spacing:0.8px;
+      text-transform:lowercase;
       margin:0 0 10px;
-      font-size:32px;
-      letter-spacing:0.4px;
+    }
+
+    /* Title: Gyahegi, same size as before */
+    .room-title{
+      margin:0;
+      font-family:"Gyahegi", "Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px; /* mantém o tamanho (antes era ~32px) */
+      letter-spacing:1px;
       color:var(--blue);
     }
+
+    /* Gold divider under title (elegant) */
+    .gold-rule{
+      width:160px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+      margin:14px 0 18px;
+    }
+
     .subtitle{
       margin:0 0 18px;
       color:#2b2b2b;
-      line-height:1.6;
-      font-size:16px;
+      line-height:1.7;
+      font-size:15px;
     }
 
     .section-title{
       margin:18px 0 10px;
-      font-size:16px;
-      letter-spacing:0.4px;
+      font-size:14px;
+      letter-spacing:0.8px;
       text-transform:uppercase;
       opacity:0.85;
     }
+
     ul{
       margin:0;
       padding-left:18px;
       color:#333;
       line-height:1.7;
-      font-size:15px;
+      font-size:14.5px;
+    }
+
+    /* Capacity line (no bullet, no "DETALHES") */
+    .capacity{
+      margin-top:14px;
+      font-weight:700;
+      color:var(--blue);
+      font-size:14.5px;
     }
 
     .cta{
@@ -205,21 +263,30 @@
   <div id="errBox" class="error"></div>
 
   <main class="wrap">
-    <section class="card" aria-label="Galeria da suíte">
-      <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
-      <div class="thumbs" id="thumbs"></div>
+    <!-- LEFT: Carousel -->
+    <section aria-label="Galeria da suíte">
+      <div class="carousel-box">
+        <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
+        <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
+        <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+      </div>
+
+      <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
     </section>
 
-    <aside class="card">
+    <!-- RIGHT: Info (no card) -->
+    <aside>
       <div class="info">
-        <h1 id="roomName">Suíte</h1>
+        <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
+        <h1 class="room-title" id="roomName">Suíte</h1>
+        <div class="gold-rule" aria-hidden="true"></div>
+
         <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
 
         <div class="section-title">Comodidades</div>
         <ul id="amenities"></ul>
 
-        <div class="section-title">Detalhes</div>
-        <ul id="details"></ul>
+        <div class="capacity" id="capacityLine">Capacidade: —</div>
 
         <div class="cta">
           <a class="btn primary" href="booking.html">RESERVAR</a>
@@ -234,7 +301,8 @@
       const ROOMS = {
         divino: {
           name: "Suíte do Divino",
-          desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/divino/divino1.jpeg",
             "public/suites/divino/divino2.jpeg",
@@ -252,12 +320,13 @@
             "Banheiro privativo",
             "Varanda privativa com rede"
           ],
-          details: ["Capacidade: 2 hóspedes"]
+          capacity: "Capacidade: 2 hóspedes"
         },
 
         cavalhadas: {
           name: "Suíte das Cavalhadas",
-          desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/cavalhadas/cavalhadas1.jpeg",
             "public/suites/cavalhadas/cavalhadas2.jpeg",
@@ -275,12 +344,13 @@
             "Banheiro privativo",
             "Varanda privativa com rede"
           ],
-          details: ["Capacidade: 2 hóspedes"]
+          capacity: "Capacidade: 2 hóspedes"
         },
 
         rosario: {
           name: "Suíte do Rosário",
-          desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/rosario/rosario1.jpeg",
             "public/suites/rosario/rosario2.jpeg",
@@ -298,12 +368,13 @@
             "Banheiro privativo",
             "Varanda privativa com rede"
           ],
-          details: ["Capacidade: 2 hóspedes"]
+          capacity: "Capacidade: 2 hóspedes"
         },
 
         aurora: {
           name: "Suíte Aurora",
-          desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/aurora/aurora1.jpeg",
             "public/suites/aurora/aurora2.jpeg",
@@ -321,12 +392,13 @@
             "Banheiro privativo",
             "Varanda privativa com rede"
           ],
-          details: ["Capacidade: 2 hóspedes"]
+          capacity: "Capacidade: 2 hóspedes"
         },
 
         bonfim: {
           name: "Suíte do Bonfim",
-          desc: "(suíte padrão sem Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão sem Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/bonfim/bonfim1.jpeg",
             "public/suites/bonfim/bonfim2.jpeg",
@@ -343,15 +415,15 @@
             "Banheiro privativo",
             "Varanda privativa com rede"
           ],
-          details: ["Capacidade: 2 hóspedes"]
+          capacity: "Capacidade: 2 hóspedes"
         }
       };
 
       const errBox = document.getElementById("errBox");
-      function showError(msg){
+      const showError = (msg) => {
         errBox.style.display = "block";
         errBox.textContent = msg;
-      }
+      };
 
       const params = new URLSearchParams(location.search);
       const key = (params.get("room") || "divino").toLowerCase().trim();
@@ -363,42 +435,79 @@
       }
 
       document.title = room.name + " • Chateau Pireneus";
+
+      // Subtitle ABOVE title, in gold
+      document.getElementById("roomSub").textContent = room.subtitle;
+
+      // Title with Gyahegi (handled in CSS)
       document.getElementById("roomName").textContent = room.name;
 
-      document.getElementById("roomDesc").innerHTML = room.desc.replace(/\n/g, "<br>");
+      document.getElementById("roomDesc").textContent = room.desc;
 
       document.getElementById("amenities").innerHTML =
         room.amenities.map(x => "<li>" + x + "</li>").join("");
 
-      document.getElementById("details").innerHTML =
-        room.details.map(x => "<li>" + x + "</li>").join("");
+      // Capacity line (no bullet)
+      document.getElementById("capacityLine").textContent = room.capacity;
 
+      // WhatsApp message
       const waBtn = document.getElementById("waBtn");
       const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
       waBtn.href = "https://wa.me/5562998167654?text=" + msg;
 
+      // ===== Carousel logic (auto + arrows + dots) =====
       const heroImg = document.getElementById("heroImg");
-      const thumbs = document.getElementById("thumbs");
+      const dotsWrap = document.getElementById("dots");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
 
-      function setActive(i){
+      let i = 0;
+      let timer = null;
+
+      function renderDots(){
+        dotsWrap.innerHTML = room.photos.map((_, idx) => (
+          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx+1) + '"></div>'
+        )).join("");
+      }
+
+      function setActive(idx){
+        i = idx;
         heroImg.src = room.photos[i];
-        heroImg.alt = "Foto da " + room.name;
-        Array.from(thumbs.querySelectorAll("img")).forEach((img, idx)=>{
-          img.classList.toggle("active", idx === i);
+        heroImg.alt = "Foto da " + room.name + " (" + (i+1) + "/" + room.photos.length + ")";
+
+        Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
+          d.classList.toggle("active", di === i);
         });
       }
 
-      thumbs.innerHTML = room.photos.map((src, i)=>(
-        '<img src="' + src + '" alt="Miniatura ' + (i+1) + '" data-i="' + i + '">'
-      )).join("");
+      function next(){
+        const n = room.photos.length;
+        setActive((i + 1) % n);
+      }
 
-      thumbs.addEventListener("click", (e)=>{
-        const img = e.target.closest("img");
-        if(!img) return;
-        setActive(Number(img.dataset.i));
-      });
+      function prev(){
+        const n = room.photos.length;
+        setActive((i - 1 + n) % n);
+      }
 
+      function restartTimer(){
+        if(timer) clearInterval(timer);
+        timer = setInterval(next, 4500);
+      }
+
+      renderDots();
       setActive(0);
+      restartTimer();
+
+      nextBtn.addEventListener("click", () => { next(); restartTimer(); });
+      prevBtn.addEventListener("click", () => { prev(); restartTimer(); });
+
+      dotsWrap.addEventListener("click", (e) => {
+        const dot = e.target.closest(".dot");
+        if(!dot) return;
+        setActive(Number(dot.dataset.i));
+        restartTimer();
+      });
     })();
   </script>
 </body>

@@ -151,7 +151,6 @@
     .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
     .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
 
-    /* Side menu */
     .backdrop{
       position:fixed;
       inset:0;
@@ -191,9 +190,7 @@
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    /* =========================
-       HERO (LOCKED)
-       ========================= */
+    /* HERO (LOCKED) */
     .hero{
       height:100vh;
       position:relative;
@@ -321,7 +318,6 @@
       100%{ transform:translateY(0); opacity:1; }
     }
 
-    /* Shared */
     .wrap{
       max-width:var(--max);
       margin:0 auto;
@@ -349,7 +345,7 @@
     }
     .reveal.show{ opacity:1; transform:translateY(0); }
 
-    /* Welcome */
+    /* WELCOME */
     .welcome{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -365,8 +361,30 @@
     }
 
     .welcome-head{
-      display:block;
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
       margin-bottom:14px;
+    }
+
+    .welcome-logo{
+      flex:0 0 auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+    }
+
+    .welcome-logo img{
+      width:118px;
+      height:auto;
+      display:block;
+      margin-top:-4px;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
+      opacity:0.98;
+    }
+
+    .welcome-heading{
+      min-width:0;
     }
 
     .welcome-title-small{
@@ -412,7 +430,7 @@
       margin-bottom:0;
     }
 
-    /* Ambientes */
+    /* AMBIENTES */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
       color:#fff;
@@ -542,7 +560,7 @@
       gap:14px;
     }
 
-    /* Suites (LOCKED) */
+    /* SUITES (LOCKED) */
     .suites{
       background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
       border-top:1px solid rgba(29,53,87,0.10);
@@ -683,7 +701,7 @@
     .arrow-left{ left:10px; }
     .arrow-right{ right:10px; }
 
-    /* Conheça Piri */
+    /* CONHEÇA PIRI */
     .piri{
       background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
       border-top:1px solid rgba(29,53,87,0.08);
@@ -827,6 +845,14 @@
 
       .welcome{ padding:38px 0 34px; }
       .welcome-shell{ max-width:none; }
+      .welcome-head{
+        gap:12px;
+        margin-bottom:12px;
+      }
+      .welcome-logo img{
+        width:82px;
+        margin-top:-2px;
+      }
       .welcome-title-big{
         white-space:normal;
         font-size:34px;
@@ -879,7 +905,6 @@
     </div>
   </header>
 
-  <!-- HERO (locked) -->
   <section class="hero" id="top" aria-label="Hero">
     <div class="hero-content">
       <h1 class="hero-title">
@@ -897,14 +922,19 @@
     <div class="scroll-cue" aria-hidden="true"></div>
   </section>
 
-  <!-- WELCOME -->
   <section class="welcome reveal" id="welcome">
     <div class="wrap">
       <div class="welcome-shell">
         <div class="welcome-head">
-          <div class="welcome-title-small">Bem-vindo à Pousada</div>
-          <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
-          <div class="orn"></div>
+          <div class="welcome-logo" aria-hidden="true">
+            <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+          </div>
+
+          <div class="welcome-heading">
+            <div class="welcome-title-small">Bem-vindo à Pousada</div>
+            <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
+            <div class="orn"></div>
+          </div>
         </div>
 
         <div class="welcome-text">
@@ -919,7 +949,6 @@
     </div>
   </section>
 
-  <!-- AMBIENTES -->
   <section class="section gallery reveal" id="galeria">
     <div class="wrap">
       <h2 class="gallery-title">AMBIENTES</h2>
@@ -992,7 +1021,6 @@
     </div>
   </section>
 
-  <!-- NOSSAS ACOMODAÇÕES -->
   <section class="suites reveal" id="suites">
     <div class="wrap">
       <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
@@ -1074,7 +1102,6 @@
     </div>
   </section>
 
-  <!-- CONHEÇA PIRI -->
   <section class="section piri reveal" id="piri">
     <div class="wrap">
       <div class="piri-top">
@@ -1131,7 +1158,6 @@
   </footer>
 
   <script>
-    // Header solid on scroll
     const topHeader = document.getElementById("topHeader");
     function onScrollHeader(){
       const y = window.scrollY || document.documentElement.scrollTop;
@@ -1140,7 +1166,6 @@
     window.addEventListener("scroll", onScrollHeader);
     onScrollHeader();
 
-    // MENU
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
@@ -1156,7 +1181,6 @@
       }
     }
 
-    // SUITES CAROUSEL
     const track = document.getElementById("carouselTrack");
     let index = 0;
     const visible = 3;
@@ -1180,7 +1204,6 @@
       applySlide();
     }, 5500);
 
-    // AMBIENTES SLIDERS
     const ambienteSliders = document.querySelectorAll(".ambiente-slider");
 
     ambienteSliders.forEach((slider)=>{
@@ -1211,7 +1234,6 @@
       }, 4200);
     });
 
-    // Fade-in
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting) e.target.classList.add("show");

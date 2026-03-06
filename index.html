@@ -14,7 +14,6 @@
     :root{
       --navy:#1d3557;
       --navy2:#142a45;
-
       --gold:#d8c7a1;
       --gold2:#cbb58c;
 
@@ -52,7 +51,7 @@
     }
 
     /* =========================
-       GLASS HEADER (LOCKED STYLE)
+       GLASS HEADER (LOCKED)
        ========================= */
     .top-header{
       position:fixed;
@@ -71,7 +70,6 @@
       border-bottom:1px solid rgba(29,53,87,0.12);
       box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
-
     .top-header-inner{
       max-width:var(--max);
       margin:0 auto;
@@ -195,7 +193,7 @@
     }
 
     /* =========================
-       HERO (LOCKED; ONLY REQUESTED EDITS)
+       HERO (LOCKED)
        ========================= */
     .hero{
       height:100vh;
@@ -267,7 +265,6 @@
       opacity:0.98;
     }
 
-    /* ✅ only ONE hero button now */
     .hero-cta{
       margin-top:18px;
       display:flex;
@@ -325,7 +322,7 @@
       100%{ transform:translateY(0); opacity:1; }
     }
 
-    /* ===== Shared helpers ===== */
+    /* ===== shared ===== */
     .wrap{
       max-width:var(--max);
       margin:0 auto;
@@ -355,10 +352,10 @@
     .reveal.show{ opacity:1; transform:translateY(0); }
 
     /* =========================
-       PREMIUM BELOW HERO (NEW WOW)
+       BELOW HERO (free to change later)
        ========================= */
 
-    /* 1) Welcome: editorial, quiet luxury, no card */
+    /* Welcome (kept premium, clean) */
     .welcome{
       background:
         radial-gradient(1100px 420px at 18% 20%, rgba(29,53,87,0.10), transparent 60%),
@@ -374,7 +371,6 @@
       gap:44px;
       align-items:center;
     }
-
     .welcome-title-small{
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
@@ -394,14 +390,12 @@
       white-space:nowrap;
       line-height:1.15;
     }
-
     .welcome-columns{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:18px 22px;
       margin-top:18px;
     }
-
     .welcome-text{
       color:rgba(22,37,58,0.84);
       line-height:1.95;
@@ -409,8 +403,6 @@
     }
     .welcome-text p{ margin:0 0 14px; }
     .welcome-text p:last-child{ margin-bottom:0; }
-
-    /* dropcap for a premium feel */
     .welcome-text.dropcap p:first-child::first-letter{
       float:left;
       font-family:"Cormorant Garamond", serif;
@@ -420,93 +412,19 @@
       margin:6px 10px 0 0;
       color:rgba(29,53,87,0.85);
     }
-
-    .welcome-aside{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-    }
-    .welcome-aside-inner{
-      width:100%;
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:18px;
-      background:rgba(255,255,255,0.55);
-      box-shadow:var(--shadowSoft);
-      overflow:hidden;
-    }
-    .welcome-aside-top{
-      padding:18px 18px 14px;
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      background:linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(255,255,255,0.30));
-    }
-    .welcome-aside-top b{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-size:18px;
-      letter-spacing:0.4px;
-      color:var(--navy);
-      margin-bottom:4px;
-    }
-    .welcome-aside-top span{
-      display:block;
-      color:rgba(22,37,58,0.72);
-      font-size:13.5px;
-      line-height:1.55;
-    }
     .welcome-logo{
       display:flex;
-      justify-content:center;
       align-items:center;
-      padding:18px;
-      background:rgba(246,241,230,0.65);
+      justify-content:center;
     }
     .welcome-logo img{
-      width:min(340px, 26vw);
+      width:min(360px, 26vw);
       height:auto;
       display:block;
       filter: drop-shadow(0 18px 26px rgba(0,0,0,0.12));
     }
 
-    /* 2) Signature strip: very hotel-like (no icons, no cards) */
-    .signature{
-      background:var(--ivory);
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      padding:36px 0;
-    }
-    .signature-row{
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:0;
-      align-items:stretch;
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:18px;
-      overflow:hidden;
-      background:rgba(255,255,255,0.60);
-      box-shadow:0 12px 28px rgba(0,0,0,0.06);
-    }
-    .sig-item{
-      padding:18px 16px;
-      border-left:1px solid rgba(29,53,87,0.10);
-    }
-    .sig-item:first-child{ border-left:none; }
-    .sig-item b{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      letter-spacing:0.6px;
-      color:var(--navy);
-      font-size:16px;
-      margin-bottom:6px;
-    }
-    .sig-item span{
-      display:block;
-      color:rgba(22,37,58,0.72);
-      line-height:1.6;
-      font-size:13.5px;
-    }
-
-    /* 3) Ambientes: cinematic cluster, minimal labels */
+    /* Ambientes */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
       color:#fff;
@@ -529,7 +447,6 @@
     .gallery .orn{
       background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
     }
-
     .gallery-grid{
       margin-top:34px;
       display:grid;
@@ -580,249 +497,201 @@
       gap:14px;
     }
 
-    /* 4) Suites: premium selector (WOW) */
+    /* =========================
+       NOSSAS ACOMODAÇÕES (LOCKED after this)
+       - Reverted to CAROUSEL
+       - "at least half size" => reduced padding + smaller headings + tighter spacing
+       ========================= */
     .suites{
-      background:
-        radial-gradient(900px 320px at 20% 20%, rgba(29,53,87,0.06), transparent 60%),
-        linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
+      background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
       border-top:1px solid rgba(29,53,87,0.10);
       border-bottom:1px solid rgba(29,53,87,0.10);
+      padding:44px 0; /* ✅ much smaller than before */
     }
     .suites-title{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:42px;
+      font-size:30px;  /* ✅ smaller (about half feel) */
       letter-spacing:2px;
-      margin:0 0 10px;
+      margin:0 0 8px;
       color:var(--navy);
       text-transform:uppercase;
     }
+    .suites .sub{
+      font-size:14px;   /* tighter */
+      line-height:1.8;
+      margin-top:0;
+      max-width:860px;
+    }
+    .suites .orn{ margin-top:14px; }
 
-    .suite-showcase{
+    .carousel{
+      position:relative;
+      max-width:1200px;
+      margin:18px auto 0; /* tighter */
+      overflow:hidden;
+      padding:0 10px;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+    }
+    .carousel-track{
+      display:flex;
+      transition:transform 0.5s ease;
+      will-change:transform;
+    }
+    .suite-card{
+      min-width:33.3333%;
+      padding:14px; /* tighter */
+    }
+    .suite-card .card{
+      background:#fff;
+      border-radius:18px;
+      box-shadow:var(--shadowSoft);
+      overflow:hidden;
+      transition:0.25s ease;
+      border:1px solid rgba(29,53,87,0.10);
+
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .suite-card .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow);
+    }
+    .img-wrap{ overflow:hidden; }
+    .suite-card .card img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      transform:scale(1);
+      transition:transform 0.55s ease;
+      display:block;
+    }
+    .suite-card .card:hover img{ transform:scale(1.06); }
+    .card-body{
+      padding:14px 16px 16px;
+      text-align:left;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      flex:1;
+      min-height:140px;
+    }
+    .suite-card h3{
+      margin:0;
+      font-size:17px;
+      font-weight:700;
+      color:var(--navy);
+    }
+    .suite-card small{
+      display:block;
+      margin-top:6px;
+      color:rgba(22,37,58,0.70);
+      line-height:1.6;
+      min-height:40px;
+      font-size:13.5px;
+    }
+    .room-button{
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:2px solid var(--gold2);
+      color:var(--navy);
+      background:transparent;
+      font-weight:900;
+      letter-spacing:1px;
+      text-decoration:none;
+      transition:0.2s ease;
+      width:fit-content;
+      font-size:11px;
+    }
+    .room-button:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#fff;
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.55);
+    }
+    .arrow{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:44px;
+      height:44px;
+      border-radius:50%;
+      background:rgba(216,199,161,0.96);
+      color:var(--navy);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      cursor:pointer;
+      box-shadow:0 18px 35px rgba(0,0,0,0.18);
+      z-index:5;
+      user-select:none;
+      transition:0.2s ease;
+    }
+    .arrow:hover{
+      background:#fff;
+      transform:translateY(-50%) scale(1.04);
+    }
+    .arrow-left{ left:10px; }
+    .arrow-right{ right:10px; }
+
+    /* =========================
+       Conheça Piri (restored)
+       ========================= */
+    .piri{
+      background:var(--bg);
+      border-top:1px solid rgba(29,53,87,0.08);
+    }
+    .piri-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:38px;
+      letter-spacing:2px;
+      margin:0;
+      text-transform:uppercase;
+      color:var(--navy);
+    }
+    .piri-sub{
+      margin:10px 0 0;
+      max-width:900px;
+      color:rgba(22,37,58,0.74);
+      line-height:1.9;
+      font-size:15px;
+    }
+    .piri-grid{
       margin-top:26px;
       display:grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap:18px;
-      align-items:stretch;
     }
-
-    .suite-list{
-      border:1px solid rgba(29,53,87,0.10);
+    .piri-card{
+      border:1px solid rgba(29,53,87,0.12);
       border-radius:18px;
       background:rgba(255,255,255,0.70);
-      box-shadow:0 14px 34px rgba(0,0,0,0.06);
-      overflow:hidden;
+      box-shadow:0 12px 28px rgba(0,0,0,0.06);
+      padding:18px 18px;
     }
-    .suite-item{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 16px;
-      cursor:pointer;
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      transition:0.18s ease;
-    }
-    .suite-item:last-child{ border-bottom:none; }
-    .suite-item:hover{ background:rgba(29,53,87,0.04); }
-    .suite-item.active{
-      background:rgba(29,53,87,0.06);
-      box-shadow: inset 3px 0 0 rgba(216,199,161,0.95);
-    }
-    .suite-item b{
+    .piri-card b{
       display:block;
-      color:var(--navy);
-      font-size:15px;
-      letter-spacing:0.2px;
-      margin-bottom:4px;
-    }
-    .suite-item span{
-      display:block;
-      color:rgba(22,37,58,0.70);
-      font-size:13.5px;
-      line-height:1.5;
-      max-width:260px;
-    }
-    .suite-item em{
-      font-style:normal;
-      font-weight:900;
-      color:rgba(29,53,87,0.55);
-      letter-spacing:1px;
-      font-size:11px;
-      white-space:nowrap;
-      margin-top:2px;
-    }
-
-    .suite-view{
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(29,53,87,0.10);
-      box-shadow:var(--shadowSoft);
-      background:#fff;
-      display:flex;
-      flex-direction:column;
-    }
-    .suite-view img{
-      width:100%;
-      height:360px;
-      object-fit:cover;
-      display:block;
-    }
-    .suite-view::after{
-      content:"";
-      position:absolute;
-      left:0; right:0; top:0; height:360px;
-      background:linear-gradient(to top, rgba(0,0,0,0.52), rgba(0,0,0,0.08) 60%);
-      pointer-events:none;
-    }
-    .suite-view-cap{
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:18px;
-      z-index:2;
-      color:#fff;
-      text-shadow:0 12px 30px rgba(0,0,0,0.55);
-    }
-    .suite-view-cap h3{
-      margin:0;
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
-      font-size:24px;
-      letter-spacing:0.4px;
-    }
-    .suite-view-cap p{
-      margin:6px 0 0;
-      max-width:520px;
-      opacity:0.92;
-      line-height:1.7;
-      font-size:14px;
-    }
-
-    .suite-view-body{
-      padding:16px 18px 18px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-    }
-    .suite-meta{
-      color:rgba(22,37,58,0.78);
-      line-height:1.7;
-      font-size:14px;
-    }
-    .suite-meta b{ color:var(--navy); }
-    .suite-actions{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      align-items:flex-end;
-      min-width:160px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:1.2px;
-      font-size:11px;
-      padding:10px 14px;
-      border-radius:12px;
-      transition:0.2s ease;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .btn.primary{
-      background:rgba(216,199,161,0.92);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      box-shadow:0 16px 34px rgba(0,0,0,0.12);
-    }
-    .btn.primary:hover{ background:rgba(203,181,140,0.98); transform:translateY(-1px); }
-    .btn.ghost{
-      background:transparent;
-      border:1px solid rgba(29,53,87,0.16);
+      font-size:18px;
       color:var(--navy);
+      margin-bottom:8px;
+      letter-spacing:0.3px;
     }
-    .btn.ghost:hover{ background:rgba(29,53,87,0.06); transform:translateY(-1px); }
-
-    /* 5) Location: understated conversion band */
-    .location{
-      background:var(--ivory);
-      border-top:1px solid rgba(29,53,87,0.10);
-    }
-    .location-grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:22px;
-      align-items:center;
-    }
-    .location-title{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      font-size:34px;
-      margin:0 0 10px;
-      color:var(--navy);
-    }
-    .location p{
+    .piri-card p{
       margin:0;
       color:rgba(22,37,58,0.74);
-      line-height:1.8;
-      font-size:14.5px;
-      max-width:520px;
-    }
-    .location-actions{
-      margin-top:16px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .loc-btn{
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:1.2px;
-      font-size:11px;
-      padding:10px 14px;
-      border-radius:12px;
-      transition:0.2s ease;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .loc-btn.primary{
-      background:rgba(216,199,161,0.92);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-    }
-    .loc-btn.primary:hover{ background:rgba(203,181,140,0.98); transform:translateY(-1px); }
-    .loc-btn.ghost{
-      background:transparent;
-      border:1px solid rgba(29,53,87,0.16);
-      color:var(--navy);
-    }
-    .loc-btn.ghost:hover{ background:rgba(29,53,87,0.06); transform:translateY(-1px); }
-
-    .location-panel{
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(29,53,87,0.10);
-      box-shadow:var(--shadowSoft);
-      min-height:260px;
-      background:
-        linear-gradient(135deg, rgba(29,53,87,0.08), rgba(216,199,161,0.10)),
-        radial-gradient(900px 360px at 50% 30%, rgba(255,255,255,0.55), rgba(255,255,255,0.10));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:20px;
-    }
-    .location-panel span{
-      display:block;
-      color:rgba(22,37,58,0.70);
-      line-height:1.7;
+      line-height:1.75;
       font-size:14px;
     }
 
@@ -836,45 +705,35 @@
     /* Responsive */
     @media (max-width: 980px){
       .hero-title span{ font-size:46px; }
-
       .welcome-grid{ grid-template-columns:1fr; gap:18px; }
       .welcome-title-big{ white-space:normal; }
       .welcome-columns{ grid-template-columns:1fr; }
-
-      .welcome-aside{ justify-content:flex-start; }
+      .welcome-logo{ justify-content:flex-start; }
       .welcome-logo img{ width:220px; }
-
-      .signature-row{ grid-template-columns:1fr 1fr; }
-      .sig-item{ border-left:none; border-top:1px solid rgba(29,53,87,0.10); }
-      .sig-item:nth-child(1), .sig-item:nth-child(2){ border-top:none; }
 
       .gallery-grid{ grid-template-columns:1fr; }
       .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
       .photo{ min-height:260px; }
       .photo.small{ min-height:220px; }
 
-      .suite-showcase{ grid-template-columns:1fr; }
-      .suite-view img{ height:320px; }
-      .suite-actions{ flex-direction:row; align-items:center; min-width:unset; }
+      .piri-grid{ grid-template-columns:1fr; }
 
-      .location-grid{ grid-template-columns:1fr; }
-    }
-
-    @media (max-width: 520px){
-      .hero-title span{ font-size:40px; }
+      .suites{ padding:38px 0; }
+      .suite-card{ min-width:100%; } /* carousel becomes single card on mobile */
+      .suites-title{ font-size:28px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Side menu + backdrop -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
     <a href="#welcome" onclick="toggleMenu(false)">A pousada</a>
     <a href="#galeria" onclick="toggleMenu(false)">Ambientes</a>
     <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
-    <a href="#localizacao" onclick="toggleMenu(false)">Localização</a>
+    <a href="#piri" onclick="toggleMenu(false)">Conheça Piri</a>
 
     <hr>
 
@@ -917,7 +776,7 @@
     <div class="scroll-cue" aria-hidden="true"></div>
   </section>
 
-  <!-- WELCOME (WOW) -->
+  <!-- WELCOME -->
   <section class="welcome reveal" id="welcome">
     <div class="wrap">
       <div class="welcome-grid">
@@ -941,46 +800,14 @@
                 Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes.
               </p>
               <p>
-                Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência que parece feita sob medida.
+                Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência feita para desacelerar.
               </p>
             </div>
           </div>
         </div>
 
-        <div class="welcome-aside">
-          <div class="welcome-aside-inner">
-            <div class="welcome-aside-top">
-              <b>Hospedagem boutique</b>
-              <span>Privacidade, charme cultural e um refúgio descomplicado para viver bons momentos a dois.</span>
-            </div>
-            <div class="welcome-logo">
-              <img src="Chateau - 4.png" alt="Chateau Pireneus" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Signature strip -->
-  <section class="signature reveal">
-    <div class="wrap">
-      <div class="signature-row">
-        <div class="sig-item">
-          <b>Somente 6 suítes</b>
-          <span>Mais privacidade e atmosfera acolhedora.</span>
-        </div>
-        <div class="sig-item">
-          <b>Varanda com rede</b>
-          <span>Seu ritual de descanso em Pirenópolis.</span>
-        </div>
-        <div class="sig-item">
-          <b>Piscina & área externa</b>
-          <span>Momentos leves, com tempo para respirar.</span>
-        </div>
-        <div class="sig-item">
-          <b>Espaço gourmet</b>
-          <span>Para brindar e curtir a dois, sem pressa.</span>
+        <div class="welcome-logo">
+          <img src="Chateau - 4.png" alt="Chateau Pireneus" />
         </div>
       </div>
     </div>
@@ -1013,97 +840,107 @@
     </div>
   </section>
 
-  <!-- SUITES (WOW: selector + cinematic preview) -->
-  <section class="section suites reveal" id="suites">
+  <!-- NOSSAS ACOMODAÇÕES (LOCK THIS AFTER) -->
+  <section class="suites reveal" id="suites">
     <div class="wrap">
       <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
       <p class="sub">Suítes com conforto premium e detalhes que remetem ao clima romântico e cultural de Piri.</p>
       <div class="orn"></div>
 
-      <div class="suite-showcase" aria-label="Seleção de suítes">
-        <div class="suite-list" id="suiteList">
-          <div class="suite-item active" data-room="divino" data-img="public/suites/divino/divino1.jpeg" data-title="Suíte do Divino" data-desc="Conforto e tranquilidade para uma estadia a dois." data-cap="Capacidade: 2 hóspedes">
-            <div>
-              <b>Suíte do Divino</b>
-              <span>Suíte padrão com TV • varanda com rede</span>
+      <div class="carousel" aria-label="Carousel de acomodações">
+        <div class="arrow arrow-left" onclick="moveSlide(-1)">‹</div>
+        <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
+
+        <div class="carousel-track" id="carouselTrack">
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Divino</h3>
+                  <small>Conforto e tranquilidade para uma estadia a dois.</small>
+                </div>
+                <a href="suite.html?room=divino" class="room-button">Conhecer</a>
+              </div>
             </div>
-            <em>01</em>
           </div>
 
-          <div class="suite-item" data-room="cavalhadas" data-img="public/suites/cavalhadas/cavalhadas1.jpeg" data-title="Suíte das Cavalhadas" data-desc="Ambiente acolhedor com charme cultural de Piri." data-cap="Capacidade: 2 hóspedes">
-            <div>
-              <b>Suíte das Cavalhadas</b>
-              <span>Suíte padrão com TV • varanda com rede</span>
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte das Cavalhadas</h3>
+                  <small>Ambiente acolhedor com varanda privativa e rede.</small>
+                </div>
+                <a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a>
+              </div>
             </div>
-            <em>02</em>
           </div>
 
-          <div class="suite-item" data-room="rosario" data-img="public/suites/rosario/rosario1.jpeg" data-title="Suíte do Rosário" data-desc="Aconchegante, prática e perfeita para desacelerar." data-cap="Capacidade: 2 hóspedes">
-            <div>
-              <b>Suíte do Rosário</b>
-              <span>Suíte padrão com TV • varanda com rede</span>
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Rosário</h3>
+                  <small>Para relaxar e curtir o charme de Pirenópolis.</small>
+                </div>
+                <a href="suite.html?room=rosario" class="room-button">Conhecer</a>
+              </div>
             </div>
-            <em>03</em>
           </div>
 
-          <div class="suite-item" data-room="aurora" data-img="public/suites/aurora/aurora1.jpeg" data-title="Suíte Aurora" data-desc="Uma experiência romântica com conforto e tranquilidade." data-cap="Capacidade: 2 hóspedes">
-            <div>
-              <b>Suíte Aurora</b>
-              <span>Suíte padrão com TV • varanda com rede</span>
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte Aurora</h3>
+                  <small>Uma experiência romântica com conforto e tranquilidade.</small>
+                </div>
+                <a href="suite.html?room=aurora" class="room-button">Conhecer</a>
+              </div>
             </div>
-            <em>04</em>
           </div>
 
-          <div class="suite-item" data-room="bonfim" data-img="public/suites/bonfim/bonfim1.jpeg" data-title="Suíte do Bonfim" data-desc="Essencial e aconchegante — feita para descansar." data-cap="Capacidade: 2 hóspedes">
-            <div>
-              <b>Suíte do Bonfim</b>
-              <span>Suíte padrão sem TV • varanda com rede</span>
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Bonfim</h3>
+                  <small>Essencial e aconchegante — perfeita para descansar.</small>
+                </div>
+                <a href="suite.html?room=bonfim" class="room-button">Conhecer</a>
+              </div>
             </div>
-            <em>05</em>
-          </div>
-        </div>
-
-        <div class="suite-view" id="suiteView">
-          <img id="suiteHeroImg" src="public/suites/divino/divino1.jpeg" alt="Suíte em destaque">
-          <div class="suite-view-cap">
-            <h3 id="suiteHeroTitle">Suíte do Divino</h3>
-            <p id="suiteHeroDesc">Conforto e tranquilidade para uma estadia a dois.</p>
           </div>
 
-          <div class="suite-view-body">
-            <div class="suite-meta">
-              <b id="suiteHeroCap">Capacidade: 2 hóspedes</b><br>
-              Varanda privativa com rede • Wi-Fi • Ar-condicionado
-            </div>
-            <div class="suite-actions">
-              <a id="suiteKnowBtn" class="btn ghost" href="suite.html?room=divino">CONHECER</a>
-              <a class="btn primary" href="booking.html">RESERVAR</a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- LOCATION -->
-  <section class="section location reveal" id="localizacao">
+  <!-- CONHEÇA PIRI (restored) -->
+  <section class="section piri reveal" id="piri">
     <div class="wrap">
-      <div class="location-grid">
-        <div>
-          <h2 class="location-title">Localização</h2>
-          <p>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis GO</p>
+      <h2 class="piri-title">CONHEÇA PIRI</h2>
+      <p class="piri-sub">Cachoeiras, centro histórico e gastronomia — a combinação perfeita para viver Pirenópolis com calma e encanto.</p>
+      <div class="orn"></div>
 
-          <div class="location-actions">
-            <a class="loc-btn primary" href="https://maps.google.com/?q=Rua+Tupinamb%C3%A1s+Quadra+09+Lote+16+Piren%C3%B3polis+GO" target="_blank" rel="noopener">VER NO MAPA</a>
-            <a class="loc-btn ghost" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
-          </div>
+      <div class="piri-grid">
+        <div class="piri-card">
+          <b>Centro histórico</b>
+          <p>Ruas de pedra, igrejas e arquitetura colonial — perfeito para um passeio no fim da tarde.</p>
         </div>
-
-        <div class="location-panel">
-          <span>
-            Clique em “Ver no mapa” para abrir o trajeto.<br>
-            Se preferir, fale conosco via WhatsApp.
-          </span>
+        <div class="piri-card">
+          <b>Cachoeiras & natureza</b>
+          <p>Trilhas e banhos refrescantes para desacelerar e renovar as energias.</p>
+        </div>
+        <div class="piri-card">
+          <b>Gastronomia</b>
+          <p>Cafés charmosos e restaurantes para fechar o dia com uma noite especial.</p>
         </div>
       </div>
     </div>
@@ -1141,6 +978,30 @@
       }
     }
 
+    // CAROUSEL: loop infinito (setas)
+    const track = document.getElementById("carouselTrack");
+    let index = 0;
+    const visible = 3;
+    const total = track.children.length;
+    const maxIndex = Math.max(0, total - visible);
+
+    function applySlide(){
+      track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
+    }
+
+    function moveSlide(dir){
+      index += dir;
+      if(index < 0) index = maxIndex;
+      if(index > maxIndex) index = 0;
+      applySlide();
+    }
+
+    setInterval(()=>{
+      index++;
+      if(index > maxIndex) index = 0;
+      applySlide();
+    }, 5500);
+
     // Fade-in
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
@@ -1148,40 +1009,6 @@
       });
     }, { threshold: 0.14 });
     document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
-
-    // Suites selector (premium)
-    const suiteList = document.getElementById("suiteList");
-    const img = document.getElementById("suiteHeroImg");
-    const title = document.getElementById("suiteHeroTitle");
-    const desc = document.getElementById("suiteHeroDesc");
-    const cap = document.getElementById("suiteHeroCap");
-    const knowBtn = document.getElementById("suiteKnowBtn");
-
-    function selectSuite(el){
-      Array.from(suiteList.querySelectorAll(".suite-item")).forEach(x=>x.classList.remove("active"));
-      el.classList.add("active");
-
-      img.src = el.dataset.img;
-      img.alt = el.dataset.title;
-      title.textContent = el.dataset.title;
-      desc.textContent = el.dataset.desc;
-      cap.textContent = el.dataset.cap;
-      knowBtn.href = "suite.html?room=" + el.dataset.room;
-    }
-
-    suiteList.addEventListener("click", (e)=>{
-      const item = e.target.closest(".suite-item");
-      if(!item) return;
-      selectSuite(item);
-    });
-
-    // Also support hover on desktop (feels luxury)
-    let hoverEnabled = window.matchMedia("(hover: hover)").matches;
-    if(hoverEnabled){
-      suiteList.querySelectorAll(".suite-item").forEach(item=>{
-        item.addEventListener("mouseenter", ()=>selectSuite(item));
-      });
-    }
   </script>
 </body>
 </html>

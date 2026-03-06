@@ -32,9 +32,8 @@
       --radius:20px;
       --max:1180px;
 
-      /* WELCOME CONTROL
-         change this later if you want the heading lower/higher */
-      --welcome-heading-offset: 24px;
+      /* WELCOME CONTROL */
+      --welcome-heading-offset: 18px;
     }
 
     body{
@@ -113,6 +112,41 @@
       display:flex;
       align-items:center;
       gap:12px;
+    }
+
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      text-decoration:none;
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
+    }
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
+    }
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
+      display:block;
+    }
+
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
     }
 
     .reserve-btn{
@@ -612,23 +646,19 @@
       padding:14px;
     }
     .suite-card .card{
-  background:#fff;
-  border-radius:18px;
-  box-shadow:none;
-  overflow:hidden;
-  transition:0.25s ease;
-  border:1px solid rgba(29,53,87,0.10);
-  display:flex;
-  flex-direction:column;
-  height:100%;
-}
-.suite-card .card:hover{
-  transform:translateY(-6px);
-  box-shadow:none;
-}
+      background:#fff;
+      border-radius:18px;
+      box-shadow:none;
+      overflow:hidden;
+      transition:0.25s ease;
+      border:1px solid rgba(29,53,87,0.10);
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
     .suite-card .card:hover{
       transform:translateY(-6px);
-      box-shadow:var(--shadow);
+      box-shadow:none;
     }
     .img-wrap{ overflow:hidden; }
     .suite-card .card img{
@@ -917,6 +947,14 @@
       </a>
 
       <div class="header-actions">
+        <a class="instagram-btn" href="https://instagram.com/" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
         <a class="reserve-btn" href="booking.html">RESERVAR</a>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
@@ -968,76 +1006,76 @@
   </section>
 
   <section class="section gallery reveal" id="galeria">
-  <div class="wrap">
-    <h2 class="gallery-title">AMBIENTES</h2>
-    <p class="gallery-sub">Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!</p>
-    <div class="orn"></div>
+    <div class="wrap">
+      <h2 class="gallery-title">AMBIENTES</h2>
+      <p class="gallery-sub">Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!</p>
+      <div class="orn"></div>
 
-    <div class="gallery-grid">
-      <div class="photo ambiente-slider">
-        <div class="gallery-slider">
-          <div class="gallery-slide active">
-            <img src="public/galeria/piscina1.jpeg" alt="Piscina">
-          </div>
-          <div class="gallery-slide">
-            <img src="public/galeria/piscina2.jpeg" alt="Piscina">
-          </div>
-          <div class="gallery-slide">
-            <img src="public/galeria/piscina3.jpeg" alt="Piscina">
-          </div>
-        </div>
-        <div class="cap">Piscina</div>
-        <div class="gallery-dots">
-          <button class="gallery-dot active" aria-label="Imagem 1 da Piscina"></button>
-          <button class="gallery-dot" aria-label="Imagem 2 da Piscina"></button>
-          <button class="gallery-dot" aria-label="Imagem 3 da Piscina"></button>
-        </div>
-      </div>
-
-      <div class="gallery-right">
-        <div class="photo small ambiente-slider">
+      <div class="gallery-grid">
+        <div class="photo ambiente-slider">
           <div class="gallery-slider">
             <div class="gallery-slide active">
-              <img src="public/galeria/sala-jantar1.jpeg" alt="Sala de jantar">
+              <img src="public/galeria/piscina1.jpeg" alt="Piscina">
             </div>
             <div class="gallery-slide">
-              <img src="public/galeria/sala-jantar2.jpeg" alt="Sala de jantar">
+              <img src="public/galeria/piscina2.jpeg" alt="Piscina">
             </div>
             <div class="gallery-slide">
-              <img src="public/galeria/sala-jantar3.jpeg" alt="Sala de jantar">
+              <img src="public/galeria/piscina3.jpeg" alt="Piscina">
             </div>
           </div>
-          <div class="cap">Sala de jantar</div>
+          <div class="cap">Piscina</div>
           <div class="gallery-dots">
-            <button class="gallery-dot active" aria-label="Imagem 1 da Sala de jantar"></button>
-            <button class="gallery-dot" aria-label="Imagem 2 da Sala de jantar"></button>
-            <button class="gallery-dot" aria-label="Imagem 3 da Sala de jantar"></button>
+            <button class="gallery-dot active" aria-label="Imagem 1 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 2 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 3 da Piscina"></button>
           </div>
         </div>
 
-        <div class="photo small ambiente-slider">
-          <div class="gallery-slider">
-            <div class="gallery-slide active">
-              <img src="public/galeria/lazer1.jpeg" alt="Área de lazer">
+        <div class="gallery-right">
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/sala-jantar1.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar2.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar3.jpeg" alt="Sala de jantar">
+              </div>
             </div>
-            <div class="gallery-slide">
-              <img src="public/galeria/lazer2.jpeg" alt="Área de lazer">
-            </div>
-            <div class="gallery-slide">
-              <img src="public/galeria/lazer3.jpeg" alt="Área de lazer">
+            <div class="cap">Sala de jantar</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Sala de jantar"></button>
             </div>
           </div>
-          <div class="cap">Área de lazer</div>
-          <div class="gallery-dots">
-            <button class="gallery-dot active" aria-label="Imagem 1 da Área de lazer"></button>
-            <button class="gallery-dot" aria-label="Imagem 2 da Área de lazer"></button>
-            <button class="gallery-dot" aria-label="Imagem 3 da Área de lazer"></button>
+
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/lazer1.jpeg" alt="Área de lazer">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/lazer2.jpeg" alt="Área de lazer">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/lazer3.jpeg" alt="Área de lazer">
+              </div>
+            </div>
+            <div class="cap">Área de lazer</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Área de lazer"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Área de lazer"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Área de lazer"></button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
   <section class="suites reveal" id="suites">
     <div class="wrap">

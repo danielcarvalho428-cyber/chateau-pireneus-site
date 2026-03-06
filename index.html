@@ -685,52 +685,134 @@
 
     /* Conheça Piri */
     .piri{
-      background:var(--bg);
+      background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
       border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
-    .piri-title{
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      font-size:38px;
-      letter-spacing:2px;
-      margin:0;
-      text-transform:uppercase;
-      color:var(--navy);
+
+    .piri-top{
+      max-width:860px;
+      margin-bottom:28px;
     }
-    .piri-sub{
-      margin:10px 0 0;
-      max-width:900px;
-      color:rgba(22,37,58,0.74);
-      line-height:1.9;
-      font-size:15px;
-    }
-    .piri-grid{
-      margin-top:26px;
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap:18px;
-    }
-    .piri-card{
-      border:1px solid rgba(29,53,87,0.12);
-      border-radius:18px;
-      background:rgba(255,255,255,0.70);
-      box-shadow:0 12px 28px rgba(0,0,0,0.06);
-      padding:18px 18px;
-    }
-    .piri-card b{
+
+    .piri-kicker{
       display:block;
       font-family:"Cormorant Garamond", serif;
       font-weight:700;
       font-size:18px;
+      letter-spacing:0.4px;
+      color:rgba(29,53,87,0.78);
+      margin-bottom:8px;
+    }
+
+    .piri-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:1.8px;
+      margin:0;
+      text-transform:uppercase;
+      color:var(--navy);
+    }
+
+    .piri-sub{
+      margin:12px 0 0;
+      max-width:760px;
+      color:rgba(22,37,58,0.74);
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    .piri-grid{
+      margin-top:26px;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .piri-card{
+      overflow:hidden;
+      border-radius:22px;
+      background:rgba(255,255,255,0.84);
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:0 16px 36px rgba(0,0,0,0.08);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter:blur(6px);
+    }
+
+    .piri-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 22px 48px rgba(0,0,0,0.12);
+    }
+
+    .piri-image{
+      position:relative;
+      aspect-ratio:4 / 3;
+      overflow:hidden;
+      background:
+        linear-gradient(135deg, rgba(29,53,87,0.92), rgba(20,42,69,0.82)),
+        radial-gradient(circle at 20% 20%, rgba(216,199,161,0.22), transparent 35%);
+      display:flex;
+      align-items:flex-end;
+      padding:18px;
+    }
+
+    .piri-image::after{
+      content:"Imagem em breve";
+      font-family:"Cormorant Garamond", serif;
+      font-size:18px;
+      letter-spacing:0.4px;
+      color:rgba(255,255,255,0.82);
+    }
+
+    .piri-body{
+      padding:18px 18px 20px;
+    }
+
+    .piri-body b{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:22px;
       color:var(--navy);
       margin-bottom:8px;
       letter-spacing:0.3px;
     }
-    .piri-card p{
+
+    .piri-body p{
       margin:0;
       color:rgba(22,37,58,0.74);
-      line-height:1.75;
+      line-height:1.8;
       font-size:14px;
+    }
+
+    .piri-cta-wrap{
+      margin-top:28px;
+      display:flex;
+      justify-content:flex-start;
+    }
+
+    .piri-cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding:12px 18px;
+      border-radius:14px;
+      background:var(--navy);
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      border:1px solid rgba(29,53,87,0.16);
+      box-shadow:0 14px 28px rgba(0,0,0,0.10);
+      transition:0.22s ease;
+    }
+
+    .piri-cta:hover{
+      transform:translateY(-1px);
+      background:var(--navy2);
+      box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
     footer{
@@ -756,6 +838,7 @@
       .photo.small{ min-height:220px; }
 
       .piri-grid{ grid-template-columns:1fr; }
+      .piri-title{ font-size:30px; }
 
       .suites{ padding:38px 0; }
       .suite-card{ min-width:100%; }
@@ -994,23 +1077,49 @@
   <!-- CONHEÇA PIRI -->
   <section class="section piri reveal" id="piri">
     <div class="wrap">
-      <h2 class="piri-title">CONHEÇA PIRI</h2>
-      <p class="piri-sub">Cachoeiras, centro histórico e gastronomia — a combinação perfeita para viver Pirenópolis com calma e encanto.</p>
-      <div class="orn"></div>
+      <div class="piri-top">
+        <span class="piri-kicker">Descubra Pirenópolis</span>
+        <h2 class="piri-title">CONHEÇA PIRI</h2>
+        <p class="piri-sub">
+          Entre ruas históricas, paisagens naturais e experiências gastronômicas cheias de charme, Pirenópolis convida você a viver dias mais leves, autênticos e memoráveis.
+        </p>
+        <div class="orn"></div>
+      </div>
 
       <div class="piri-grid">
-        <div class="piri-card">
-          <b>Centro histórico</b>
-          <p>Ruas de pedra, igrejas e arquitetura colonial — perfeito para um passeio no fim da tarde.</p>
-        </div>
-        <div class="piri-card">
-          <b>Cachoeiras & natureza</b>
-          <p>Trilhas e banhos refrescantes para desacelerar e renovar as energias.</p>
-        </div>
-        <div class="piri-card">
-          <b>Gastronomia</b>
-          <p>Cafés charmosos e restaurantes para fechar o dia com uma noite especial.</p>
-        </div>
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Centro histórico</b>
+            <p>
+              Ruas de pedra, arquitetura colonial e o charme atemporal do coração de Pirenópolis para passeios tranquilos e cheios de atmosfera.
+            </p>
+          </div>
+        </article>
+
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Cachoeiras & natureza</b>
+            <p>
+              Refúgios naturais ideais para desacelerar, respirar fundo e aproveitar a beleza de Piri com calma e conexão.
+            </p>
+          </div>
+        </article>
+
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Gastronomia</b>
+            <p>
+              Cafés, sabores regionais e experiências especiais que transformam cada saída em mais um momento marcante da viagem.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="piri-cta-wrap">
+        <a href="https://maps.google.com/?q=Piren%C3%B3polis+GO" target="_blank" class="piri-cta">EXPLORAR PIRENÓPOLIS</a>
       </div>
     </div>
   </section>

@@ -41,7 +41,6 @@
       overflow-x:hidden;
     }
 
-    /* Gyahegi Regular */
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -322,7 +321,7 @@
       100%{ transform:translateY(0); opacity:1; }
     }
 
-    /* ===== shared ===== */
+    /* Shared */
     .wrap{
       max-width:var(--max);
       margin:0 auto;
@@ -343,17 +342,12 @@
       font-size:15px;
     }
 
-    /* Reveal */
     .reveal{
       opacity:0;
       transform:translateY(18px);
       transition:0.95s ease;
     }
     .reveal.show{ opacity:1; transform:translateY(0); }
-
-    /* =========================
-       BELOW HERO
-       ========================= */
 
     /* Welcome */
     .welcome{
@@ -424,13 +418,13 @@
       color:#fff;
     }
     .gallery-title{
-  font-family:"Gyahegi","Cormorant Garamond", serif;
-  font-weight:400;
-  font-size:24px;
-  letter-spacing:1.4px;
-  margin:0;
-  text-transform:uppercase;
-}
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:24px;
+      letter-spacing:1.4px;
+      margin:0;
+      text-transform:uppercase;
+    }
     .gallery-sub{
       margin:10px 0 0;
       max-width:860px;
@@ -447,6 +441,7 @@
       grid-template-columns: 1.4fr 0.6fr;
       gap:14px;
     }
+
     .photo{
       position:relative;
       overflow:hidden;
@@ -457,7 +452,27 @@
       min-height:300px;
     }
     .photo.small{ min-height:230px; }
-    .photo img{
+
+    .gallery-slider{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+    }
+
+    .gallery-slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 0.55s ease;
+      pointer-events:none;
+    }
+    .gallery-slide.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .gallery-slide img{
       width:100%;
       height:100%;
       object-fit:cover;
@@ -466,18 +481,27 @@
       transform:scale(1);
       transition:0.55s ease;
     }
-    .photo:hover img{ opacity:0.99; transform:scale(1.05); }
+
+    .photo:hover .gallery-slide.active img{
+      opacity:0.99;
+      transform:scale(1.05);
+    }
+
     .photo::after{
       content:"";
       position:absolute;
       inset:0;
       background:linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0.08) 60%);
       pointer-events:none;
+      z-index:2;
     }
+
     .cap{
       position:absolute;
-      left:16px; right:16px; bottom:14px;
-      z-index:2;
+      left:16px;
+      right:16px;
+      bottom:34px;
+      z-index:3;
       color:#fff;
       text-shadow:0 10px 24px rgba(0,0,0,0.55);
       font-family:"Cormorant Garamond", serif;
@@ -485,15 +509,40 @@
       letter-spacing:0.6px;
       font-size:18px;
     }
+
+    .gallery-dots{
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:12px;
+      z-index:3;
+      display:flex;
+      gap:7px;
+      align-items:center;
+    }
+
+    .gallery-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      border:none;
+      padding:0;
+      cursor:pointer;
+      background:rgba(255,255,255,0.38);
+      transition:0.22s ease;
+    }
+    .gallery-dot.active{
+      background:rgba(216,199,161,0.98);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.15);
+    }
+
     .gallery-right{
       display:grid;
       grid-template-rows: 1fr 1fr;
       gap:14px;
     }
 
-    /* =========================
-       NOSSAS ACOMODAÇÕES (LOCKED)
-       ========================= */
+    /* Suites (LOCKED) */
     .suites{
       background:linear-gradient(to bottom, var(--ivory) 0%, var(--beigeSoft) 100%);
       border-top:1px solid rgba(29,53,87,0.10);
@@ -747,6 +796,7 @@
     </div>
   </header>
 
+  <!-- HERO (locked) -->
   <section class="hero" id="top" aria-label="Hero">
     <div class="hero-content">
       <h1 class="hero-title">
@@ -786,6 +836,7 @@
     </div>
   </section>
 
+  <!-- AMBIENTES -->
   <section class="section gallery reveal" id="galeria">
     <div class="wrap">
       <h2 class="gallery-title">AMBIENTES</h2>
@@ -793,25 +844,72 @@
       <div class="orn"></div>
 
       <div class="gallery-grid">
-        <div class="photo">
-          <img src="public/galeria/piscina.jpeg" alt="Piscina">
+        <div class="photo ambiente-slider">
+          <div class="gallery-slider">
+            <div class="gallery-slide active">
+              <img src="public/galeria/piscina-1.jpeg" alt="Piscina">
+            </div>
+            <div class="gallery-slide">
+              <img src="public/galeria/piscina-2.jpeg" alt="Piscina">
+            </div>
+            <div class="gallery-slide">
+              <img src="public/galeria/piscina-3.jpeg" alt="Piscina">
+            </div>
+          </div>
           <div class="cap">Piscina</div>
+          <div class="gallery-dots">
+            <button class="gallery-dot active" aria-label="Imagem 1 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 2 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 3 da Piscina"></button>
+          </div>
         </div>
 
         <div class="gallery-right">
-          <div class="photo small">
-            <img src="public/galeria/sala-jantar.jpeg" alt="Sala de jantar">
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/sala-jantar-1.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar-2.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar-3.jpeg" alt="Sala de jantar">
+              </div>
+            </div>
             <div class="cap">Sala de jantar</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Sala de jantar"></button>
+            </div>
           </div>
-          <div class="photo small">
-            <img src="public/galeria/externa.jpeg" alt="Área externa">
+
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/externa-1.jpeg" alt="Área externa">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/externa-2.jpeg" alt="Área externa">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/externa-3.jpeg" alt="Área externa">
+              </div>
+            </div>
             <div class="cap">Área externa</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Área externa"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Área externa"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Área externa"></button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- NOSSAS ACOMODAÇÕES -->
   <section class="suites reveal" id="suites">
     <div class="wrap">
       <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
@@ -893,6 +991,7 @@
     </div>
   </section>
 
+  <!-- CONHEÇA PIRI -->
   <section class="section piri reveal" id="piri">
     <div class="wrap">
       <h2 class="piri-title">CONHEÇA PIRI</h2>
@@ -923,6 +1022,7 @@
   </footer>
 
   <script>
+    // Header solid on scroll
     const topHeader = document.getElementById("topHeader");
     function onScrollHeader(){
       const y = window.scrollY || document.documentElement.scrollTop;
@@ -931,6 +1031,7 @@
     window.addEventListener("scroll", onScrollHeader);
     onScrollHeader();
 
+    // MENU
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
@@ -946,6 +1047,7 @@
       }
     }
 
+    // SUITES CAROUSEL
     const track = document.getElementById("carouselTrack");
     let index = 0;
     const visible = 3;
@@ -969,6 +1071,38 @@
       applySlide();
     }, 5500);
 
+    // AMBIENTES SLIDERS
+    const ambienteSliders = document.querySelectorAll(".ambiente-slider");
+
+    ambienteSliders.forEach((slider)=>{
+      const slides = slider.querySelectorAll(".gallery-slide");
+      const dots = slider.querySelectorAll(".gallery-dot");
+      let current = 0;
+
+      function showSlide(i){
+        slides.forEach((slide, index)=>{
+          slide.classList.toggle("active", index === i);
+        });
+        dots.forEach((dot, index)=>{
+          dot.classList.toggle("active", index === i);
+        });
+        current = i;
+      }
+
+      dots.forEach((dot, index)=>{
+        dot.addEventListener("click", ()=>{
+          showSlide(index);
+        });
+      });
+
+      setInterval(()=>{
+        let next = current + 1;
+        if(next >= slides.length) next = 0;
+        showSlide(next);
+      }, 4200);
+    });
+
+    // Fade-in
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
         if(e.isIntersecting) e.target.classList.add("show");

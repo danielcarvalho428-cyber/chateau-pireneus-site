@@ -11,22 +11,29 @@
     *{ box-sizing:border-box; }
     html{ scroll-behavior:smooth; }
 
-    /* ✅ Menos bege no geral (mais neutro) */
+    :root{
+      --blue:#1d3557;
+      --blue-2:#152a45;
+      --blue-soft: rgba(29,53,87,0.10);
+      --beige:#d8c7a1;
+      --beige-dark:#cbb58c;
+      --ink:#0f1f33;
+      --bg:#f7f6f2;                 /* ✅ off-white, not beige */
+      --card:#ffffff;
+      --shadow:0 20px 45px rgba(0,0,0,0.12);
+      --shadow-soft:0 14px 30px rgba(0,0,0,0.08);
+      --border:1px solid rgba(29,53,87,0.10);
+    }
+
     body{
       margin:0;
       font-family:Georgia, serif;
-      background:#f5efe6;
-      color:#1d3557;
+      background:var(--bg);
+      color:var(--blue);
       overflow-x:hidden;
     }
 
-    :root{
-      --blue:#1d3557;
-      --beige:#d8c7a1;
-      --beige-dark:#cbb58c;
-      --shadow:0 20px 45px rgba(0,0,0,0.12);
-    }
-
+    /* Gyahegi Regular */
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -90,9 +97,9 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width:28px;
-      height:28px;
-      border-radius:6px;
+      width:30px;
+      height:30px;
+      border-radius:8px;
       text-decoration:none;
       color:#fff;
     }
@@ -117,7 +124,7 @@
       z-index:10000;
       user-select:none;
       padding:8px 10px;
-      border-radius:10px;
+      border-radius:12px;
       background:rgba(0,0,0,0.18);
       backdrop-filter:blur(2px);
       transition:top 0.25s ease, left 0.25s ease, background 0.25s ease;
@@ -259,32 +266,18 @@
       transform:translateY(0);
     }
 
-    /* ====== Section system ====== */
+    /* Layout helpers */
     .container{
       max-width:1200px;
       margin:0 auto;
       padding:0 20px;
     }
-
-    .section-block{
-      padding:44px 0;
-    }
-
-    /* ✅ Azul elegante (degradê sutil nas laterais) */
-    .blue-band{
-      background:
-        linear-gradient(to right,
-          rgba(29,53,87,0.12),
-          rgba(255,255,255,0) 18%,
-          rgba(255,255,255,0) 82%,
-          rgba(29,53,87,0.12)
-        );
-    }
+    .section-block{ padding:56px 0; }
 
     .divider{
       height:1px;
-      background:linear-gradient(to right, transparent, rgba(29,53,87,0.18), transparent);
-      margin:26px auto 0;
+      background:linear-gradient(to right, transparent, rgba(29,53,87,0.20), transparent);
+      margin:32px auto 0;
       max-width:980px;
     }
 
@@ -304,25 +297,44 @@
 
     .lead{
       margin:0;
-      color:#333;
-      line-height:1.6;
+      color:#2b2b2b;
+      line-height:1.65;
       font-size:15px;
       max-width:760px;
     }
 
-    /* Welcome */
+    /* ✅ NEW COLOR BANDS */
+    .band-soft-blue{
+      background:
+        radial-gradient(900px 380px at 18% 20%, rgba(29,53,87,0.16), transparent 60%),
+        radial-gradient(900px 380px at 82% 70%, rgba(29,53,87,0.12), transparent 60%),
+        linear-gradient(to bottom, rgba(29,53,87,0.06), rgba(29,53,87,0.02));
+    }
+
+    .band-navy{
+      background:
+        radial-gradient(900px 380px at 18% 20%, rgba(216,199,161,0.18), transparent 60%),
+        radial-gradient(900px 380px at 82% 70%, rgba(216,199,161,0.10), transparent 60%),
+        linear-gradient(135deg, var(--blue) 0%, var(--blue-2) 100%);
+      color:#fff;
+    }
+    .band-navy .eyebrow{ color:rgba(255,255,255,0.80); }
+    .band-navy .h2{ color:#fff; }
+    .band-navy .lead{ color:rgba(255,255,255,0.88); }
+
+    /* Welcome (white card on soft-blue band) */
     .welcome-card{
-      background:#efe6d7;
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:0; /* quadrado */
-      box-shadow:0 10px 25px rgba(0,0,0,0.06);
+      background:var(--card);
+      border:var(--border);
+      border-radius:0; /* you asked square */
+      box-shadow:var(--shadow-soft);
       overflow:hidden;
     }
     .welcome-inner{
       display:grid;
       grid-template-columns: 1.2fr 0.8fr;
-      gap:16px;
-      padding:18px 18px;
+      gap:18px;
+      padding:22px;
       align-items:center;
     }
     .welcome-logo{
@@ -331,22 +343,22 @@
       align-items:center;
     }
     .welcome-logo img{
-      width:92px;
+      width:96px;
       height:auto;
       display:block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.10));
     }
     .highlights{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
-      padding:0 18px 18px;
+      padding:0 22px 22px;
     }
     .mini-card{
-      background:#fff;
-      border:1px solid rgba(29,53,87,0.08);
+      background:rgba(29,53,87,0.06); /* ✅ blue-ish, not beige */
+      border:1px solid rgba(29,53,87,0.10);
       border-radius:14px;
       padding:14px 14px;
-      box-shadow:0 10px 22px rgba(0,0,0,0.06);
     }
     .mini-card b{
       display:block;
@@ -357,14 +369,14 @@
     }
     .mini-card span{
       display:block;
-      color:#333;
+      color:#2b2b2b;
       font-size:13px;
       line-height:1.45;
     }
 
-    /* ✅ NEW: Elegant 3-photo gallery */
+    /* Elegant 3-photo gallery */
     .gallery-grid{
-      margin-top:18px;
+      margin-top:20px;
       display:grid;
       grid-template-columns: 1.35fr 0.65fr;
       gap:14px;
@@ -373,10 +385,10 @@
       position:relative;
       overflow:hidden;
       border-radius:18px;
-      border:1px solid rgba(29,53,87,0.10);
-      box-shadow:var(--shadow);
-      background:#fff;
-      min-height:220px;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 18px 40px rgba(0,0,0,0.22);
+      background:#0f1f33;
+      min-height:240px;
     }
     .g-card img{
       width:100%;
@@ -385,14 +397,14 @@
       display:block;
       transform:scale(1);
       transition:transform 0.55s ease;
+      opacity:0.92;
     }
-    .g-card:hover img{ transform:scale(1.06); }
+    .g-card:hover img{ transform:scale(1.06); opacity:0.98; }
 
     .g-overlay{
       position:absolute;
       inset:0;
-      background:linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0.05) 55%);
-      opacity:0.95;
+      background:linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0.10) 60%);
       pointer-events:none;
     }
     .g-label{
@@ -407,7 +419,7 @@
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      text-shadow:0 6px 18px rgba(0,0,0,0.5);
+      text-shadow:0 6px 18px rgba(0,0,0,0.55);
     }
     .g-label b{
       font-size:16px;
@@ -419,27 +431,26 @@
       justify-content:center;
       padding:6px 10px;
       border-radius:999px;
-      background:rgba(216,199,161,0.92);
+      background:rgba(216,199,161,0.96);
       color:var(--blue);
-      font-weight:800;
+      font-weight:900;
       font-size:11px;
       letter-spacing:1px;
       text-transform:uppercase;
-      box-shadow:0 10px 22px rgba(0,0,0,0.18);
+      box-shadow:0 10px 22px rgba(0,0,0,0.25);
     }
-
     .gallery-right{
       display:grid;
       grid-template-rows: 1fr 1fr;
       gap:14px;
     }
 
-    /* Suites section (your existing) */
+    /* Suites section (keep) but less beige */
     .suites{
       padding:80px 20px;
       text-align:center;
       position:relative;
-      background:#f5efe6;
+      background:var(--bg);
       overflow:hidden;
     }
     .suites::before{
@@ -448,8 +459,8 @@
       inset:0;
       pointer-events:none;
       background:
-        linear-gradient(to right, rgba(29,53,87,0.08), rgba(255,255,255,0) 18%),
-        linear-gradient(to left,  rgba(29,53,87,0.08), rgba(255,255,255,0) 18%);
+        radial-gradient(900px 360px at 20% 30%, rgba(29,53,87,0.08), transparent 65%),
+        radial-gradient(900px 360px at 80% 70%, rgba(29,53,87,0.06), transparent 65%);
     }
     .suites > *{ position:relative; z-index:1; }
 
@@ -480,10 +491,11 @@
       padding:22px;
       box-shadow:var(--shadow);
       transition:transform 0.25s ease;
+      border-radius:16px;
     }
     .card:hover{ transform:translateY(-6px); }
 
-    .img-wrap{ overflow:hidden; }
+    .img-wrap{ overflow:hidden; border-radius:14px; }
     .card img{
       width:100%;
       aspect-ratio:1/1;
@@ -531,10 +543,10 @@
     }
     .exp-card{
       background:#fff;
-      border:1px solid rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.10);
       border-radius:18px;
       overflow:hidden;
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-soft);
       transition:transform 0.25s ease;
     }
     .exp-card:hover{ transform:translateY(-6px); }
@@ -571,14 +583,8 @@
       .welcome-logo{ justify-content:flex-start; }
       .highlights{ grid-template-columns:1fr; }
 
-      .gallery-grid{
-        grid-template-columns:1fr;
-      }
-      .gallery-right{
-        grid-template-rows:none;
-        grid-template-columns:1fr 1fr;
-      }
-
+      .gallery-grid{ grid-template-columns:1fr; }
+      .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
       .grid-3{ grid-template-columns:1fr; }
       .exp-card img{ height:180px; }
     }
@@ -660,8 +666,8 @@
     </div>
   </div>
 
-  <!-- Welcome + highlights -->
-  <section class="section-block reveal blue-band" id="welcome">
+  <!-- Welcome (soft blue band) -->
+  <section class="section-block reveal band-soft-blue" id="welcome">
     <div class="container">
       <div class="welcome-card">
         <div class="welcome-inner">
@@ -682,7 +688,7 @@
         <div class="highlights">
           <div class="mini-card">
             <b>Varanda com rede</b>
-            <span>Um cantinho perfeito para relaxar, ler e curtir a atmosfera de Piri.</span>
+            <span>Um cantinho perfeito para relaxar e curtir a atmosfera de Piri.</span>
           </div>
           <div class="mini-card">
             <b>Conforto premium</b>
@@ -699,15 +705,14 @@
     </div>
   </section>
 
-  <!-- ✅ NEW: Galeria (3 fotos elegantes) -->
-  <section class="section-block reveal" id="galeria">
+  <!-- Galeria (NAVY band) -->
+  <section class="section-block reveal band-navy" id="galeria">
     <div class="container">
       <p class="eyebrow">Ambientes</p>
       <h2 class="h2">Detalhes que fazem a experiência</h2>
-      <p class="lead">Três espaços para sentir o clima do Chateau Pireneus — com charme, conforto e beleza.</p>
+      <p class="lead">Com apenas 3 fotos, este layout cria impacto visual e deixa tudo mais elegante.</p>
 
       <div class="gallery-grid">
-        <!-- Grande: Piscina -->
         <div class="g-card">
           <img src="public/galeria/piscina.jpeg" alt="Piscina">
           <div class="g-overlay"></div>
@@ -717,7 +722,6 @@
           </div>
         </div>
 
-        <!-- Direita: duas menores -->
         <div class="gallery-right">
           <div class="g-card">
             <img src="public/galeria/sala-jantar.jpeg" alt="Sala de jantar">
@@ -752,74 +756,28 @@
       <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
 
       <div class="carousel-track" id="carouselTrack">
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
-            </div>
-            <h3>Suíte do Divino</h3>
-            <a href="suite.html?room=divino" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
-            </div>
-            <h3>Suíte das Cavalhadas</h3>
-            <a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
-            </div>
-            <h3>Suíte do Rosário</h3>
-            <a href="suite.html?room=rosario" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
-            </div>
-            <h3>Suíte Aurora</h3>
-            <a href="suite.html?room=aurora" class="room-button">Conhecer</a>
-          </div>
-        </div>
-
-        <div class="suite-card">
-          <div class="card">
-            <div class="img-wrap">
-              <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
-            </div>
-            <h3>Suíte do Bonfim</h3>
-            <a href="suite.html?room=bonfim" class="room-button">Conhecer</a>
-          </div>
-        </div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div><h3>Suíte do Divino</h3><a href="suite.html?room=divino" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div><h3>Suíte das Cavalhadas</h3><a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div><h3>Suíte do Rosário</h3><a href="suite.html?room=rosario" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div><h3>Suíte Aurora</h3><a href="suite.html?room=aurora" class="room-button">Conhecer</a></div></div>
+        <div class="suite-card"><div class="card"><div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div><h3>Suíte do Bonfim</h3><a href="suite.html?room=bonfim" class="room-button">Conhecer</a></div></div>
       </div>
     </div>
   </section>
 
-  <!-- Experiências (depois das acomodações) -->
-  <section class="section-block reveal blue-band" id="experiencias">
+  <!-- Experiences (soft blue band) -->
+  <section class="section-block reveal band-soft-blue" id="experiencias">
     <div class="container">
       <p class="eyebrow">Conheça Piri</p>
       <h2 class="h2">Experiências em Pirenópolis</h2>
-      <p class="lead">
-        Um roteiro com charme histórico, natureza e gastronomia — perfeito para curtir a dois.
-      </p>
+      <p class="lead">Charme histórico, natureza e gastronomia — perfeito para curtir a dois.</p>
 
       <div class="grid-3">
         <article class="exp-card">
           <img src="public/experiencias/centro-historico.jpg" alt="Centro histórico de Pirenópolis">
           <div class="exp-body">
             <h3>Centro histórico</h3>
-            <p>Ruas de pedra, igrejas e arquitetura colonial — cenário perfeito para passeios ao fim da tarde.</p>
+            <p>Ruas de pedra, igrejas e arquitetura colonial — cenário perfeito ao fim da tarde.</p>
           </div>
         </article>
 
@@ -827,15 +785,15 @@
           <img src="public/experiencias/cachoeiras.jpg" alt="Cachoeiras em Pirenópolis">
           <div class="exp-body">
             <h3>Cachoeiras & natureza</h3>
-            <p>Trilhas leves, banhos refrescantes e paisagens lindas para desacelerar e respirar.</p>
+            <p>Trilhas leves, banhos refrescantes e paisagens lindas para desacelerar.</p>
           </div>
         </article>
 
         <article class="exp-card">
           <img src="public/experiencias/gastronomia.jpg" alt="Gastronomia em Pirenópolis">
           <div class="exp-body">
-            <h3>Gastronomia & vinhos</h3>
-            <p>Cafés charmosos, restaurantes e experiências gastronômicas para uma noite especial.</p>
+            <h3>Gastronomia</h3>
+            <p>Cafés, restaurantes e uma noite especial para fechar o dia com estilo.</p>
           </div>
         </article>
       </div>
@@ -851,13 +809,11 @@
   </footer>
 
   <script>
-    // MENU
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");
       const button = document.getElementById("menuButton");
       const isOpen = menu.classList.contains("open");
-
       const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
 
       if(open){

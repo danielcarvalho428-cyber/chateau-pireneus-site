@@ -1,323 +1,153 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suíte • Chateau Pireneus</title>
+<script>
+  (function () {
+    const ROOMS = {
+      divino: {
+        name: "Suíte do Divino",
+        desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+        photos: ["public/suites/divino/divino1.jpeg"],
+        amenities: [
+          "Cama Queen",
+          "Enxoval 200 fios",
+          "Cortina blackout",
+          "Arara de roupas",
+          "Smart Tv",
+          "Frigobar",
+          "Ar-condicionado",
+          "Wi-Fi",
+          "Banheiro privativo",
+          "Varanda privativa com rede"
+        ],
+        details: ["Capacidade: 2 hóspedes"]
+      },
 
-  <style>
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family:Georgia, serif;
-      background:#f5efe6;
-      color:#1d3557;
-    }
+      cavalhadas: {
+        name: "Suíte das Cavalhadas",
+        desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+        photos: ["public/suites/cavalhadas/cavalhadas1.jpeg"],
+        amenities: [
+          "Cama Queen",
+          "Enxoval 200 fios",
+          "Cortina blackout",
+          "Arara de roupas",
+          "Smart Tv",
+          "Frigobar",
+          "Ar-condicionado",
+          "Wi-Fi",
+          "Banheiro privativo",
+          "Varanda privativa com rede"
+        ],
+        details: ["Capacidade: 2 hóspedes"]
+      },
 
-    :root{
-      --blue:#1d3557;
-      --beige:#d8c7a1;
-      --beige-dark:#cbb58c;
-      --shadow:0 20px 45px rgba(0,0,0,0.12);
-    }
+      rosario: {
+        name: "Suíte do Rosário",
+        desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+        photos: ["public/suites/rosario/rosario1.jpeg"],
+        amenities: [
+          "Cama Queen",
+          "Enxoval 200 fios",
+          "Cortina blackout",
+          "Arara de roupas",
+          "TV",
+          "Frigobar",
+          "Ar-condicionado",
+          "Wi-Fi",
+          "Banheiro privativo",
+          "Varanda privativa com rede"
+        ],
+        details: ["Capacidade: 2 hóspedes"]
+      },
 
-    @font-face{
-      font-family:"Gyahegi";
-      src:url("Gyahegi.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
+      aurora: {
+        name: "Suíte Aurora",
+        desc: "(suíte padrão com Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+        photos: ["public/suites/aurora/aurora1.jpeg"],
+        amenities: [
+          "Cama Queen",
+          "Enxoval 200 fios",
+          "Cortina blackout",
+          "Arara de roupas",
+          "Smart Tv",
+          "Frigobar",
+          "Ar-condicionado",
+          "Wi-Fi",
+          "Banheiro privativo",
+          "Varanda privativa com rede"
+        ],
+        details: ["Capacidade: 2 hóspedes"]
+      },
 
-    header{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:rgba(245,239,230,0.92);
-      backdrop-filter: blur(6px);
-      border-bottom:1px solid rgba(29,53,87,0.10);
-    }
-    .topbar{
-      max-width:1100px;
-      margin:0 auto;
-      padding:14px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .brand{
-      font-family:"Gyahegi", "Cormorant Garamond", serif;
-      font-weight:700;
-      letter-spacing:1px;
-      color:var(--blue);
-      text-decoration:none;
-      text-transform:uppercase;
-    }
-    .back{
-      text-decoration:none;
-      color:var(--blue);
-      font-weight:600;
-      opacity:0.9;
-    }
-    .back:hover{ text-decoration:underline; opacity:1; }
-
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:32px 18px 60px;
-      display:grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap:26px;
-    }
-
-    .card{
-      background:#fff;
-      box-shadow:var(--shadow);
-      border-radius:16px;
-      overflow:hidden;
-    }
-
-    .hero-img{
-      width:100%;
-      aspect-ratio: 16/10;
-      object-fit:cover;
-      display:block;
-      background:#eee;
-    }
-    .thumbs{
-      display:flex;
-      gap:10px;
-      padding:14px;
-      overflow:auto;
-      border-top:1px solid rgba(0,0,0,0.06);
-    }
-    .thumbs img{
-      width:84px;
-      height:64px;
-      object-fit:cover;
-      border-radius:10px;
-      cursor:pointer;
-      opacity:0.85;
-      border:2px solid transparent;
-      flex:0 0 auto;
-    }
-    .thumbs img:hover{ opacity:1; }
-    .thumbs img.active{
-      opacity:1;
-      border-color:var(--beige-dark);
-    }
-
-    .info{ padding:22px; }
-    h1{
-      margin:0 0 10px;
-      font-size:32px;
-      letter-spacing:0.4px;
-      color:var(--blue);
-    }
-    .subtitle{
-      margin:0 0 18px;
-      color:#2b2b2b;
-      line-height:1.6;
-      font-size:16px;
-    }
-
-    .section-title{
-      margin:18px 0 10px;
-      font-size:16px;
-      letter-spacing:0.4px;
-      text-transform:uppercase;
-      opacity:0.85;
-    }
-    ul{
-      margin:0;
-      padding-left:18px;
-      color:#333;
-      line-height:1.7;
-      font-size:15px;
-    }
-
-    .cta{
-      margin-top:18px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      font-weight:800;
-      letter-spacing:1px;
-      border-radius:12px;
-      padding:12px 16px;
-      transition:0.2s ease;
-      user-select:none;
-    }
-    .btn.primary{
-      background:var(--beige);
-      color:#fff;
-    }
-    .btn.primary:hover{
-      background:var(--beige-dark);
-      transform:translateY(-1px);
-      box-shadow:0 0 18px rgba(216,199,161,0.55);
-    }
-    .btn.outline{
-      background:transparent;
-      border:2px solid var(--beige-dark);
-      color:var(--blue);
-    }
-    .btn.outline:hover{
-      background:var(--beige);
-      border-color:var(--beige);
-      color:#fff;
-      transform:translateY(-1px);
-      box-shadow:0 0 18px rgba(216,199,161,0.45);
-    }
-
-    .error{
-      max-width:1100px;
-      margin:18px auto 0;
-      padding:12px 18px;
-      color:#7a1f2b;
-      background:rgba(122,31,43,0.08);
-      border:1px solid rgba(122,31,43,0.18);
-      border-radius:12px;
-      display:none;
-    }
-
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns:1fr; }
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <div class="topbar">
-      <a class="brand" href="index.html">Chateau Pireneus</a>
-      <a class="back" href="index.html#suites">← Voltar</a>
-    </div>
-  </header>
-
-  <div id="errBox" class="error"></div>
-
-  <main class="wrap">
-    <section class="card" aria-label="Galeria da suíte">
-      <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
-      <div class="thumbs" id="thumbs"></div>
-    </section>
-
-    <aside class="card">
-      <div class="info">
-        <h1 id="roomName">Suíte</h1>
-        <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
-
-        <div class="section-title">Comodidades</div>
-        <ul id="amenities"></ul>
-
-        <div class="section-title">Detalhes</div>
-        <ul id="details"></ul>
-
-        <div class="cta">
-          <a class="btn primary" href="booking.html">RESERVAR</a>
-          <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
-        </div>
-      </div>
-    </aside>
-  </main>
-
-  <script>
-    (function () {
-      const ROOMS = {
-        divino: {
-          name: "Suíte do Divino",
-          desc: "Aconchegante e elegante, perfeita para uma estadia romântica com conforto e tranquilidade.",
-          photos: ["public/suites/divino/divino1.jpeg"],
-          amenities: ["Cama confortável", "Ar-condicionado", "Wi-Fi", "Banheiro privativo"],
-          details: ["Ideal para casal", "Ambiente silencioso", "Decoração charmosa"]
-        },
-        cavalhadas: {
-          name: "Suíte das Cavalhadas",
-          desc: "Inspirada na tradição de Pirenópolis, com atmosfera acolhedora e muita personalidade.",
-          photos: ["public/suites/cavalhadas/cavalhadas1.jpeg"],
-          amenities: ["Ar-condicionado", "Wi-Fi", "Banheiro privativo", "Roupa de cama"],
-          details: ["Estilo temático", "Conforto e charme", "Ótima iluminação"]
-        },
-        rosario: {
-          name: "Suíte do Rosário",
-          desc: "Um refúgio de paz com toque clássico e aconchego para relaxar de verdade.",
-          photos: ["public/suites/rosario/rosario1.jpeg"],
-          amenities: ["Wi-Fi", "Ar-condicionado", "Banheiro privativo", "Toalhas"],
-          details: ["Perfeita para descanso", "Ambiente agradável", "Charme tradicional"]
-        },
-        aurora: {
-          name: "Suíte Aurora",
-          desc: "Clara, leve e sofisticada. Uma experiência acolhedora com toque especial.",
-          photos: ["public/suites/aurora/aurora1.jpeg"],
-          amenities: ["Wi-Fi", "Ar-condicionado", "Banheiro privativo"],
-          details: ["Ambiente iluminado", "Conforto premium", "Ideal para casal"]
-        },
-        bonfim: {
-          name: "Suíte do Bonfim",
-          desc: "Conforto e tranquilidade em um espaço encantador para aproveitar Pirenópolis.",
-          photos: ["public/suites/bonfim/bonfim1.jpeg"],
-          amenities: ["Wi-Fi", "Ar-condicionado", "Banheiro privativo"],
-          details: ["Atmosfera acolhedora", "Ótimo custo-benefício", "Ideal para descansar"]
-        }
-      };
-
-      const errBox = document.getElementById("errBox");
-      function showError(msg){
-        errBox.style.display = "block";
-        errBox.textContent = msg;
+      bonfim: {
+        name: "Suíte do Bonfim",
+        desc: "(suíte padrão sem Tv)\n\nAcomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+        photos: ["public/suites/bonfim/bonfim1.jpeg"],
+        amenities: [
+          "Cama Queen",
+          "Enxoval 200 fios",
+          "Cortina blackout",
+          "Arara de roupas",
+          "Frigobar",
+          "Ar-condicionado",
+          "Wi-Fi",
+          "Banheiro privativo",
+          "Varanda privativa com rede"
+        ],
+        details: ["Capacidade: 2 hóspedes"]
       }
+    };
 
-      const params = new URLSearchParams(location.search);
-      const key = (params.get("room") || "divino").toLowerCase();
-      const room = ROOMS[key];
+    const errBox = document.getElementById("errBox");
+    function showError(msg){
+      errBox.style.display = "block";
+      errBox.textContent = msg;
+    }
 
-      if (!room){
-        showError("Suíte inválida. Volte e selecione uma acomodação novamente.");
-        return;
-      }
+    const params = new URLSearchParams(location.search);
+    const key = (params.get("room") || "divino").toLowerCase();
+    const room = ROOMS[key];
 
-      document.title = room.name + " • Chateau Pireneus";
-      document.getElementById("roomName").textContent = room.name;
-      document.getElementById("roomDesc").textContent = room.desc;
+    if (!room){
+      showError("Suíte inválida. Volte e selecione uma acomodação novamente.");
+      return;
+    }
 
-      document.getElementById("amenities").innerHTML = room.amenities.map(x => "<li>" + x + "</li>").join("");
-      document.getElementById("details").innerHTML = room.details.map(x => "<li>" + x + "</li>").join("");
+    document.title = room.name + " • Chateau Pireneus";
+    document.getElementById("roomName").textContent = room.name;
 
-      const waBtn = document.getElementById("waBtn");
-      const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
-      waBtn.href = "https://wa.me/5562998167654?text=" + msg;
+    // Convert \n\n into line breaks nicely
+    document.getElementById("roomDesc").innerHTML = room.desc.replace(/\n/g, "<br>");
 
-      const heroImg = document.getElementById("heroImg");
-      const thumbs = document.getElementById("thumbs");
+    document.getElementById("amenities").innerHTML =
+      room.amenities.map(x => "<li>" + x + "</li>").join("");
 
-      function setActive(i){
-        heroImg.src = room.photos[i];
-        heroImg.alt = "Foto da " + room.name;
-        Array.from(thumbs.querySelectorAll("img")).forEach((img, idx)=>{
-          img.classList.toggle("active", idx === i);
-        });
-      }
+    document.getElementById("details").innerHTML =
+      room.details.map(x => "<li>" + x + "</li>").join("");
 
-      thumbs.innerHTML = room.photos.map((src, i)=>(
-        '<img src="' + src + '" alt="Miniatura ' + (i+1) + '" data-i="' + i + '">'
-      )).join("");
+    const waBtn = document.getElementById("waBtn");
+    const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
+    waBtn.href = "https://wa.me/5562998167654?text=" + msg;
 
-      thumbs.addEventListener("click", (e)=>{
-        const img = e.target.closest("img");
-        if(!img) return;
-        setActive(Number(img.dataset.i));
+    const heroImg = document.getElementById("heroImg");
+    const thumbs = document.getElementById("thumbs");
+
+    function setActive(i){
+      heroImg.src = room.photos[i];
+      heroImg.alt = "Foto da " + room.name;
+      Array.from(thumbs.querySelectorAll("img")).forEach((img, idx)=>{
+        img.classList.toggle("active", idx === i);
       });
+    }
 
-      setActive(0);
-    })();
-  </script>
-</body>
-</html>
+    thumbs.innerHTML = room.photos.map((src, i)=>(
+      '<img src="' + src + '" alt="Miniatura ' + (i+1) + '" data-i="' + i + '">'
+    )).join("");
+
+    thumbs.addEventListener("click", (e)=>{
+      const img = e.target.closest("img");
+      if(!img) return;
+      setActive(Number(img.dataset.i));
+    });
+
+    setActive(0);
+  })();
+</script>

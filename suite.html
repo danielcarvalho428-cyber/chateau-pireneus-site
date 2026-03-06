@@ -334,7 +334,7 @@
       }
 
       const params = new URLSearchParams(location.search);
-      const key = (params.get("room") || "divino").toLowerCase();
+     const key = (params.get("room") || "divino").toLowerCase().trim();
       const room = ROOMS[key];
 
       if (!room){

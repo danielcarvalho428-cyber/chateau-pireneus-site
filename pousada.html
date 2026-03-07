@@ -5,44 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pousada | Chateau Pireneus</title>
 
+  <!-- ===== FONTS ===== -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
 
-    :root{
-      --navy:#1d3557;
-      --navy2:#142a45;
-      --gold:#d8c7a1;
-      --gold2:#cbb58c;
-
-      --bg:#f7f6f2;
-      --ivory:#fbfaf7;
-      --beigeSoft:#f3ecdf;
-      --beigeWash:#f6f1e6;
-
-      --ink:rgba(18,28,44,0.92);
-      --muted:rgba(18,28,44,0.72);
-      --line:rgba(29,53,87,0.14);
-
-      --shadow:0 26px 70px rgba(0,0,0,0.16);
-      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
-
-      --radius:20px;
-      --max:1180px;
+    html{
+      scroll-behavior:smooth;
     }
 
     body{
-      margin:0;
       font-family:Georgia, serif;
-      background:var(--bg);
-      color:var(--navy);
+      background:#f7f6f2;
+      color:#1d3557;
       overflow-x:hidden;
     }
 
-    a{ text-decoration:none; color:inherit; }
-    img{ max-width:100%; display:block; }
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
 
     @font-face{
       font-family:"Gyahegi";
@@ -52,9 +44,32 @@
       font-display:swap;
     }
 
-    /* =========================
-       EXACT HOME HEADER
-       ========================= */
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+      --max:1180px;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .section{
+      padding:88px 0;
+    }
+
+    .orn{
+      width:170px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:16px 0 0;
+    }
+
+    /* ===== HEADER / MENU ===== */
     .top-header{
       position:fixed;
       top:0;
@@ -62,18 +77,15 @@
       right:0;
       z-index:12000;
       padding:14px 22px;
-      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-      background:rgba(0,0,0,0.12);
-      border-bottom:1px solid rgba(255,255,255,0.10);
-      backdrop-filter:blur(10px);
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(29,53,87,0.10);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.06);
     }
-    .top-header.solid{
-      background:rgba(246,241,230,0.92);
-      border-bottom:1px solid rgba(29,53,87,0.12);
-      box-shadow:0 12px 30px rgba(0,0,0,0.08);
-    }
+
     .top-header-inner{
-      max-width:var(--max);
+      max-width:1180px;
       margin:0 auto;
       display:flex;
       align-items:center;
@@ -85,11 +97,9 @@
       display:flex;
       flex-direction:column;
       gap:2px;
+      color:#1d3557;
       text-decoration:none;
-      color:#fff;
-      transition:color 0.25s ease;
     }
-    .top-header.solid .brand{ color:var(--navy); }
 
     .brand .line1{
       font-family:"Cormorant Garamond", serif;
@@ -97,8 +107,9 @@
       letter-spacing:1.4px;
       text-transform:uppercase;
       font-size:12px;
-      opacity:0.92;
+      opacity:0.9;
     }
+
     .brand .line2{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
@@ -122,72 +133,42 @@
       justify-content:center;
       border-radius:12px;
       text-decoration:none;
-      color:#fff;
-      background:rgba(0,0,0,0.20);
-      border:1px solid rgba(255,255,255,0.12);
+      color:#1d3557;
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
       backdrop-filter:blur(6px);
       transition:0.22s ease;
-      box-shadow:0 12px 26px rgba(0,0,0,0.16);
     }
+
     .instagram-btn:hover{
       transform:translateY(-1px);
-      background:rgba(0,0,0,0.28);
+      background:rgba(29,53,87,0.12);
     }
+
     .instagram-btn svg{
       width:18px;
       height:18px;
       display:block;
     }
 
-    .top-header.solid .instagram-btn{
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
-      border:1px solid rgba(29,53,87,0.08);
-      box-shadow:none;
-    }
-    .top-header.solid .instagram-btn:hover{
-      background:rgba(29,53,87,0.12);
-    }
-
-    .reserve-btn{
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:1.6px;
-      font-size:11px;
-      padding:10px 16px;
-      border-radius:12px;
-      background:rgba(216,199,161,0.92);
-      color:#fff;
-      border:1px solid rgba(255,255,255,0.14);
-      box-shadow:0 18px 40px rgba(0,0,0,0.20);
-      transition:0.22s ease;
-      white-space:nowrap;
-    }
-    .reserve-btn:hover{
-      background:rgba(203,181,140,0.98);
-      transform:translateY(-1px);
-      box-shadow:0 22px 52px rgba(0,0,0,0.24);
-    }
-
     .menu-button{
       font-size:28px;
       line-height:1;
-      color:#fff;
+      color:#1d3557;
       cursor:pointer;
       user-select:none;
       padding:10px 12px;
       border-radius:14px;
-      background:rgba(0,0,0,0.20);
+      background:rgba(29,53,87,0.08);
       backdrop-filter:blur(6px);
       border:0;
       transition:0.22s ease;
     }
-    .top-header.solid .menu-button{
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
+
+    .menu-button:hover{
+      transform:translateY(-1px);
+      background:rgba(29,53,87,0.12);
     }
-    .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
-    .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
 
     .backdrop{
       position:fixed;
@@ -198,11 +179,16 @@
       transition:0.25s;
       z-index:11000;
     }
-    .backdrop.open{ opacity:1; pointer-events:auto; }
+
+    .backdrop.open{
+      opacity:1;
+      pointer-events:auto;
+    }
 
     .side-menu{
       position:fixed;
-      top:0; left:0;
+      top:0;
+      left:0;
       width:270px;
       height:100vh;
       background:#fff;
@@ -212,92 +198,96 @@
       transition:0.3s ease;
       z-index:11500;
     }
-    .side-menu.open{ transform:translateX(0); }
+
+    .side-menu.open{
+      transform:translateX(0);
+    }
+
     .side-menu a{
       display:block;
       margin:0 0 16px;
       text-decoration:none;
-      color:var(--navy);
+      color:#1d3557;
       font-size:15px;
       letter-spacing:0.2px;
     }
-    .side-menu a:hover{ text-decoration:underline; }
+
+    .side-menu a:hover{
+      text-decoration:underline;
+    }
+
     .side-menu hr{
       margin:28px 0;
       border:none;
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    /* HERO */
-    .page-hero{
-      min-height:72vh;
+    /* ===== HERO ===== */
+    .hero{
       position:relative;
-      background-image:
-        linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)),
-        url("images/pousada-hero.jpg");
-      background-size:cover;
-      background-position:center;
+      min-height:64vh;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.50), rgba(0,0,0,0.38), rgba(0,0,0,0.54)),
+        url("hero.jpg.webp") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
+      padding:130px 22px 80px;
       overflow:hidden;
-      padding:140px 24px 90px;
     }
 
-    .page-hero::before{
+    .hero::before{
       content:"";
       position:absolute;
       inset:-2px;
+      background:radial-gradient(900px 420px at 50% 30%, rgba(216,199,161,0.14), transparent 60%);
       pointer-events:none;
-      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+      max-width:900px;
+      color:#fff;
+    }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:10px;
       opacity:0.95;
     }
 
-    .page-hero-content{
-      position:relative;
-      z-index:2;
-      color:#fff;
-      max-width:900px;
-      padding:0 18px;
-    }
-
-    .page-hero-content h1{
+    .hero-title{
       margin:0;
       font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-size:clamp(42px, 6vw, 72px);
-      letter-spacing:3px;
+      font-weight:400;
+      font-size:clamp(22px, 3.5vw, 38px);
+      letter-spacing:2px;
       text-transform:uppercase;
-      line-height:1.05;
-      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+      line-height:1.06;
+      text-shadow:0 12px 40px rgba(0,0,0,0.45);
     }
 
-    .page-hero-content p{
-      margin:20px auto 0;
-      max-width:760px;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:500;
-      font-size:clamp(19px, 2.1vw, 24px);
-      letter-spacing:0.3px;
-      color:rgba(255,255,255,0.96);
-      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+    /* ===== CONTENT ===== */
+    .intro{
+      background:
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
 
-    .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 22px;
-    }
-
-    .section{
-      padding:88px 0;
-    }
-
-    .orn{
-      width:170px;
-      height:1px;
-      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
-      margin:16px 0 0;
+    .intro-grid{
+      display:grid;
+      grid-template-columns:1.08fr 0.92fr;
+      gap:28px;
+      align-items:center;
     }
 
     .eyebrow{
@@ -327,20 +317,8 @@
       font-size:15px;
     }
 
-    .intro{
-      background:
-        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
-        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
-        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
-      border-top:1px solid rgba(29,53,87,0.08);
-      border-bottom:1px solid rgba(29,53,87,0.08);
-    }
-
-    .intro-grid{
-      display:grid;
-      grid-template-columns:1.08fr 0.92fr;
-      gap:28px;
-      align-items:center;
+    .section-text p{
+      margin:0 0 14px;
     }
 
     .intro-image{
@@ -369,10 +347,6 @@
 
     .highlights .section-title{
       color:#fff;
-    }
-
-    .highlights .orn{
-      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
     }
 
     .highlight-grid{
@@ -477,7 +451,7 @@
       box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
-    /* EXACT HOME FOOTER */
+    /* ===== FOOTER ===== */
     footer{
       position:relative;
       min-height:160px;
@@ -528,11 +502,6 @@
     }
 
     @media (max-width:980px){
-      .page-hero{
-        min-height:64vh;
-        padding:128px 18px 72px;
-      }
-
       .intro-grid,
       .highlight-grid,
       .gallery-grid{
@@ -567,9 +536,9 @@
     }
   </style>
 </head>
-
 <body>
 
+  <!-- ===== GLASS HEADER + MENU ===== -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
@@ -587,7 +556,7 @@
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
   </nav>
 
-  <header class="top-header" id="topHeader">
+  <header class="top-header">
     <div class="top-header-inner">
       <a class="brand" href="index.html" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
@@ -603,22 +572,20 @@
           </svg>
         </a>
 
-        <a class="reserve-btn" href="booking.html">RESERVAR</a>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
-  <section class="page-hero">
-    <div class="page-hero-content">
-      <h1>A POUSADA</h1>
-      <p>
-        Um refúgio acolhedor em Pirenópolis, onde charme, conforto e tranquilidade
-        se encontram para criar uma experiência memorável.
-      </p>
+  <!-- ===== HERO ===== -->
+  <section class="hero" aria-label="A pousada">
+    <div class="hero-content">
+      <div class="hero-kicker">A</div>
+      <h1 class="hero-title">Pousada</h1>
     </div>
   </section>
 
+  <!-- ===== INTRO ===== -->
   <section class="section intro">
     <div class="wrap">
       <div class="intro-grid">
@@ -626,6 +593,7 @@
           <div class="eyebrow">Chateau Pireneus</div>
           <h2 class="section-title">UM LUGAR PENSADO PARA DESACELERAR E APROVEITAR CADA MOMENTO</h2>
           <div class="orn"></div>
+
           <div class="section-text">
             <p>
               A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais,
@@ -647,6 +615,7 @@
     </div>
   </section>
 
+  <!-- ===== HIGHLIGHTS ===== -->
   <section class="section highlights">
     <div class="wrap">
       <div class="eyebrow">Diferenciais</div>
@@ -672,6 +641,7 @@
     </div>
   </section>
 
+  <!-- ===== GALLERY ===== -->
   <section class="section gallery-section">
     <div class="wrap">
       <div class="eyebrow">Ambientes</div>
@@ -695,6 +665,7 @@
     </div>
   </section>
 
+  <!-- ===== FOOTER ===== -->
   <footer>
     <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
@@ -707,15 +678,8 @@
     </div>
   </footer>
 
+  <!-- ===== MENU SCRIPT ===== -->
   <script>
-    const topHeader = document.getElementById("topHeader");
-    function onScrollHeader(){
-      const y = window.scrollY || document.documentElement.scrollTop;
-      topHeader.classList.toggle("solid", y > 40);
-    }
-    window.addEventListener("scroll", onScrollHeader);
-    onScrollHeader();
-
     function toggleMenu(forceOpen){
       const menu = document.getElementById("sideMenu");
       const backdrop = document.getElementById("backdrop");

@@ -298,6 +298,10 @@
       min-width:0;
     }
 
+    body.room-cavalhadas .info{
+      max-width:280px;
+    }
+
     .room-subtitle{
       color:var(--beige-dark);
       font-size:14px;
@@ -438,6 +442,10 @@
 
       .room-title{
         white-space:normal;
+      }
+
+      body.room-cavalhadas .info{
+        max-width:none;
       }
     }
 
@@ -709,6 +717,10 @@
       const params = new URLSearchParams(location.search);
       const key = (params.get("room") || "divino").toLowerCase().trim();
       const room = ROOMS[key];
+
+      if (key === "cavalhadas") {
+        document.body.classList.add("room-cavalhadas");
+      }
 
       if (!room){
         showError("Suíte inválida. Volte e selecione uma acomodação novamente.");

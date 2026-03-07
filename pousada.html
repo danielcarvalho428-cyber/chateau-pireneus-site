@@ -1,1 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pousada | Chateau Pireneus</title>
 
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #f8f5ef;
+      color: #2b2b2b;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ===== USE THE SAME HEADER STYLE AS HOME ===== */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 18px 28px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .menu-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.10);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    .menu-btn span,
+    .menu-btn span::before,
+    .menu-btn span::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      position: relative;
+      transition: 0.3s ease;
+    }
+
+    .menu-btn span::before {
+      position: absolute;
+      top: -6px;
+    }
+
+    .menu-btn span::after {
+      position: absolute;
+      top: 6px;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -320px;
+      width: 320px;
+      height: 100vh;
+      background: #111;
+      color: #fff;
+      z-index: 1200;
+      padding: 90px 32px 32px;
+      transition: right 0.35s ease;
+    }
+
+    .side-menu.open {
+      right: 0;
+    }
+
+    .side-menu a {
+      display: block;
+      font-size: 1rem;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      z-index: 1100;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.3s ease;
+    }
+
+    .menu-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== HERO ===== */
+    .page-hero {
+      min-height: 72vh;
+      background:
+        linear-gradient(rgba(0,0,0,0.34), rgba(0,0,0,0.34)),
+        url('images/pousada-hero.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+
+    .page-hero-content {
+      max-width: 900px;
+      color: #fff;
+    }
+
+    .page-hero-content h1 {
+      font-size: clamp(2.2rem, 5vw, 4.5rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .page-hero-content p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      max-width: 760px;
+      margin: 0 auto;
+      color: rgba(255,255,255,0.92);
+    }
+
+    /* ===== CONTENT ===== */
+    .section {
+      padding: 90px 24px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .section-eyebrow {
+      color: #8c6a3c;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: #1f1a17;
+    }
+
+    .section-text {
+      font-size: 1.05rem;
+      color: #4c443d;
+      max-width: 680px;
+    }
+
+    .intro-image {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.10);
+    }
+
+    .highlights {
+      background: linear-gradient(180deg, #f8f5ef 0%, #f2ece2 100%);
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 42px;
+    }
+
+    .highlight-card {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(140,106,60,0.12);
+      border-radius: 22px;
+      padding: 28px 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    }
+
+    .highlight-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 12px;
+      color: #1f1a17;
+    }
+
+    .highlight-card p {
+      color: #5c554f;
+      font-size: 0.98rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 40px;
+    }
+
+    .gallery-grid img {
+      height: 260px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+
+    .cta-box {
+      margin-top: 50px;
+      background: #1c1815;
+      color: #fff;
+      border-radius: 28px;
+      padding: 44px 28px;
+      text-align: center;
+    }
+
+    .cta-box h3 {
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .cta-box p {
+      color: rgba(255,255,255,0.82);
+      max-width: 700px;
+      margin: 0 auto 24px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: #b08b57;
+      color: #fff;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      background: #9a7747;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #111;
+      color: rgba(255,255,255,0.84);
+      padding: 60px 24px 28px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand h3 {
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-brand p,
+    .footer-links a {
+      color: rgba(255,255,255,0.72);
+      font-size: 0.96rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-bottom {
+      max-width: 1280px;
+      margin: 30px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .intro-grid,
+      .highlight-grid,
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid img {
+        height: 240px;
+      }
+
+      .brand {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="index.html" class="brand">Chateau Pireneus</a>
+      <button class="menu-btn" id="openMenu" aria-label="Abrir menu">
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <nav class="side-menu" id="sideMenu">
+    <button class="close-menu" id="closeMenu" aria-label="Fechar menu">&times;</button>
+    <a href="index.html">Início</a>
+    <a href="pousada.html">A Pousada</a>
+    <a href="suites.html">Suítes</a>
+    <a href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank">Instagram</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank">Localização</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <h1>A Pousada</h1>
+      <p>
+        Um refúgio acolhedor em Pirenópolis, onde charme, conforto e tranquilidade
+        se encontram para criar uma experiência memorável.
+      </p>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section">
+    <div class="container intro-grid">
+      <div>
+        <div class="section-eyebrow">Chateau Pireneus</div>
+        <h2 class="section-title">Um lugar pensado para desacelerar e aproveitar cada momento</h2>
+        <p class="section-text">
+          A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais,
+          viagens especiais e dias de descanso no coração de Pirenópolis. Cada detalhe foi
+          pensado para proporcionar bem-estar, privacidade e uma estadia acolhedora.
+        </p>
+      </div>
+
+      <div class="intro-image">
+        <img src="images/pousada-intro.jpg" alt="Vista da pousada Chateau Pireneus">
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTS -->
+  <section class="section highlights">
+    <div class="container">
+      <div class="section-eyebrow">Diferenciais</div>
+      <h2 class="section-title">O que torna a experiência especial</h2>
+
+      <div class="highlight-grid">
+        <div class="highlight-card">
+          <h3>Ambiente acolhedor</h3>
+          <p>Espaços planejados para oferecer tranquilidade, charme e conforto em cada detalhe.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Localização privilegiada</h3>
+          <p>Próxima aos encantos de Pirenópolis, com praticidade para viver o melhor da cidade.</p>
+        </div>
+
+        <div class="highlight-card">
+          <h3>Estadia memorável</h3>
+          <p>Uma experiência ideal para casais e hóspedes que buscam descanso com um toque especial.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section">
+    <div class="container">
+      <div class="section-eyebrow">Ambientes</div>
+      <h2 class="section-title">Conheça um pouco mais da pousada</h2>
+
+      <div class="gallery-grid">
+        <img src="images/pousada1.jpg" alt="Ambiente da pousada">
+        <img src="images/pousada2.jpg" alt="Área externa da pousada">
+        <img src="images/pousada3.jpg" alt="Detalhes da pousada">
+      </div>
+
+      <div class="cta-box">
+        <h3>Descubra sua próxima estadia em Pirenópolis</h3>
+        <p>
+          Viva dias de descanso, charme e aconchego em um ambiente pensado para tornar
+          sua experiência ainda mais especial.
+        </p>
+        <a class="cta-btn" href="suites.html">Ver acomodações</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>Chateau Pireneus</h3>
+        <p>Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html">Início</a>
+        <a href="pousada.html">A Pousada</a>
+        <a href="suites.html">Suítes</a>
+        <a href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank">Instagram</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Chateau Pireneus. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <script>
+    const openMenu = document.getElementById('openMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    openMenu.addEventListener('click', () => {
+      sideMenu.classList.add('open');
+      menuOverlay.classList.add('show');
+    });
+
+    closeMenu.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+      menuOverlay.classList.remove('show');
+    });
+
+    menuOverlay.addEventListener('click', () => {
+      sideMenu.classList.remove('open');
+      menuOverlay.classList.remove('show');
+    });
+  </script>
+</body>
+</html>

@@ -3,23 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suíte • Chateau Pireneus</title>
+  <title>Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      padding-top:92px;
-      font-family:Georgia, serif;
-      background:#f6f1e6; /* bege claro */
-      color:#1d3557;
-    }
+    html{ scroll-behavior:smooth; }
 
     :root{
-      --blue:#1d3557;
-      --beige:#d8c7a1;
-      --beige-dark:#cbb58c;
-      --shadow:0 20px 45px rgba(0,0,0,0.12);
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --ivory:#fbfaf7;
+      --beigeSoft:#f3ecdf;
+      --beigeWash:#f6f1e6;
+
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --line:rgba(29,53,87,0.14);
+
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+      --radius:20px;
+      --max:1180px;
+
+      --welcome-heading-offset:18px;
+    }
+
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
     }
 
     @font-face{
@@ -30,7 +51,9 @@
       font-display:swap;
     }
 
-    /* SAME HOME HEADER STYLE, WITH MENU + INSTAGRAM, WITHOUT RESERVAR */
+    /* =========================
+       GLASS HEADER (LOCKED)
+       ========================= */
     .top-header{
       position:fixed;
       top:0;
@@ -43,15 +66,13 @@
       border-bottom:1px solid rgba(255,255,255,0.10);
       backdrop-filter:blur(10px);
     }
-
     .top-header.solid{
       background:rgba(246,241,230,0.92);
       border-bottom:1px solid rgba(29,53,87,0.12);
       box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
-
     .top-header-inner{
-      max-width:1180px;
+      max-width:var(--max);
       margin:0 auto;
       display:flex;
       align-items:center;
@@ -67,10 +88,7 @@
       color:#fff;
       transition:color 0.25s ease;
     }
-
-    .top-header.solid .brand{
-      color:#1d3557;
-    }
+    .top-header.solid .brand{ color:var(--navy); }
 
     .brand .line1{
       font-family:"Cormorant Garamond", serif;
@@ -80,7 +98,6 @@
       font-size:12px;
       opacity:0.92;
     }
-
     .brand .line2{
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
@@ -111,12 +128,10 @@
       transition:0.22s ease;
       box-shadow:0 12px 26px rgba(0,0,0,0.16);
     }
-
     .instagram-btn:hover{
       transform:translateY(-1px);
       background:rgba(0,0,0,0.28);
     }
-
     .instagram-btn svg{
       width:18px;
       height:18px;
@@ -124,14 +139,33 @@
     }
 
     .top-header.solid .instagram-btn{
-      color:#1d3557;
+      color:var(--navy);
       background:rgba(29,53,87,0.08);
       border:1px solid rgba(29,53,87,0.08);
       box-shadow:none;
     }
-
     .top-header.solid .instagram-btn:hover{
       background:rgba(29,53,87,0.12);
+    }
+
+    .reserve-btn{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+      transition:0.22s ease;
+      white-space:nowrap;
+    }
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
 
     .menu-button{
@@ -147,20 +181,12 @@
       border:0;
       transition:0.22s ease;
     }
-
     .top-header.solid .menu-button{
-      color:#1d3557;
+      color:var(--navy);
       background:rgba(29,53,87,0.08);
     }
-
-    .menu-button:hover{
-      transform:translateY(-1px);
-      background:rgba(0,0,0,0.28);
-    }
-
-    .top-header.solid .menu-button:hover{
-      background:rgba(29,53,87,0.12);
-    }
+    .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
+    .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
 
     .backdrop{
       position:fixed;
@@ -171,16 +197,11 @@
       transition:0.25s;
       z-index:11000;
     }
-
-    .backdrop.open{
-      opacity:1;
-      pointer-events:auto;
-    }
+    .backdrop.open{ opacity:1; pointer-events:auto; }
 
     .side-menu{
       position:fixed;
-      top:0;
-      left:0;
+      top:0; left:0;
       width:270px;
       height:100vh;
       background:#fff;
@@ -190,278 +211,782 @@
       transition:0.3s ease;
       z-index:11500;
     }
-
-    .side-menu.open{
-      transform:translateX(0);
-    }
-
+    .side-menu.open{ transform:translateX(0); }
     .side-menu a{
       display:block;
       margin:0 0 16px;
       text-decoration:none;
-      color:#1d3557;
+      color:var(--navy);
       font-size:15px;
       letter-spacing:0.2px;
     }
-
-    .side-menu a:hover{
-      text-decoration:underline;
-    }
-
+    .side-menu a:hover{ text-decoration:underline; }
     .side-menu hr{
       margin:28px 0;
       border:none;
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    .wrap{
-      max-width:1100px;
-      margin:0 auto;
-      padding:28px 18px 60px;
-      display:grid;
-      grid-template-columns: 1.25fr 0.75fr;
-      gap:26px;
-      align-items:start;
-    }
-
-    /* ===== LEFT: Image Carousel (square corners) ===== */
-    .carousel-box{
+    /* HERO (LOCKED) */
+    .hero{
+      height:100vh;
       position:relative;
-      width:100%;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.52),
+        rgba(0,0,0,0.34) 40%,
+        rgba(0,0,0,0.54)
+      );
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
     }
 
-    .hero-img{
+    .hero-content{
+      position:relative;
+      z-index:3;
+      color:#fff;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      padding:0 18px;
+      margin-top:36px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+    }
+    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+    .hero-title{
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .hero-title span{
+      display:block;
+      font-size:60px;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      line-height:1.14;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+    .hero-slogan{
+      margin:22px auto 0;
+      max-width:860px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:20px;
+      letter-spacing:0.4px;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+    }
+
+    .hero-cta{
+      margin-top:18px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .hero-cta a{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      transition:0.22s ease;
+    }
+    .hero-cta .ghost{
+      background:rgba(255,255,255,0.10);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+    }
+    .hero-cta .ghost:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
+    }
+
+    .scroll-cue{
+      position:absolute;
+      left:50%;
+      bottom:26px;
+      transform:translateX(-50%);
+      z-index:3;
+      width:30px;
+      height:48px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.35);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top:8px;
+      opacity:0.85;
+    }
+    .scroll-cue::after{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(216,199,161,0.95);
+      animation:dot 1.6s infinite;
+    }
+    @keyframes dot{
+      0%{ transform:translateY(0); opacity:1; }
+      70%{ transform:translateY(18px); opacity:0.25; }
+      100%{ transform:translateY(0); opacity:1; }
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+    .section{ padding:92px 0; }
+    .orn{
+      width:170px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+      margin:18px 0 0;
+    }
+    .sub{
+      margin:0;
+      max-width:900px;
+      color:rgba(22,37,58,0.72);
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:0.95s ease;
+    }
+    .reveal.show{ opacity:1; transform:translateY(0); }
+
+    /* WELCOME */
+    .welcome{
+      background:
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding:42px 0 58px;
+    }
+
+    .welcome-shell{ max-width:none; }
+
+    .welcome-head{
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
+      margin-bottom:14px;
+    }
+
+    .welcome-logo{
+      flex:0 0 auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-start;
+    }
+
+    .welcome-logo img{
+      width:118px;
+      height:auto;
+      display:block;
+      margin-top:-4px;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
+      opacity:0.98;
+    }
+
+    .welcome-heading{
+      min-width:0;
+      padding-top:var(--welcome-heading-offset);
+    }
+
+    .welcome-title-small{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:21px;
+      color:#111;
+      letter-spacing:0.35px;
+      margin:0 0 6px;
+      line-height:1.05;
+    }
+
+    .welcome-title-big{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:40px;
+      color:var(--navy);
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      margin:0;
+      line-height:1.02;
+      white-space:nowrap;
+    }
+
+    .welcome .orn{
+      margin:10px 0 0;
+      width:150px;
+    }
+
+    .welcome-text{
       width:100%;
-      aspect-ratio: 16/10;
+      max-width:none;
+      color:rgba(22,37,58,0.82);
+      line-height:1.88;
+      font-size:14.9px;
+    }
+
+    .welcome-text p{
+      margin:0 0 12px;
+      max-width:none;
+    }
+
+    .welcome-text p:last-child{ margin-bottom:0; }
+
+    /* AMBIENTES */
+    .gallery{
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color:#fff;
+      padding-top:58px;
+      padding-bottom:92px;
+    }
+    .gallery-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:24px;
+      letter-spacing:1.4px;
+      margin:0;
+      text-transform:uppercase;
+    }
+    .gallery-sub{
+      margin:10px 0 0;
+      max-width:860px;
+      color:rgba(255,255,255,0.86);
+      line-height:1.9;
+      font-size:15px;
+    }
+    .gallery .orn{
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+    }
+    .gallery-grid{
+      margin-top:34px;
+      display:grid;
+      grid-template-columns:1.4fr 0.6fr;
+      gap:14px;
+    }
+
+    .photo{
+      position:relative;
+      overflow:hidden;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.12);
+      background:#0f1f33;
+      min-height:300px;
+    }
+    .photo.small{ min-height:230px; }
+
+    .gallery-slider{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+    }
+
+    .gallery-slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 0.55s ease;
+      pointer-events:none;
+    }
+    .gallery-slide.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .gallery-slide img{
+      width:100%;
+      height:100%;
       object-fit:cover;
       display:block;
-      background:#eee;
-      border-radius:0;
-      box-shadow: var(--shadow);
+      opacity:0.93;
+      transform:scale(1);
+      transition:0.55s ease;
     }
 
-    .img-arrow{
+    .photo:hover .gallery-slide.active img{
+      opacity:0.99;
+      transform:scale(1.05);
+    }
+
+    .photo::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0.08) 60%);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .cap{
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:34px;
+      z-index:3;
+      color:#fff;
+      text-shadow:0 10px 24px rgba(0,0,0,0.55);
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:0.6px;
+      font-size:18px;
+    }
+
+    .gallery-dots{
+      position:absolute;
+      left:16px;
+      right:16px;
+      bottom:12px;
+      z-index:3;
+      display:flex;
+      gap:7px;
+      align-items:center;
+    }
+
+    .gallery-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      border:none;
+      padding:0;
+      cursor:pointer;
+      background:rgba(255,255,255,0.38);
+      transition:0.22s ease;
+    }
+    .gallery-dot.active{
+      background:rgba(216,199,161,0.98);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.15);
+    }
+
+    .gallery-right{
+      display:grid;
+      grid-template-rows:1fr 1fr;
+      gap:14px;
+    }
+
+    /* SUITES (LOCKED) */
+    .suites{
+      background:linear-gradient(to bottom, #f5ecde 0%, #e5d2b4 100%);
+      border-top:1px solid rgba(29,53,87,0.10);
+      border-bottom:1px solid rgba(29,53,87,0.10);
+      padding:44px 0;
+    }
+    .suites-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:30px;
+      letter-spacing:2px;
+      margin:0 0 8px;
+      color:var(--navy);
+      text-transform:uppercase;
+    }
+    .suites .sub{
+      font-size:14px;
+      line-height:1.8;
+      margin-top:0;
+      max-width:860px;
+    }
+    .suites .orn{ margin-top:14px; }
+
+    .carousel{
+      position:relative;
+      max-width:1200px;
+      margin:18px auto 0;
+      overflow:hidden;
+      padding:0 10px;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+    }
+    .carousel-track{
+      display:flex;
+      transition:transform 0.5s ease;
+      will-change:transform;
+    }
+    .suite-card{
+      min-width:33.3333%;
+      padding:14px;
+    }
+    .suite-card .card{
+      background:#fff;
+      border-radius:18px;
+      box-shadow:none;
+      overflow:hidden;
+      transition:0.25s ease;
+      border:1px solid rgba(29,53,87,0.10);
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+    .suite-card .card:hover{
+      transform:translateY(-6px);
+      box-shadow:none;
+    }
+    .img-wrap{ overflow:hidden; }
+    .suite-card .card img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      transform:scale(1);
+      transition:transform 0.55s ease;
+      display:block;
+    }
+    .suite-card .card:hover img{ transform:scale(1.06); }
+    .card-body{
+      padding:14px 16px 16px;
+      text-align:left;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      flex:1;
+      min-height:140px;
+    }
+    .suite-card h3{
+      margin:0;
+      font-size:17px;
+      font-weight:700;
+      color:var(--navy);
+    }
+    .suite-card small{
+      display:block;
+      margin-top:6px;
+      color:rgba(22,37,58,0.70);
+      line-height:1.6;
+      min-height:40px;
+      font-size:13.5px;
+    }
+    .room-button{
+      margin-top:12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      border:2px solid var(--gold2);
+      color:var(--navy);
+      background:transparent;
+      font-weight:900;
+      letter-spacing:1px;
+      text-decoration:none;
+      transition:0.2s ease;
+      width:fit-content;
+      font-size:11px;
+    }
+    .room-button:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#fff;
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.55);
+    }
+    .arrow{
       position:absolute;
       top:50%;
       transform:translateY(-50%);
-      width:46px;
-      height:46px;
+      width:44px;
+      height:44px;
       border-radius:50%;
-      background:rgba(216,199,161,0.95);
-      color:var(--blue);
+      background:rgba(216,199,161,0.96);
+      color:var(--navy);
       display:flex;
       align-items:center;
       justify-content:center;
       font-size:22px;
       cursor:pointer;
+      box-shadow:0 18px 35px rgba(0,0,0,0.18);
+      z-index:5;
       user-select:none;
-      box-shadow:0 18px 40px rgba(0,0,0,0.20);
       transition:0.2s ease;
     }
-    .img-arrow:hover{
+    .arrow:hover{
       background:#fff;
       transform:translateY(-50%) scale(1.04);
     }
-    .img-arrow.left{ left:12px; }
-    .img-arrow.right{ right:12px; }
+    .arrow-left{ left:10px; }
+    .arrow-right{ right:10px; }
 
-    .dots{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      margin-top:14px;
-    }
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      background:rgba(29,53,87,0.22);
-      cursor:pointer;
-      transition:0.2s ease;
-    }
-    .dot.active{
-      background:rgba(216,199,161,0.98);
-      transform:scale(1.15);
+    /* CONHEÇA PIRI */
+    .piri{
+      background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
 
-    /* ===== RIGHT: Info (NO white card) ===== */
-    .info{
-      padding:0;
+    .piri-top{
+      max-width:860px;
+      margin-bottom:28px;
     }
 
-    .room-subtitle{
-      color:var(--beige-dark);
-      font-size:14px;
-      letter-spacing:0.8px;
-      text-transform:lowercase;
-      margin:0 0 4px;
+    .piri-kicker{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:0.4px;
+      color:rgba(29,53,87,0.78);
+      margin-bottom:8px;
     }
 
-    .room-title{
-      margin:0;
-      font-family:"Gyahegi", "Cormorant Garamond", serif;
+    .piri-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:32px;
-      letter-spacing:1px;
-      color:var(--blue);
+      font-size:34px;
+      letter-spacing:1.8px;
+      margin:0;
+      text-transform:uppercase;
+      color:var(--navy);
     }
 
-    .gold-rule{
-      width:160px;
-      height:1px;
-      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
-      margin:14px 0 18px;
-    }
-
-    .subtitle{
-      margin:0 0 18px;
-      color:#2b2b2b;
-      line-height:1.7;
+    .piri-sub{
+      margin:12px 0 0;
+      max-width:760px;
+      color:rgba(22,37,58,0.74);
+      line-height:1.9;
       font-size:15px;
     }
 
-    .section-title{
-      margin:18px 0 10px;
-      font-size:14px;
-      letter-spacing:0.8px;
-      text-transform:uppercase;
-      opacity:0.85;
-    }
-
-    ul{
-      margin:0;
-      padding:0;
-      list-style:none;
+    .piri-grid{
+      margin-top:26px;
       display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:10px 28px;
-      color:#333;
-      font-size:14.5px;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
     }
 
-    ul li{
+    .piri-card{
+      overflow:hidden;
+      border-radius:22px;
+      background:rgba(255,255,255,0.84);
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:0 16px 36px rgba(0,0,0,0.08);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter:blur(6px);
+    }
+
+    .piri-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 22px 48px rgba(0,0,0,0.12);
+    }
+
+    .piri-image{
       position:relative;
-      padding-left:18px;
-      line-height:1.7;
-    }
-
-    ul li::before{
-      content:"✦";
-      position:absolute;
-      left:0;
-      top:0;
-      color:var(--beige-dark);
-      font-size:12px;
-    }
-
-    .capacity{
-      margin-top:14px;
-      font-weight:700;
-      color:var(--blue);
-      font-size:14.5px;
-    }
-
-    .cta{
-      margin-top:18px;
+      aspect-ratio:4 / 3;
+      overflow:hidden;
+      background:
+        linear-gradient(135deg, rgba(29,53,87,0.92), rgba(20,42,69,0.82)),
+        radial-gradient(circle at 20% 20%, rgba(216,199,161,0.22), transparent 35%);
       display:flex;
-      flex-wrap:wrap;
-      gap:10px;
+      align-items:flex-end;
+      padding:18px;
     }
-    .btn{
+
+    .piri-image::after{
+      content:"Imagem em breve";
+      font-family:"Cormorant Garamond", serif;
+      font-size:18px;
+      letter-spacing:0.4px;
+      color:rgba(255,255,255,0.82);
+    }
+
+    .piri-body{
+      padding:18px 18px 20px;
+    }
+
+    .piri-body b{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:22px;
+      color:var(--navy);
+      margin-bottom:8px;
+      letter-spacing:0.3px;
+    }
+
+    .piri-body p{
+      margin:0;
+      color:rgba(22,37,58,0.74);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .piri-cta-wrap{
+      margin-top:28px;
+      display:flex;
+      justify-content:flex-start;
+    }
+
+    .piri-cta{
       display:inline-flex;
       align-items:center;
       justify-content:center;
       text-decoration:none;
-      font-weight:800;
-      letter-spacing:1px;
-      border-radius:12px;
-      padding:12px 16px;
-      transition:0.2s ease;
-      user-select:none;
-    }
-    .btn.primary{
-      background:var(--beige);
-      color:#fff;
-    }
-    .btn.primary:hover{
-      background:var(--beige-dark);
-      transform:translateY(-1px);
-      box-shadow:0 0 18px rgba(216,199,161,0.55);
-    }
-    .btn.outline{
-      background:transparent;
-      border:2px solid var(--beige-dark);
-      color:var(--blue);
-    }
-    .btn.outline:hover{
-      background:var(--beige);
-      border-color:var(--beige);
-      color:#fff;
-      transform:translateY(-1px);
-      box-shadow:0 0 18px rgba(216,199,161,0.45);
-    }
-
-    .error{
-      max-width:1100px;
-      margin:18px auto 0;
       padding:12px 18px;
-      color:#7a1f2b;
-      background:rgba(122,31,43,0.08);
-      border:1px solid rgba(122,31,43,0.18);
-      border-radius:12px;
-      display:none;
+      border-radius:14px;
+      background:var(--navy);
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      border:1px solid rgba(29,53,87,0.16);
+      box-shadow:0 14px 28px rgba(0,0,0,0.10);
+      transition:0.22s ease;
     }
 
-    @media (max-width: 980px){
-      .wrap{ grid-template-columns:1fr; }
-
-      ul{
-        grid-template-columns:1fr;
-      }
+    .piri-cta:hover{
+      transform:translateY(-1px);
+      background:var(--navy2);
+      box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
-    @media (max-width: 768px){
-      body{
-        padding-top:84px;
+    /* FOOTER */
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:980px){
+      .hero-title span{ font-size:46px; }
+
+      .welcome{ padding:38px 0 34px; }
+      .welcome-head{
+        gap:12px;
+        margin-bottom:12px;
+      }
+      .welcome-logo img{
+        width:82px;
+        margin-top:-2px;
+      }
+      .welcome-heading{
+        padding-top:8px;
+      }
+      .welcome-title-big{
+        white-space:normal;
+        font-size:34px;
       }
 
-      .top-header{
-        padding:12px 16px;
+      .gallery{
+        padding-top:46px;
+        padding-bottom:78px;
+      }
+      .gallery-grid{ grid-template-columns:1fr; }
+      .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
+      .photo{ min-height:260px; }
+      .photo.small{ min-height:220px; }
+
+      .piri-grid{ grid-template-columns:1fr; }
+      .piri-title{ font-size:30px; }
+
+      .suites{ padding:38px 0; }
+      .suite-card{ min-width:100%; }
+      .suites-title{ font-size:28px; }
+
+      footer{
+        min-height:200px;
+        max-height:none;
       }
 
-      .brand .line1{
-        font-size:11px;
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
       }
 
-      .brand .line2{
-        font-size:16px;
-      }
-
-      .header-actions{
+      .footer-contact{
+        width:100%;
+        font-size:18px;
         gap:10px;
-      }
-
-      .instagram-btn{
-        width:38px;
-        height:38px;
-      }
-
-      .menu-button{
-        font-size:26px;
-        padding:9px 11px;
       }
     }
   </style>
 </head>
 
 <body>
+
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
-    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
-    <a href="index.html#welcome" onclick="toggleMenu(false)">A pousada</a>
-    <a href="index.html#suites" onclick="toggleMenu(false)">Acomodações</a>
-    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+    <a href="#top" onclick="toggleMenu(false)">Home</a>
+    <a href="#welcome" onclick="toggleMenu(false)">A pousada</a>
+    <a href="#suites" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="#piri" onclick="toggleMenu(false)">Conheça Piri</a>
 
     <hr>
 
@@ -473,7 +998,7 @@
 
   <header class="top-header" id="topHeader">
     <div class="top-header-inner">
-      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+      <a class="brand" href="#top" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
         <span class="line2">Chateau Pireneus</span>
       </a>
@@ -487,53 +1012,276 @@
           </svg>
         </a>
 
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
-  <div id="errBox" class="error"></div>
+  <section class="hero" id="top" aria-label="Hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span>CHATEAU</span>
+        <span>PIRENEUS</span>
+      </h1>
 
-  <main class="wrap">
-    <section aria-label="Galeria da suíte">
-      <div class="carousel-box">
-        <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
-        <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
-        <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+      <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
+
+      <div class="hero-cta">
+        <a class="ghost" href="#suites">CONHEÇA AS ACOMODAÇÕES</a>
       </div>
+    </div>
 
-      <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
-    </section>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
 
-    <aside>
-      <div class="info">
-        <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
-        <h1 class="room-title" id="roomName">Suíte</h1>
-        <div class="gold-rule" aria-hidden="true"></div>
+  <section class="welcome reveal" id="welcome">
+    <div class="wrap">
+      <div class="welcome-shell">
+        <div class="welcome-head">
+          <div class="welcome-logo" aria-hidden="true">
+            <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+          </div>
 
-        <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
+          <div class="welcome-heading">
+            <div class="welcome-title-small">Bem-vindo à Pousada</div>
+            <h2 class="welcome-title-big">CHATEAU PIRENEUS</h2>
+            <div class="orn"></div>
+          </div>
+        </div>
 
-        <div class="section-title">Comodidades</div>
-        <ul id="amenities"></ul>
-
-        <div class="capacity" id="capacityLine">Capacidade: —</div>
-
-        <div class="cta">
-          <a class="btn primary" href="booking.html">RESERVAR</a>
-          <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
+        <div class="welcome-text">
+          <p>
+            Em meio à natureza e ao charme de Pirenópolis, a Pousada Chateau Pireneus nasceu com o propósito de oferecer um refúgio tranquilo e acolhedor para casais que desejam desacelerar e aproveitar momentos especiais a dois. Inspirada no conceito de hospedagem boutique, a pousada propõe uma experiência personalizada, cultural e pitoresca, com o diferencial de tornar esse estilo de estadia mais acessível e descomplicada, sem abrir mão do conforto e do cuidado com os detalhes.
+          </p>
+          <p>
+            Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes. Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência feita para desacelerar.
+          </p>
         </div>
       </div>
-    </aside>
-  </main>
+    </div>
+  </section>
+
+  <section class="section gallery reveal" id="galeria">
+    <div class="wrap">
+      <h2 class="gallery-title">AMBIENTES</h2>
+      <p class="gallery-sub">Aqui, cada detalhe convida ao descanso, à conexão cultural e à simplicidade de viver bons momentos!</p>
+      <div class="orn"></div>
+
+      <div class="gallery-grid">
+        <div class="photo ambiente-slider">
+          <div class="gallery-slider">
+            <div class="gallery-slide active">
+              <img src="public/galeria/piscina1.jpeg" alt="Piscina">
+            </div>
+            <div class="gallery-slide">
+              <img src="public/galeria/piscina2.jpeg" alt="Piscina">
+            </div>
+            <div class="gallery-slide">
+              <img src="public/galeria/piscina3.jpeg" alt="Piscina">
+            </div>
+          </div>
+          <div class="cap">Piscina</div>
+          <div class="gallery-dots">
+            <button class="gallery-dot active" aria-label="Imagem 1 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 2 da Piscina"></button>
+            <button class="gallery-dot" aria-label="Imagem 3 da Piscina"></button>
+          </div>
+        </div>
+
+        <div class="gallery-right">
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/sala-jantar1.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar2.jpeg" alt="Sala de jantar">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/sala-jantar3.jpeg" alt="Sala de jantar">
+              </div>
+            </div>
+            <div class="cap">Sala de jantar</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Sala de jantar"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Sala de jantar"></button>
+            </div>
+          </div>
+
+          <div class="photo small ambiente-slider">
+            <div class="gallery-slider">
+              <div class="gallery-slide active">
+                <img src="public/galeria/lazer1.jpeg" alt="Área de lazer">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/lazer2.jpeg" alt="Área de lazer">
+              </div>
+              <div class="gallery-slide">
+                <img src="public/galeria/lazer3.jpeg" alt="Área de lazer">
+              </div>
+            </div>
+            <div class="cap">Área de lazer</div>
+            <div class="gallery-dots">
+              <button class="gallery-dot active" aria-label="Imagem 1 da Área de lazer"></button>
+              <button class="gallery-dot" aria-label="Imagem 2 da Área de lazer"></button>
+              <button class="gallery-dot" aria-label="Imagem 3 da Área de lazer"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="suites reveal" id="suites">
+    <div class="wrap">
+      <h2 class="suites-title">NOSSAS ACOMODAÇÕES</h2>
+      <p class="sub">Suítes com conforto premium e detalhes que remetem ao clima romântico e cultural de Piri.</p>
+      <div class="orn"></div>
+
+      <div class="carousel" aria-label="Carousel de acomodações">
+        <div class="arrow arrow-left" onclick="moveSlide(-1)">‹</div>
+        <div class="arrow arrow-right" onclick="moveSlide(1)">›</div>
+
+        <div class="carousel-track" id="carouselTrack">
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Divino</h3>
+                  <small>Conforto e tranquilidade para uma estadia a dois.</small>
+                </div>
+                <a href="suite.html?room=divino" class="room-button">Conhecer</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte das Cavalhadas</h3>
+                  <small>Ambiente acolhedor com varanda privativa e rede.</small>
+                </div>
+                <a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Rosário</h3>
+                  <small>Para relaxar e curtir o charme de Pirenópolis.</small>
+                </div>
+                <a href="suite.html?room=rosario" class="room-button">Conhecer</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte Aurora</h3>
+                  <small>Uma experiência romântica com conforto e tranquilidade.</small>
+                </div>
+                <a href="suite.html?room=aurora" class="room-button">Conhecer</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="suite-card">
+            <div class="card">
+              <div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div>
+              <div class="card-body">
+                <div>
+                  <h3>Suíte do Bonfim</h3>
+                  <small>Essencial e aconchegante — perfeita para descansar.</small>
+                </div>
+                <a href="suite.html?room=bonfim" class="room-button">Conhecer</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section piri reveal" id="piri">
+    <div class="wrap">
+      <div class="piri-top">
+        <span class="piri-kicker">Descubra Pirenópolis</span>
+        <h2 class="piri-title">CONHEÇA PIRI</h2>
+        <p class="piri-sub">
+          Entre ruas históricas, paisagens naturais e experiências gastronômicas cheias de charme, Pirenópolis convida você a viver dias mais leves, autênticos e memoráveis.
+        </p>
+        <div class="orn"></div>
+      </div>
+
+      <div class="piri-grid">
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Centro histórico</b>
+            <p>
+              Ruas de pedra, arquitetura colonial e o charme atemporal do coração de Pirenópolis para passeios tranquilos e cheios de atmosfera.
+            </p>
+          </div>
+        </article>
+
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Cachoeiras & natureza</b>
+            <p>
+              Refúgios naturais ideais para desacelerar, respirar fundo e aproveitar a beleza de Piri com calma e conexão.
+            </p>
+          </div>
+        </article>
+
+        <article class="piri-card">
+          <div class="piri-image"></div>
+          <div class="piri-body">
+            <b>Gastronomia</b>
+            <p>
+              Cafés, sabores regionais e experiências especiais que transformam cada saída em mais um momento marcante da viagem.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="piri-cta-wrap">
+        <a href="https://maps.google.com/?q=Piren%C3%B3polis+GO" target="_blank" class="piri-cta">EXPLORAR PIRENÓPOLIS</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const topHeader = document.getElementById("topHeader");
-
     function onScrollHeader(){
       const y = window.scrollY || document.documentElement.scrollTop;
       topHeader.classList.toggle("solid", y > 40);
     }
-
     window.addEventListener("scroll", onScrollHeader);
     onScrollHeader();
 
@@ -552,216 +1300,65 @@
       }
     }
 
-    (function () {
-      const ROOMS = {
-        divino: {
-          name: "Suíte do Divino",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: [
-            "public/suites/divino/divino1.jpeg",
-            "public/suites/divino/divino2.jpeg",
-            "public/suites/divino/divino3.jpeg",
-            "public/suites/divino/redes4.jpeg"
-          ],
-          amenities: [
-            "Cama Queen",
-            "Enxoval 200 fios",
-            "Cortina blackout",
-            "Arara de roupas",
-            "Smart Tv",
-            "Frigobar",
-            "Ar-condicionado",
-            "Wi-Fi",
-            "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
-          ],
-          capacity: "Capacidade: 2 hóspedes"
-        },
+    const track = document.getElementById("carouselTrack");
+    let index = 0;
+    const visible = 3;
+    const total = track.children.length;
+    const maxIndex = Math.max(0, total - visible);
 
-        cavalhadas: {
-          name: "Suíte das Cavalhadas",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: [
-            "public/suites/cavalhadas/cavalhadas1.jpeg",
-            "public/suites/cavalhadas/cavalhadas2.jpeg",
-            "public/suites/cavalhadas/cavalhadas3.jpeg",
-            "public/suites/cavalhadas/redes4.jpeg"
-          ],
-          amenities: [
-            "Cama Queen",
-            "Enxoval 200 fios",
-            "Cortina blackout",
-            "Arara de roupas",
-            "Smart Tv",
-            "Frigobar",
-            "Ar-condicionado",
-            "Wi-Fi",
-            "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
-          ],
-          capacity: "Capacidade: 2 hóspedes"
-        },
+    function applySlide(){
+      track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
+    }
 
-        rosario: {
-          name: "Suíte do Rosário",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: [
-            "public/suites/rosario/rosario1.jpeg",
-            "public/suites/rosario/rosario2.jpeg",
-            "public/suites/rosario/rosario3.jpeg",
-            "public/suites/rosario/redes4.jpeg"
-          ],
-          amenities: [
-            "Cama Queen",
-            "Enxoval 200 fios",
-            "Cortina blackout",
-            "Arara de roupas",
-            "TV",
-            "Frigobar",
-            "Ar-condicionado",
-            "Wi-Fi",
-            "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
-          ],
-          capacity: "Capacidade: 2 hóspedes"
-        },
+    function moveSlide(dir){
+      index += dir;
+      if(index < 0) index = maxIndex;
+      if(index > maxIndex) index = 0;
+      applySlide();
+    }
 
-        aurora: {
-          name: "Suíte Aurora",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: [
-            "public/suites/aurora/aurora1.jpeg",
-            "public/suites/aurora/aurora2.jpeg",
-            "public/suites/aurora/aurora3.jpeg",
-            "public/suites/aurora/redes4.jpeg"
-          ],
-          amenities: [
-            "Cama Queen",
-            "Enxoval 200 fios",
-            "Cortina blackout",
-            "Arara de roupas",
-            "Smart Tv",
-            "Frigobar",
-            "Ar-condicionado",
-            "Wi-Fi",
-            "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
-          ],
-          capacity: "Capacidade: 2 hóspedes"
-        },
+    setInterval(()=>{
+      index++;
+      if(index > maxIndex) index = 0;
+      applySlide();
+    }, 5500);
 
-        bonfim: {
-          name: "Suíte do Bonfim",
-          subtitle: "suíte padrão sem Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
-          photos: [
-            "public/suites/bonfim/bonfim1.jpeg",
-            "public/suites/bonfim/bonfim2.jpeg",
-            "public/suites/bonfim/bonfim3.jpeg",
-            "public/suites/bonfim/redesbonfim4.jpeg"
-          ],
-          amenities: [
-            "Cama Queen",
-            "Enxoval 200 fios",
-            "Cortina blackout",
-            "Arara de roupas",
-            "Frigobar",
-            "Ar-condicionado",
-            "Wi-Fi",
-            "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
-          ],
-          capacity: "Capacidade: 2 hóspedes"
-        }
-      };
+    const ambienteSliders = document.querySelectorAll(".ambiente-slider");
 
-      const errBox = document.getElementById("errBox");
-      const showError = (msg) => {
-        errBox.style.display = "block";
-        errBox.textContent = msg;
-      };
+    ambienteSliders.forEach((slider)=>{
+      const slides = slider.querySelectorAll(".gallery-slide");
+      const dots = slider.querySelectorAll(".gallery-dot");
+      let current = 0;
 
-      const params = new URLSearchParams(location.search);
-      const key = (params.get("room") || "divino").toLowerCase().trim();
-      const room = ROOMS[key];
-
-      if (!room){
-        showError("Suíte inválida. Volte e selecione uma acomodação novamente.");
-        return;
-      }
-
-      document.title = room.name + " • Chateau Pireneus";
-
-      document.getElementById("roomSub").textContent = room.subtitle;
-      document.getElementById("roomName").textContent = room.name;
-      document.getElementById("roomDesc").textContent = room.desc;
-
-      document.getElementById("amenities").innerHTML =
-        room.amenities.map(x => "<li>" + x + "</li>").join("");
-
-      document.getElementById("capacityLine").textContent = room.capacity;
-
-      const waBtn = document.getElementById("waBtn");
-      const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
-      waBtn.href = "https://wa.me/5562998167654?text=" + msg;
-
-      const heroImg = document.getElementById("heroImg");
-      const dotsWrap = document.getElementById("dots");
-      const prevBtn = document.getElementById("prevBtn");
-      const nextBtn = document.getElementById("nextBtn");
-
-      let i = 0;
-      let timer = null;
-
-      function renderDots(){
-        dotsWrap.innerHTML = room.photos.map((_, idx) => (
-          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx+1) + '"></div>'
-        )).join("");
-      }
-
-      function setActive(idx){
-        i = idx;
-        heroImg.src = room.photos[i];
-        heroImg.alt = "Foto da " + room.name + " (" + (i+1) + "/" + room.photos.length + ")";
-
-        Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
-          d.classList.toggle("active", di === i);
+      function showSlide(i){
+        slides.forEach((slide, index)=>{
+          slide.classList.toggle("active", index === i);
         });
+        dots.forEach((dot, index)=>{
+          dot.classList.toggle("active", index === i);
+        });
+        current = i;
       }
 
-      function next(){
-        const n = room.photos.length;
-        setActive((i + 1) % n);
-      }
-
-      function prev(){
-        const n = room.photos.length;
-        setActive((i - 1 + n) % n);
-      }
-
-      function restartTimer(){
-        if(timer) clearInterval(timer);
-        timer = setInterval(next, 4500);
-      }
-
-      renderDots();
-      setActive(0);
-      restartTimer();
-
-      nextBtn.addEventListener("click", () => { next(); restartTimer(); });
-      prevBtn.addEventListener("click", () => { prev(); restartTimer(); });
-
-      dotsWrap.addEventListener("click", (e) => {
-        const dot = e.target.closest(".dot");
-        if(!dot) return;
-        setActive(Number(dot.dataset.i));
-        restartTimer();
+      dots.forEach((dot, index)=>{
+        dot.addEventListener("click", ()=>{
+          showSlide(index);
+        });
       });
-    })();
+
+      setInterval(()=>{
+        let next = current + 1;
+        if(next >= slides.length) next = 0;
+        showSlide(next);
+      }, 4200);
+    });
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add("show");
+      });
+    }, { threshold: 0.14 });
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
   </script>
 </body>
 </html>

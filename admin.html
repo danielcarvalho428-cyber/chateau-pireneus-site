@@ -1,1 +1,592 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Chateau Pireneus</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --bg:#f6f1e6;
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --gold-soft:rgba(184,149,95,0.16);
+      --line:rgba(31,36,48,0.10);
+      --panel:rgba(255,255,255,0.72);
+      --shadow:0 20px 60px rgba(31,36,48,0.10);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+    }
+
+    .top-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      padding:16px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.05);
+    }
+
+    .top-header-inner{
+      max-width:1240px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:400;
+    }
+
+    .brand-subtitle{
+      margin-top:6px;
+      font-size:12px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-actions{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .header-link,
+    .logout-btn,
+    .save-btn{
+      appearance:none;
+      border:none;
+      text-decoration:none;
+      cursor:pointer;
+      transition:0.25s ease;
+      font-family:inherit;
+    }
+
+    .header-link,
+    .logout-btn{
+      color:var(--ink);
+      font-size:14px;
+      font-weight:600;
+      padding:11px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.68);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
+    .header-link:hover,
+    .logout-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,0.92);
+    }
+
+    .page-wrap{
+      max-width:1240px;
+      margin:0 auto;
+      padding:42px 22px 70px;
+    }
+
+    .hero-card{
+      background:linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.60));
+      border:1px solid rgba(255,255,255,0.55);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:34px 30px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      margin-bottom:24px;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:12px;
+    }
+
+    .hero-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(40px, 5vw, 60px);
+      line-height:0.95;
+      font-weight:600;
+      margin-bottom:12px;
+    }
+
+    .hero-text{
+      max-width:760px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .summary-grid{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .summary-card{
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:20px;
+      padding:16px 18px;
+    }
+
+    .summary-label{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .summary-value{
+      font-size:24px;
+      font-weight:700;
+      color:var(--ink);
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.76), rgba(255,255,255,0.62));
+      border:1px solid rgba(255,255,255,0.58);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:26px 22px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .panel-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .panel-subtitle{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.7;
+      margin-bottom:22px;
+    }
+
+    .reservation-card{
+      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.70);
+      border-radius:22px;
+      padding:18px;
+      margin-bottom:14px;
+    }
+
+    .reservation-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:14px;
+    }
+
+    .reservation-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:30px;
+      line-height:1;
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    .reservation-sub{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:var(--gold-soft);
+      color:#8f6c3c;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .reservation-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .reservation-item{
+      background:rgba(255,255,255,0.56);
+      border:1px solid rgba(31,36,48,0.06);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .reservation-item strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .reservation-item span{
+      display:block;
+      font-size:15px;
+      font-weight:600;
+      line-height:1.5;
+    }
+
+    .reservation-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
+    select{
+      min-width:180px;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.88);
+      color:var(--ink);
+      border-radius:14px;
+      padding:12px 14px;
+      font:inherit;
+      outline:none;
+    }
+
+    .save-btn{
+      color:#fff;
+      background:linear-gradient(135deg, #b8955f, #9f7b45);
+      padding:12px 18px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 14px 30px rgba(159,123,69,0.18);
+    }
+
+    .save-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .empty-state{
+      border:1px dashed rgba(31,36,48,0.16);
+      border-radius:20px;
+      padding:24px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,0.42);
+      line-height:1.7;
+    }
+
+    @media (max-width: 900px){
+      .summary-grid,
+      .reservation-grid{
+        grid-template-columns:1fr;
+      }
+
+      .reservation-head{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Chateau Pireneus</span>
+        <span class="brand-subtitle">Painel administrativo</span>
+      </a>
+
+      <div class="header-actions">
+        <a href="dashboard.html" class="header-link">Área do hóspede</a>
+        <button id="logout-btn" class="logout-btn" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero-card">
+      <span class="eyebrow">Gestão de reservas</span>
+      <h1 class="hero-title">Painel administrativo</h1>
+      <p class="hero-text">
+        Visualize todas as solicitações enviadas, acompanhe os dados dos hóspedes e atualize o status de cada reserva em um só lugar.
+      </p>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Total</span>
+          <span class="summary-value" id="total-count">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Pendentes</span>
+          <span class="summary-value" id="pending-count">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Confirmadas</span>
+          <span class="summary-value" id="confirmed-count">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Todas as reservas</h2>
+      <p class="panel-subtitle">
+        Consulte os pedidos enviados pelos hóspedes e ajuste o status conforme o andamento de cada atendimento.
+      </p>
+
+      <div id="admin-reservations-list">
+        <div class="empty-state">Nenhuma reserva encontrada.</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase
+
+    const supabaseClient = createClient(
+      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
+    )
+
+    function formatDate(dateString) {
+      if (!dateString) return "-"
+      const [year, month, day] = dateString.split("-")
+      return `${day}/${month}/${year}`
+    }
+
+    function formatStatus(status) {
+      if (!status) return "pending"
+      return String(status).toLowerCase()
+    }
+
+    function statusLabel(status) {
+      const map = {
+        pending: "Pendente",
+        confirmed: "Confirmada",
+        cancelled: "Cancelada",
+        canceled: "Cancelada",
+        completed: "Concluída"
+      }
+      return map[formatStatus(status)] || status
+    }
+
+    async function checkAdminAccess() {
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser()
+
+      if (userError || !userData.user) {
+        window.location.href = "login.html"
+        return null
+      }
+
+      const { data: adminData, error: adminError } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", userData.user.id)
+        .maybeSingle()
+
+      if (adminError || !adminData) {
+        alert("Acesso restrito ao administrador.")
+        window.location.href = "dashboard.html"
+        return null
+      }
+
+      return userData.user
+    }
+
+    async function loadAdminReservations() {
+      const container = document.getElementById("admin-reservations-list")
+
+      const { data: reservations, error } = await supabaseClient
+        .from("reservations")
+        .select("*")
+        .order("id", { ascending: false })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      const { data: profiles } = await supabaseClient
+        .from("profiles")
+        .select("id, full_name, phone")
+
+      const profileMap = {}
+      ;(profiles || []).forEach(profile => {
+        profileMap[profile.id] = profile
+      })
+
+      const total = reservations ? reservations.length : 0
+      const pending = (reservations || []).filter(r => formatStatus(r.status) === "pending").length
+      const confirmed = (reservations || []).filter(r => formatStatus(r.status) === "confirmed").length
+
+      document.getElementById("total-count").textContent = total
+      document.getElementById("pending-count").textContent = pending
+      document.getElementById("confirmed-count").textContent = confirmed
+
+      if (!reservations || reservations.length === 0) {
+        container.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada.</div>`
+        return
+      }
+
+      container.innerHTML = reservations.map(reservation => {
+        const profile = profileMap[reservation.user_id] || {}
+
+        return `
+          <article class="reservation-card">
+            <div class="reservation-head">
+              <div>
+                <div class="reservation-title">${reservation.room_type || "Reserva solicitada"}</div>
+                <div class="reservation-sub">
+                  ${profile.full_name || "Hóspede não identificado"} · ${profile.phone || "Sem telefone"}
+                </div>
+              </div>
+              <span class="status-badge">${statusLabel(reservation.status)}</span>
+            </div>
+
+            <div class="reservation-grid">
+              <div class="reservation-item">
+                <strong>Check-in</strong>
+                <span>${formatDate(reservation.check_in)}</span>
+              </div>
+
+              <div class="reservation-item">
+                <strong>Check-out</strong>
+                <span>${formatDate(reservation.check_out)}</span>
+              </div>
+
+              <div class="reservation-item">
+                <strong>Hóspedes</strong>
+                <span>${reservation.guests || "-"}</span>
+              </div>
+
+              <div class="reservation-item">
+                <strong>Status atual</strong>
+                <span>${statusLabel(reservation.status)}</span>
+              </div>
+
+              <div class="reservation-item">
+                <strong>User ID</strong>
+                <span>${reservation.user_id}</span>
+              </div>
+
+              <div class="reservation-item">
+                <strong>Criada em</strong>
+                <span>${reservation.created_at ? new Date(reservation.created_at).toLocaleString("pt-BR") : "-"}</span>
+              </div>
+
+              <div class="reservation-item" style="grid-column:1 / -1;">
+                <strong>Pedidos especiais</strong>
+                <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
+              </div>
+            </div>
+
+            <div class="reservation-actions">
+              <select id="status-${reservation.id}">
+                <option value="pending" ${formatStatus(reservation.status) === "pending" ? "selected" : ""}>Pendente</option>
+                <option value="confirmed" ${formatStatus(reservation.status) === "confirmed" ? "selected" : ""}>Confirmada</option>
+                <option value="cancelled" ${formatStatus(reservation.status) === "cancelled" || formatStatus(reservation.status) === "canceled" ? "selected" : ""}>Cancelada</option>
+                <option value="completed" ${formatStatus(reservation.status) === "completed" ? "selected" : ""}>Concluída</option>
+              </select>
+
+              <button class="save-btn" type="button" onclick="updateReservationStatus(${reservation.id})">
+                Salvar status
+              </button>
+            </div>
+          </article>
+        `
+      }).join("")
+    }
+
+    async function updateReservationStatus(reservationId) {
+      const status = document.getElementById(`status-${reservationId}`).value
+
+      const { error } = await supabaseClient
+        .from("reservations")
+        .update({ status })
+        .eq("id", reservationId)
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      alert("Status atualizado com sucesso!")
+      loadAdminReservations()
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "login.html"
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", logout)
+    window.updateReservationStatus = updateReservationStatus
+
+    async function init() {
+      const user = await checkAdminAccess()
+      if (!user) return
+      await loadAdminReservations()
+    }
+
+    init()
+  </script>
+
+</body>
+</html>

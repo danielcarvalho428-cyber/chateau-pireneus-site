@@ -3,58 +3,586 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Área do Hóspede</title>
+  <title>Área do Hóspede | Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --bg:#f6f1e6;
+      --bg-2:#efe5d2;
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --gold-soft:rgba(184,149,95,0.18);
+      --line:rgba(31,36,48,0.10);
+      --white:rgba(255,255,255,0.72);
+      --shadow:0 20px 60px rgba(31,36,48,0.10);
+      --radius:24px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+    }
+
+    .top-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      padding:16px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.05);
+    }
+
+    .top-header-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:400;
+      letter-spacing:0.5px;
+    }
+
+    .brand-subtitle{
+      margin-top:6px;
+      font-size:12px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .header-link,
+    .btn,
+    .logout-btn{
+      appearance:none;
+      border:none;
+      text-decoration:none;
+      cursor:pointer;
+      transition:0.25s ease;
+      font-family:inherit;
+    }
+
+    .header-link{
+      color:var(--ink);
+      font-size:14px;
+      font-weight:500;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.45);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
+    .header-link:hover{
+      background:rgba(255,255,255,0.74);
+      transform:translateY(-1px);
+    }
+
+    .page-wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:48px 22px 72px;
+    }
+
+    .hero-card{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.58));
+      border:1px solid rgba(255,255,255,0.55);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      padding:34px 30px 30px;
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      margin-bottom:26px;
+    }
+
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(120deg, rgba(184,149,95,0.12), transparent 40%),
+        linear-gradient(0deg, transparent, rgba(255,255,255,0.18));
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      position:relative;
+      z-index:1;
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:14px;
+    }
+
+    .hero-title{
+      position:relative;
+      z-index:1;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(40px, 6vw, 62px);
+      font-weight:600;
+      line-height:0.95;
+      margin-bottom:10px;
+    }
+
+    .hero-text{
+      position:relative;
+      z-index:1;
+      max-width:760px;
+      font-size:16px;
+      line-height:1.75;
+      color:var(--muted);
+    }
+
+    .hero-meta{
+      position:relative;
+      z-index:1;
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .meta-card{
+      background:rgba(255,255,255,0.52);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:20px;
+      padding:16px 18px;
+    }
+
+    .meta-label{
+      display:block;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.18em;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .meta-value{
+      font-size:15px;
+      font-weight:600;
+      color:var(--ink);
+      word-break:break-word;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.02fr 0.98fr;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.74), rgba(255,255,255,0.60));
+      border:1px solid rgba(255,255,255,0.58);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:28px 24px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .panel-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:34px;
+      font-weight:600;
+      margin-bottom:8px;
+    }
+
+    .panel-subtitle{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.7;
+      margin-bottom:22px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .field.full{
+      grid-column:1 / -1;
+    }
+
+    label{
+      font-size:13px;
+      font-weight:600;
+      color:var(--ink);
+      letter-spacing:0.02em;
+    }
+
+    input,
+    textarea,
+    select{
+      width:100%;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.72);
+      color:var(--ink);
+      border-radius:16px;
+      padding:14px 15px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus{
+      border-color:rgba(184,149,95,0.72);
+      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
+      transform:translateY(-1px);
+    }
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 20px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, #b8955f, #9f7b45);
+      box-shadow:0 14px 30px rgba(159,123,69,0.22);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 34px rgba(159,123,69,0.28);
+    }
+
+    .logout-btn{
+      color:var(--ink);
+      background:rgba(255,255,255,0.70);
+      border:1px solid rgba(31,36,48,0.08);
+      padding:12px 18px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:600;
+    }
+
+    .logout-btn:hover{
+      background:rgba(255,255,255,0.92);
+      transform:translateY(-1px);
+    }
+
+    .list-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .list-count{
+      min-width:38px;
+      height:38px;
+      padding:0 12px;
+      border-radius:999px;
+      background:var(--gold-soft);
+      color:#8c6a39;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .reservation-card{
+      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.68);
+      border-radius:20px;
+      padding:18px 18px 16px;
+      margin-bottom:14px;
+    }
+
+    .reservation-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:12px;
+    }
+
+    .reservation-name{
+      font-family:"Cormorant Garamond",serif;
+      font-size:28px;
+      font-weight:600;
+      line-height:1;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      background:rgba(184,149,95,0.16);
+      color:#8f6c3c;
+      white-space:nowrap;
+    }
+
+    .reservation-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px 16px;
+    }
+
+    .reservation-item{
+      background:rgba(255,255,255,0.56);
+      border:1px solid rgba(31,36,48,0.06);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .reservation-item strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .reservation-item span{
+      display:block;
+      font-size:15px;
+      font-weight:600;
+      color:var(--ink);
+      line-height:1.5;
+    }
+
+    .empty-state{
+      border:1px dashed rgba(31,36,48,0.16);
+      border-radius:20px;
+      padding:24px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,0.42);
+      line-height:1.7;
+    }
+
+    .footer-actions{
+      margin-top:18px;
+      display:flex;
+      justify-content:flex-end;
+    }
+
+    @media (max-width: 980px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .hero-meta{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 640px){
+      .top-header-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .brand-title{
+        font-size:30px;
+      }
+
+      .page-wrap{
+        padding:34px 16px 54px;
+      }
+
+      .hero-card,
+      .panel{
+        padding:22px 18px;
+        border-radius:22px;
+      }
+
+      .form-grid,
+      .reservation-grid{
+        grid-template-columns:1fr;
+      }
+
+      .reservation-top{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .header-actions{
+        width:100%;
+        flex-wrap:wrap;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Área do Hóspede</h2>
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Chateau Pireneus</span>
+        <span class="brand-subtitle">Área do Hóspede</span>
+      </a>
 
-  <p id="welcome"></p>
-  <p id="user-email"></p>
-  <p id="user-phone"></p>
+      <div class="header-actions">
+        <a href="index.html" class="header-link">Voltar ao site</a>
+        <button id="logout-btn-top" class="logout-btn" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
 
-  <hr>
+  <main class="page-wrap">
+    <section class="hero-card">
+      <span class="eyebrow">Experiência exclusiva</span>
+      <h1 class="hero-title" id="welcome">Bem-vindo</h1>
+      <p class="hero-text">
+        Gerencie seus dados, envie uma nova solicitação de hospedagem e acompanhe suas reservas em um só lugar, com a elegância e o cuidado do Chateau Pireneus.
+      </p>
 
-  <h3>Solicitar reserva</h3>
+      <div class="hero-meta">
+        <div class="meta-card">
+          <span class="meta-label">Email</span>
+          <span class="meta-value" id="user-email"></span>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Telefone</span>
+          <span class="meta-value" id="user-phone"></span>
+        </div>
+        <div class="meta-card">
+          <span class="meta-label">Status</span>
+          <span class="meta-value">Hóspede cadastrado</span>
+        </div>
+      </div>
+    </section>
 
-  <form id="reservation-form">
-    <label for="check_in">Check-in</label>
-    <br>
-    <input type="date" id="check_in" required>
-    <br><br>
+    <section class="grid">
+      <div class="panel">
+        <h2 class="panel-title">Solicitar reserva</h2>
+        <p class="panel-subtitle">
+          Preencha os dados abaixo para enviar sua solicitação. Nossa equipe poderá analisar as datas e retornar com a confirmação conforme disponibilidade.
+        </p>
 
-    <label for="check_out">Check-out</label>
-    <br>
-    <input type="date" id="check_out" required>
-    <br><br>
+        <form id="reservation-form">
+          <div class="form-grid">
+            <div class="field">
+              <label for="check_in">Check-in</label>
+              <input type="date" id="check_in" required>
+            </div>
 
-    <label for="guests">Número de hóspedes</label>
-    <br>
-    <input type="number" id="guests" min="1" required>
-    <br><br>
+            <div class="field">
+              <label for="check_out">Check-out</label>
+              <input type="date" id="check_out" required>
+            </div>
 
-    <label for="room_type">Tipo de quarto</label>
-    <br>
-    <input type="text" id="room_type" placeholder="Ex: Suíte Master">
-    <br><br>
+            <div class="field">
+              <label for="guests">Número de hóspedes</label>
+              <input type="number" id="guests" min="1" required>
+            </div>
 
-    <label for="special_requests">Pedidos especiais</label>
-    <br>
-    <textarea id="special_requests" placeholder="Ex: cama extra, decoração romântica"></textarea>
-    <br><br>
+            <div class="field">
+              <label for="room_type">Tipo de acomodação</label>
+              <input type="text" id="room_type" placeholder="Ex: Suíte Master">
+            </div>
 
-    <button type="submit">Enviar solicitação</button>
-  </form>
+            <div class="field full">
+              <label for="special_requests">Pedidos especiais</label>
+              <textarea id="special_requests" placeholder="Ex: decoração romântica, cama extra, horário previsto de chegada"></textarea>
+            </div>
 
-  <hr>
+            <div class="field full">
+              <button type="submit" class="btn btn-primary">Enviar solicitação</button>
+            </div>
+          </div>
+        </form>
+      </div>
 
-  <h3>Minhas reservas</h3>
-  <div id="reservations-list">
-    <p>Nenhuma reserva encontrada.</p>
-  </div>
+      <div class="panel">
+        <div class="list-title">
+          <div>
+            <h2 class="panel-title" style="margin-bottom:4px;">Minhas reservas</h2>
+            <p class="panel-subtitle" style="margin-bottom:0;">Acompanhe o histórico das suas solicitações.</p>
+          </div>
+          <span class="list-count" id="reservation-count">0</span>
+        </div>
 
-  <br>
-  <button id="logout-btn">Sair</button>
+        <div id="reservations-list">
+          <div class="empty-state">Nenhuma reserva encontrada.</div>
+        </div>
+
+        <div class="footer-actions">
+          <button id="logout-btn-bottom" class="logout-btn" type="button">Sair</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -67,6 +595,24 @@
     )
 
     let currentUser = null
+
+    function formatDate(dateString) {
+      if (!dateString) return ""
+      const [year, month, day] = dateString.split("-")
+      return `${day}/${month}/${year}`
+    }
+
+    function formatStatus(status) {
+      if (!status) return "Pendente"
+      const map = {
+        pending: "Pendente",
+        confirmed: "Confirmada",
+        cancelled: "Cancelada",
+        canceled: "Cancelada",
+        completed: "Concluída"
+      }
+      return map[status.toLowerCase()] || status
+    }
 
     async function loadProfile() {
       const { data: userData, error: userError } = await supabaseClient.auth.getUser()
@@ -89,9 +635,9 @@
         return
       }
 
-      document.getElementById("welcome").textContent = "Bem-vindo, " + profile.full_name
-      document.getElementById("user-email").textContent = "Email: " + currentUser.email
-      document.getElementById("user-phone").textContent = "Telefone: " + profile.phone
+      document.getElementById("welcome").textContent = "Bem-vindo, " + (profile.full_name || "Hóspede")
+      document.getElementById("user-email").textContent = currentUser.email || ""
+      document.getElementById("user-phone").textContent = profile.phone || "Não informado"
     }
 
     async function loadReservations() {
@@ -109,21 +655,48 @@
       }
 
       const container = document.getElementById("reservations-list")
+      const count = document.getElementById("reservation-count")
+      count.textContent = data ? data.length : 0
 
       if (!data || data.length === 0) {
-        container.innerHTML = "<p>Nenhuma reserva encontrada.</p>"
+        container.innerHTML = `<div class="empty-state">Você ainda não possui solicitações de reserva enviadas.</div>`
         return
       }
 
       container.innerHTML = data.map(reservation => `
-        <div style="border:1px solid #ccc; padding:12px; margin-bottom:12px;">
-          <p><strong>Check-in:</strong> ${reservation.check_in || ""}</p>
-          <p><strong>Check-out:</strong> ${reservation.check_out || ""}</p>
-          <p><strong>Hóspedes:</strong> ${reservation.guests || ""}</p>
-          <p><strong>Quarto:</strong> ${reservation.room_type || ""}</p>
-          <p><strong>Pedidos especiais:</strong> ${reservation.special_requests || "Nenhum"}</p>
-          <p><strong>Status:</strong> ${reservation.status || "pending"}</p>
-        </div>
+        <article class="reservation-card">
+          <div class="reservation-top">
+            <div class="reservation-name">${reservation.room_type || "Hospedagem solicitada"}</div>
+            <span class="status-badge">${formatStatus(reservation.status)}</span>
+          </div>
+
+          <div class="reservation-grid">
+            <div class="reservation-item">
+              <strong>Check-in</strong>
+              <span>${formatDate(reservation.check_in) || "-"}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Check-out</strong>
+              <span>${formatDate(reservation.check_out) || "-"}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Hóspedes</strong>
+              <span>${reservation.guests || "-"}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Status</strong>
+              <span>${formatStatus(reservation.status)}</span>
+            </div>
+
+            <div class="reservation-item" style="grid-column:1 / -1;">
+              <strong>Pedidos especiais</strong>
+              <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
+            </div>
+          </div>
+        </article>
       `).join("")
     }
 
@@ -163,10 +736,13 @@
       }
     })
 
-    document.getElementById("logout-btn").addEventListener("click", async () => {
+    async function logout() {
       await supabaseClient.auth.signOut()
       window.location.href = "login.html"
-    })
+    }
+
+    document.getElementById("logout-btn-top").addEventListener("click", logout)
+    document.getElementById("logout-btn-bottom").addEventListener("click", logout)
 
     async function init() {
       await loadProfile()

@@ -6,21 +6,19 @@
   <title>Suíte • Chateau Pireneus</title>
 
   <style>
-    * { box-sizing: border-box; }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:#f6f1e6; /* bege claro */
+      color:#1d3557;
+    }
 
     :root{
       --blue:#1d3557;
-      --blue-soft:#26466f;
       --beige:#d8c7a1;
       --beige-dark:#cbb58c;
-      --beige-light:#efe5d1;
-      --cream:#f6f1e6;
-      --text:#2b2b2b;
-      --white:rgba(255,255,255,0.72);
-      --line:rgba(29,53,87,0.10);
-      --shadow:0 22px 48px rgba(0,0,0,0.14);
-      --shadow-soft:0 14px 28px rgba(0,0,0,0.08);
-      --radius:26px;
+      --shadow:0 20px 45px rgba(0,0,0,0.12);
     }
 
     @font-face{
@@ -31,477 +29,225 @@
       font-display:swap;
     }
 
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      margin:0;
-      font-family:Georgia, serif;
-      background:
-        radial-gradient(circle at top left, rgba(216,199,161,0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(29,53,87,0.06), transparent 30%),
-        var(--cream);
-      color:var(--blue);
-    }
-
-    a{
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* HEADER */
     header{
       position:sticky;
       top:0;
-      z-index:60;
-      padding:14px 16px 0;
+      z-index:50;
+      background:rgba(246,241,230,0.92);
+      backdrop-filter: blur(6px);
+      border-bottom:1px solid rgba(29,53,87,0.10);
     }
-
     .topbar{
-      max-width:1180px;
+      max-width:1100px;
       margin:0 auto;
-      padding:14px 20px;
+      padding:14px 18px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
-      background:rgba(255,255,255,0.34);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      border:1px solid rgba(255,255,255,0.36);
-      box-shadow:0 10px 30px rgba(29,53,87,0.08);
-      border-radius:18px;
+      gap:12px;
     }
-
     .brand{
-      text-decoration:none;
-      color:var(--blue);
       font-family:"Gyahegi", "Cormorant Garamond", serif;
-      font-size:28px;
-      line-height:1;
+      font-weight:700;
       letter-spacing:1px;
+      color:var(--blue);
+      text-decoration:none;
       text-transform:uppercase;
-      white-space:nowrap;
     }
-
     .back{
       text-decoration:none;
       color:var(--blue);
-      font-weight:700;
-      font-size:14px;
-      letter-spacing:0.4px;
-      opacity:0.92;
-      transition:0.25s ease;
-      white-space:nowrap;
+      font-weight:600;
+      opacity:0.9;
     }
-
-    .back:hover{
-      opacity:1;
-      transform:translateX(-2px);
-    }
-
-    /* PAGE WRAP */
-    .page-shell{
-      max-width:1180px;
-      margin:0 auto;
-      padding:28px 18px 72px;
-    }
-
-    .page-intro{
-      margin:10px 0 26px;
-      text-align:center;
-    }
-
-    .eyebrow{
-      margin:0 0 10px;
-      color:var(--beige-dark);
-      font-size:13px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    }
-
-    .page-title{
-      margin:0;
-      font-family:"Gyahegi", "Cormorant Garamond", serif;
-      font-size:46px;
-      line-height:1.05;
-      font-weight:400;
-      color:var(--blue);
-    }
-
-    .page-copy{
-      max-width:720px;
-      margin:14px auto 0;
-      color:#46566b;
-      line-height:1.7;
-      font-size:15px;
-    }
+    .back:hover{ text-decoration:underline; opacity:1; }
 
     .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 18px 60px;
       display:grid;
-      grid-template-columns:minmax(0, 1.15fr) minmax(360px, 0.85fr);
-      gap:34px;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap:26px;
       align-items:start;
     }
 
-    /* LEFT SIDE */
-    .gallery-panel{
-      position:relative;
-    }
-
+    /* ===== LEFT: Image Carousel (square corners) ===== */
     .carousel-box{
       position:relative;
-      border-radius:30px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      background:#eadfca;
+      width:100%;
     }
 
     .hero-img{
       width:100%;
-      aspect-ratio:16/10;
+      aspect-ratio: 16/10;
       object-fit:cover;
       display:block;
       background:#eee;
-      transform:scale(1.001);
-    }
-
-    .img-overlay{
-      position:absolute;
-      inset:auto 0 0 0;
-      padding:18px 20px;
-      background:linear-gradient(to top, rgba(0,0,0,0.28), rgba(0,0,0,0));
-      pointer-events:none;
-    }
-
-    .img-count{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:68px;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.20);
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-      color:#fff;
-      font-size:12px;
-      letter-spacing:1px;
-      font-weight:700;
+      border-radius:0;              /* cantos retos */
+      box-shadow: var(--shadow);
     }
 
     .img-arrow{
       position:absolute;
       top:50%;
       transform:translateY(-50%);
-      width:50px;
-      height:50px;
+      width:46px;
+      height:46px;
       border-radius:50%;
-      background:rgba(255,255,255,0.26);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,0.25);
-      color:#fff;
+      background:rgba(216,199,161,0.95);
+      color:var(--blue);
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:24px;
+      font-size:22px;
       cursor:pointer;
       user-select:none;
-      box-shadow:0 14px 28px rgba(0,0,0,0.18);
-      transition:0.25s ease;
-      z-index:3;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+      transition:0.2s ease;
     }
-
     .img-arrow:hover{
-      background:rgba(255,255,255,0.40);
-      transform:translateY(-50%) scale(1.05);
+      background:#fff;
+      transform:translateY(-50%) scale(1.04);
     }
-
-    .img-arrow.left{ left:16px; }
-    .img-arrow.right{ right:16px; }
+    .img-arrow.left{ left:12px; }
+    .img-arrow.right{ right:12px; }
 
     .dots{
       display:flex;
       justify-content:center;
       gap:10px;
-      margin-top:16px;
-      flex-wrap:wrap;
+      margin-top:14px;
     }
-
     .dot{
       width:10px;
       height:10px;
       border-radius:999px;
-      background:rgba(29,53,87,0.20);
+      background:rgba(29,53,87,0.22);
       cursor:pointer;
-      transition:0.25s ease;
+      transition:0.2s ease;
     }
-
     .dot.active{
-      width:28px;
-      background:var(--beige);
+      background:rgba(216,199,161,0.98); /* dourado */
+      transform:scale(1.15);
     }
 
-    /* RIGHT SIDE */
+    /* ===== RIGHT: Info (NO white card) ===== */
     .info{
-      position:sticky;
-      top:98px;
-      padding:28px 28px 26px;
-      border-radius:30px;
-      background:rgba(255,255,255,0.55);
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
-      border:1px solid rgba(255,255,255,0.48);
-      box-shadow:var(--shadow-soft);
+      padding:0; /* sem cartão branco */
     }
 
+    /* Subtitle ABOVE title */
     .room-subtitle{
-      color:var(--beige-dark);
-      font-size:13px;
-      letter-spacing:1.7px;
-      text-transform:uppercase;
-      margin:0 0 12px;
+      color:var(--beige-dark); /* dourado */
+      font-size:14px;
+      letter-spacing:0.8px;
+      text-transform:lowercase;
+      margin:0 0 10px;
     }
 
+    /* Title: Gyahegi, same size as before */
     .room-title{
       margin:0;
       font-family:"Gyahegi", "Cormorant Garamond", serif;
       font-weight:400;
-      font-size:40px;
-      line-height:1.05;
-      letter-spacing:0.5px;
+      font-size:32px; /* mantém o tamanho (antes era ~32px) */
+      letter-spacing:1px;
       color:var(--blue);
     }
 
+    /* Gold divider under title (elegant) */
     .gold-rule{
-      width:170px;
+      width:160px;
       height:1px;
-      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
-      margin:16px 0 20px;
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+      margin:14px 0 18px;
     }
 
     .subtitle{
-      margin:0 0 20px;
-      color:var(--text);
-      line-height:1.78;
+      margin:0 0 18px;
+      color:#2b2b2b;
+      line-height:1.7;
       font-size:15px;
     }
 
-    .quick-details{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0, 1fr));
-      gap:10px;
-      margin:0 0 22px;
-    }
-
-    .detail-box{
-      padding:12px 10px;
-      border-radius:16px;
-      background:rgba(216,199,161,0.15);
-      border:1px solid rgba(216,199,161,0.30);
-      text-align:center;
-    }
-
-    .detail-label{
-      display:block;
-      font-size:11px;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:#6f7c8e;
-      margin-bottom:5px;
-    }
-
-    .detail-value{
-      display:block;
-      font-size:13px;
-      font-weight:700;
-      color:var(--blue);
-    }
-
     .section-title{
-      margin:20px 0 12px;
-      font-size:13px;
-      letter-spacing:1.8px;
-      text-transform:uppercase;
-      color:var(--blue);
-      opacity:0.88;
-    }
-
-    .amenities-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin:0;
-      padding:0;
-      list-style:none;
-    }
-
-    .amenities-grid li{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      padding:12px 13px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.54);
-      border:1px solid rgba(29,53,87,0.08);
-      color:var(--text);
-      line-height:1.45;
+      margin:18px 0 10px;
       font-size:14px;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      opacity:0.85;
     }
 
-    .amenities-grid li::before{
-      content:"✦";
-      color:var(--beige-dark);
-      font-size:12px;
-      margin-top:2px;
-      flex:0 0 auto;
-    }
-
-    .capacity{
-      margin-top:18px;
-      padding:14px 16px;
-      border-left:3px solid var(--beige-dark);
-      background:rgba(216,199,161,0.12);
-      color:var(--blue);
-      font-weight:700;
+    ul{
+      margin:0;
+      padding-left:18px;
+      color:#333;
+      line-height:1.7;
       font-size:14.5px;
-      border-radius:0 14px 14px 0;
+    }
+
+    /* Capacity line (no bullet, no "DETALHES") */
+    .capacity{
+      margin-top:14px;
+      font-weight:700;
+      color:var(--blue);
+      font-size:14.5px;
     }
 
     .cta{
-      margin-top:22px;
+      margin-top:18px;
       display:flex;
       flex-wrap:wrap;
-      gap:12px;
+      gap:10px;
     }
-
     .btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:48px;
-      padding:12px 18px;
-      border-radius:14px;
       text-decoration:none;
       font-weight:800;
       letter-spacing:1px;
-      font-size:13px;
-      transition:0.25s ease;
+      border-radius:12px;
+      padding:12px 16px;
+      transition:0.2s ease;
       user-select:none;
-      cursor:pointer;
     }
-
     .btn.primary{
-      background:linear-gradient(135deg, var(--beige), var(--beige-dark));
+      background:var(--beige);
       color:#fff;
-      box-shadow:0 12px 24px rgba(203,181,140,0.26);
     }
-
     .btn.primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 16px 28px rgba(203,181,140,0.36);
+      background:var(--beige-dark);
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.55);
     }
-
     .btn.outline{
       background:transparent;
-      border:1.5px solid rgba(29,53,87,0.18);
+      border:2px solid var(--beige-dark);
       color:var(--blue);
     }
-
     .btn.outline:hover{
-      background:rgba(255,255,255,0.75);
-      transform:translateY(-2px);
+      background:var(--beige);
+      border-color:var(--beige);
+      color:#fff;
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.45);
     }
 
     .error{
-      max-width:1180px;
+      max-width:1100px;
       margin:18px auto 0;
-      padding:14px 18px;
+      padding:12px 18px;
       color:#7a1f2b;
       background:rgba(122,31,43,0.08);
       border:1px solid rgba(122,31,43,0.18);
-      border-radius:16px;
+      border-radius:12px;
       display:none;
     }
 
-    @media (max-width: 1050px){
-      .wrap{
-        grid-template-columns:1fr;
-      }
-
-      .info{
-        position:relative;
-        top:auto;
-      }
-    }
-
-    @media (max-width: 720px){
-      header{
-        padding:10px 10px 0;
-      }
-
-      .topbar{
-        padding:12px 14px;
-      }
-
-      .brand{
-        font-size:22px;
-      }
-
-      .back{
-        font-size:13px;
-      }
-
-      .page-shell{
-        padding:22px 14px 52px;
-      }
-
-      .page-title{
-        font-size:34px;
-      }
-
-      .page-copy{
-        font-size:14px;
-      }
-
-      .carousel-box{
-        border-radius:22px;
-      }
-
-      .img-arrow{
-        width:42px;
-        height:42px;
-        font-size:20px;
-      }
-
-      .img-arrow.left{ left:10px; }
-      .img-arrow.right{ right:10px; }
-
-      .info{
-        padding:22px 18px 20px;
-        border-radius:24px;
-      }
-
-      .room-title{
-        font-size:32px;
-      }
-
-      .quick-details{
-        grid-template-columns:1fr;
-      }
-
-      .amenities-grid{
-        grid-template-columns:1fr;
-      }
-
-      .cta{
-        flex-direction:column;
-      }
-
-      .btn{
-        width:100%;
-      }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns:1fr; }
     }
   </style>
 </head>
@@ -516,69 +262,38 @@
 
   <div id="errBox" class="error"></div>
 
-  <main class="page-shell">
-    <section class="page-intro">
-      <p class="eyebrow">Acomodações</p>
-      <h1 class="page-title">Conforto, charme e privacidade</h1>
-      <p class="page-copy">
-        Descubra suítes pensadas para proporcionar uma estadia acolhedora, romântica e memorável
-        no coração de Pirenópolis.
-      </p>
+  <main class="wrap">
+    <!-- LEFT: Carousel -->
+    <section aria-label="Galeria da suíte">
+      <div class="carousel-box">
+        <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
+        <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
+        <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+      </div>
+
+      <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
     </section>
 
-    <section class="wrap">
-      <!-- LEFT -->
-      <section class="gallery-panel" aria-label="Galeria da suíte">
-        <div class="carousel-box">
-          <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
+    <!-- RIGHT: Info (no card) -->
+    <aside>
+      <div class="info">
+        <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
+        <h1 class="room-title" id="roomName">Suíte</h1>
+        <div class="gold-rule" aria-hidden="true"></div>
 
-          <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
-          <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+        <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
 
-          <div class="img-overlay">
-            <span class="img-count" id="imgCount">01 / 03</span>
-          </div>
+        <div class="section-title">Comodidades</div>
+        <ul id="amenities"></ul>
+
+        <div class="capacity" id="capacityLine">Capacidade: —</div>
+
+        <div class="cta">
+          <a class="btn primary" href="booking.html">RESERVAR</a>
+          <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
         </div>
-
-        <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
-      </section>
-
-      <!-- RIGHT -->
-      <aside>
-        <div class="info">
-          <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
-          <h2 class="room-title" id="roomName">Suíte</h2>
-          <div class="gold-rule" aria-hidden="true"></div>
-
-          <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
-
-          <div class="quick-details">
-            <div class="detail-box">
-              <span class="detail-label">Ideal para</span>
-              <span class="detail-value">Casais</span>
-            </div>
-            <div class="detail-box">
-              <span class="detail-label">Ambiente</span>
-              <span class="detail-value">Aconchegante</span>
-            </div>
-            <div class="detail-box">
-              <span class="detail-label">Experiência</span>
-              <span class="detail-value">Pitoresca</span>
-            </div>
-          </div>
-
-          <div class="section-title">Comodidades</div>
-          <ul id="amenities" class="amenities-grid"></ul>
-
-          <div class="capacity" id="capacityLine">Capacidade: —</div>
-
-          <div class="cta">
-            <a class="btn primary" href="booking.html">RESERVAR</a>
-            <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
-          </div>
-        </div>
-      </aside>
-    </section>
+      </div>
+    </aside>
   </main>
 
   <script>
@@ -586,8 +301,8 @@
       const ROOMS = {
         divino: {
           name: "Suíte do Divino",
-          subtitle: "suíte padrão com tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto, tranquilidade e o charme único de Pirenópolis.",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/divino/divino1.jpeg",
             "public/suites/divino/divino2.jpeg",
@@ -598,7 +313,7 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart TV",
+            "Smart Tv",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
@@ -610,8 +325,8 @@
 
         cavalhadas: {
           name: "Suíte das Cavalhadas",
-          subtitle: "suíte padrão com tv",
-          desc: "Uma suíte acolhedora e elegante, ideal para viver momentos de descanso com conforto e uma atmosfera romântica.",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/cavalhadas/cavalhadas1.jpeg",
             "public/suites/cavalhadas/cavalhadas2.jpeg",
@@ -622,7 +337,7 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart TV",
+            "Smart Tv",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
@@ -634,8 +349,8 @@
 
         rosario: {
           name: "Suíte do Rosário",
-          subtitle: "suíte padrão com tv",
-          desc: "Pensada para uma hospedagem tranquila e especial, com praticidade, conforto e o toque intimista da pousada.",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/rosario/rosario1.jpeg",
             "public/suites/rosario/rosario2.jpeg",
@@ -658,8 +373,8 @@
 
         aurora: {
           name: "Suíte Aurora",
-          subtitle: "suíte padrão com tv",
-          desc: "Uma acomodação charmosa para quem busca descansar com conforto e aproveitar dias inesquecíveis em Pirenópolis.",
+          subtitle: "suíte padrão com Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/aurora/aurora1.jpeg",
             "public/suites/aurora/aurora2.jpeg",
@@ -670,7 +385,7 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart TV",
+            "Smart Tv",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
@@ -682,8 +397,8 @@
 
         bonfim: {
           name: "Suíte do Bonfim",
-          subtitle: "suíte padrão sem tv",
-          desc: "A escolha perfeita para quem deseja sossego, conforto e uma experiência acolhedora em um ambiente cheio de charme.",
+          subtitle: "suíte padrão sem Tv",
+          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
           photos: [
             "public/suites/bonfim/bonfim1.jpeg",
             "public/suites/bonfim/bonfim2.jpeg",
@@ -705,12 +420,6 @@
       };
 
       const errBox = document.getElementById("errBox");
-      const heroImg = document.getElementById("heroImg");
-      const dotsWrap = document.getElementById("dots");
-      const prevBtn = document.getElementById("prevBtn");
-      const nextBtn = document.getElementById("nextBtn");
-      const imgCount = document.getElementById("imgCount");
-
       const showError = (msg) => {
         errBox.style.display = "block";
         errBox.textContent = msg;
@@ -726,57 +435,63 @@
       }
 
       document.title = room.name + " • Chateau Pireneus";
+
+      // Subtitle ABOVE title, in gold
       document.getElementById("roomSub").textContent = room.subtitle;
+
+      // Title with Gyahegi (handled in CSS)
       document.getElementById("roomName").textContent = room.name;
+
       document.getElementById("roomDesc").textContent = room.desc;
-      document.getElementById("capacityLine").textContent = room.capacity;
 
       document.getElementById("amenities").innerHTML =
-        room.amenities.map(item => `<li>${item}</li>`).join("");
+        room.amenities.map(x => "<li>" + x + "</li>").join("");
 
+      // Capacity line (no bullet)
+      document.getElementById("capacityLine").textContent = room.capacity;
+
+      // WhatsApp message
       const waBtn = document.getElementById("waBtn");
-      const msg = encodeURIComponent(
-        `Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`
-      );
+      const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
       waBtn.href = "https://wa.me/5562998167654?text=" + msg;
+
+      // ===== Carousel logic (auto + arrows + dots) =====
+      const heroImg = document.getElementById("heroImg");
+      const dotsWrap = document.getElementById("dots");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
 
       let i = 0;
       let timer = null;
 
       function renderDots(){
         dotsWrap.innerHTML = room.photos.map((_, idx) => (
-          `<div class="dot" data-i="${idx}" aria-label="Ir para foto ${idx + 1}"></div>`
+          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx+1) + '"></div>'
         )).join("");
-      }
-
-      function updateCounter(){
-        const current = String(i + 1).padStart(2, "0");
-        const total = String(room.photos.length).padStart(2, "0");
-        imgCount.textContent = `${current} / ${total}`;
       }
 
       function setActive(idx){
         i = idx;
         heroImg.src = room.photos[i];
-        heroImg.alt = `Foto da ${room.name} (${i + 1}/${room.photos.length})`;
+        heroImg.alt = "Foto da " + room.name + " (" + (i+1) + "/" + room.photos.length + ")";
 
-        Array.from(dotsWrap.querySelectorAll(".dot")).forEach((dot, di) => {
-          dot.classList.toggle("active", di === i);
+        Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
+          d.classList.toggle("active", di === i);
         });
-
-        updateCounter();
       }
 
       function next(){
-        setActive((i + 1) % room.photos.length);
+        const n = room.photos.length;
+        setActive((i + 1) % n);
       }
 
       function prev(){
-        setActive((i - 1 + room.photos.length) % room.photos.length);
+        const n = room.photos.length;
+        setActive((i - 1 + n) % n);
       }
 
       function restartTimer(){
-        if (timer) clearInterval(timer);
+        if(timer) clearInterval(timer);
         timer = setInterval(next, 4500);
       }
 
@@ -784,19 +499,12 @@
       setActive(0);
       restartTimer();
 
-      nextBtn.addEventListener("click", () => {
-        next();
-        restartTimer();
-      });
-
-      prevBtn.addEventListener("click", () => {
-        prev();
-        restartTimer();
-      });
+      nextBtn.addEventListener("click", () => { next(); restartTimer(); });
+      prevBtn.addEventListener("click", () => { prev(); restartTimer(); });
 
       dotsWrap.addEventListener("click", (e) => {
         const dot = e.target.closest(".dot");
-        if (!dot) return;
+        if(!dot) return;
         setActive(Number(dot.dataset.i));
         restartTimer();
       });

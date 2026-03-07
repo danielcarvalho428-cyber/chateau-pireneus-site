@@ -14,7 +14,7 @@
   <p id="user-phone"></p>
 
   <hr>
-<p>TESTE RESERVA AQUI</p>
+
   <h3>Solicitar reserva</h3>
 
   <form id="reservation-form">
@@ -45,6 +45,13 @@
 
     <button type="submit">Enviar solicitação</button>
   </form>
+
+  <hr>
+
+  <h3>Minhas reservas</h3>
+  <div id="reservations-list">
+    <p>Nenhuma reserva encontrada.</p>
+  </div>
 
   <br>
   <button id="logout-btn">Sair</button>
@@ -87,6 +94,39 @@
       document.getElementById("user-phone").textContent = "Telefone: " + profile.phone
     }
 
+    async function loadReservations() {
+      if (!currentUser) return
+
+      const { data, error } = await supabaseClient
+        .from("reservations")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("id", { ascending: false })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      const container = document.getElementById("reservations-list")
+
+      if (!data || data.length === 0) {
+        container.innerHTML = "<p>Nenhuma reserva encontrada.</p>"
+        return
+      }
+
+      container.innerHTML = data.map(reservation => `
+        <div style="border:1px solid #ccc; padding:12px; margin-bottom:12px;">
+          <p><strong>Check-in:</strong> ${reservation.check_in || ""}</p>
+          <p><strong>Check-out:</strong> ${reservation.check_out || ""}</p>
+          <p><strong>Hóspedes:</strong> ${reservation.guests || ""}</p>
+          <p><strong>Quarto:</strong> ${reservation.room_type || ""}</p>
+          <p><strong>Pedidos especiais:</strong> ${reservation.special_requests || "Nenhum"}</p>
+          <p><strong>Status:</strong> ${reservation.status || "pending"}</p>
+        </div>
+      `).join("")
+    }
+
     document.getElementById("reservation-form").addEventListener("submit", async (e) => {
       e.preventDefault()
 
@@ -119,6 +159,7 @@
       } else {
         alert("Solicitação de reserva enviada com sucesso!")
         document.getElementById("reservation-form").reset()
+        loadReservations()
       }
     })
 
@@ -127,7 +168,12 @@
       window.location.href = "login.html"
     })
 
-    loadProfile()
+    async function init() {
+      await loadProfile()
+      await loadReservations()
+    }
+
+    init()
   </script>
 
 </body>

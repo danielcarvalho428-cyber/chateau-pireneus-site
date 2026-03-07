@@ -5,408 +5,613 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pousada | Chateau Pireneus</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --ivory:#fbfaf7;
+      --beigeSoft:#f3ecdf;
+      --beigeWash:#f6f1e6;
+
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --line:rgba(29,53,87,0.14);
+
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+      --radius:20px;
+      --max:1180px;
     }
 
-    html {
-      scroll-behavior: smooth;
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
     }
 
-    body {
-      font-family: 'Georgia', serif;
-      background: #f8f5ef;
-      color: #2b2b2b;
-      line-height: 1.6;
+    a{ text-decoration:none; color:inherit; }
+    img{ max-width:100%; display:block; }
+
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    /* =========================
+       EXACT HOME HEADER
+       ========================= */
+    .top-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
+    }
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    }
+    .top-header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      text-decoration:none;
+      color:#fff;
+      transition:color 0.25s ease;
+    }
+    .top-header.solid .brand{ color:var(--navy); }
+
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      opacity:0.92;
+    }
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1;
     }
 
-    /* ===== USE THE SAME HEADER STYLE AS HOME ===== */
-    .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 18px 28px;
-      background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
-    .topbar-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      text-decoration:none;
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
+    }
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
+    }
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
+      display:block;
     }
 
-    .brand {
-      font-size: 1.6rem;
-      letter-spacing: 0.08em;
-      color: #fff;
-      text-transform: uppercase;
-      font-weight: 500;
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
     }
 
-    .menu-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.10);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.3s ease;
+    .reserve-btn{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.14);
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+      transition:0.22s ease;
+      white-space:nowrap;
+    }
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
 
-    .menu-btn:hover {
-      background: rgba(255,255,255,0.18);
+    .menu-button{
+      font-size:28px;
+      line-height:1;
+      color:#fff;
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.20);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
+    }
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+    }
+    .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
+    .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
+
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
+    }
+    .backdrop.open{ opacity:1; pointer-events:auto; }
+
+    .side-menu{
+      position:fixed;
+      top:0; left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+    }
+    .side-menu.open{ transform:translateX(0); }
+    .side-menu a{
+      display:block;
+      margin:0 0 16px;
+      text-decoration:none;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+    }
+    .side-menu a:hover{ text-decoration:underline; }
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    .menu-btn span,
-    .menu-btn span::before,
-    .menu-btn span::after {
-      content: "";
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      position: relative;
-      transition: 0.3s ease;
+    /* HERO */
+    .page-hero{
+      min-height:72vh;
+      position:relative;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.42)),
+        url("images/pousada-hero.jpg");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+      padding:140px 24px 90px;
     }
 
-    .menu-btn span::before {
-      position: absolute;
-      top: -6px;
+    .page-hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
     }
 
-    .menu-btn span::after {
-      position: absolute;
-      top: 6px;
+    .page-hero-content{
+      position:relative;
+      z-index:2;
+      color:#fff;
+      max-width:900px;
+      padding:0 18px;
     }
 
-    .side-menu {
-      position: fixed;
-      top: 0;
-      right: -320px;
-      width: 320px;
-      height: 100vh;
-      background: #111;
-      color: #fff;
-      z-index: 1200;
-      padding: 90px 32px 32px;
-      transition: right 0.35s ease;
+    .page-hero-content h1{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-size:clamp(42px, 6vw, 72px);
+      letter-spacing:3px;
+      text-transform:uppercase;
+      line-height:1.05;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
     }
 
-    .side-menu.open {
-      right: 0;
+    .page-hero-content p{
+      margin:20px auto 0;
+      max-width:760px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:clamp(19px, 2.1vw, 24px);
+      letter-spacing:0.3px;
+      color:rgba(255,255,255,0.96);
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
     }
 
-    .side-menu a {
-      display: block;
-      font-size: 1rem;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
     }
 
-    .close-menu {
-      position: absolute;
-      top: 24px;
-      right: 24px;
-      font-size: 2rem;
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
+    .section{
+      padding:88px 0;
     }
 
-    .menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 1100;
-      opacity: 0;
-      visibility: hidden;
-      transition: 0.3s ease;
+    .orn{
+      width:170px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+      margin:16px 0 0;
     }
 
-    .menu-overlay.show {
-      opacity: 1;
-      visibility: visible;
+    .eyebrow{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.78);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
     }
 
-    /* ===== HERO ===== */
-    .page-hero {
-      min-height: 72vh;
+    .section-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.08;
+    }
+
+    .section-text{
+      margin:18px 0 0;
+      color:rgba(22,37,58,0.78);
+      line-height:1.95;
+      font-size:15px;
+    }
+
+    .intro{
       background:
-        linear-gradient(rgba(0,0,0,0.34), rgba(0,0,0,0.34)),
-        url('images/pousada-hero.jpg') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
 
-    .page-hero-content {
-      max-width: 900px;
-      color: #fff;
+    .intro-grid{
+      display:grid;
+      grid-template-columns:1.08fr 0.92fr;
+      gap:28px;
+      align-items:center;
     }
 
-    .page-hero-content h1 {
-      font-size: clamp(2.2rem, 5vw, 4.5rem);
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      margin-bottom: 18px;
-      text-transform: uppercase;
+    .intro-image{
+      overflow:hidden;
+      border-radius:22px;
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:0 20px 48px rgba(0,0,0,0.10);
+      background:#e8e1d4;
     }
 
-    .page-hero-content p {
-      font-size: clamp(1rem, 2vw, 1.25rem);
-      max-width: 760px;
-      margin: 0 auto;
-      color: rgba(255,255,255,0.92);
+    .intro-image img{
+      width:100%;
+      height:100%;
+      min-height:360px;
+      object-fit:cover;
     }
 
-    /* ===== CONTENT ===== */
-    .section {
-      padding: 90px 24px;
+    .highlights{
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color:#fff;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+    .highlights .eyebrow{
+      color:rgba(255,255,255,0.82);
     }
 
-    .intro-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 48px;
-      align-items: center;
+    .highlights .section-title{
+      color:#fff;
     }
 
-    .section-eyebrow {
-      color: #8c6a3c;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.8rem;
-      margin-bottom: 16px;
+    .highlights .orn{
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
     }
 
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 400;
-      margin-bottom: 20px;
-      color: #1f1a17;
+    .highlight-grid{
+      margin-top:32px;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
     }
 
-    .section-text {
-      font-size: 1.05rem;
-      color: #4c443d;
-      max-width: 680px;
+    .highlight-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:22px;
+      padding:24px 22px;
+      box-shadow:0 16px 34px rgba(0,0,0,0.12);
+      backdrop-filter:blur(6px);
     }
 
-    .intro-image {
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.10);
+    .highlight-card h3{
+      margin:0 0 10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:24px;
+      font-weight:700;
+      color:#fff;
     }
 
-    .highlights {
-      background: linear-gradient(180deg, #f8f5ef 0%, #f2ece2 100%);
+    .highlight-card p{
+      margin:0;
+      color:rgba(255,255,255,0.84);
+      line-height:1.8;
+      font-size:14px;
     }
 
-    .highlight-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 42px;
+    .gallery-section{
+      background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
 
-    .highlight-card {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(140,106,60,0.12);
-      border-radius: 22px;
-      padding: 28px 24px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+    .gallery-grid{
+      margin-top:28px;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
     }
 
-    .highlight-card h3 {
-      font-size: 1.15rem;
-      margin-bottom: 12px;
-      color: #1f1a17;
+    .gallery-grid img{
+      width:100%;
+      height:280px;
+      object-fit:cover;
+      border-radius:22px;
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:0 16px 36px rgba(0,0,0,0.08);
+      background:#e8e1d4;
     }
 
-    .highlight-card p {
-      color: #5c554f;
-      font-size: 0.98rem;
+    .cta-box{
+      margin-top:34px;
+      border-radius:24px;
+      padding:34px 26px;
+      text-align:center;
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color:#fff;
+      box-shadow:0 18px 42px rgba(0,0,0,0.12);
     }
 
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 40px;
+    .cta-box h3{
+      margin:0 0 12px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:34px;
+      font-weight:700;
     }
 
-    .gallery-grid img {
-      height: 260px;
-      width: 100%;
-      object-fit: cover;
-      border-radius: 20px;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    .cta-box p{
+      margin:0 auto 22px;
+      max-width:720px;
+      color:rgba(255,255,255,0.84);
+      line-height:1.85;
+      font-size:15px;
     }
 
-    .cta-box {
-      margin-top: 50px;
-      background: #1c1815;
-      color: #fff;
-      border-radius: 28px;
-      padding: 44px 28px;
-      text-align: center;
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding:12px 18px;
+      border-radius:14px;
+      background:rgba(216,199,161,0.96);
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      border:1px solid rgba(255,255,255,0.16);
+      box-shadow:0 14px 28px rgba(0,0,0,0.10);
+      transition:0.22s ease;
     }
 
-    .cta-box h3 {
-      font-size: 2rem;
-      font-weight: 400;
-      margin-bottom: 12px;
+    .cta-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(203,181,140,0.98);
+      box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
-    .cta-box p {
-      color: rgba(255,255,255,0.82);
-      max-width: 700px;
-      margin: 0 auto 24px;
+    /* EXACT HOME FOOTER */
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
     }
 
-    .cta-btn {
-      display: inline-block;
-      padding: 14px 28px;
-      border-radius: 999px;
-      background: #b08b57;
-      color: #fff;
-      font-size: 0.95rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: 0.3s ease;
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
-    .cta-btn:hover {
-      transform: translateY(-2px);
-      background: #9a7747;
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
     }
 
-    /* ===== FOOTER ===== */
-    footer {
-      background: #111;
-      color: rgba(255,255,255,0.84);
-      padding: 60px 24px 28px;
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
     }
 
-    .footer-inner {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 32px;
-      flex-wrap: wrap;
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
     }
 
-    .footer-brand h3 {
-      color: #fff;
-      font-size: 1.35rem;
-      font-weight: 400;
-      margin-bottom: 10px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .footer-contact a:hover{
+      text-decoration:underline;
     }
 
-    .footer-brand p,
-    .footer-links a {
-      color: rgba(255,255,255,0.72);
-      font-size: 0.96rem;
-    }
+    @media (max-width:980px){
+      .page-hero{
+        min-height:64vh;
+        padding:128px 18px 72px;
+      }
 
-    .footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-bottom {
-      max-width: 1280px;
-      margin: 30px auto 0;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.55);
-      text-align: center;
-    }
-
-    @media (max-width: 980px) {
       .intro-grid,
       .highlight-grid,
-      .gallery-grid {
-        grid-template-columns: 1fr;
+      .gallery-grid{
+        grid-template-columns:1fr;
       }
 
-      .gallery-grid img {
-        height: 240px;
+      .intro-image img{
+        min-height:260px;
       }
 
-      .brand {
-        font-size: 1.2rem;
+      .gallery-grid img{
+        height:240px;
+      }
+
+      footer{
+        min-height:200px;
+        max-height:none;
+      }
+
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <!-- HEADER -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="index.html" class="brand">Chateau Pireneus</a>
-      <button class="menu-btn" id="openMenu" aria-label="Abrir menu">
-        <span></span>
-      </button>
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+      </div>
     </div>
   </header>
 
-  <div class="menu-overlay" id="menuOverlay"></div>
-
-  <nav class="side-menu" id="sideMenu">
-    <button class="close-menu" id="closeMenu" aria-label="Fechar menu">&times;</button>
-    <a href="index.html">Início</a>
-    <a href="pousada.html">A Pousada</a>
-    <a href="suites.html">Suítes</a>
-    <a href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank">Instagram</a>
-    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank">Localização</a>
-  </nav>
-
-  <!-- HERO -->
   <section class="page-hero">
     <div class="page-hero-content">
-      <h1>A Pousada</h1>
+      <h1>A POUSADA</h1>
       <p>
         Um refúgio acolhedor em Pirenópolis, onde charme, conforto e tranquilidade
         se encontram para criar uma experiência memorável.
@@ -414,30 +619,39 @@
     </div>
   </section>
 
-  <!-- INTRO -->
-  <section class="section">
-    <div class="container intro-grid">
-      <div>
-        <div class="section-eyebrow">Chateau Pireneus</div>
-        <h2 class="section-title">Um lugar pensado para desacelerar e aproveitar cada momento</h2>
-        <p class="section-text">
-          A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais,
-          viagens especiais e dias de descanso no coração de Pirenópolis. Cada detalhe foi
-          pensado para proporcionar bem-estar, privacidade e uma estadia acolhedora.
-        </p>
-      </div>
+  <section class="section intro">
+    <div class="wrap">
+      <div class="intro-grid">
+        <div>
+          <div class="eyebrow">Chateau Pireneus</div>
+          <h2 class="section-title">UM LUGAR PENSADO PARA DESACELERAR E APROVEITAR CADA MOMENTO</h2>
+          <div class="orn"></div>
+          <div class="section-text">
+            <p>
+              A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais,
+              viagens especiais e dias de descanso no coração de Pirenópolis. Cada detalhe foi
+              pensado para proporcionar bem-estar, privacidade e uma estadia acolhedora.
+            </p>
+            <p>
+              Com uma proposta charmosa e acolhedora, a pousada convida os hóspedes a viverem
+              momentos especiais em um ambiente que une tranquilidade, conforto e o estilo
+              pitoresco que torna Pirenópolis tão única.
+            </p>
+          </div>
+        </div>
 
-      <div class="intro-image">
-        <img src="images/pousada-intro.jpg" alt="Vista da pousada Chateau Pireneus">
+        <div class="intro-image">
+          <img src="images/pousada-intro.jpg" alt="Vista da pousada Chateau Pireneus">
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- HIGHLIGHTS -->
   <section class="section highlights">
-    <div class="container">
-      <div class="section-eyebrow">Diferenciais</div>
-      <h2 class="section-title">O que torna a experiência especial</h2>
+    <div class="wrap">
+      <div class="eyebrow">Diferenciais</div>
+      <h2 class="section-title">O QUE TORNA A EXPERIÊNCIA ESPECIAL</h2>
+      <div class="orn"></div>
 
       <div class="highlight-grid">
         <div class="highlight-card">
@@ -458,11 +672,11 @@
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="section">
-    <div class="container">
-      <div class="section-eyebrow">Ambientes</div>
-      <h2 class="section-title">Conheça um pouco mais da pousada</h2>
+  <section class="section gallery-section">
+    <div class="wrap">
+      <div class="eyebrow">Ambientes</div>
+      <h2 class="section-title">CONHEÇA UM POUCO MAIS DA POUSADA</h2>
+      <div class="orn"></div>
 
       <div class="gallery-grid">
         <img src="images/pousada1.jpg" alt="Ambiente da pousada">
@@ -476,52 +690,46 @@
           Viva dias de descanso, charme e aconchego em um ambiente pensado para tornar
           sua experiência ainda mais especial.
         </p>
-        <a class="cta-btn" href="suites.html">Ver acomodações</a>
+        <a class="cta-btn" href="acomodacoes.html">VER ACOMODAÇÕES</a>
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <h3>Chateau Pireneus</h3>
-        <p>Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
-      </div>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
-      <div class="footer-links">
-        <a href="index.html">Início</a>
-        <a href="pousada.html">A Pousada</a>
-        <a href="suites.html">Suítes</a>
-        <a href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank">Instagram</a>
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
       </div>
-    </div>
-
-    <div class="footer-bottom">
-      © 2026 Chateau Pireneus. Todos os direitos reservados.
     </div>
   </footer>
 
   <script>
-    const openMenu = document.getElementById('openMenu');
-    const closeMenu = document.getElementById('closeMenu');
-    const sideMenu = document.getElementById('sideMenu');
-    const menuOverlay = document.getElementById('menuOverlay');
+    const topHeader = document.getElementById("topHeader");
+    function onScrollHeader(){
+      const y = window.scrollY || document.documentElement.scrollTop;
+      topHeader.classList.toggle("solid", y > 40);
+    }
+    window.addEventListener("scroll", onScrollHeader);
+    onScrollHeader();
 
-    openMenu.addEventListener('click', () => {
-      sideMenu.classList.add('open');
-      menuOverlay.classList.add('show');
-    });
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu");
+      const backdrop = document.getElementById("backdrop");
+      const isOpen = menu.classList.contains("open");
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
 
-    closeMenu.addEventListener('click', () => {
-      sideMenu.classList.remove('open');
-      menuOverlay.classList.remove('show');
-    });
-
-    menuOverlay.addEventListener('click', () => {
-      sideMenu.classList.remove('open');
-      menuOverlay.classList.remove('show');
-    });
+      if(open){
+        menu.classList.add("open");
+        backdrop.classList.add("open");
+      }else{
+        menu.classList.remove("open");
+        backdrop.classList.remove("open");
+      }
+    }
   </script>
 </body>
 </html>

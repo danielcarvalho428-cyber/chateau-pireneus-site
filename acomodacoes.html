@@ -259,25 +259,29 @@
     }
 
     .section-head{
-  max-width:100%;
-  margin-bottom:32px;
-  text-align:center;
-}
+      max-width:100%;
+      margin-bottom:32px;
+      text-align:center;
+    }
 
-.section-sub{
-  margin:0 auto;
-  color:var(--muted);
-  line-height:1.7;
-  font-size:22px;
-  max-width:980px;
-  white-space:nowrap;
-}
+    .section-sub{
+      margin:0 auto;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:22px;
+      max-width:980px;
+      white-space:nowrap;
+      position:relative;
+      left:-18px;
+    }
 
     .orn{
       width:170px;
       height:1px;
       background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
-      margin:16px 0 0;
+      margin:16px auto 0;
+      position:relative;
+      left:-18px;
     }
 
     .grid{
@@ -440,6 +444,12 @@
 
       .section-sub{
         white-space:normal;
+        left:0;
+        max-width:900px;
+      }
+
+      .orn{
+        left:0;
       }
     }
 
@@ -471,6 +481,12 @@
 
       .section-sub{
         white-space:normal;
+        left:0;
+        font-size:18px;
+      }
+
+      .orn{
+        left:0;
       }
 
       .grid{
@@ -549,7 +565,7 @@
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <p class="section-sub">Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis.</p>
+        <p class="section-sub">Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis!</p>
         <div class="orn"></div>
       </div>
 

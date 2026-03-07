@@ -32,8 +32,7 @@
       --radius:20px;
       --max:1180px;
 
-      /* WELCOME CONTROL */
-      --welcome-heading-offset: 18px;
+      --welcome-heading-offset:18px;
     }
 
     body{
@@ -65,7 +64,7 @@
       transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
       background:rgba(0,0,0,0.12);
       border-bottom:1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px);
+      backdrop-filter:blur(10px);
     }
     .top-header.solid{
       background:rgba(246,241,230,0.92);
@@ -394,9 +393,7 @@
       padding:42px 0 58px;
     }
 
-    .welcome-shell{
-      max-width:none;
-    }
+    .welcome-shell{ max-width:none; }
 
     .welcome-head{
       display:flex;
@@ -466,9 +463,7 @@
       max-width:none;
     }
 
-    .welcome-text p:last-child{
-      margin-bottom:0;
-    }
+    .welcome-text p:last-child{ margin-bottom:0; }
 
     /* AMBIENTES */
     .gallery{
@@ -498,7 +493,7 @@
     .gallery-grid{
       margin-top:34px;
       display:grid;
-      grid-template-columns: 1.4fr 0.6fr;
+      grid-template-columns:1.4fr 0.6fr;
       gap:14px;
     }
 
@@ -598,7 +593,7 @@
 
     .gallery-right{
       display:grid;
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows:1fr 1fr;
       gap:14px;
     }
 
@@ -880,43 +875,60 @@
       position:relative;
       display:grid;
       grid-template-columns:420px 1fr;
-      min-height:220px;
-      margin-top:0;
+      min-height:160px;
+      max-height:160px;
       overflow:hidden;
+      margin-top:0;
     }
 
     .footer-left{
       background:#ddd0c2;
-      position:relative;
       display:flex;
       align-items:flex-end;
       justify-content:flex-start;
-      padding:34px 34px 28px 34px;
+      padding:24px 30px 20px;
     }
 
-    .footer-left img{
-      width:320px;
-      max-width:100%;
+    .footer-brand-text{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:44px;
+      line-height:0.92;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      color:#1d3557;
+    }
+
+    .footer-center-logo{
+      position:absolute;
+      left:420px;
+      bottom:10px;
+      transform:translateX(-50%);
+      z-index:4;
+      pointer-events:none;
+    }
+
+    .footer-center-logo img{
+      width:96px;
       height:auto;
       display:block;
     }
 
     .footer-right{
-      position:relative;
       background:#032c52;
       color:#fff;
       display:flex;
       align-items:flex-end;
-      padding:34px 42px 28px 170px;
+      padding:22px 34px 16px 120px;
     }
 
     .footer-contact{
       display:flex;
       flex-direction:column;
-      gap:22px;
+      gap:14px;
       font-family:"Cormorant Garamond", serif;
-      font-size:25px;
-      line-height:1.45;
+      font-size:22px;
+      line-height:1.25;
       color:rgba(255,255,255,0.96);
     }
 
@@ -929,70 +941,7 @@
       text-decoration:underline;
     }
 
-    .footer-connector{
-      position:absolute;
-      left:420px;
-      bottom:0;
-      width:170px;
-      height:170px;
-      transform:translateX(-50%);
-      z-index:3;
-      pointer-events:none;
-    }
-
-    .footer-connector::before,
-    .footer-connector::after{
-      content:"";
-      position:absolute;
-      top:0;
-      width:50%;
-      height:100%;
-      background:#d1c0ae;
-    }
-
-    .footer-connector::before{
-      left:0;
-      clip-path:polygon(100% 0, 100% 100%, 0 85%, 0 15%);
-    }
-
-    .footer-connector::after{
-      right:0;
-      clip-path:polygon(0 0, 100% 15%, 100% 85%, 0 100%);
-    }
-
-    .footer-diamond{
-      position:absolute;
-      left:50%;
-      top:50%;
-      width:34px;
-      height:34px;
-      transform:translate(-50%, -50%) rotate(45deg);
-      background:#032c52;
-      z-index:4;
-    }
-
-    .footer-diamond::before,
-    .footer-diamond::after{
-      content:"";
-      position:absolute;
-      background:#032c52;
-    }
-
-    .footer-diamond::before{
-      width:16px;
-      height:34px;
-      left:9px;
-      top:0;
-    }
-
-    .footer-diamond::after{
-      width:34px;
-      height:16px;
-      left:0;
-      top:9px;
-    }
-
-    @media (max-width: 980px){
+    @media (max-width:980px){
       .hero-title span{ font-size:46px; }
 
       .welcome{ padding:38px 0 34px; }
@@ -1031,30 +980,43 @@
       footer{
         grid-template-columns:1fr;
         min-height:auto;
+        max-height:none;
       }
 
       .footer-left{
         justify-content:center;
         align-items:center;
-        padding:28px 22px 22px;
+        padding:24px 22px 12px;
+        text-align:center;
       }
 
-      .footer-left img{
-        width:240px;
+      .footer-brand-text{
+        font-size:32px;
+      }
+
+      .footer-center-logo{
+        position:relative;
+        left:auto;
+        bottom:auto;
+        transform:none;
+        display:flex;
+        justify-content:center;
+        background:#ddd0c2;
+        padding:0 0 14px;
+      }
+
+      .footer-center-logo img{
+        width:78px;
       }
 
       .footer-right{
-        padding:28px 22px 26px;
+        padding:20px 22px 22px;
       }
 
       .footer-contact{
-        gap:16px;
+        gap:12px;
         font-size:18px;
-        line-height:1.5;
-      }
-
-      .footer-connector{
-        display:none;
+        line-height:1.35;
       }
     }
   </style>
@@ -1348,11 +1310,13 @@
 
   <footer>
     <div class="footer-left">
-      <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+      <div class="footer-brand-text">
+        CHATEAU<br>PIRENEUS
+      </div>
     </div>
 
-    <div class="footer-connector" aria-hidden="true">
-      <div class="footer-diamond"></div>
+    <div class="footer-center-logo" aria-hidden="true">
+      <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
     </div>
 
     <div class="footer-right">

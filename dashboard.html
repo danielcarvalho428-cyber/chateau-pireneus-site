@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+<body>
 
+  <h2>Área do Usuário</h2>
+  <p id="user-email"></p>
+  <button id="logout-btn">Sair</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const { createClient } = supabase
+
+    const supabaseClient = createClient(
+      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
+    )
+
+    async function checkUser() {
+      const { data, error } = await supabaseClient.auth.getUser()
+
+      if (error || !data.user) {
+        window.location.href = "login.html"
+        return
+      }
+
+      document.getElementById("user-email").textContent = "Logado como: " + data.user.email
+    }
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut()
+      window.location.href = "login.html"
+    })
+
+    checkUser()
+  </script>
+
+</body>
+</html>

@@ -731,27 +731,26 @@
         alert(error.message)
       } else {
                 try {
-          const notifyResponse = await fetch("https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/smooth-api", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              type: "INSERT",
-              record: {
-                user_id: currentUser.id,
-                check_in,
-                check_out,
-                guests,
-                room_type,
-                special_requests,
-                status: "pending"
-              }
-            })
-          })
+          const { data: notifyData, error: notifyError } = await supabaseClient.functions.invoke("smooth-api", {
+  body: {
+    type: "INSERT",
+    record: {
+      user_id: currentUser.id,
+      check_in,
+      check_out,
+      guests,
+      room_type,
+      special_requests,
+      status: "pending"
+    }
+  }
+})
 
-          const notifyResult = await notifyResponse.text()
-          alert("Resposta da função de email: " + notifyResult)
+if (notifyError) {
+  alert("Erro ao chamar função de email: " + notifyError.message)
+} else {
+  alert("Resposta da função de email: " + JSON.stringify(notifyData))
+}
         } catch (notifyError) {
           alert("Erro ao chamar função de email: " + notifyError)
           console.error("Erro ao chamar função de email:", notifyError)

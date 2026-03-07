@@ -236,7 +236,7 @@
       object-fit:cover;
       display:block;
       background:#eee;
-      border-radius:0;              /* cantos retos */
+      border-radius:0;
       box-shadow: var(--shadow);
     }
 
@@ -280,35 +280,32 @@
       transition:0.2s ease;
     }
     .dot.active{
-      background:rgba(216,199,161,0.98); /* dourado */
+      background:rgba(216,199,161,0.98);
       transform:scale(1.15);
     }
 
     /* ===== RIGHT: Info (NO white card) ===== */
     .info{
-      padding:0; /* sem cartão branco */
+      padding:0;
     }
 
-    /* Subtitle ABOVE title */
     .room-subtitle{
-      color:var(--beige-dark); /* dourado */
+      color:var(--beige-dark);
       font-size:14px;
       letter-spacing:0.8px;
       text-transform:lowercase;
-      margin:0 0 10px;
+      margin:0 0 4px;
     }
 
-    /* Title: Gyahegi, same size as before */
     .room-title{
       margin:0;
       font-family:"Gyahegi", "Cormorant Garamond", serif;
       font-weight:400;
-      font-size:32px; /* mantém o tamanho (antes era ~32px) */
+      font-size:32px;
       letter-spacing:1px;
       color:var(--blue);
     }
 
-    /* Gold divider under title (elegant) */
     .gold-rule{
       width:160px;
       height:1px;
@@ -357,7 +354,6 @@
       font-size:12px;
     }
 
-    /* Capacity line (no bullet, no "DETALHES") */
     .capacity{
       margin-top:14px;
       font-weight:700;
@@ -483,7 +479,7 @@
       </a>
 
       <div class="header-actions">
-        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+        <a class="instagram-btn" href="https://instagram.com/" target="_blank" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
             <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
@@ -499,7 +495,6 @@
   <div id="errBox" class="error"></div>
 
   <main class="wrap">
-    <!-- LEFT: Carousel -->
     <section aria-label="Galeria da suíte">
       <div class="carousel-box">
         <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
@@ -510,7 +505,6 @@
       <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
     </section>
 
-    <!-- RIGHT: Info (no card) -->
     <aside>
       <div class="info">
         <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
@@ -567,7 +561,8 @@
           photos: [
             "public/suites/divino/divino1.jpeg",
             "public/suites/divino/divino2.jpeg",
-            "public/suites/divino/divino3.jpeg"
+            "public/suites/divino/divino3.jpeg",
+            "public/suites/divino/redes4.jpeg"
           ],
           amenities: [
             "Cama Queen",
@@ -579,7 +574,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda privativa com rede"
+            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
           capacity: "Capacidade: 2 hóspedes"
         },
@@ -591,7 +586,8 @@
           photos: [
             "public/suites/cavalhadas/cavalhadas1.jpeg",
             "public/suites/cavalhadas/cavalhadas2.jpeg",
-            "public/suites/cavalhadas/cavalhadas3.jpeg"
+            "public/suites/cavalhadas/cavalhadas3.jpeg",
+            "public/suites/cavalhadas/redes4.jpeg"
           ],
           amenities: [
             "Cama Queen",
@@ -603,7 +599,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda privativa com rede"
+            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
           capacity: "Capacidade: 2 hóspedes"
         },
@@ -615,7 +611,8 @@
           photos: [
             "public/suites/rosario/rosario1.jpeg",
             "public/suites/rosario/rosario2.jpeg",
-            "public/suites/rosario/rosario3.jpeg"
+            "public/suites/rosario/rosario3.jpeg",
+            "public/suites/rosario/redes4.jpeg"
           ],
           amenities: [
             "Cama Queen",
@@ -627,7 +624,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda privativa com rede"
+            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
           capacity: "Capacidade: 2 hóspedes"
         },
@@ -639,7 +636,8 @@
           photos: [
             "public/suites/aurora/aurora1.jpeg",
             "public/suites/aurora/aurora2.jpeg",
-            "public/suites/aurora/aurora3.jpeg"
+            "public/suites/aurora/aurora3.jpeg",
+            "public/suites/aurora/redes4.jpeg"
           ],
           amenities: [
             "Cama Queen",
@@ -651,7 +649,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda privativa com rede"
+            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
           capacity: "Capacidade: 2 hóspedes"
         },
@@ -663,7 +661,8 @@
           photos: [
             "public/suites/bonfim/bonfim1.jpeg",
             "public/suites/bonfim/bonfim2.jpeg",
-            "public/suites/bonfim/bonfim3.jpeg"
+            "public/suites/bonfim/bonfim3.jpeg",
+            "public/suites/bonfim/redesbonfim4.jpeg"
           ],
           amenities: [
             "Cama Queen",
@@ -674,7 +673,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda privativa com rede"
+            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
           capacity: "Capacidade: 2 hóspedes"
         }

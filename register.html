@@ -3,35 +3,328 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar conta</title>
+  <title>Criar conta | Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --bg:#f6f1e6;
+      --bg-2:#efe5d2;
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --line:rgba(31,36,48,0.10);
+      --shadow:0 20px 60px rgba(31,36,48,0.10);
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+    }
+
+    .auth-shell{
+      width:100%;
+      max-width:1160px;
+      display:grid;
+      grid-template-columns:0.98fr 1.02fr;
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.55);
+      background:rgba(255,255,255,0.52);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+    }
+
+    .auth-panel{
+      padding:48px 40px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+      display:flex;
+      align-items:center;
+    }
+
+    .auth-card{
+      width:100%;
+      max-width:460px;
+      margin:0 auto;
+    }
+
+    .eyebrow{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:12px;
+    }
+
+    h2{
+      font-family:"Cormorant Garamond",serif;
+      font-size:48px;
+      line-height:0.95;
+      font-weight:600;
+      margin-bottom:14px;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.75;
+      margin-bottom:28px;
+    }
+
+    .field{
+      margin-bottom:16px;
+    }
+
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:600;
+      margin-bottom:8px;
+      color:var(--ink);
+    }
+
+    input{
+      width:100%;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.78);
+      color:var(--ink);
+      border-radius:16px;
+      padding:14px 15px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    input:focus{
+      border-color:rgba(184,149,95,0.72);
+      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
+      transform:translateY(-1px);
+    }
+
+    .btn{
+      width:100%;
+      appearance:none;
+      border:none;
+      border-radius:999px;
+      padding:15px 18px;
+      font:inherit;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.25s ease;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, #b8955f, #9f7b45);
+      box-shadow:0 14px 30px rgba(159,123,69,0.22);
+      margin-top:8px;
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 34px rgba(159,123,69,0.28);
+    }
+
+    .bottom-link{
+      margin-top:22px;
+      font-size:14px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .bottom-link a{
+      color:var(--gold);
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .bottom-link a:hover{
+      text-decoration:underline;
+    }
+
+    .back-site{
+      display:inline-block;
+      margin-top:18px;
+      font-size:14px;
+      color:var(--ink);
+      text-decoration:none;
+    }
+
+    .back-site:hover{
+      text-decoration:underline;
+    }
+
+    .auth-visual{
+      position:relative;
+      min-height:760px;
+      padding:48px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      background:
+        linear-gradient(rgba(22,22,22,0.20), rgba(22,22,22,0.26)),
+        url("pousada.png") center/cover no-repeat;
+    }
+
+    .auth-visual::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(15,15,15,0.08), rgba(15,15,15,0.32));
+      pointer-events:none;
+    }
+
+    .brand,
+    .visual-copy{
+      position:relative;
+      z-index:1;
+      color:#fff;
+    }
+
+    .brand{
+      text-decoration:none;
+      display:inline-flex;
+      flex-direction:column;
+      align-self:flex-start;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:44px;
+      line-height:1;
+      font-weight:400;
+    }
+
+    .brand-subtitle{
+      margin-top:8px;
+      font-size:12px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      opacity:0.9;
+    }
+
+    .visual-copy h1{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(42px, 5vw, 64px);
+      line-height:0.95;
+      font-weight:600;
+      max-width:520px;
+      margin-bottom:16px;
+    }
+
+    .visual-copy p{
+      max-width:500px;
+      font-size:16px;
+      line-height:1.8;
+      color:rgba(255,255,255,0.92);
+    }
+
+    @media (max-width: 920px){
+      .auth-shell{
+        grid-template-columns:1fr;
+      }
+
+      .auth-visual{
+        order:-1;
+        min-height:360px;
+        padding:30px 24px;
+      }
+
+      .auth-panel{
+        padding:34px 22px;
+      }
+
+      .brand-title{
+        font-size:38px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Criar conta</h2>
+  <div class="auth-shell">
+    <section class="auth-panel">
+      <div class="auth-card">
+        <span class="eyebrow">Área do hóspede</span>
+        <h2>Criar conta</h2>
+        <p class="subtitle">
+          Cadastre seus dados para enviar solicitações de hospedagem e acompanhar suas reservas com mais praticidade.
+        </p>
 
-  <form id="register-form">
-    <input type="text" id="full_name" placeholder="Nome completo" required>
-    <br><br>
+        <form id="register-form">
+          <div class="field">
+            <label for="full_name">Nome completo</label>
+            <input type="text" id="full_name" placeholder="Seu nome completo" required>
+          </div>
 
-    <input type="text" id="phone" placeholder="Telefone" required>
-    <br><br>
+          <div class="field">
+            <label for="phone">Telefone</label>
+            <input type="text" id="phone" placeholder="(00) 00000-0000" required>
+          </div>
 
-    <input type="email" id="email" placeholder="Email" required>
-    <br><br>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+          </div>
 
-    <input type="password" id="password" placeholder="Senha" required>
-    <br><br>
+          <div class="field">
+            <label for="password">Senha</label>
+            <input type="password" id="password" placeholder="Crie uma senha" required>
+          </div>
 
-    <button type="submit">Cadastrar</button>
-  </form>
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </form>
 
-  <p>
-    Já tem conta?
-    <a href="login.html">Entrar</a>
-  </p>
+        <p class="bottom-link">
+          Já tem conta? <a href="login.html">Entrar</a>
+        </p>
+
+        <a href="index.html" class="back-site">Voltar ao site</a>
+      </div>
+    </section>
+
+    <section class="auth-visual">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Chateau Pireneus</span>
+        <span class="brand-subtitle">Pirenópolis · Goiás</span>
+      </a>
+
+      <div class="visual-copy">
+        <h1>Uma estadia especial começa com um simples cadastro.</h1>
+        <p>
+          Crie sua conta para acessar sua área do hóspede, solicitar reservas e acompanhar sua experiência com mais conforto e exclusividade.
+        </p>
+      </div>
+    </section>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
     const { createClient } = supabase
 

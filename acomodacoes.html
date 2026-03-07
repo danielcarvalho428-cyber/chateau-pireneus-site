@@ -48,7 +48,6 @@
 
     a{ text-decoration:none; color:inherit; }
 
-    /* HEADER */
     .top-header{
       position:fixed;
       top:0;
@@ -146,7 +145,6 @@
       transform:translateY(-1px);
     }
 
-    /* HERO */
     .hero{
       position:relative;
       min-height:64vh;
@@ -190,8 +188,8 @@
       margin:0;
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:clamp(40px, 7vw, 74px);
-      letter-spacing:3px;
+      font-size:clamp(22px, 3.5vw, 38px);
+      letter-spacing:2px;
       text-transform:uppercase;
       line-height:1.06;
       text-shadow:0 12px 40px rgba(0,0,0,0.45);
@@ -207,7 +205,6 @@
       text-shadow:0 10px 24px rgba(0,0,0,0.32);
     }
 
-    /* SECTION */
     .section{
       padding:72px 0 90px;
     }
@@ -221,15 +218,6 @@
     .section-head{
       max-width:860px;
       margin-bottom:32px;
-    }
-
-    .section-kicker{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      font-size:18px;
-      color:rgba(29,53,87,0.78);
-      margin-bottom:8px;
     }
 
     .section-title{
@@ -257,7 +245,6 @@
       margin:16px 0 0;
     }
 
-    /* GRID */
     .grid{
       display:grid;
       grid-template-columns:repeat(3, minmax(0, 1fr));
@@ -361,8 +348,7 @@
       flex-wrap:wrap;
     }
 
-    .btn-outline,
-    .btn-solid{
+    .btn-outline{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -372,9 +358,6 @@
       font-weight:900;
       letter-spacing:1px;
       transition:0.2s ease;
-    }
-
-    .btn-outline{
       border:2px solid var(--gold2);
       color:var(--navy);
       background:transparent;
@@ -388,19 +371,6 @@
       box-shadow:0 0 18px rgba(216,199,161,0.45);
     }
 
-    .btn-solid{
-      border:2px solid var(--navy);
-      background:var(--navy);
-      color:#fff;
-    }
-
-    .btn-solid:hover{
-      background:var(--navy2);
-      border-color:var(--navy2);
-      transform:translateY(-1px);
-    }
-
-    /* FOOTER */
     footer{
       position:relative;
       min-height:160px;
@@ -539,21 +509,17 @@
 
   <section class="hero" aria-label="Acomodações">
     <div class="hero-content">
-      <div class="hero-kicker">Nossas suítes</div>
+      <div class="hero-kicker">Nossas</div>
       <h1 class="hero-title">Acomodações</h1>
-      <p class="hero-sub">
-        Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis.
-      </p>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <span class="section-kicker">Escolha a sua estadia</span>
-        <h2 class="section-title">Todas as acomodações disponíveis</h2>
+        <h2 class="section-title">Nossas acomodações</h2>
         <p class="section-sub">
-          Cada suíte foi preparada para oferecer uma experiência especial, com detalhes que valorizam descanso, charme e tranquilidade.
+          Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis.
         </p>
         <div class="orn"></div>
       </div>
@@ -578,7 +544,6 @@
             </div>
             <div class="card-actions">
               <a href="suite.html?room=divino" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
             </div>
           </div>
         </article>
@@ -601,7 +566,6 @@
             </div>
             <div class="card-actions">
               <a href="suite.html?room=cavalhadas" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
             </div>
           </div>
         </article>
@@ -624,7 +588,6 @@
             </div>
             <div class="card-actions">
               <a href="suite.html?room=rosario" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
             </div>
           </div>
         </article>
@@ -637,17 +600,12 @@
             <div class="suite-number">SUÍTE 04</div>
             <h3>Suíte dos Pireneus (Master)</h3>
             <p>
-              Suíte master com banheira de imersão, cama Queen, lençóis 200 fios, ar-condicionado, TV, escrivaninha, Wi-Fi, frigobar e varanda com mesa. Capacidade: 2 adultos.
+              Suíte Master com banheira de imersão. Disponível em breve!
             </p>
             <div class="features">
               <span>Banheira</span>
-              <span>Cama Queen</span>
-              <span>Escrivaninha</span>
-              <span>Varanda com mesa</span>
-            </div>
-            <div class="card-actions">
-              <a href="suite.html?room=pireneus" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
+              <span>Master</span>
+              <span>Em breve</span>
             </div>
           </div>
         </article>
@@ -670,7 +628,6 @@
             </div>
             <div class="card-actions">
               <a href="suite.html?room=aurora" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
             </div>
           </div>
         </article>
@@ -693,7 +650,6 @@
             </div>
             <div class="card-actions">
               <a href="suite.html?room=bonfim" class="btn-outline">CONHECER</a>
-              <a href="booking.html" class="btn-solid">RESERVAR</a>
             </div>
           </div>
         </article>

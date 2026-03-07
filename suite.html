@@ -7,11 +7,12 @@
 
   <style>
     *{ box-sizing:border-box; }
+
     body{
       margin:0;
       padding-top:92px;
       font-family:Georgia, serif;
-      background:#f6f1e6; /* bege claro */
+      background:#f6f1e6;
       color:#1d3557;
     }
 
@@ -219,12 +220,16 @@
       margin:0 auto;
       padding:28px 18px 60px;
       display:grid;
-      grid-template-columns: 1.25fr 0.75fr;
+      grid-template-columns:minmax(0, 1.25fr) minmax(0, 0.75fr);
       gap:26px;
       align-items:start;
     }
 
-    /* ===== LEFT: Image Carousel (square corners) ===== */
+    aside{
+      min-width:0;
+    }
+
+    /* ===== LEFT: Image Carousel ===== */
     .carousel-box{
       position:relative;
       width:100%;
@@ -232,12 +237,12 @@
 
     .hero-img{
       width:100%;
-      aspect-ratio: 16/10;
+      aspect-ratio:16/10;
       object-fit:cover;
       display:block;
       background:#eee;
       border-radius:0;
-      box-shadow: var(--shadow);
+      box-shadow:var(--shadow);
     }
 
     .img-arrow{
@@ -258,10 +263,12 @@
       box-shadow:0 18px 40px rgba(0,0,0,0.20);
       transition:0.2s ease;
     }
+
     .img-arrow:hover{
       background:#fff;
       transform:translateY(-50%) scale(1.04);
     }
+
     .img-arrow.left{ left:12px; }
     .img-arrow.right{ right:12px; }
 
@@ -270,23 +277,28 @@
       justify-content:center;
       gap:10px;
       margin-top:14px;
+      flex-wrap:wrap;
     }
+
     .dot{
       width:10px;
       height:10px;
       border-radius:999px;
       background:rgba(29,53,87,0.22);
       cursor:pointer;
-      transition:0.2s ease;
-    }
-    .dot.active{
-      background:rgba(216,199,161,0.98);
-      transform:scale(1.15);
+      transition:0.25s ease;
     }
 
-    /* ===== RIGHT: Info (NO white card) ===== */
+    .dot.active{
+      width:28px;
+      background:rgba(216,199,161,0.98);
+      transform:none;
+    }
+
+    /* ===== RIGHT: Info ===== */
     .info{
       padding:0;
+      min-width:0;
     }
 
     .room-subtitle{
@@ -298,14 +310,14 @@
     }
 
     .room-title{
-  margin:0;
-  font-family:"Gyahegi", "Cormorant Garamond", serif;
-  font-weight:400;
-  font-size:32px;
-  letter-spacing:1px;
-  color:var(--blue);
-  white-space:nowrap;
-}
+      margin:0;
+      font-family:"Gyahegi", "Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(24px, 2.5vw, 32px);
+      letter-spacing:0.6px;
+      color:var(--blue);
+      white-space:nowrap;
+    }
 
     .gold-rule{
       width:160px;
@@ -368,6 +380,7 @@
       flex-wrap:wrap;
       gap:10px;
     }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -380,20 +393,24 @@
       transition:0.2s ease;
       user-select:none;
     }
+
     .btn.primary{
       background:var(--beige);
       color:#fff;
     }
+
     .btn.primary:hover{
       background:var(--beige-dark);
       transform:translateY(-1px);
       box-shadow:0 0 18px rgba(216,199,161,0.55);
     }
+
     .btn.outline{
       background:transparent;
       border:2px solid var(--beige-dark);
       color:var(--blue);
     }
+
     .btn.outline:hover{
       background:var(--beige);
       border-color:var(--beige);
@@ -414,10 +431,16 @@
     }
 
     @media (max-width: 980px){
-      .wrap{ grid-template-columns:1fr; }
+      .wrap{
+        grid-template-columns:1fr;
+      }
 
       ul{
         grid-template-columns:1fr;
+      }
+
+      .room-title{
+        white-space:normal;
       }
     }
 
@@ -720,14 +743,14 @@
 
       function renderDots(){
         dotsWrap.innerHTML = room.photos.map((_, idx) => (
-          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx+1) + '"></div>'
+          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx + 1) + '"></div>'
         )).join("");
       }
 
       function setActive(idx){
         i = idx;
         heroImg.src = room.photos[i];
-        heroImg.alt = "Foto da " + room.name + " (" + (i+1) + "/" + room.photos.length + ")";
+        heroImg.alt = "Foto da " + room.name + " (" + (i + 1) + "/" + room.photos.length + ")";
 
         Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
           d.classList.toggle("active", di === i);

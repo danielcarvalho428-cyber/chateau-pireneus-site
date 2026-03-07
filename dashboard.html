@@ -13,6 +13,40 @@
   <p id="user-email"></p>
   <p id="user-phone"></p>
 
+  <hr>
+
+  <h3>Solicitar reserva</h3>
+
+  <form id="reservation-form">
+    <label for="check_in">Check-in</label>
+    <br>
+    <input type="date" id="check_in" required>
+    <br><br>
+
+    <label for="check_out">Check-out</label>
+    <br>
+    <input type="date" id="check_out" required>
+    <br><br>
+
+    <label for="guests">Número de hóspedes</label>
+    <br>
+    <input type="number" id="guests" min="1" required>
+    <br><br>
+
+    <label for="room_type">Tipo de quarto</label>
+    <br>
+    <input type="text" id="room_type" placeholder="Ex: Suíte Master">
+    <br><br>
+
+    <label for="special_requests">Pedidos especiais</label>
+    <br>
+    <textarea id="special_requests" placeholder="Ex: cama extra, decoração romântica"></textarea>
+    <br><br>
+
+    <button type="submit">Enviar solicitação</button>
+  </form>
+
+  <br>
   <button id="logout-btn">Sair</button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -25,6 +59,8 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
 
+    let currentUser = null
+
     async function loadProfile() {
       const { data: userData, error: userError } = await supabaseClient.auth.getUser()
 
@@ -33,12 +69,12 @@
         return
       }
 
-      const user = userData.user
+      currentUser = userData.user
 
       const { data: profile, error: profileError } = await supabaseClient
         .from("profiles")
         .select("full_name, phone")
-        .eq("id", user.id)
+        .eq("id", currentUser.id)
         .single()
 
       if (profileError) {
@@ -47,9 +83,44 @@
       }
 
       document.getElementById("welcome").textContent = "Bem-vindo, " + profile.full_name
-      document.getElementById("user-email").textContent = "Email: " + user.email
+      document.getElementById("user-email").textContent = "Email: " + currentUser.email
       document.getElementById("user-phone").textContent = "Telefone: " + profile.phone
     }
+
+    document.getElementById("reservation-form").addEventListener("submit", async (e) => {
+      e.preventDefault()
+
+      if (!currentUser) {
+        alert("Usuário não encontrado.")
+        return
+      }
+
+      const check_in = document.getElementById("check_in").value
+      const check_out = document.getElementById("check_out").value
+      const guests = document.getElementById("guests").value
+      const room_type = document.getElementById("room_type").value
+      const special_requests = document.getElementById("special_requests").value
+
+      const { error } = await supabaseClient
+        .from("reservations")
+        .insert([
+          {
+            user_id: currentUser.id,
+            check_in,
+            check_out,
+            guests,
+            room_type,
+            special_requests
+          }
+        ])
+
+      if (error) {
+        alert(error.message)
+      } else {
+        alert("Solicitação de reserva enviada com sucesso!")
+        document.getElementById("reservation-form").reset()
+      }
+    })
 
     document.getElementById("logout-btn").addEventListener("click", async () => {
       await supabaseClient.auth.signOut()

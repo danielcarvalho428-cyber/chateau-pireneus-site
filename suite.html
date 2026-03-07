@@ -224,17 +224,13 @@
       align-items:start;
     }
 
+    /* ONLY CAVALHADAS */
+    body.room-cavalhadas .wrap{
+      transform:translateX(-18px);
+    }
+
     aside{
       min-width:0;
-    }
-
-    .gallery-col{
-      min-width:0;
-    }
-
-    /* ONLY CAVALHADAS: move image frame a little left */
-    body.room-cavalhadas .gallery-col{
-      transform:translateX(-18px);
     }
 
     .carousel-box{
@@ -449,7 +445,7 @@
         white-space:normal;
       }
 
-      body.room-cavalhadas .gallery-col{
+      body.room-cavalhadas .wrap{
         transform:none;
       }
     }
@@ -529,7 +525,7 @@
   <div id="errBox" class="error"></div>
 
   <main class="wrap">
-    <section class="gallery-col" aria-label="Galeria da suíte">
+    <section aria-label="Galeria da suíte">
       <div class="carousel-box">
         <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
         <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>

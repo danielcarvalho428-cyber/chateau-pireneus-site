@@ -875,11 +875,121 @@
       box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
+    /* FOOTER */
     footer{
-      background:var(--navy);
+      position:relative;
+      display:grid;
+      grid-template-columns:420px 1fr;
+      min-height:220px;
+      margin-top:0;
+      overflow:hidden;
+    }
+
+    .footer-left{
+      background:#ddd0c2;
+      position:relative;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      padding:34px 34px 28px 34px;
+    }
+
+    .footer-left img{
+      width:320px;
+      max-width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .footer-right{
+      position:relative;
+      background:#032c52;
       color:#fff;
-      padding:44px 20px;
-      text-align:center;
+      display:flex;
+      align-items:flex-end;
+      padding:34px 42px 28px 170px;
+    }
+
+    .footer-contact{
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:25px;
+      line-height:1.45;
+      color:rgba(255,255,255,0.96);
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    .footer-connector{
+      position:absolute;
+      left:420px;
+      bottom:0;
+      width:170px;
+      height:170px;
+      transform:translateX(-50%);
+      z-index:3;
+      pointer-events:none;
+    }
+
+    .footer-connector::before,
+    .footer-connector::after{
+      content:"";
+      position:absolute;
+      top:0;
+      width:50%;
+      height:100%;
+      background:#d1c0ae;
+    }
+
+    .footer-connector::before{
+      left:0;
+      clip-path:polygon(100% 0, 100% 100%, 0 85%, 0 15%);
+    }
+
+    .footer-connector::after{
+      right:0;
+      clip-path:polygon(0 0, 100% 15%, 100% 85%, 0 100%);
+    }
+
+    .footer-diamond{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:34px;
+      height:34px;
+      transform:translate(-50%, -50%) rotate(45deg);
+      background:#032c52;
+      z-index:4;
+    }
+
+    .footer-diamond::before,
+    .footer-diamond::after{
+      content:"";
+      position:absolute;
+      background:#032c52;
+    }
+
+    .footer-diamond::before{
+      width:16px;
+      height:34px;
+      left:9px;
+      top:0;
+    }
+
+    .footer-diamond::after{
+      width:34px;
+      height:16px;
+      left:0;
+      top:9px;
     }
 
     @media (max-width: 980px){
@@ -917,6 +1027,35 @@
       .suites{ padding:38px 0; }
       .suite-card{ min-width:100%; }
       .suites-title{ font-size:28px; }
+
+      footer{
+        grid-template-columns:1fr;
+        min-height:auto;
+      }
+
+      .footer-left{
+        justify-content:center;
+        align-items:center;
+        padding:28px 22px 22px;
+      }
+
+      .footer-left img{
+        width:240px;
+      }
+
+      .footer-right{
+        padding:28px 22px 26px;
+      }
+
+      .footer-contact{
+        gap:16px;
+        font-size:18px;
+        line-height:1.5;
+      }
+
+      .footer-connector{
+        display:none;
+      }
     }
   </style>
 </head>
@@ -1208,9 +1347,21 @@
   </section>
 
   <footer>
-    Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis GO
-    <br><br>
-    WhatsApp: (62) 99816-7654
+    <div class="footer-left">
+      <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+    </div>
+
+    <div class="footer-connector" aria-hidden="true">
+      <div class="footer-diamond"></div>
+    </div>
+
+    <div class="footer-right">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambá, Quadra 09, Lote 16 &nbsp;•&nbsp; Setor Meia Ponte &nbsp;•&nbsp; Pirenópolis - GO</div>
+      </div>
+    </div>
   </footer>
 
   <script>

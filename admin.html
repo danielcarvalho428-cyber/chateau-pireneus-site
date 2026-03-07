@@ -164,7 +164,7 @@
     .summary-grid{
       margin-top:24px;
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      grid-template-columns:repeat(4,minmax(0,1fr));
       gap:14px;
     }
 
@@ -241,7 +241,7 @@
     .reservation-sub{
       color:var(--muted);
       font-size:14px;
-      line-height:1.6;
+      line-height:1.7;
     }
 
     .status-badge{
@@ -287,6 +287,7 @@
       font-size:15px;
       font-weight:600;
       line-height:1.5;
+      word-break:break-word;
     }
 
     .reservation-actions{
@@ -320,6 +321,12 @@
 
     .save-btn:hover{
       transform:translateY(-1px);
+    }
+
+    .save-btn:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
     }
 
     .empty-state{
@@ -381,6 +388,10 @@
           <span class="summary-label">Confirmadas</span>
           <span class="summary-value" id="confirmed-count">0</span>
         </div>
+        <div class="summary-card">
+          <span class="summary-label">Canceladas</span>
+          <span class="summary-value" id="cancelled-count">0</span>
+        </div>
       </div>
     </section>
 
@@ -435,13 +446,12 @@
         return null
       }
 
-      const { data: adminData, error: adminError } = await supabaseClient
+      const { data: adminRows, error: adminError } = await supabaseClient
         .from("admins")
         .select("id")
         .eq("id", userData.user.id)
-        .maybeSingle()
 
-      if (adminError || !adminData) {
+      if (adminError || !adminRows || adminRows.length === 0) {
         alert("Acesso restrito ao administrador.")
         window.location.href = "dashboard.html"
         return null
@@ -453,19 +463,24 @@
     async function loadAdminReservations() {
       const container = document.getElementById("admin-reservations-list")
 
-      const { data: reservations, error } = await supabaseClient
+      const { data: reservations, error: reservationsError } = await supabaseClient
         .from("reservations")
         .select("*")
         .order("id", { ascending: false })
 
-      if (error) {
-        alert(error.message)
+      if (reservationsError) {
+        alert(reservationsError.message)
         return
       }
 
-      const { data: profiles } = await supabaseClient
+      const { data: profiles, error: profilesError } = await supabaseClient
         .from("profiles")
-        .select("id, full_name, phone")
+        .select("id, full_name, phone, email")
+
+      if (profilesError) {
+        alert(profilesError.message)
+        return
+      }
 
       const profileMap = {}
       ;(profiles || []).forEach(profile => {
@@ -475,10 +490,15 @@
       const total = reservations ? reservations.length : 0
       const pending = (reservations || []).filter(r => formatStatus(r.status) === "pending").length
       const confirmed = (reservations || []).filter(r => formatStatus(r.status) === "confirmed").length
+      const cancelled = (reservations || []).filter(r => {
+        const s = formatStatus(r.status)
+        return s === "cancelled" || s === "canceled"
+      }).length
 
       document.getElementById("total-count").textContent = total
       document.getElementById("pending-count").textContent = pending
       document.getElementById("confirmed-count").textContent = confirmed
+      document.getElementById("cancelled-count").textContent = cancelled
 
       if (!reservations || reservations.length === 0) {
         container.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada.</div>`
@@ -494,7 +514,9 @@
               <div>
                 <div class="reservation-title">${reservation.room_type || "Reserva solicitada"}</div>
                 <div class="reservation-sub">
-                  ${profile.full_name || "Hóspede não identificado"} · ${profile.phone || "Sem telefone"}
+                  <div><strong>Hóspede:</strong> ${profile.full_name || "Hóspede não identificado"}</div>
+                  <div><strong>Telefone:</strong> ${profile.phone || "Sem telefone"}</div>
+                  <div><strong>Email:</strong> ${profile.email || "Sem email salvo"}</div>
                 </div>
               </div>
               <span class="status-badge">${statusLabel(reservation.status)}</span>
@@ -538,14 +560,14 @@
             </div>
 
             <div class="reservation-actions">
-              <select id="status-${reservation.id}">
+              <select class="status-select" data-id="${reservation.id}">
                 <option value="pending" ${formatStatus(reservation.status) === "pending" ? "selected" : ""}>Pendente</option>
                 <option value="confirmed" ${formatStatus(reservation.status) === "confirmed" ? "selected" : ""}>Confirmada</option>
-                <option value="cancelled" ${formatStatus(reservation.status) === "cancelled" || formatStatus(reservation.status) === "canceled" ? "selected" : ""}>Cancelada</option>
+                <option value="cancelled" ${(formatStatus(reservation.status) === "cancelled" || formatStatus(reservation.status) === "canceled") ? "selected" : ""}>Cancelada</option>
                 <option value="completed" ${formatStatus(reservation.status) === "completed" ? "selected" : ""}>Concluída</option>
               </select>
 
-              <button class="save-btn" type="button" onclick="updateReservationStatus(${reservation.id})">
+              <button class="save-btn save-status-btn" type="button" data-id="${reservation.id}">
                 Salvar status
               </button>
             </div>
@@ -554,8 +576,16 @@
       }).join("")
     }
 
-    async function updateReservationStatus(reservationId) {
-      const status = document.getElementById(`status-${reservationId}`).value
+    async function updateReservationStatus(reservationId, button) {
+      const select = document.querySelector(`.status-select[data-id="${reservationId}"]`)
+      if (!select) {
+        alert("Não foi possível encontrar o status da reserva.")
+        return
+      }
+
+      const status = select.value
+      button.disabled = true
+      button.textContent = "Salvando..."
 
       const { error } = await supabaseClient
         .from("reservations")
@@ -564,12 +594,22 @@
 
       if (error) {
         alert(error.message)
+        button.disabled = false
+        button.textContent = "Salvar status"
         return
       }
 
       alert("Status atualizado com sucesso!")
-      loadAdminReservations()
+      await loadAdminReservations()
     }
+
+    document.addEventListener("click", async (event) => {
+      const button = event.target.closest(".save-status-btn")
+      if (!button) return
+
+      const reservationId = button.getAttribute("data-id")
+      await updateReservationStatus(reservationId, button)
+    })
 
     async function logout() {
       await supabaseClient.auth.signOut()
@@ -577,7 +617,6 @@
     }
 
     document.getElementById("logout-btn").addEventListener("click", logout)
-    window.updateReservationStatus = updateReservationStatus
 
     async function init() {
       const user = await checkAdminAccess()
@@ -587,6 +626,5 @@
 
     init()
   </script>
-
 </body>
 </html>

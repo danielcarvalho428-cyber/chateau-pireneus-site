@@ -730,6 +730,29 @@
       if (error) {
         alert(error.message)
       } else {
+        try {
+          await fetch("https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/smooth-api", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              type: "INSERT",
+              record: {
+                user_id: currentUser.id,
+                check_in,
+                check_out,
+                guests,
+                room_type,
+                special_requests,
+                status: "pending"
+              }
+            })
+          })
+        } catch (notifyError) {
+          console.error("Erro ao chamar função de email:", notifyError)
+        }
+
         alert("Solicitação de reserva enviada com sucesso!")
         document.getElementById("reservation-form").reset()
         loadReservations()

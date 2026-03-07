@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>Área do Hóspede</title>
 </head>
 <body>
 
-  <h2>Área do Usuário</h2>
+  <h2>Área do Hóspede</h2>
+
+  <p id="welcome"></p>
   <p id="user-email"></p>
+  <p id="user-phone"></p>
+
   <button id="logout-btn">Sair</button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -21,15 +25,30 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
 
-    async function checkUser() {
-      const { data, error } = await supabaseClient.auth.getUser()
+    async function loadProfile() {
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser()
 
-      if (error || !data.user) {
+      if (userError || !userData.user) {
         window.location.href = "login.html"
         return
       }
 
-      document.getElementById("user-email").textContent = "Logado como: " + data.user.email
+      const user = userData.user
+
+      const { data: profile, error: profileError } = await supabaseClient
+        .from("profiles")
+        .select("full_name, phone")
+        .eq("id", user.id)
+        .single()
+
+      if (profileError) {
+        alert(profileError.message)
+        return
+      }
+
+      document.getElementById("welcome").textContent = "Bem-vindo, " + profile.full_name
+      document.getElementById("user-email").textContent = "Email: " + user.email
+      document.getElementById("user-phone").textContent = "Telefone: " + profile.phone
     }
 
     document.getElementById("logout-btn").addEventListener("click", async () => {
@@ -37,7 +56,7 @@
       window.location.href = "login.html"
     })
 
-    checkUser()
+    loadProfile()
   </script>
 
 </body>

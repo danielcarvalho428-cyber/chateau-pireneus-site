@@ -298,10 +298,6 @@
       min-width:0;
     }
 
-    body.room-cavalhadas .info{
-      max-width:280px;
-    }
-
     .room-subtitle{
       color:var(--beige-dark);
       font-size:14px;
@@ -318,6 +314,14 @@
       letter-spacing:0.6px;
       color:var(--blue);
       white-space:nowrap;
+      display:inline-block;
+    }
+
+    /* ONLY CAVALHADAS */
+    body.room-cavalhadas .room-title{
+      letter-spacing:-0.2px;
+      transform:scaleX(0.94);
+      transform-origin:left center;
     }
 
     .gold-rule{
@@ -442,10 +446,7 @@
 
       .room-title{
         white-space:normal;
-      }
-
-      body.room-cavalhadas .info{
-        max-width:none;
+        transform:none !important;
       }
     }
 

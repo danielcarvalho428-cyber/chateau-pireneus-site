@@ -31,8 +31,27 @@
 
     const supabaseClient = createClient(
       "https://pjxurbtvmzdlpnexfqpd.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
+
+    document.getElementById("register-form").addEventListener("submit", async (e) => {
+      e.preventDefault()
+
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password
+      })
+
+      if (error) {
+        alert(error.message)
+      } else {
+        alert("Conta criada com sucesso! Verifique seu email se a confirmação estiver ativada.")
+        window.location.href = "login.html"
+      }
+    })
   </script>
 
 </body>

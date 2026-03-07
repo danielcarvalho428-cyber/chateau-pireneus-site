@@ -10,6 +10,12 @@
   <h2>Criar conta</h2>
 
   <form id="register-form">
+    <input type="text" id="full_name" placeholder="Nome completo" required>
+    <br><br>
+
+    <input type="text" id="phone" placeholder="Telefone" required>
+    <br><br>
+
     <input type="email" id="email" placeholder="Email" required>
     <br><br>
 
@@ -37,6 +43,8 @@
     document.getElementById("register-form").addEventListener("submit", async (e) => {
       e.preventDefault()
 
+      const full_name = document.getElementById("full_name").value
+      const phone = document.getElementById("phone").value
       const email = document.getElementById("email").value
       const password = document.getElementById("password").value
 
@@ -47,10 +55,30 @@
 
       if (error) {
         alert(error.message)
-      } else {
-        alert("Conta criada com sucesso! Verifique seu email se a confirmação estiver ativada.")
-        window.location.href = "login.html"
+        return
       }
+
+      const user = data.user
+
+      if (user) {
+        const { error: profileError } = await supabaseClient
+          .from("profiles")
+          .insert([
+            {
+              id: user.id,
+              full_name,
+              phone
+            }
+          ])
+
+        if (profileError) {
+          alert(profileError.message)
+          return
+        }
+      }
+
+      alert("Conta criada com sucesso!")
+      window.location.href = "login.html"
     })
   </script>
 

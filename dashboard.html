@@ -730,8 +730,8 @@
       if (error) {
         alert(error.message)
       } else {
-        try {
-          await fetch("https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/smooth-api", {
+                try {
+          const notifyResponse = await fetch("https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/smooth-api", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
@@ -749,10 +749,13 @@
               }
             })
           })
+
+          const notifyResult = await notifyResponse.text()
+          alert("Resposta da função de email: " + notifyResult)
         } catch (notifyError) {
+          alert("Erro ao chamar função de email: " + notifyError)
           console.error("Erro ao chamar função de email:", notifyError)
         }
-
         alert("Solicitação de reserva enviada com sucesso!")
         document.getElementById("reservation-form").reset()
         loadReservations()

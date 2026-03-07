@@ -873,63 +873,42 @@
     /* FOOTER */
     footer{
       position:relative;
-      display:grid;
-      grid-template-columns:420px 1fr;
       min-height:160px;
       max-height:160px;
       overflow:hidden;
       margin-top:0;
+      background:#032c52;
     }
 
-    .footer-left{
-      background:#ddd0c2;
-      display:flex;
-      align-items:flex-end;
-      justify-content:flex-start;
-      padding:24px 30px 20px;
-    }
-
-    .footer-brand-text{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:500;
-      font-size:44px;
-      line-height:0.92;
-      letter-spacing:0.8px;
-      text-transform:uppercase;
-      color:#1d3557;
-    }
-
-    .footer-center-logo{
+    .footer-bg{
       position:absolute;
-      left:420px;
-      bottom:10px;
-      transform:translateX(-50%);
-      z-index:4;
-      pointer-events:none;
-    }
-
-    .footer-center-logo img{
-      width:96px;
-      height:auto;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
       display:block;
     }
 
-    .footer-right{
-      background:#032c52;
-      color:#fff;
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
       display:flex;
-      align-items:flex-end;
-      padding:22px 34px 16px 120px;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
     }
 
     .footer-contact{
+      width:min(410px, 100%);
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:10px;
       font-family:"Cormorant Garamond", serif;
       font-size:22px;
-      line-height:1.25;
-      color:rgba(255,255,255,0.96);
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
     }
 
     .footer-contact a{
@@ -978,45 +957,21 @@
       .suites-title{ font-size:28px; }
 
       footer{
-        grid-template-columns:1fr;
-        min-height:auto;
+        min-height:200px;
         max-height:none;
       }
 
-      .footer-left{
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
         justify-content:center;
-        align-items:center;
-        padding:24px 22px 12px;
-        text-align:center;
-      }
-
-      .footer-brand-text{
-        font-size:32px;
-      }
-
-      .footer-center-logo{
-        position:relative;
-        left:auto;
-        bottom:auto;
-        transform:none;
-        display:flex;
-        justify-content:center;
-        background:#ddd0c2;
-        padding:0 0 14px;
-      }
-
-      .footer-center-logo img{
-        width:78px;
-      }
-
-      .footer-right{
-        padding:20px 22px 22px;
+        padding:18px 18px 20px;
       }
 
       .footer-contact{
-        gap:12px;
+        width:100%;
         font-size:18px;
-        line-height:1.35;
+        gap:10px;
       }
     }
   </style>
@@ -1309,21 +1264,13 @@
   </section>
 
   <footer>
-    <div class="footer-left">
-      <div class="footer-brand-text">
-        CHATEAU<br>PIRENEUS
-      </div>
-    </div>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
-    <div class="footer-center-logo" aria-hidden="true">
-      <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
-    </div>
-
-    <div class="footer-right">
+    <div class="footer-overlay">
       <div class="footer-contact">
         <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
         <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
-        <div>Rua Tupinambá, Quadra 09, Lote 16 &nbsp;•&nbsp; Setor Meia Ponte &nbsp;•&nbsp; Pirenópolis - GO</div>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
       </div>
     </div>
   </footer>

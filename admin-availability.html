@@ -1,1 +1,615 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disponibilidade | Admin | Chateau Pireneus</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --gold-deep:#9f7b45;
+      --gold-soft:rgba(184,149,95,0.16);
+      --line:rgba(31,36,48,0.10);
+      --shadow:0 20px 60px rgba(31,36,48,0.10);
+      --open:#2f7a4b;
+      --open-soft:rgba(47,122,75,0.12);
+      --blocked:#b54a4a;
+      --blocked-soft:rgba(181,74,74,0.12);
+      --booked:#516d8f;
+      --booked-soft:rgba(81,109,143,0.12);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 24%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+    }
+
+    .top-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      padding:16px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.05);
+    }
+
+    .top-header-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:400;
+    }
+
+    .brand-subtitle{
+      margin-top:6px;
+      font-size:12px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .header-link,.logout-btn,.action-btn{
+      appearance:none;
+      border:none;
+      text-decoration:none;
+      cursor:pointer;
+      transition:0.25s ease;
+      font-family:inherit;
+    }
+
+    .header-link,.logout-btn{
+      color:var(--ink);
+      font-size:14px;
+      font-weight:600;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
+    .header-link:hover,.logout-btn:hover{
+      background:rgba(255,255,255,0.92);
+      transform:translateY(-1px);
+    }
+
+    .page-wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:46px 22px 76px;
+    }
+
+    .hero-card,.panel{
+      background:linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.64));
+      border:1px solid rgba(255,255,255,0.58);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:30px 26px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+    }
+
+    .hero-card{margin-bottom:24px;}
+
+    .eyebrow{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:12px;
+    }
+
+    .hero-title,.panel-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(38px, 5vw, 58px);
+      line-height:0.95;
+      font-weight:600;
+      margin-bottom:10px;
+    }
+
+    .panel-title{font-size:36px;}
+
+    .hero-text,.panel-subtitle{
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .panel-subtitle{margin-bottom:22px;}
+
+    .controls{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:24px;
+      margin-bottom:24px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:16px;
+    }
+
+    label{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    input,select{
+      width:100%;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.86);
+      color:var(--ink);
+      border-radius:18px;
+      padding:15px 16px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    input:focus,select:focus{
+      border-color:rgba(184,149,95,0.72);
+      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
+      transform:translateY(-1px);
+    }
+
+    .action-row{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .action-btn{
+      border-radius:999px;
+      padding:14px 18px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:0.02em;
+    }
+
+    .btn-open{
+      color:#fff;
+      background:linear-gradient(135deg, var(--open), #25663e);
+    }
+
+    .btn-block{
+      color:#fff;
+      background:linear-gradient(135deg, #b54a4a, #963e3e);
+    }
+
+    .btn-refresh{
+      color:var(--ink);
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
+    .legend{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .legend-pill,.status-pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      border:1px solid transparent;
+    }
+
+    .status-open{
+      color:var(--open);
+      background:var(--open-soft);
+      border-color:rgba(47,122,75,0.24);
+    }
+
+    .status-blocked{
+      color:var(--blocked);
+      background:var(--blocked-soft);
+      border-color:rgba(181,74,74,0.24);
+    }
+
+    .status-booked{
+      color:var(--booked);
+      background:var(--booked-soft);
+      border-color:rgba(81,109,143,0.24);
+    }
+
+    .calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:12px;
+    }
+
+    .day-card{
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:20px;
+      padding:14px 12px;
+      min-height:118px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:0.2s ease;
+    }
+
+    .day-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(31,36,48,0.06);
+    }
+
+    .day-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .day-date{
+      font-size:14px;
+      font-weight:700;
+      line-height:1.4;
+    }
+
+    .day-small{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .empty-state{
+      border:1px dashed rgba(31,36,48,0.16);
+      border-radius:20px;
+      padding:24px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,0.42);
+      line-height:1.7;
+    }
+
+    @media (max-width: 980px){
+      .controls{
+        grid-template-columns:1fr;
+      }
+
+      .calendar-grid{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px){
+      .top-header-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .brand-title{
+        font-size:30px;
+      }
+
+      .page-wrap{
+        padding:34px 16px 54px;
+      }
+
+      .hero-card,.panel{
+        padding:22px 18px;
+        border-radius:22px;
+      }
+
+      .calendar-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Chateau Pireneus</span>
+        <span class="brand-subtitle">Disponibilidade administrativa</span>
+      </a>
+
+      <div class="header-actions">
+        <a href="admin.html" class="header-link">Painel Admin</a>
+        <a href="dashboard.html" class="header-link">Área do hóspede</a>
+        <button id="logout-btn" class="logout-btn" type="button">Sair</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero-card">
+      <span class="eyebrow">Controle de calendário</span>
+      <h1 class="hero-title">Abrir e bloquear datas</h1>
+      <p class="hero-text">
+        Escolha a suíte, selecione uma data específica e altere o status do calendário. Datas já reservadas devem permanecer como booked e serão controladas automaticamente depois pela lógica de pagamento.
+      </p>
+    </section>
+
+    <section class="controls">
+      <div class="panel">
+        <h2 class="panel-title">Alterar disponibilidade</h2>
+        <p class="panel-subtitle">
+          Nesta primeira versão, você pode abrir ou bloquear uma data por vez para cada suíte.
+        </p>
+
+        <div class="field">
+          <label for="room-select">Suíte</label>
+          <select id="room-select"></select>
+        </div>
+
+        <div class="field">
+          <label for="date-input">Data</label>
+          <input type="date" id="date-input">
+        </div>
+
+        <div class="action-row">
+          <button id="open-btn" class="action-btn btn-open" type="button">Marcar como aberta</button>
+          <button id="block-btn" class="action-btn btn-block" type="button">Bloquear data</button>
+          <button id="refresh-btn" class="action-btn btn-refresh" type="button">Atualizar calendário</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel-title">Legenda</h2>
+        <p class="panel-subtitle">
+          Consulte rapidamente o significado de cada status mostrado no calendário.
+        </p>
+
+        <div class="legend">
+          <span class="legend-pill status-open">Open</span>
+          <span class="legend-pill status-blocked">Blocked</span>
+          <span class="legend-pill status-booked">Booked</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel-title">Próximos 30 dias</h2>
+      <p class="panel-subtitle" id="calendar-subtitle">
+        Selecione uma suíte para ver o calendário.
+      </p>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    const { createClient } = supabase
+
+    const supabaseClient = createClient(
+      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
+    )
+
+    let currentAdminUser = null
+    let rooms = []
+
+    function formatDateBR(dateString) {
+      const [year, month, day] = dateString.split("-")
+      return `${day}/${month}/${year}`
+    }
+
+    function statusClass(status) {
+      if (status === "blocked") return "status-blocked"
+      if (status === "booked") return "status-booked"
+      return "status-open"
+    }
+
+    async function checkAdminAccess() {
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser()
+
+      if (userError || !userData.user) {
+        window.location.href = "login.html"
+        return null
+      }
+
+      const { data: adminRows, error: adminError } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", userData.user.id)
+
+      if (adminError || !adminRows || adminRows.length === 0) {
+        alert("Acesso restrito ao administrador.")
+        window.location.href = "dashboard.html"
+        return null
+      }
+
+      currentAdminUser = userData.user
+      return userData.user
+    }
+
+    async function loadRooms() {
+      const { data, error } = await supabaseClient
+        .from("rooms")
+        .select("*")
+        .eq("active", true)
+        .order("id", { ascending: true })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      rooms = data || []
+
+      const select = document.getElementById("room-select")
+      select.innerHTML = rooms.map(room => `
+        <option value="${room.id}">${room.name}</option>
+      `).join("")
+
+      if (rooms.length > 0) {
+        await loadCalendar()
+      }
+    }
+
+    async function loadCalendar() {
+      const roomId = document.getElementById("room-select").value
+      if (!roomId) return
+
+      const today = new Date()
+      const endDate = new Date()
+      endDate.setDate(today.getDate() + 29)
+
+      const startStr = today.toISOString().split("T")[0]
+      const endStr = endDate.toISOString().split("T")[0]
+
+      const { data, error } = await supabaseClient
+        .from("room_availability")
+        .select("id, date, status")
+        .eq("room_id", roomId)
+        .gte("date", startStr)
+        .lte("date", endStr)
+        .order("date", { ascending: true })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      const room = rooms.find(r => String(r.id) === String(roomId))
+      document.getElementById("calendar-subtitle").textContent =
+        `Visualização da suíte ${room ? room.name : ""} nos próximos 30 dias.`
+
+      const grid = document.getElementById("calendar-grid")
+
+      if (!data || data.length === 0) {
+        grid.innerHTML = `<div class="empty-state">Nenhuma disponibilidade encontrada.</div>`
+        return
+      }
+
+      grid.innerHTML = data.map(item => `
+        <article class="day-card">
+          <div class="day-top">
+            <div>
+              <div class="day-date">${formatDateBR(item.date)}</div>
+              <div class="day-small">Data do calendário</div>
+            </div>
+            <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+          </div>
+          <div class="day-small">Status atual da suíte nesta data.</div>
+        </article>
+      `).join("")
+    }
+
+    async function updateAvailabilityStatus(newStatus) {
+      const roomId = document.getElementById("room-select").value
+      const date = document.getElementById("date-input").value
+
+      if (!roomId || !date) {
+        alert("Selecione a suíte e a data.")
+        return
+      }
+
+      const { data: existing, error: existingError } = await supabaseClient
+        .from("room_availability")
+        .select("id, status")
+        .eq("room_id", roomId)
+        .eq("date", date)
+        .single()
+
+      if (existingError) {
+        alert(existingError.message)
+        return
+      }
+
+      if (existing.status === "booked") {
+        alert("Datas com status booked não devem ser alteradas manualmente.")
+        return
+      }
+
+      const { error } = await supabaseClient
+        .from("room_availability")
+        .update({ status: newStatus })
+        .eq("id", existing.id)
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      alert(`Data atualizada para ${newStatus}.`)
+      await loadCalendar()
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "login.html"
+    }
+
+    document.getElementById("room-select").addEventListener("change", loadCalendar)
+    document.getElementById("refresh-btn").addEventListener("click", loadCalendar)
+    document.getElementById("open-btn").addEventListener("click", () => updateAvailabilityStatus("open"))
+    document.getElementById("block-btn").addEventListener("click", () => updateAvailabilityStatus("blocked"))
+    document.getElementById("logout-btn").addEventListener("click", logout)
+
+    async function init() {
+      const user = await checkAdminAccess()
+      if (!user) return
+      await loadRooms()
+    }
+
+    init()
+  </script>
+</body>
+</html>

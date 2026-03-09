@@ -16,352 +16,102 @@
       font-style:normal;
       font-display:swap;
     }
-
     :root{
-      --ink:#1f2430;
-      --muted:#6f6a62;
-      --gold:#b8955f;
-      --gold-deep:#9f7b45;
-      --gold-soft:rgba(184,149,95,0.16);
-      --line:rgba(31,36,48,0.10);
-      --panel:rgba(255,255,255,0.72);
+      --ink:#1f2430; --muted:#6f6a62; --gold:#b8955f; --gold-deep:#9f7b45;
       --shadow:0 20px 60px rgba(31,36,48,0.10);
     }
-
-    *{box-sizing:border-box;margin:0;padding:0;}
-
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      min-height:100vh;
-      font-family:"Inter",sans-serif;
-      color:var(--ink);
+      min-height:100vh;font-family:"Inter",sans-serif;color:var(--ink);
       background:
         radial-gradient(circle at top left, rgba(184,149,95,0.18), transparent 28%),
         radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 24%),
         linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
     }
-
     .top-header{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      padding:16px 22px;
-      background:rgba(246,241,230,0.72);
-      border-bottom:1px solid rgba(31,36,48,0.08);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
+      position:sticky;top:0;z-index:1000;padding:16px 22px;
+      background:rgba(246,241,230,0.72);border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
       box-shadow:0 12px 30px rgba(0,0,0,0.05);
     }
-
     .top-header-inner{
-      max-width:1200px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
+      max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;
     }
-
-    .brand{
-      text-decoration:none;
-      color:var(--ink);
-      display:flex;
-      flex-direction:column;
-      line-height:1;
-    }
-
-    .brand-title{
-      font-family:"Gyahegi","Cormorant Garamond",serif;
-      font-size:36px;
-      font-weight:400;
-    }
-
-    .brand-subtitle{
-      margin-top:6px;
-      font-size:12px;
-      letter-spacing:0.22em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    .header-actions{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
+    .brand{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;line-height:1}
+    .brand-title{font-family:"Gyahegi","Cormorant Garamond",serif;font-size:36px;font-weight:400}
+    .brand-subtitle{margin-top:6px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+    .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
     .header-link{
-      text-decoration:none;
-      color:var(--ink);
-      font-size:14px;
-      font-weight:600;
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.58);
-      border:1px solid rgba(31,36,48,0.08);
-      transition:0.25s ease;
+      text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,0.58);border:1px solid rgba(31,36,48,0.08);transition:.25s ease;
     }
-
-    .header-link:hover{
-      background:rgba(255,255,255,0.92);
-      transform:translateY(-1px);
-    }
-
-    .page-wrap{
-      max-width:1200px;
-      margin:0 auto;
-      padding:46px 22px 76px;
-    }
-
+    .header-link:hover{background:rgba(255,255,255,0.92);transform:translateY(-1px)}
+    .page-wrap{max-width:1200px;margin:0 auto;padding:46px 22px 76px}
     .hero{
-      position:relative;
-      min-height:360px;
-      border-radius:34px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      margin-bottom:28px;
+      position:relative;min-height:360px;border-radius:34px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px;
       background:
         linear-gradient(rgba(18,18,18,0.20), rgba(18,18,18,0.34)),
         url("pousada.png") center/cover no-repeat;
       border:1px solid rgba(255,255,255,0.35);
     }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(120deg, rgba(184,149,95,0.22), transparent 45%),
-        linear-gradient(180deg, rgba(255,255,255,0.05), rgba(0,0,0,0.10));
-      pointer-events:none;
-    }
-
     .hero-content{
-      position:relative;
-      z-index:1;
-      padding:54px 42px;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-end;
-      min-height:360px;
-      color:#fff;
+      position:relative;z-index:1;padding:54px 42px;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;color:#fff;
     }
-
-    .eyebrow{
-      display:inline-block;
-      font-size:12px;
-      letter-spacing:0.24em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,0.88);
-      margin-bottom:14px;
-    }
-
-    .hero-title{
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(44px, 6vw, 70px);
-      line-height:0.95;
-      font-weight:600;
-      margin-bottom:14px;
-      max-width:700px;
-    }
-
-    .hero-text{
-      max-width:700px;
-      font-size:16px;
-      line-height:1.85;
-      color:rgba(255,255,255,0.92);
-    }
-
-    .booking-layout{
-      display:grid;
-      grid-template-columns:1.08fr 0.92fr;
-      gap:24px;
-      align-items:start;
-    }
-
+    .eyebrow{display:inline-block;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,0.88);margin-bottom:14px}
+    .hero-title{font-family:"Cormorant Garamond",serif;font-size:clamp(44px, 6vw, 70px);line-height:.95;font-weight:600;margin-bottom:14px;max-width:700px}
+    .hero-text{max-width:700px;font-size:16px;line-height:1.85;color:rgba(255,255,255,0.92)}
+    .booking-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:24px;align-items:start}
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.64));
-      border:1px solid rgba(255,255,255,0.58);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      padding:30px 26px;
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,0.58);border-radius:28px;box-shadow:var(--shadow);
+      padding:30px 26px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     }
-
-    .panel-title{
-      font-family:"Cormorant Garamond",serif;
-      font-size:38px;
-      font-weight:600;
-      margin-bottom:8px;
-      line-height:1;
+    .panel-title{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:600;margin-bottom:8px;line-height:1}
+    .panel-subtitle{color:var(--muted);font-size:15px;line-height:1.8;margin-bottom:24px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:flex;flex-direction:column;gap:8px}
+    .field.full{grid-column:1 / -1}
+    label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    input,select,textarea{
+      width:100%;border:1px solid rgba(31,36,48,0.10);background:rgba(255,255,255,0.86);color:var(--ink);
+      border-radius:18px;padding:15px 16px;font:inherit;outline:none;
     }
-
-    .panel-subtitle{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.8;
-      margin-bottom:24px;
-    }
-
-    .form-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:16px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .field.full{
-      grid-column:1 / -1;
-    }
-
-    label{
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    input,
-    select,
-    textarea{
-      width:100%;
-      border:1px solid rgba(31,36,48,0.10);
-      background:rgba(255,255,255,0.86);
-      color:var(--ink);
-      border-radius:18px;
-      padding:15px 16px;
-      font:inherit;
-      outline:none;
-      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus{
-      border-color:rgba(184,149,95,0.72);
-      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
-      transform:translateY(-1px);
-    }
-
-    textarea{
-      min-height:130px;
-      resize:vertical;
-    }
-
+    textarea{min-height:130px;resize:vertical}
     .btn{
-      appearance:none;
-      border:none;
-      cursor:pointer;
-      transition:0.25s ease;
-      font-family:inherit;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      padding:16px 22px;
-      font-size:14px;
-      font-weight:700;
-      letter-spacing:0.03em;
+      appearance:none;border:none;cursor:pointer;transition:.25s ease;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;
+      border-radius:999px;padding:16px 22px;font-size:14px;font-weight:700;letter-spacing:.03em;
     }
-
     .btn-primary{
-      width:100%;
-      color:#fff;
-      background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+      width:100%;color:#fff;background:linear-gradient(135deg, var(--gold), var(--gold-deep));
       box-shadow:0 14px 30px rgba(159,123,69,0.22);
     }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 34px rgba(159,123,69,0.28);
-    }
-
+    .btn-primary:hover{transform:translateY(-2px)}
     .info-card{
-      border:1px solid rgba(31,36,48,0.08);
-      background:rgba(255,255,255,0.62);
-      border-radius:22px;
-      padding:18px 18px 16px;
-      margin-bottom:14px;
+      border:1px solid rgba(31,36,48,0.08);background:rgba(255,255,255,0.62);border-radius:22px;padding:18px 18px 16px;margin-bottom:14px;
     }
-
-    .info-card strong{
-      display:block;
-      font-size:11px;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
-      color:var(--gold-deep);
-      margin-bottom:8px;
-    }
-
-    .info-card span{
-      display:block;
-      font-size:15px;
-      line-height:1.78;
-      color:var(--ink);
-    }
-
-    .footer{
-      margin-top:42px;
-      padding:28px 22px 42px;
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.9;
-    }
-
+    .info-card strong{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px}
+    .info-card span{display:block;font-size:15px;line-height:1.78;color:var(--ink)}
+    .footer{margin-top:42px;padding:28px 22px 42px;text-align:center;color:var(--muted);font-size:14px;line-height:1.9}
     @media (max-width: 920px){
-      .booking-layout,
-      .form-grid{
-        grid-template-columns:1fr;
-      }
-
-      .hero-content{
-        padding:40px 24px;
-        min-height:320px;
-      }
+      .booking-layout,.form-grid{grid-template-columns:1fr}
+      .hero-content{padding:40px 24px;min-height:320px}
     }
-
     @media (max-width: 640px){
-      .top-header-inner{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .brand-title{
-        font-size:30px;
-      }
-
-      .page-wrap{
-        padding:34px 16px 54px;
-      }
-
-      .panel{
-        padding:22px 18px;
-        border-radius:22px;
-      }
-
-      .hero{
-        border-radius:26px;
-      }
+      .top-header-inner{flex-direction:column;align-items:flex-start}
+      .brand-title{font-size:30px}
+      .page-wrap{padding:34px 16px 54px}
+      .panel{padding:22px 18px;border-radius:22px}
+      .hero{border-radius:26px}
     }
   </style>
 </head>
 <body>
-
   <header class="top-header">
     <div class="top-header-inner">
       <a href="index.html" class="brand">
         <span class="brand-title">Chateau Pireneus</span>
         <span class="brand-subtitle">Reserva de hospedagem</span>
       </a>
-
       <div class="header-actions">
         <a href="index.html" class="header-link">Início</a>
         <a href="acomodacoes.html" class="header-link">Acomodações</a>
@@ -377,7 +127,7 @@
         <span class="eyebrow">Solicitação de reserva</span>
         <h1 class="hero-title">Reserve sua experiência no charme de Pirenópolis</h1>
         <p class="hero-text">
-          Escolha sua acomodação, informe suas datas e envie sua solicitação. O sistema verifica automaticamente se as noites estão disponíveis antes de concluir a reserva.
+          O sistema verifica a disponibilidade e fecha automaticamente as noites reservadas quando a reserva é criada.
         </p>
       </div>
     </section>
@@ -386,7 +136,7 @@
       <div class="panel">
         <h2 class="panel-title">Dados da reserva</h2>
         <p class="panel-subtitle">
-          Preencha os dados abaixo para enviar sua solicitação. Para concluir a reserva, você precisa estar logado em sua conta.
+          Preencha os dados abaixo para concluir sua solicitação.
         </p>
 
         <form id="bookingForm">
@@ -426,22 +176,22 @@
       <div class="panel">
         <h2 class="panel-title">Como funciona</h2>
         <p class="panel-subtitle">
-          Antes de salvar a reserva, o sistema verifica se todas as noites escolhidas estão abertas para a suíte selecionada.
+          Agora a reserva e o bloqueio das noites acontecem juntos.
         </p>
 
         <div class="info-card">
-          <strong>1. Faça login</strong>
-          <span>O envio da reserva precisa estar vinculado à sua conta para aparecer no seu dashboard e no painel administrativo.</span>
+          <strong>1. Verificação</strong>
+          <span>O sistema valida se todas as noites estão abertas antes de criar a reserva.</span>
         </div>
 
         <div class="info-card">
-          <strong>2. Disponibilidade real</strong>
-          <span>Se alguma noite estiver bloqueada ou já reservada, o sistema não permitirá concluir a solicitação.</span>
+          <strong>2. Bloqueio automático</strong>
+          <span>Se a reserva for criada, as noites selecionadas passam automaticamente para booked.</span>
         </div>
 
         <div class="info-card">
           <strong>3. Próximo passo</strong>
-          <span>Na próxima etapa, as datas reservadas serão marcadas automaticamente como booked no calendário.</span>
+          <span>Depois disso, entraremos na etapa do pagamento real.</span>
         </div>
       </div>
     </section>
@@ -478,26 +228,13 @@
       `).join("")
     }
 
-    function getDatesBetween(checkIn, checkOut) {
-      const dates = []
-      const current = new Date(checkIn + "T00:00:00")
-      const end = new Date(checkOut + "T00:00:00")
-
-      while (current < end) {
-        dates.push(current.toISOString().split("T")[0])
-        current.setDate(current.getDate() + 1)
-      }
-
-      return dates
-    }
-
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
       e.preventDefault()
 
-      const room_id = document.getElementById("room_id").value
+      const room_id = Number(document.getElementById("room_id").value)
       const check_in = document.getElementById("check_in").value
       const check_out = document.getElementById("check_out").value
-      const guests = document.getElementById("guests").value
+      const guests = Number(document.getElementById("guests").value)
       const special_requests = document.getElementById("special_requests").value
       const room_name = document.getElementById("room_id").selectedOptions[0]?.textContent || ""
 
@@ -525,45 +262,16 @@
       }
 
       const currentUser = userData.user
-      const nights = getDatesBetween(check_in, check_out)
 
-      const { data: availabilityRows, error: availabilityError } = await supabaseClient
-        .from("room_availability")
-        .select("date, status")
-        .eq("room_id", room_id)
-        .in("date", nights)
-
-      if (availabilityError) {
-        alert(availabilityError.message)
-        return
-      }
-
-      if (!availabilityRows || availabilityRows.length !== nights.length) {
-        alert("Não foi possível validar todas as datas selecionadas.")
-        return
-      }
-
-      const unavailableDates = availabilityRows.filter(row => row.status !== "open")
-
-      if (unavailableDates.length > 0) {
-        const formatted = unavailableDates.map(row => row.date.split("-").reverse().join("/")).join(", ")
-        alert("As seguintes datas não estão disponíveis para esta suíte: " + formatted)
-        return
-      }
-
-      const { error } = await supabaseClient
-        .from("reservations")
-        .insert([
-          {
-            user_id: currentUser.id,
-            check_in,
-            check_out,
-            guests,
-            room_type: room_name,
-            special_requests,
-            status: "pending"
-          }
-        ])
+      const { data: reservationId, error } = await supabaseClient.rpc("create_booking_and_block_dates", {
+        p_user_id: currentUser.id,
+        p_room_id: room_id,
+        p_check_in: check_in,
+        p_check_out: check_out,
+        p_guests: guests,
+        p_room_type: room_name,
+        p_special_requests: special_requests || null
+      })
 
       if (error) {
         alert(error.message)
@@ -575,6 +283,7 @@
           body: {
             type: "INSERT",
             record: {
+              id: reservationId,
               user_id: currentUser.id,
               check_in,
               check_out,

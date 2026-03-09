@@ -263,15 +263,15 @@
 
       const currentUser = userData.user
 
-      const { data: reservationId, error } = await supabaseClient.rpc("create_booking_and_block_dates", {
-        p_user_id: currentUser.id,
-        p_room_id: room_id,
-        p_check_in: check_in,
-        p_check_out: check_out,
-        p_guests: guests,
-        p_room_type: room_name,
-        p_special_requests: special_requests || null
-      })
+     const { data: reservationId, error } = await supabaseClient.rpc("create_booking_and_hold_dates", {
+  p_user_id: currentUser.id,
+  p_room_id: room_id,
+  p_check_in: check_in,
+  p_check_out: check_out,
+  p_guests: guests,
+  p_room_type: room_name,
+  p_special_requests: special_requests || null
+})
 
       if (error) {
         alert(error.message)

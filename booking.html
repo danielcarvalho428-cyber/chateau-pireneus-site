@@ -28,11 +28,7 @@
       --shadow:0 20px 60px rgba(31,36,48,0.10);
     }
 
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+    *{box-sizing:border-box;margin:0;padding:0;}
 
     body{
       min-height:100vh;
@@ -77,7 +73,6 @@
       font-family:"Gyahegi","Cormorant Garamond",serif;
       font-size:36px;
       font-weight:400;
-      letter-spacing:0.4px;
     }
 
     .brand-subtitle{
@@ -382,7 +377,7 @@
         <span class="eyebrow">Solicitação de reserva</span>
         <h1 class="hero-title">Reserve sua experiência no charme de Pirenópolis</h1>
         <p class="hero-text">
-          Escolha sua acomodação, informe suas datas e envie sua solicitação. Sua reserva será registrada no sistema do Chateau Pireneus e poderá ser acompanhada pela sua área do hóspede.
+          Escolha sua acomodação, informe suas datas e envie sua solicitação. O sistema verifica automaticamente se as noites estão disponíveis antes de concluir a reserva.
         </p>
       </div>
     </section>
@@ -397,16 +392,8 @@
         <form id="bookingForm">
           <div class="form-grid">
             <div class="field full">
-              <label for="room_type">Escolha a suíte</label>
-              <select id="room_type" required>
-                <option value="">Selecione</option>
-                <option value="Suíte do Divino">01 - Suíte do Divino</option>
-                <option value="Suíte das Cavalhadas">02 - Suíte das Cavalhadas</option>
-                <option value="Suíte do Rosário">03 - Suíte do Rosário</option>
-                <option value="Suíte dos Pireneus (Master)">04 - Suíte dos Pireneus (Master)</option>
-                <option value="Suíte Aurora">05 - Suíte Aurora</option>
-                <option value="Suíte do Bonfim">06 - Suíte do Bonfim</option>
-              </select>
+              <label for="room_id">Escolha a suíte</label>
+              <select id="room_id" required></select>
             </div>
 
             <div class="field">
@@ -439,7 +426,7 @@
       <div class="panel">
         <h2 class="panel-title">Como funciona</h2>
         <p class="panel-subtitle">
-          Seu pedido entra no sistema da pousada e pode ser acompanhado na área do hóspede.
+          Antes de salvar a reserva, o sistema verifica se todas as noites escolhidas estão abertas para a suíte selecionada.
         </p>
 
         <div class="info-card">
@@ -448,13 +435,13 @@
         </div>
 
         <div class="info-card">
-          <strong>2. Envie sua solicitação</strong>
-          <span>Após preencher as datas e a acomodação, o pedido será salvo no sistema com status inicial de pendente.</span>
+          <strong>2. Disponibilidade real</strong>
+          <span>Se alguma noite estiver bloqueada ou já reservada, o sistema não permitirá concluir a solicitação.</span>
         </div>
 
         <div class="info-card">
-          <strong>3. Receba confirmação</strong>
-          <span>Você receberá email automático ao enviar a solicitação e outro quando o status for atualizado pela administração.</span>
+          <strong>3. Próximo passo</strong>
+          <span>Na próxima etapa, as datas reservadas serão marcadas automaticamente como booked no calendário.</span>
         </div>
       </div>
     </section>
@@ -473,14 +460,61 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
 
+    async function loadRooms() {
+      const { data, error } = await supabaseClient
+        .from("rooms")
+        .select("id, name")
+        .eq("active", true)
+        .order("id", { ascending: true })
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      const roomSelect = document.getElementById("room_id")
+      roomSelect.innerHTML = '<option value="">Selecione</option>' + (data || []).map(room => `
+        <option value="${room.id}">${room.name}</option>
+      `).join("")
+    }
+
+    function getDatesBetween(checkIn, checkOut) {
+      const dates = []
+      const current = new Date(checkIn + "T00:00:00")
+      const end = new Date(checkOut + "T00:00:00")
+
+      while (current < end) {
+        dates.push(current.toISOString().split("T")[0])
+        current.setDate(current.getDate() + 1)
+      }
+
+      return dates
+    }
+
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
       e.preventDefault()
 
-      const room_type = document.getElementById("room_type").value
+      const room_id = document.getElementById("room_id").value
       const check_in = document.getElementById("check_in").value
       const check_out = document.getElementById("check_out").value
       const guests = document.getElementById("guests").value
       const special_requests = document.getElementById("special_requests").value
+      const room_name = document.getElementById("room_id").selectedOptions[0]?.textContent || ""
+
+      if (!room_id) {
+        alert("Selecione uma suíte.")
+        return
+      }
+
+      if (!check_in || !check_out) {
+        alert("Informe check-in e check-out.")
+        return
+      }
+
+      if (check_out <= check_in) {
+        alert("O check-out deve ser depois do check-in.")
+        return
+      }
 
       const { data: userData, error: userError } = await supabaseClient.auth.getUser()
 
@@ -491,6 +525,31 @@
       }
 
       const currentUser = userData.user
+      const nights = getDatesBetween(check_in, check_out)
+
+      const { data: availabilityRows, error: availabilityError } = await supabaseClient
+        .from("room_availability")
+        .select("date, status")
+        .eq("room_id", room_id)
+        .in("date", nights)
+
+      if (availabilityError) {
+        alert(availabilityError.message)
+        return
+      }
+
+      if (!availabilityRows || availabilityRows.length !== nights.length) {
+        alert("Não foi possível validar todas as datas selecionadas.")
+        return
+      }
+
+      const unavailableDates = availabilityRows.filter(row => row.status !== "open")
+
+      if (unavailableDates.length > 0) {
+        const formatted = unavailableDates.map(row => row.date.split("-").reverse().join("/")).join(", ")
+        alert("As seguintes datas não estão disponíveis para esta suíte: " + formatted)
+        return
+      }
 
       const { error } = await supabaseClient
         .from("reservations")
@@ -500,7 +559,7 @@
             check_in,
             check_out,
             guests,
-            room_type,
+            room_type: room_name,
             special_requests,
             status: "pending"
           }
@@ -520,7 +579,7 @@
               check_in,
               check_out,
               guests,
-              room_type,
+              room_type: room_name,
               special_requests,
               status: "pending"
             }
@@ -533,6 +592,8 @@
       alert("Solicitação de reserva enviada com sucesso!")
       window.location.href = "dashboard.html"
     })
+
+    loadRooms()
   </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Test Stripe Checkout</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,23 +12,16 @@
       margin: 40px auto;
       padding: 20px;
     }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
     .box {
       border: 1px solid #ddd;
       border-radius: 10px;
       padding: 20px;
     }
-
     label {
       display: block;
       margin-bottom: 8px;
       font-weight: bold;
     }
-
     input {
       width: 100%;
       padding: 12px;
@@ -35,13 +29,11 @@
       margin-bottom: 16px;
       box-sizing: border-box;
     }
-
     button {
       padding: 12px 18px;
       font-size: 16px;
       cursor: pointer;
     }
-
     pre {
       background: #f6f6f6;
       padding: 12px;
@@ -51,12 +43,10 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-
     .ok {
       color: green;
       font-weight: bold;
     }
-
     .err {
       color: red;
       font-weight: bold;
@@ -81,7 +71,12 @@
   </div>
 
   <script>
+    const { createClient } = supabase
+
     const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY)
 
     const statusEl = document.getElementById("status")
     const resultEl = document.getElementById("result")
@@ -107,32 +102,20 @@
       payBtn.textContent = "Criando checkout..."
 
       try {
-        const response = await fetch(`${SUPABASE_URL}/functions/v1/stripe-checkout`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=UTF-8"
-          },
-          body: JSON.stringify({ reservation_id })
+        const { data, error } = await supabaseClient.functions.invoke("stripe-checkout", {
+          body: { reservation_id }
         })
 
-        const text = await response.text()
+        console.log("DATA:", data)
+        console.log("ERROR:", error)
 
-        let data = null
-        try {
-          data = JSON.parse(text)
-        } catch {
-          data = { raw_response: text }
-        }
-
-        console.log("status:", response.status)
-        console.log("response:", data)
-
-        resultEl.textContent = JSON.stringify(data, null, 2)
-
-        if (!response.ok) {
-          setStatus(`Erro HTTP ${response.status}`, true)
+        if (error) {
+          setStatus("Erro ao chamar stripe-checkout.", true)
+          resultEl.textContent = JSON.stringify(error, null, 2)
           return
         }
+
+        resultEl.textContent = JSON.stringify(data, null, 2)
 
         if (data?.checkout_url) {
           setStatus("Checkout criado com sucesso. Redirecionando...")

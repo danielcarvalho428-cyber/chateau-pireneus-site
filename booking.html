@@ -210,7 +210,7 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
 
-    const STRIPE_CHECKOUT_FUNCTION_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/stripe-checkout"
+    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
 
     async function loadRooms() {
       const { data, error } = await supabaseClient
@@ -302,7 +302,7 @@
           return
         }
 
-        window.location.href = `${STRIPE_CHECKOUT_FUNCTION_URL}?reservation_id=${encodeURIComponent(reservationId)}`
+        window.location.href = `${CHECKOUTSTRIPE_URL}?reservation_id=${encodeURIComponent(reservationId)}`
       } catch (err) {
         console.error(err)
         alert("Erro inesperado ao processar a reserva.")

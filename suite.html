@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Suíte • Chateau Pireneus</title>
 
-  <!-- ===== FONTS ===== -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -33,7 +32,6 @@
       color:#1d3557;
     }
 
-    /* ===== GLASS HEADER + HERO ===== */
     .top-header{
       position:fixed;
       top:0;
@@ -236,7 +234,6 @@
       text-shadow:0 12px 40px rgba(0,0,0,0.45);
     }
 
-    /* ===== SUITE CONTENT ===== */
     .wrap{
       max-width:1100px;
       margin:0 auto;
@@ -247,7 +244,6 @@
       align-items:start;
     }
 
-    /* ONLY CAVALHADAS */
     body.room-cavalhadas .wrap{
       transform:translateX(-18px);
     }
@@ -509,7 +505,6 @@
 </head>
 
 <body>
-  <!-- ===== GLASS HEADER + MENU ===== -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
@@ -548,7 +543,6 @@
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
   <section class="hero" aria-label="Acomodações">
     <div class="hero-content">
       <div class="hero-kicker">Nossas</div>
@@ -583,7 +577,7 @@
         <div class="capacity" id="capacityLine">Capacidade: —</div>
 
         <div class="cta">
-          <a class="btn primary" href="booking.html">RESERVAR</a>
+          <a class="btn primary" id="reserveBtn" href="booking.html?room_id=1">RESERVAR</a>
           <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
         </div>
       </div>
@@ -609,6 +603,7 @@
     (function () {
       const ROOMS = {
         divino: {
+          id: 1,
           name: "Suíte do Divino",
           subtitle: "suíte padrão com Tv",
           desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
@@ -634,6 +629,7 @@
         },
 
         cavalhadas: {
+          id: 2,
           name: "Suíte das Cavalhadas",
           subtitle: "suíte padrão com Tv",
           desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
@@ -659,6 +655,7 @@
         },
 
         rosario: {
+          id: 3,
           name: "Suíte do Rosário",
           subtitle: "suíte padrão com Tv",
           desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
@@ -684,6 +681,7 @@
         },
 
         aurora: {
+          id: 5,
           name: "Suíte Aurora",
           subtitle: "suíte padrão com Tv",
           desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
@@ -709,6 +707,7 @@
         },
 
         bonfim: {
+          id: 6,
           name: "Suíte do Bonfim",
           subtitle: "suíte padrão sem Tv",
           desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
@@ -757,6 +756,7 @@
       document.getElementById("roomSub").textContent = room.subtitle;
       document.getElementById("roomName").textContent = room.name;
       document.getElementById("roomDesc").textContent = room.desc;
+      document.getElementById("reserveBtn").href = `booking.html?room_id=${room.id}`;
 
       document.getElementById("amenities").innerHTML =
         room.amenities.map(x => "<li>" + x + "</li>").join("");

@@ -232,22 +232,6 @@
         `).join("")
     }
 
-    function redirectToStripeCheckout(reservationId) {
-      const form = document.createElement("form")
-      form.method = "POST"
-      form.action = STRIPE_CHECKOUT_FUNCTION_URL
-      form.style.display = "none"
-
-      const input = document.createElement("input")
-      input.type = "hidden"
-      input.name = "reservation_id"
-      input.value = reservationId
-
-      form.appendChild(input)
-      document.body.appendChild(form)
-      form.submit()
-    }
-
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
       e.preventDefault()
 
@@ -318,7 +302,7 @@
           return
         }
 
-        redirectToStripeCheckout(reservationId)
+        window.location.href = `${STRIPE_CHECKOUT_FUNCTION_URL}?reservation_id=${encodeURIComponent(reservationId)}`
       } catch (err) {
         console.error(err)
         alert("Erro inesperado ao processar a reserva.")

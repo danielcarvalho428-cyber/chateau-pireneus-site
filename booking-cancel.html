@@ -23,7 +23,7 @@
 
     .card {
       width: 100%;
-      max-width: 640px;
+      max-width: 680px;
       background: #ffffff;
       border-radius: 18px;
       padding: 40px 28px;
@@ -80,7 +80,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 190px;
+      min-width: 210px;
       padding: 14px 18px;
       border-radius: 12px;
       text-decoration: none;
@@ -125,11 +125,13 @@
     <div class="icon">!</div>
 
     <h1>Pagamento não concluído</h1>
+
     <p>
-      Sua reserva ainda existe, mas o pagamento não foi finalizado.
+      Sua reserva foi criada, mas o pagamento não foi finalizado.
     </p>
+
     <p>
-      Você pode retomar o pagamento abaixo sem criar uma nova reserva.
+      Você pode tentar novamente abaixo sem precisar refazer a reserva.
     </p>
 
     <div id="reservationBox" class="reservation-box hidden"></div>
@@ -145,7 +147,7 @@
     </div>
 
     <p class="note">
-      Se sua reserva expirar antes do pagamento, as datas voltam a ficar disponíveis.
+      Se a reserva expirar antes do pagamento, as datas serão liberadas novamente.
     </p>
   </div>
 
@@ -157,35 +159,34 @@
       return params.get("reservation_id");
     }
 
-    function initRetryPayment() {
+    function showMessage(message) {
+      const reservationBox = document.getElementById("reservationBox");
+      reservationBox.classList.remove("hidden");
+      reservationBox.innerHTML = message;
+    }
+
+    function initPage() {
       const reservationId = getReservationId();
       const retryButton = document.getElementById("retryButton");
-      const reservationBox = document.getElementById("reservationBox");
 
       if (!reservationId) {
-        reservationBox.classList.remove("hidden");
-        reservationBox.innerHTML = `
-          Não foi possível localizar o código da reserva para retomar o pagamento.
-        `;
+        showMessage("Não foi possível localizar o código da reserva.");
         return;
       }
 
-      reservationBox.classList.remove("hidden");
-      reservationBox.innerHTML = `
-        <strong>Reserva:</strong> ${reservationId}
-      `;
+      showMessage(`<strong>Reserva:</strong> ${reservationId}`);
 
       retryButton.classList.remove("hidden");
 
-      retryButton.addEventListener("click", () => {
-        const checkoutUrl =
+      retryButton.addEventListener("click", function () {
+        const retryUrl =
           `${SUPABASE_PROJECT_URL}/functions/v1/checkoutstripe?reservation_id=${encodeURIComponent(reservationId)}`;
 
-        window.location.href = checkoutUrl;
+        window.location.href = retryUrl;
       });
     }
 
-    initRetryPayment();
+    initPage();
   </script>
 </body>
 </html>

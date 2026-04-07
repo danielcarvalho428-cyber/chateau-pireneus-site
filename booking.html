@@ -19,9 +19,11 @@
     }
 
     const roomSelect = document.getElementById("room_id")
-    roomSelect.innerHTML = '<option value="">Selecione</option>' + (data || []).map(room => `
-      <option value="${room.id}">${room.name}</option>
-    `).join("")
+    roomSelect.innerHTML =
+      '<option value="">Selecione</option>' +
+      (data || []).map(room => `
+        <option value="${room.id}">${room.name}</option>
+      `).join("")
   }
 
   document.getElementById("bookingForm").addEventListener("submit", async (e) => {

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Stripe Checkout</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .box {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    pre {
+      background: #f6f6f6;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .ok {
+      color: green;
+      font-weight: bold;
+    }
+
+    .err {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>Test Stripe Checkout</h2>
+
+  <div class="box">
+    <label for="reservation_id">Reservation ID</label>
+    <input
+      type="text"
+      id="reservation_id"
+      placeholder="Cole aqui o UUID da reserva held"
+    />
+
+    <button id="pay-btn">Criar Checkout Stripe</button>
+
+    <div id="status" style="margin-top:16px;"></div>
+    <pre id="result"></pre>
+  </div>
+
+  <script>
+    const { createClient } = supabase
+
+    const supabaseClient = createClient(
+      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
+      "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+    )
+
+    const statusEl = document.getElementById("status")
+    const resultEl = document.getElementById("result")
+    const payBtn = document.getElementById("pay-btn")
+
+    function setStatus(message, isError = false) {
+      statusEl.className = isError ? "err" : "ok"
+      statusEl.textContent = message
+    }
+
+    payBtn.addEventListener("click", async () => {
+      const reservation_id = document.getElementById("reservation_id").value.trim()
+
+      resultEl.textContent = ""
+      statusEl.textContent = ""
+
+      if (!reservation_id) {
+        setStatus("Cole o reservation_id primeiro.", true)
+        return
+      }
+
+      payBtn.disabled = true
+      payBtn.textContent = "Criando checkout..."
+
+      try {
+        const { data, error } = await supabaseClient.functions.invoke("stripe-checkout", {
+          body: { reservation_id }
+        })
+
+        if (error) {
+          console.error("Function invoke error:", error)
+          setStatus("Erro ao chamar stripe-checkout.", true)
+          resultEl.textContent = JSON.stringify(error, null, 2)
+          return
+        }
+
+        console.log("stripe-checkout response:", data)
+        resultEl.textContent = JSON.stringify(data, null, 2)
+
+        if (!data?.checkout_url) {
+          setStatus("A função respondeu, mas não retornou checkout_url.", true)
+          return
+        }
+
+        setStatus("Checkout criado com sucesso. Redirecionando...")
+        window.location.href = data.checkout_url
+      } catch (err) {
+        console.error(err)
+        setStatus("Erro inesperado ao criar checkout.", true)
+        resultEl.textContent = JSON.stringify(
+          {
+            message: err?.message || "Erro desconhecido"
+          },
+          null,
+          2
+        )
+      } finally {
+        payBtn.disabled = false
+        payBtn.textContent = "Criar Checkout Stripe"
+      }
+    })
+  </script>
+</body>
+</html>

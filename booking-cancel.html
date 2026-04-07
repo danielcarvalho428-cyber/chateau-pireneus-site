@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento não concluído | Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --gold-deep:#9f7b45;
+      --warn:#9a5c22;
+      --warn-soft:#fff3e7;
+      --shadow:0 20px 60px rgba(31,36,48,0.10);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 24%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+    }
+
+    .top-header{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      padding:16px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.05);
+    }
+
+    .top-header-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      text-decoration:none;
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:400;
+    }
+
+    .brand-subtitle{
+      margin-top:6px;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .header-link{
+      text-decoration:none;
+      color:var(--ink);
+      font-size:14px;
+      font-weight:600;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(31,36,48,0.08);
+      transition:.25s ease;
+    }
+
+    .header-link:hover{
+      background:rgba(255,255,255,0.92);
+      transform:translateY(-1px);
+    }
+
+    .page-wrap{
+      max-width:920px;
+      margin:0 auto;
+      padding:52px 22px 80px;
+    }
+
+    .hero-card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.74));
+      border:1px solid rgba(255,255,255,0.60);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      padding:42px 34px;
+      text-align:center;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:84px;
+      height:84px;
+      border-radius:50%;
+      background:var(--warn-soft);
+      color:var(--warn);
+      font-size:38px;
+      margin-bottom:22px;
+      border:1px solid rgba(154,92,34,0.14);
+    }
+
+    .eyebrow{
+      display:block;
+      font-size:12px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:var(--gold-deep);
+      margin-bottom:14px;
+    }
+
+    .title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(42px, 6vw, 62px);
+      line-height:.95;
+      font-weight:600;
+      margin-bottom:16px;
+    }
+
+    .lead{
+      max-width:680px;
+      margin:0 auto 26px;
+      font-size:16px;
+      line-height:1.9;
+      color:var(--muted);
+    }
+
+    .highlight-box{
+      margin:0 auto 28px;
+      max-width:680px;
+      padding:18px 18px;
+      border-radius:22px;
+      background:rgba(154,92,34,0.08);
+      border:1px solid rgba(154,92,34,0.12);
+      color:var(--ink);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:14px;
+      margin-bottom:30px;
+      text-align:left;
+    }
+
+    .info-card{
+      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.70);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .info-card strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--gold-deep);
+      margin-bottom:8px;
+    }
+
+    .info-card span{
+      display:block;
+      font-size:15px;
+      line-height:1.8;
+      color:var(--ink);
+    }
+
+    .actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      transition:.25s ease;
+      font-family:inherit;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:15px 22px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.03em;
+      text-decoration:none;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+      box-shadow:0 14px 30px rgba(159,123,69,0.22);
+    }
+
+    .btn-secondary{
+      color:var(--ink);
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .footer{
+      margin-top:42px;
+      padding:28px 22px 42px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.9;
+    }
+
+    @media (max-width: 720px){
+      .info-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-card{
+        padding:30px 20px;
+        border-radius:26px;
+      }
+    }
+
+    @media (max-width: 640px){
+      .top-header-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .brand-title{
+        font-size:30px;
+      }
+      .page-wrap{
+        padding:34px 16px 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a href="index.html" class="brand">
+        <span class="brand-title">Chateau Pireneus</span>
+        <span class="brand-subtitle">Pagamento não concluído</span>
+      </a>
+      <div class="header-actions">
+        <a href="index.html" class="header-link">Início</a>
+        <a href="booking.html" class="header-link">Tentar novamente</a>
+        <a href="dashboard.html" class="header-link">Minha área</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-wrap">
+    <section class="hero-card">
+      <div class="status-badge">!</div>
+      <span class="eyebrow">Pagamento não finalizado</span>
+      <h1 class="title">Sua reserva não foi concluída</h1>
+      <p class="lead">
+        O pagamento não foi finalizado nesta tentativa. Você pode refazer a reserva ou tentar novamente, conforme a disponibilidade das datas.
+      </p>
+
+      <div class="highlight-box">
+        Caso o pagamento não tenha sido concluído, a reserva não permanece garantida indefinidamente. Se o hold expirar ou o pagamento falhar, as datas voltam a ficar disponíveis no sistema.
+      </div>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <strong>Status</strong>
+          <span>Pagamento cancelado, interrompido ou não concluído.</span>
+        </div>
+        <div class="info-card">
+          <strong>Próximo passo</strong>
+          <span>Volte para a página de reserva e tente novamente com as datas desejadas.</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a href="booking.html" class="btn btn-primary">Voltar para reservas</a>
+        <a href="dashboard.html" class="btn btn-secondary">Ir para minha área</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Pousada Chateau Pireneus • Pirenópolis GO<br>
+    WhatsApp: (62) 99816-7654
+  </footer>
+</body>
+</html>

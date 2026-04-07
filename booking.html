@@ -6,6 +6,8 @@
   <title>Reservar | Chateau Pireneus</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -20,6 +22,8 @@
       --ink:#1f2430; --muted:#6f6a62; --gold:#b8955f; --gold-deep:#9f7b45;
       --shadow:0 20px 60px rgba(31,36,48,0.10);
       --soft:#f5efe5;
+      --danger:#9a2f2f;
+      --danger-bg:#fff3f3;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -92,6 +96,11 @@
       box-shadow:0 14px 30px rgba(159,123,69,0.22);
     }
     .btn-primary:hover{transform:translateY(-2px)}
+    .btn-primary:disabled{
+      opacity:.65;
+      cursor:not-allowed;
+      transform:none;
+    }
     .info-card{
       border:1px solid rgba(31,36,48,0.08);background:rgba(255,255,255,0.62);border-radius:22px;padding:18px 18px 16px;margin-bottom:14px;
     }
@@ -107,7 +116,74 @@
       border-radius:16px;
       padding:12px 14px;
     }
+    .availability-note{
+      margin-top:6px;
+      font-size:13px;
+      line-height:1.7;
+      color:var(--muted);
+      background:rgba(255,255,255,0.62);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+    .status-box{
+      margin-top:8px;
+      font-size:13px;
+      line-height:1.7;
+      border-radius:16px;
+      padding:12px 14px;
+      display:none;
+    }
+    .status-box.show{display:block}
+    .status-box.error{
+      color:var(--danger);
+      background:var(--danger-bg);
+      border:1px solid rgba(154,47,47,0.18);
+    }
+    .status-box.info{
+      color:var(--muted);
+      background:rgba(255,255,255,0.62);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+    .summary-line{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      font-size:15px;
+    }
+    .summary-line:last-of-type{
+      border-bottom:none;
+    }
+    .summary-label{
+      color:var(--muted);
+    }
+    .summary-value{
+      font-weight:600;
+      text-align:right;
+    }
+    .summary-total{
+      margin-top:14px;
+      padding-top:16px;
+      border-top:1px solid rgba(31,36,48,0.10);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      font-size:18px;
+      font-weight:700;
+    }
     .footer{margin-top:42px;padding:28px 22px 42px;text-align:center;color:var(--muted);font-size:14px;line-height:1.9}
+
+    .flatpickr-day.flatpickr-disabled,
+    .flatpickr-day.flatpickr-disabled:hover{
+      background:#eadfce;
+      color:#a69781;
+      text-decoration:line-through;
+      cursor:not-allowed;
+      border-color:#eadfce;
+    }
+
     @media (max-width: 920px){
       .booking-layout,.form-grid{grid-template-columns:1fr}
       .hero-content{padding:40px 24px;min-height:320px}
@@ -165,14 +241,15 @@
               </div>
             </div>
 
-            <div class="field">
-              <label for="check_in">Check-in</label>
-              <input type="date" id="check_in" required>
-            </div>
-
-            <div class="field">
-              <label for="check_out">Check-out</label>
-              <input type="date" id="check_out" required>
+            <div class="field full">
+              <label for="date_range">Período da hospedagem</label>
+              <input type="text" id="date_range" placeholder="Selecione check-in e check-out" required readonly>
+              <div class="availability-note">
+                Datas já reservadas ou em hold ativo aparecem bloqueadas no calendário.
+              </div>
+              <div id="availabilityStatus" class="status-box info show">
+                Selecione uma suíte para carregar a disponibilidade.
+              </div>
             </div>
 
             <div class="field">
@@ -186,7 +263,7 @@
             </div>
 
             <div class="field full">
-              <button type="submit" class="btn btn-primary">Confirmar solicitação</button>
+              <button type="submit" class="btn btn-primary" id="submitBtn">Confirmar solicitação</button>
             </div>
           </div>
         </form>
@@ -212,6 +289,32 @@
           <strong>3. Pagamento</strong>
           <span>Depois da criação da reserva, você será redirecionado diretamente para o Stripe Checkout.</span>
         </div>
+
+        <div class="info-card">
+          <strong>Resumo atual</strong>
+          <span>
+            <div class="summary-line">
+              <span class="summary-label">Suíte</span>
+              <span class="summary-value" id="summaryRoom">—</span>
+            </div>
+            <div class="summary-line">
+              <span class="summary-label">Check-in</span>
+              <span class="summary-value" id="summaryCheckIn">—</span>
+            </div>
+            <div class="summary-line">
+              <span class="summary-label">Check-out</span>
+              <span class="summary-value" id="summaryCheckOut">—</span>
+            </div>
+            <div class="summary-line">
+              <span class="summary-label">Noites</span>
+              <span class="summary-value" id="summaryNights">—</span>
+            </div>
+            <div class="summary-total">
+              <span>Total</span>
+              <span id="summaryTotal">A definir</span>
+            </div>
+          </span>
+        </div>
       </div>
     </section>
   </main>
@@ -231,6 +334,21 @@
 
     const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
 
+    const roomSelect = document.getElementById("room_id")
+    const lockedRoomNote = document.getElementById("lockedRoomNote")
+    const availabilityStatus = document.getElementById("availabilityStatus")
+    const submitBtn = document.getElementById("submitBtn")
+    const summaryRoom = document.getElementById("summaryRoom")
+    const summaryCheckIn = document.getElementById("summaryCheckIn")
+    const summaryCheckOut = document.getElementById("summaryCheckOut")
+    const summaryNights = document.getElementById("summaryNights")
+    const summaryTotal = document.getElementById("summaryTotal")
+
+    let roomsMap = new Map()
+    let selectedCheckIn = ""
+    let selectedCheckOut = ""
+    let blockedDates = []
+
     function getLockedRoomIdFromUrl() {
       const params = new URLSearchParams(window.location.search)
       const value = params.get("room_id")
@@ -240,15 +358,156 @@
       return Number.isFinite(parsed) && parsed > 0 ? parsed : null
     }
 
+    function formatDateDisplay(dateStr) {
+      if (!dateStr) return "—"
+      const [year, month, day] = dateStr.split("-")
+      return `${day}/${month}/${year}`
+    }
+
+    function formatDateLocal(date) {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, "0")
+      const day = String(date.getDate()).padStart(2, "0")
+      return `${year}-${month}-${day}`
+    }
+
+    function countNights(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 0
+      const start = new Date(checkIn + "T00:00:00")
+      const end = new Date(checkOut + "T00:00:00")
+      return Math.round((end - start) / (1000 * 60 * 60 * 24))
+    }
+
+    function setAvailabilityMessage(type, text) {
+      availabilityStatus.className = `status-box show ${type}`
+      availabilityStatus.textContent = text
+    }
+
+    function updateSummary() {
+      const roomId = Number(roomSelect.value)
+      const selectedRoom = roomsMap.get(roomId)
+
+      summaryRoom.textContent = selectedRoom ? selectedRoom.name : "—"
+      summaryCheckIn.textContent = formatDateDisplay(selectedCheckIn)
+      summaryCheckOut.textContent = formatDateDisplay(selectedCheckOut)
+
+      const nights = countNights(selectedCheckIn, selectedCheckOut)
+      summaryNights.textContent = nights > 0 ? String(nights) : "—"
+
+      if (selectedRoom && selectedRoom.price_per_night && nights > 0) {
+        const total = Number(selectedRoom.price_per_night) * nights
+        summaryTotal.textContent = new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        }).format(total)
+      } else {
+        summaryTotal.textContent = "A definir"
+      }
+    }
+
+    function isDateBlocked(dateStr) {
+      return blockedDates.includes(dateStr)
+    }
+
+    const datePicker = flatpickr("#date_range", {
+      mode: "range",
+      minDate: "today",
+      dateFormat: "Y-m-d",
+      disable: [],
+      locale: {
+        firstDayOfWeek: 0
+      },
+      onChange: function(selectedDates) {
+        selectedCheckIn = ""
+        selectedCheckOut = ""
+
+        if (selectedDates.length >= 2) {
+          const checkIn = formatDateLocal(selectedDates[0])
+          const checkOut = formatDateLocal(selectedDates[1])
+
+          if (checkOut <= checkIn) {
+            selectedCheckIn = ""
+            selectedCheckOut = ""
+            updateSummary()
+            return
+          }
+
+          selectedCheckIn = checkIn
+          selectedCheckOut = checkOut
+        }
+
+        updateSummary()
+      }
+    })
+
+    async function loadBlockedDates(roomId) {
+      selectedCheckIn = ""
+      selectedCheckOut = ""
+      datePicker.clear()
+      blockedDates = []
+      datePicker.set("disable", [])
+
+      if (!roomId) {
+        setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.")
+        updateSummary()
+        return
+      }
+
+      setAvailabilityMessage("info", "Carregando datas indisponíveis...")
+
+      const today = new Date()
+      const start = formatDateLocal(today)
+      const future = new Date()
+      future.setMonth(future.getMonth() + 12)
+      const end = formatDateLocal(future)
+
+      const { data, error } = await supabaseClient
+        .from("room_availability")
+        .select("date, booking_status, hold_expires_at")
+        .eq("room_id", roomId)
+        .gte("date", start)
+        .lte("date", end)
+        .in("booking_status", ["booked", "held"])
+        .order("date", { ascending: true })
+
+      if (error) {
+        console.error(error)
+        setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.")
+        updateSummary()
+        return
+      }
+
+      const now = new Date()
+
+      blockedDates = (data || [])
+        .filter(row => {
+          if (row.booking_status === "booked") return true
+          if (row.booking_status === "held") {
+            if (!row.hold_expires_at) return true
+            return new Date(row.hold_expires_at) > now
+          }
+          return false
+        })
+        .map(row => row.date)
+
+      datePicker.set("disable", blockedDates)
+
+      if (blockedDates.length > 0) {
+        setAvailabilityMessage("info", "Datas indisponíveis carregadas no calendário.")
+      } else {
+        setAvailabilityMessage("info", "Nenhuma indisponibilidade encontrada para esta suíte.")
+      }
+
+      updateSummary()
+    }
+
     async function loadRooms() {
       const lockedRoomId = getLockedRoomIdFromUrl()
-      const roomSelect = document.getElementById("room_id")
-      const lockedRoomNote = document.getElementById("lockedRoomNote")
 
       if (lockedRoomId) {
         const { data: room, error } = await supabaseClient
           .from("rooms")
-          .select("id, name")
+          .select("id, name, price_per_night")
           .eq("id", lockedRoomId)
           .eq("active", true)
           .single()
@@ -259,16 +518,19 @@
           return
         }
 
+        roomsMap.set(room.id, room)
         roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`
         roomSelect.value = String(room.id)
         roomSelect.disabled = true
         lockedRoomNote.style.display = "block"
+        updateSummary()
+        await loadBlockedDates(room.id)
         return
       }
 
       const { data, error } = await supabaseClient
         .from("rooms")
-        .select("id, name")
+        .select("id, name, price_per_night")
         .eq("active", true)
         .order("id", { ascending: true })
 
@@ -277,6 +539,9 @@
         return
       }
 
+      roomsMap = new Map()
+      ;(data || []).forEach(room => roomsMap.set(room.id, room))
+
       roomSelect.innerHTML =
         '<option value="">Selecione</option>' +
         (data || []).map(room => `
@@ -284,20 +549,26 @@
         `).join("")
     }
 
+    roomSelect.addEventListener("change", async () => {
+      updateSummary()
+      const roomId = Number(roomSelect.value)
+      await loadBlockedDates(roomId)
+    })
+
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
       e.preventDefault()
 
-      const submitBtn = e.target.querySelector('button[type="submit"]')
       submitBtn.disabled = true
       submitBtn.textContent = "Processando..."
 
       try {
         const room_id = Number(document.getElementById("room_id").value)
-        const check_in = document.getElementById("check_in").value
-        const check_out = document.getElementById("check_out").value
         const guests = Number(document.getElementById("guests").value)
         const special_requests = document.getElementById("special_requests").value
         const room_name = document.getElementById("room_id").selectedOptions[0]?.textContent || ""
+
+        const check_in = selectedCheckIn
+        const check_out = selectedCheckOut
 
         if (!room_id) {
           alert("Selecione uma suíte.")
@@ -307,7 +578,7 @@
         }
 
         if (!check_in || !check_out) {
-          alert("Informe check-in e check-out.")
+          alert("Selecione check-in e check-out no calendário.")
           submitBtn.disabled = false
           submitBtn.textContent = "Confirmar solicitação"
           return
@@ -317,6 +588,14 @@
           alert("O check-out deve ser depois do check-in.")
           submitBtn.disabled = false
           submitBtn.textContent = "Confirmar solicitação"
+          return
+        }
+
+        if (isDateBlocked(check_in) || isDateBlocked(check_out)) {
+          alert("Uma das datas selecionadas não está disponível. Escolha outro período.")
+          submitBtn.disabled = false
+          submitBtn.textContent = "Confirmar solicitação"
+          await loadBlockedDates(room_id)
           return
         }
 
@@ -344,6 +623,7 @@
           alert(bookingError.message)
           submitBtn.disabled = false
           submitBtn.textContent = "Confirmar solicitação"
+          await loadBlockedDates(room_id)
           return
         }
 
@@ -363,7 +643,7 @@
       }
     })
 
-    loadRooms()
+    loadRooms().then(() => updateSummary())
   </script>
 </body>
 </html>

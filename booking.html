@@ -463,11 +463,11 @@
 
       const { data, error } = await supabaseClient
         .from("room_availability")
-        .select("date, booking_status, hold_expires_at")
+        .select("room_id, date, status, reservation_id, created_at")
         .eq("room_id", roomId)
         .gte("date", start)
         .lte("date", end)
-        .in("booking_status", ["booked", "held"])
+        .in("status", ["booked", "held"])
         .order("date", { ascending: true })
 
       if (error) {
@@ -477,18 +477,10 @@
         return
       }
 
-      const now = new Date()
+      console.log("Loading availability for room_id:", roomId)
+      console.log("Availability rows returned:", data)
 
-      blockedDates = (data || [])
-        .filter(row => {
-          if (row.booking_status === "booked") return true
-          if (row.booking_status === "held") {
-            if (!row.hold_expires_at) return true
-            return new Date(row.hold_expires_at) > now
-          }
-          return false
-        })
-        .map(row => row.date)
+      blockedDates = (data || []).map(row => row.date)
 
       datePicker.set("disable", blockedDates)
 

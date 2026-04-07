@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Test Stripe Checkout</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -82,12 +81,8 @@
   </div>
 
   <script>
-    const { createClient } = supabase
-
-    const supabaseClient = createClient(
-      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
-      "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-    )
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_ANON_KEY = "PUT_YOUR_REAL_PUBLISHABLE_OR_ANON_KEY_HERE"
 
     const statusEl = document.getElementById("status")
     const resultEl = document.getElementById("result")
@@ -101,8 +96,8 @@
     payBtn.addEventListener("click", async () => {
       const reservation_id = document.getElementById("reservation_id").value.trim()
 
-      resultEl.textContent = ""
       statusEl.textContent = ""
+      resultEl.textContent = ""
 
       if (!reservation_id) {
         setStatus("Cole o reservation_id primeiro.", true)
@@ -113,34 +108,46 @@
       payBtn.textContent = "Criando checkout..."
 
       try {
-        const { data, error } = await supabaseClient.functions.invoke("stripe-checkout", {
-          body: { reservation_id }
+        const response = await fetch(`${SUPABASE_URL}/functions/v1/stripe-checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({ reservation_id })
         })
 
-        if (error) {
-          console.error("Function invoke error:", error)
-          setStatus("Erro ao chamar stripe-checkout.", true)
-          resultEl.textContent = JSON.stringify(error, null, 2)
-          return
+        const text = await response.text()
+
+        let data = null
+        try {
+          data = JSON.parse(text)
+        } catch {
+          data = { raw_response: text }
         }
 
-        console.log("stripe-checkout response:", data)
+        console.log("status:", response.status)
+        console.log("response:", data)
         resultEl.textContent = JSON.stringify(data, null, 2)
 
-        if (!data?.checkout_url) {
-          setStatus("A função respondeu, mas não retornou checkout_url.", true)
+        if (!response.ok) {
+          setStatus(`Erro HTTP ${response.status}`, true)
           return
         }
 
-        setStatus("Checkout criado com sucesso. Redirecionando...")
-        window.location.href = data.checkout_url
+        if (data?.checkout_url) {
+          setStatus("Checkout criado com sucesso. Redirecionando...")
+          window.location.href = data.checkout_url
+          return
+        }
+
+        setStatus("A função respondeu, mas não retornou checkout_url.", true)
       } catch (err) {
         console.error(err)
-        setStatus("Erro inesperado ao criar checkout.", true)
+        setStatus("Erro inesperado ao chamar a função.", true)
         resultEl.textContent = JSON.stringify(
-          {
-            message: err?.message || "Erro desconhecido"
-          },
+          { message: err?.message || "Erro desconhecido" },
           null,
           2
         )

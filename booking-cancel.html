@@ -20,7 +20,7 @@
     .card {
       width: 100%;
       max-width: 680px;
-      background: #fff;
+      background: #ffffff;
       border-radius: 18px;
       padding: 40px 28px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -94,51 +94,51 @@
     <p>Você pode tentar novamente abaixo sem refazer a reserva.</p>
 
     <div id="reservationBox" class="reservation-box">
-      Carregando reserva...
+      Preparando link de pagamento...
     </div>
 
     <div class="actions">
-      <button id="retryButton" class="btn btn-dark">
+      <a id="retryLink" class="btn btn-dark" href="/acomodacoes.html">
         TENTAR PAGAMENTO NOVAMENTE
-      </button>
+      </a>
 
       <a href="/acomodacoes.html" class="btn btn-light">
         VOLTAR PARA ACOMODAÇÕES
       </a>
     </div>
 
-    <div id="statusText" class="status"></div>
+    <div id="statusText" class="status">
+      Carregando...
+    </div>
   </div>
 
   <script>
-    (function () {
-      var SUPABASE_PROJECT_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+    var SUPABASE_PROJECT_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
 
-      var params = new URLSearchParams(window.location.search);
-      var reservationId = params.get("reservation_id");
+    var reservationBox = document.getElementById("reservationBox");
+    var retryLink = document.getElementById("retryLink");
+    var statusText = document.getElementById("statusText");
 
-      var reservationBox = document.getElementById("reservationBox");
-      var retryButton = document.getElementById("retryButton");
-      var statusText = document.getElementById("statusText");
+    function getReservationId() {
+      var query = window.location.search || "";
+      var match = query.match(/[?&]reservation_id=([^&]+)/);
+      return match ? decodeURIComponent(match[1]) : "";
+    }
 
-      if (!reservationId) {
-        reservationBox.textContent = "Nenhum código de reserva foi encontrado na URL.";
-        retryButton.disabled = true;
-        retryButton.style.opacity = "0.5";
-        statusText.textContent = "Página carregada, mas sem reservation_id.";
-        return;
-      }
+    var reservationId = getReservationId();
 
+    if (!reservationId) {
+      reservationBox.textContent = "Nenhum código de reserva foi encontrado na URL.";
+      retryLink.href = "/acomodacoes.html";
+      statusText.textContent = "Página carregada, mas sem reservation_id.";
+    } else {
       reservationBox.innerHTML = "<strong>Reserva:</strong> " + reservationId;
+      retryLink.href =
+        SUPABASE_PROJECT_URL +
+        "/functions/v1/checkoutstripe?reservation_id=" +
+        encodeURIComponent(reservationId);
       statusText.textContent = "Página carregada com sucesso.";
-
-      retryButton.onclick = function () {
-        window.location.href =
-          SUPABASE_PROJECT_URL +
-          "/functions/v1/checkoutstripe?reservation_id=" +
-          encodeURIComponent(reservationId);
-      };
-    })();
+    }
   </script>
 </body>
 </html>

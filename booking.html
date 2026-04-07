@@ -245,7 +245,7 @@
               <label for="date_range">Período da hospedagem</label>
               <input type="text" id="date_range" placeholder="Selecione check-in e check-out" required readonly>
               <div class="availability-note">
-                Datas já reservadas ou em hold ativo aparecem bloqueadas no calendário.
+                Datas já reservadas ou bloqueadas aparecem indisponíveis no calendário.
               </div>
               <div id="availabilityStatus" class="status-box info show">
                 Selecione uma suíte para carregar a disponibilidade.
@@ -348,6 +348,7 @@
     let selectedCheckIn = ""
     let selectedCheckOut = ""
     let blockedDates = []
+    let datePicker = null
 
     function getLockedRoomIdFromUrl() {
       const params = new URLSearchParams(window.location.search)
@@ -405,49 +406,46 @@
       }
     }
 
-    function isDateBlocked(dateStr) {
-      return blockedDates.includes(dateStr)
-    }
+    function rebuildCalendar() {
+      if (datePicker) {
+        datePicker.destroy()
+      }
 
-    const datePicker = flatpickr("#date_range", {
-      mode: "range",
-      minDate: "today",
-      dateFormat: "Y-m-d",
-      disable: [],
-      locale: {
-        firstDayOfWeek: 0
-      },
-      onChange: function(selectedDates) {
-        selectedCheckIn = ""
-        selectedCheckOut = ""
+      datePicker = flatpickr("#date_range", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        disable: blockedDates.slice(),
+        locale: {
+          firstDayOfWeek: 0
+        },
+        onChange: function(selectedDates) {
+          selectedCheckIn = ""
+          selectedCheckOut = ""
 
-        if (selectedDates.length >= 2) {
-          const checkIn = formatDateLocal(selectedDates[0])
-          const checkOut = formatDateLocal(selectedDates[1])
+          if (selectedDates.length >= 2) {
+            const checkIn = formatDateLocal(selectedDates[0])
+            const checkOut = formatDateLocal(selectedDates[1])
 
-          if (checkOut <= checkIn) {
-            selectedCheckIn = ""
-            selectedCheckOut = ""
-            updateSummary()
-            return
+            if (checkOut > checkIn) {
+              selectedCheckIn = checkIn
+              selectedCheckOut = checkOut
+            }
           }
 
-          selectedCheckIn = checkIn
-          selectedCheckOut = checkOut
+          updateSummary()
         }
-
-        updateSummary()
-      }
-    })
+      })
+    }
 
     async function loadBlockedDates(roomId) {
       selectedCheckIn = ""
       selectedCheckOut = ""
-      datePicker.clear()
       blockedDates = []
-      datePicker.set("disable", [])
+      document.getElementById("date_range").value = ""
 
       if (!roomId) {
+        rebuildCalendar()
         setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.")
         updateSummary()
         return
@@ -461,28 +459,31 @@
       future.setMonth(future.getMonth() + 12)
       const end = formatDateLocal(future)
 
+      const roomIdNumber = Number(roomId)
+
       const { data, error } = await supabaseClient
         .from("room_availability")
         .select("room_id, date, status, reservation_id, created_at")
-        .eq("room_id", roomId)
+        .eq("room_id", roomIdNumber)
         .gte("date", start)
         .lte("date", end)
-        .in("status", ["booked", "held"])
+        .in("status", ["booked", "blocked"])
         .order("date", { ascending: true })
 
       if (error) {
         console.error(error)
+        rebuildCalendar()
         setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.")
         updateSummary()
         return
       }
 
-      console.log("Loading availability for room_id:", roomId)
+      console.log("Loading availability for room_id:", roomIdNumber)
       console.log("Availability rows returned:", data)
 
-      blockedDates = (data || []).map(row => row.date)
+      blockedDates = [...new Set((data || []).map(row => row.date))]
 
-      datePicker.set("disable", blockedDates)
+      rebuildCalendar()
 
       if (blockedDates.length > 0) {
         setAvailabilityMessage("info", "Datas indisponíveis carregadas no calendário.")
@@ -510,11 +511,14 @@
           return
         }
 
-        roomsMap.set(room.id, room)
+        roomsMap = new Map()
+        roomsMap.set(Number(room.id), room)
+
         roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`
         roomSelect.value = String(room.id)
         roomSelect.disabled = true
         lockedRoomNote.style.display = "block"
+
         updateSummary()
         await loadBlockedDates(room.id)
         return
@@ -532,7 +536,7 @@
       }
 
       roomsMap = new Map()
-      ;(data || []).forEach(room => roomsMap.set(room.id, room))
+      ;(data || []).forEach(room => roomsMap.set(Number(room.id), room))
 
       roomSelect.innerHTML =
         '<option value="">Selecione</option>' +
@@ -543,8 +547,7 @@
 
     roomSelect.addEventListener("change", async () => {
       updateSummary()
-      const roomId = Number(roomSelect.value)
-      await loadBlockedDates(roomId)
+      await loadBlockedDates(roomSelect.value)
     })
 
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
@@ -580,14 +583,6 @@
           alert("O check-out deve ser depois do check-in.")
           submitBtn.disabled = false
           submitBtn.textContent = "Confirmar solicitação"
-          return
-        }
-
-        if (isDateBlocked(check_in) || isDateBlocked(check_out)) {
-          alert("Uma das datas selecionadas não está disponível. Escolha outro período.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          await loadBlockedDates(room_id)
           return
         }
 
@@ -635,7 +630,11 @@
       }
     })
 
-    loadRooms().then(() => updateSummary())
+    ;(async function init() {
+      rebuildCalendar()
+      await loadRooms()
+      updateSummary()
+    })()
   </script>
 </body>
 </html>

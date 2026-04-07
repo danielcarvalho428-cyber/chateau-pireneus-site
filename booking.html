@@ -19,6 +19,7 @@
     :root{
       --ink:#1f2430; --muted:#6f6a62; --gold:#b8955f; --gold-deep:#9f7b45;
       --shadow:0 20px 60px rgba(31,36,48,0.10);
+      --soft:#f5efe5;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
@@ -76,6 +77,11 @@
       width:100%;border:1px solid rgba(31,36,48,0.10);background:rgba(255,255,255,0.86);color:var(--ink);
       border-radius:18px;padding:15px 16px;font:inherit;outline:none;
     }
+    select:disabled{
+      background:var(--soft);
+      color:#4c4a45;
+      cursor:not-allowed;
+    }
     textarea{min-height:130px;resize:vertical}
     .btn{
       appearance:none;border:none;cursor:pointer;transition:.25s ease;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;
@@ -91,6 +97,16 @@
     }
     .info-card strong{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px}
     .info-card span{display:block;font-size:15px;line-height:1.78;color:var(--ink)}
+    .locked-room-note{
+      margin-top:6px;
+      font-size:13px;
+      line-height:1.7;
+      color:var(--muted);
+      background:rgba(184,149,95,0.10);
+      border:1px solid rgba(184,149,95,0.16);
+      border-radius:16px;
+      padding:12px 14px;
+    }
     .footer{margin-top:42px;padding:28px 22px 42px;text-align:center;color:var(--muted);font-size:14px;line-height:1.9}
     @media (max-width: 920px){
       .booking-layout,.form-grid{grid-template-columns:1fr}
@@ -127,7 +143,7 @@
         <span class="eyebrow">Solicitação de reserva</span>
         <h1 class="hero-title">Reserve sua experiência no charme de Pirenópolis</h1>
         <p class="hero-text">
-          O sistema cria a reserva em hold e redireciona direto para o pagamento.
+          Se você veio de uma acomodação específica, a suíte já ficará definida automaticamente nesta página.
         </p>
       </div>
     </section>
@@ -144,6 +160,9 @@
             <div class="field full">
               <label for="room_id">Escolha a suíte</label>
               <select id="room_id" required></select>
+              <div id="lockedRoomNote" class="locked-room-note" style="display:none;">
+                Esta reserva está vinculada à suíte que você escolheu anteriormente.
+              </div>
             </div>
 
             <div class="field">
@@ -212,7 +231,41 @@
 
     const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
 
+    function getLockedRoomIdFromUrl() {
+      const params = new URLSearchParams(window.location.search)
+      const value = params.get("room_id")
+      if (!value) return null
+
+      const parsed = Number(value)
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : null
+    }
+
     async function loadRooms() {
+      const lockedRoomId = getLockedRoomIdFromUrl()
+      const roomSelect = document.getElementById("room_id")
+      const lockedRoomNote = document.getElementById("lockedRoomNote")
+
+      if (lockedRoomId) {
+        const { data: room, error } = await supabaseClient
+          .from("rooms")
+          .select("id, name")
+          .eq("id", lockedRoomId)
+          .eq("active", true)
+          .single()
+
+        if (error || !room) {
+          alert("A suíte selecionada não foi encontrada.")
+          window.location.href = "acomodacoes.html"
+          return
+        }
+
+        roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`
+        roomSelect.value = String(room.id)
+        roomSelect.disabled = true
+        lockedRoomNote.style.display = "block"
+        return
+      }
+
       const { data, error } = await supabaseClient
         .from("rooms")
         .select("id, name")
@@ -224,7 +277,6 @@
         return
       }
 
-      const roomSelect = document.getElementById("room_id")
       roomSelect.innerHTML =
         '<option value="">Selecione</option>' +
         (data || []).map(room => `

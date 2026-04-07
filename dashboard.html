@@ -27,6 +27,18 @@
       --white:rgba(255,255,255,0.72);
       --shadow:0 20px 60px rgba(31,36,48,0.10);
       --radius:24px;
+
+      --ok-bg:rgba(47,125,75,0.12);
+      --ok-text:#2f7d4b;
+
+      --warn-bg:rgba(184,149,95,0.16);
+      --warn-text:#8f6c3c;
+
+      --danger-bg:rgba(163,63,63,0.12);
+      --danger-text:#a33f3f;
+
+      --info-bg:rgba(58,96,153,0.12);
+      --info-text:#3a6099;
     }
 
     *{
@@ -273,7 +285,7 @@
 
     .reservation-top{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:14px;
       margin-bottom:12px;
@@ -284,6 +296,21 @@
       font-size:28px;
       font-weight:600;
       line-height:1;
+      margin-bottom:6px;
+    }
+
+    .reservation-subtext{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .badge-stack{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-end;
+      flex-shrink:0;
     }
 
     .status-badge{
@@ -296,9 +323,27 @@
       font-weight:700;
       letter-spacing:0.16em;
       text-transform:uppercase;
-      background:rgba(184,149,95,0.16);
-      color:#8f6c3c;
       white-space:nowrap;
+    }
+
+    .badge-ok{
+      background:var(--ok-bg);
+      color:var(--ok-text);
+    }
+
+    .badge-warn{
+      background:var(--warn-bg);
+      color:var(--warn-text);
+    }
+
+    .badge-danger{
+      background:var(--danger-bg);
+      color:var(--danger-text);
+    }
+
+    .badge-info{
+      background:var(--info-bg);
+      color:var(--info-text);
     }
 
     .reservation-grid{
@@ -329,6 +374,7 @@
       font-weight:600;
       color:var(--ink);
       line-height:1.5;
+      word-break:break-word;
     }
 
     .empty-state{
@@ -419,6 +465,10 @@
         flex-direction:column;
         align-items:flex-start;
       }
+
+      .badge-stack{
+        align-items:flex-start;
+      }
     }
   </style>
 </head>
@@ -468,7 +518,7 @@
         <div class="list-title">
           <div>
             <h2 class="panel-title" style="margin-bottom:4px;">Minhas reservas</h2>
-            <p class="panel-subtitle" style="margin-bottom:0;">Veja o histórico e o andamento das suas reservas.</p>
+            <p class="panel-subtitle" style="margin-bottom:0;">Veja o histórico e o andamento real das suas reservas e pagamentos.</p>
           </div>
           <span class="list-count" id="reservation-count">0</span>
         </div>
@@ -479,7 +529,7 @@
 
         <div class="cta-card">
           <div class="cta-text">
-            Para fazer uma nova reserva, use a página principal de reservas. É lá que o sistema valida disponibilidade e bloqueia automaticamente as datas escolhidas.
+            Para fazer uma nova reserva, use a página principal de reservas. É lá que o sistema valida disponibilidade, cria o hold e direciona para o pagamento.
           </div>
           <a href="booking.html" class="cta-btn">Fazer nova reserva</a>
         </div>
@@ -500,22 +550,99 @@
     let currentUser = null
 
     function formatDate(dateString) {
-      if (!dateString) return ""
+      if (!dateString) return "-"
       const [year, month, day] = dateString.split("-")
       return `${day}/${month}/${year}`
     }
 
-    function formatStatus(status) {
+    function formatCurrency(value) {
+      if (value === null || value === undefined || value === "") return "-"
+      const number = Number(value)
+      if (Number.isNaN(number)) return "-"
+      return number.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      })
+    }
+
+    function formatMainStatus(status) {
       if (!status) return "Pendente"
+
+      const normalized = String(status).toLowerCase()
+
       const map = {
         pending: "Pendente",
         confirmed: "Confirmada",
         cancelled: "Cancelada",
         canceled: "Cancelada",
         completed: "Concluída",
-        paid: "Paga"
+        paid: "Paga",
+        expired: "Expirada"
       }
-      return map[status.toLowerCase()] || status
+
+      return map[normalized] || status
+    }
+
+    function formatBookingStatus(status) {
+      if (!status) return "Não definido"
+
+      const normalized = String(status).toLowerCase()
+
+      const map = {
+        held: "Em hold",
+        booked: "Reservada",
+        cancelled: "Cancelada",
+        canceled: "Cancelada",
+        expired: "Expirada"
+      }
+
+      return map[normalized] || status
+    }
+
+    function formatPaymentStatus(status) {
+      if (!status) return "Não iniciado"
+
+      const normalized = String(status).toLowerCase()
+
+      const map = {
+        pending: "Pendente",
+        paid: "Pago",
+        failed: "Falhou",
+        cancelled: "Cancelado",
+        canceled: "Cancelado",
+        expired: "Expirado"
+      }
+
+      return map[normalized] || status
+    }
+
+    function getMainBadgeClass(reservation) {
+      const status = String(reservation.status || "").toLowerCase()
+      const bookingStatus = String(reservation.booking_status || "").toLowerCase()
+      const paymentStatus = String(reservation.payment_status || "").toLowerCase()
+
+      if (status === "confirmed" || bookingStatus === "booked" || paymentStatus === "paid") {
+        return "badge-ok"
+      }
+
+      if (status === "cancelled" || status === "canceled" || bookingStatus === "cancelled" || paymentStatus === "failed") {
+        return "badge-danger"
+      }
+
+      if (status === "expired" || bookingStatus === "expired" || paymentStatus === "expired") {
+        return "badge-info"
+      }
+
+      return "badge-warn"
+    }
+
+    function getPaymentBadgeClass(paymentStatus) {
+      const normalized = String(paymentStatus || "").toLowerCase()
+
+      if (normalized === "paid") return "badge-ok"
+      if (normalized === "failed" || normalized === "cancelled" || normalized === "canceled") return "badge-danger"
+      if (normalized === "expired") return "badge-info"
+      return "badge-warn"
     }
 
     async function loadProfile() {
@@ -570,19 +697,28 @@
       container.innerHTML = data.map(reservation => `
         <article class="reservation-card">
           <div class="reservation-top">
-            <div class="reservation-name">${reservation.room_type || "Hospedagem"}</div>
-            <span class="status-badge">${formatStatus(reservation.status)}</span>
+            <div>
+              <div class="reservation-name">${reservation.room_type || "Hospedagem"}</div>
+              <div class="reservation-subtext">
+                Reserva ${reservation.id ? reservation.id.slice(0, 8) : ""}
+              </div>
+            </div>
+
+            <div class="badge-stack">
+              <span class="status-badge ${getMainBadgeClass(reservation)}">${formatMainStatus(reservation.status)}</span>
+              <span class="status-badge ${getPaymentBadgeClass(reservation.payment_status)}">${formatPaymentStatus(reservation.payment_status)}</span>
+            </div>
           </div>
 
           <div class="reservation-grid">
             <div class="reservation-item">
               <strong>Check-in</strong>
-              <span>${formatDate(reservation.check_in) || "-"}</span>
+              <span>${formatDate(reservation.check_in)}</span>
             </div>
 
             <div class="reservation-item">
               <strong>Check-out</strong>
-              <span>${formatDate(reservation.check_out) || "-"}</span>
+              <span>${formatDate(reservation.check_out)}</span>
             </div>
 
             <div class="reservation-item">
@@ -591,8 +727,28 @@
             </div>
 
             <div class="reservation-item">
-              <strong>Status</strong>
-              <span>${formatStatus(reservation.status)}</span>
+              <strong>Valor total</strong>
+              <span>${formatCurrency(reservation.total_amount)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Status da reserva</strong>
+              <span>${formatBookingStatus(reservation.booking_status)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Status do pagamento</strong>
+              <span>${formatPaymentStatus(reservation.payment_status)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Status geral</strong>
+              <span>${formatMainStatus(reservation.status)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Meio de pagamento</strong>
+              <span>${reservation.payment_provider || "—"}</span>
             </div>
 
             <div class="reservation-item" style="grid-column:1 / -1;">

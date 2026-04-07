@@ -127,7 +127,7 @@
         <span class="eyebrow">Solicitação de reserva</span>
         <h1 class="hero-title">Reserve sua experiência no charme de Pirenópolis</h1>
         <p class="hero-text">
-          O sistema cria a reserva em hold e direciona direto para o pagamento.
+          O sistema cria a reserva em hold e redireciona direto para o pagamento.
         </p>
       </div>
     </section>
@@ -210,6 +210,8 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
     )
 
+    const STRIPE_CHECKOUT_FUNCTION_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/stripe-checkout"
+
     async function loadRooms() {
       const { data, error } = await supabaseClient
         .from("rooms")
@@ -228,6 +230,22 @@
         (data || []).map(room => `
           <option value="${room.id}">${room.name}</option>
         `).join("")
+    }
+
+    function redirectToStripeCheckout(reservationId) {
+      const form = document.createElement("form")
+      form.method = "POST"
+      form.action = STRIPE_CHECKOUT_FUNCTION_URL
+      form.style.display = "none"
+
+      const input = document.createElement("input")
+      input.type = "hidden"
+      input.name = "reservation_id"
+      input.value = reservationId
+
+      form.appendChild(input)
+      document.body.appendChild(form)
+      form.submit()
     }
 
     document.getElementById("bookingForm").addEventListener("submit", async (e) => {
@@ -293,25 +311,14 @@
           return
         }
 
-        const { data: stripeData, error: stripeError } = await supabaseClient.functions.invoke("stripe-checkout", {
-          body: { reservation_id: reservationId }
-        })
-
-        if (stripeError) {
-          alert("Erro ao iniciar pagamento: " + stripeError.message)
+        if (!reservationId) {
+          alert("A reserva foi criada, mas não retornou ID.")
           submitBtn.disabled = false
           submitBtn.textContent = "Confirmar solicitação"
           return
         }
 
-        if (!stripeData?.checkout_url) {
-          alert("Checkout Stripe não retornou URL.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          return
-        }
-
-        window.location.href = stripeData.checkout_url
+        redirectToStripeCheckout(reservationId)
       } catch (err) {
         console.error(err)
         alert("Erro inesperado ao processar a reserva.")

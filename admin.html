@@ -1,13 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin | Chateau Pireneus</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+      --bg:#f7f6f2;
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+      --ok-bg:rgba(47,122,75,0.12);
+      --ok-text:#2f7a4b;
+      --warn-bg:rgba(184,149,95,0.16);
+      --warn-text:#8f6c3c;
+      --danger-bg:rgba(181,74,74,0.12);
+      --danger-text:#8e3535;
+      --info-bg:rgba(81,109,143,0.12);
+      --info-text:#355474;
+      --max:1180px;
+    }
+
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    a{ text-decoration:none; color:inherit; }
+
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -16,57 +51,27 @@
       font-display:swap;
     }
 
-    :root{
-      --ink:#1f2430;
-      --muted:#6f6a62;
-      --gold:#b8955f;
-      --gold-soft:rgba(184,149,95,0.16);
-      --line:rgba(31,36,48,0.10);
-      --shadow:0 20px 60px rgba(31,36,48,0.10);
-
-      --success:#2f7a4b;
-      --success-soft:rgba(47,122,75,0.12);
-
-      --danger:#b54a4a;
-      --danger-soft:rgba(181,74,74,0.12);
-
-      --info:#516d8f;
-      --info-soft:rgba(81,109,143,0.12);
-
-      --pending:#8f6c3c;
-      --pending-soft:rgba(184,149,95,0.16);
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    body{
-      min-height:100vh;
-      font-family:"Inter",sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
-        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
-    }
-
     .top-header{
-      position:sticky;
+      position:fixed;
       top:0;
-      z-index:1000;
-      padding:16px 22px;
-      background:rgba(246,241,230,0.72);
-      border-bottom:1px solid rgba(31,36,48,0.08);
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.05);
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
+    }
+
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
     .top-header-inner{
-      max-width:1240px;
+      max-width:var(--max);
       margin:0 auto;
       display:flex;
       align-items:center;
@@ -75,391 +80,688 @@
     }
 
     .brand{
-      text-decoration:none;
-      color:var(--ink);
       display:flex;
       flex-direction:column;
-      line-height:1;
+      gap:2px;
+      text-decoration:none;
+      color:#fff;
+      transition:color 0.25s ease;
     }
 
-    .brand-title{
-      font-family:"Gyahegi","Cormorant Garamond",serif;
-      font-size:36px;
-      font-weight:400;
-    }
+    .top-header.solid .brand{ color:var(--navy); }
 
-    .brand-subtitle{
-      margin-top:6px;
-      font-size:12px;
-      letter-spacing:0.22em;
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:1.4px;
       text-transform:uppercase;
-      color:var(--muted);
+      font-size:12px;
+      opacity:0.92;
+    }
+
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      letter-spacing:2.2px;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1.14;
     }
 
     .header-actions{
       display:flex;
-      gap:12px;
       align-items:center;
+      gap:12px;
       flex-wrap:wrap;
     }
 
-    .header-link,
-    .logout-btn,
-    .save-btn,
-    .secondary-btn,
-    .danger-btn{
-      appearance:none;
-      border:none;
+    .ghost-btn,
+    .logout-btn-public,
+    .reserve-btn{
       text-decoration:none;
-      cursor:pointer;
-      transition:0.25s ease;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      transition:0.22s ease;
+      white-space:nowrap;
       font-family:inherit;
+      cursor:pointer;
     }
 
-    .header-link,
-    .logout-btn,
-    .secondary-btn{
-      color:var(--ink);
-      font-size:14px;
-      font-weight:600;
-      padding:11px 16px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.68);
-      border:1px solid rgba(31,36,48,0.08);
-    }
-
-    .header-link:hover,
-    .logout-btn:hover,
-    .secondary-btn:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,0.92);
-    }
-
-    .danger-btn{
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
       color:#fff;
-      background:linear-gradient(135deg, #b54a4a, #9a2f2f);
-      padding:12px 18px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:600;
-      box-shadow:0 14px 30px rgba(181,74,74,0.16);
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
     }
 
-    .danger-btn:hover{
+    .ghost-btn,
+    .logout-btn-public{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
+    }
+
+    .ghost-btn:hover,
+    .logout-btn-public:hover,
+    .reserve-btn:hover{
       transform:translateY(-1px);
     }
 
-    .page-wrap{
-      max-width:1240px;
+    .top-header.solid .ghost-btn,
+    .top-header.solid .logout-btn-public{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+
+    .menu-button{
+      font-size:28px;
+      line-height:1;
+      color:#fff;
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.20);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
+    }
+
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+    }
+
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
+    }
+
+    .backdrop.open{ opacity:1; pointer-events:auto; }
+
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+      overflow-y:auto;
+    }
+
+    .side-menu.open{ transform:translateX(0); }
+
+    .side-menu a,
+    .side-menu button{
+      display:block;
+      margin:0 0 16px;
+      text-decoration:none;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
+    }
+
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
+    }
+
+    .hero{
+      min-height:78vh;
+      position:relative;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      padding:136px 22px 88px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,0.54), rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.56));
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
+    }
+
+    .hero-shell{
+      position:relative;
+      z-index:3;
+      width:100%;
+      max-width:var(--max);
       margin:0 auto;
-      padding:42px 22px 70px;
+      display:grid;
+      grid-template-columns:1.03fr 0.97fr;
+      gap:30px;
+      align-items:center;
     }
 
-    .hero-card{
-      background:linear-gradient(135deg, rgba(255,255,255,0.78), rgba(255,255,255,0.60));
-      border:1px solid rgba(255,255,255,0.55);
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      padding:34px 30px;
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      margin-bottom:24px;
+    .hero-copy{
+      color:#fff;
+      text-align:left;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
     }
 
-    .eyebrow{
-      display:inline-block;
-      font-size:12px;
-      letter-spacing:0.24em;
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
       text-transform:uppercase;
-      color:var(--gold);
+      font-size:14px;
       margin-bottom:12px;
+      opacity:0.95;
     }
 
     .hero-title{
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(40px, 5vw, 60px);
-      line-height:0.95;
-      font-weight:600;
-      margin-bottom:12px;
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(34px, 5.5vw, 58px);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      line-height:1.24;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
     }
 
     .hero-text{
-      max-width:760px;
+      margin:18px 0 0;
+      max-width:640px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:21px;
+      line-height:1.7;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+    }
+
+    .hero-links{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-card{
+      position:relative;
+      z-index:3;
+      background:linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
+      border:1px solid rgba(255,255,255,0.30);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:28px 24px 24px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards 0.12s;
+      animation-fill-mode:forwards;
+      text-align:left;
+    }
+
+    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+    .card-eyebrow{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.76);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
+    }
+
+    .card-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.28;
+    }
+
+    .card-subtitle{
+      margin:12px 0 0;
       color:var(--muted);
       line-height:1.8;
       font-size:15px;
     }
 
-    .summary-grid{
-      margin-top:24px;
+    .orn{
+      width:150px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:14px 0 0;
+    }
+
+    .hero-meta{
+      margin-top:20px;
       display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;
+    }
+
+    .meta-card{
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:14px 15px;
+    }
+
+    .meta-label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:7px;
+    }
+
+    .meta-value{
+      display:block;
+      color:var(--ink);
+      font-size:15px;
+      font-weight:600;
+      line-height:1.6;
+    }
+
+    .section{
+      padding:74px 0;
+      background:
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
       gap:14px;
+      margin-bottom:26px;
     }
 
     .summary-card{
-      background:rgba(255,255,255,0.58);
-      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(29,53,87,0.10);
       border-radius:20px;
-      padding:16px 18px;
+      padding:18px;
+      box-shadow:var(--shadowSoft);
     }
 
     .summary-label{
       display:block;
       font-size:11px;
-      letter-spacing:0.16em;
+      font-weight:900;
+      letter-spacing:1.2px;
       text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:6px;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:8px;
+      line-height:1.5;
     }
 
     .summary-value{
-      font-size:24px;
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-size:34px;
       font-weight:700;
-      color:var(--ink);
+      color:var(--navy);
+      line-height:1;
     }
 
     .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,0.76), rgba(255,255,255,0.62));
-      border:1px solid rgba(255,255,255,0.58);
-      border-radius:26px;
-      box-shadow:var(--shadow);
-      padding:26px 22px;
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
+      background:rgba(255,255,255,0.78);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:24px;
+      box-shadow:var(--shadowSoft);
+      padding:24px 22px;
       margin-bottom:24px;
     }
 
     .panel-head{
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap:16px;
-      margin-bottom:22px;
+      justify-content:space-between;
+      gap:14px;
       flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .panel-kicker{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.74);
+      margin-bottom:6px;
+      letter-spacing:0.3px;
     }
 
     .panel-title{
-      font-family:"Cormorant Garamond",serif;
-      font-size:36px;
-      font-weight:600;
-      margin-bottom:8px;
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.2;
     }
 
     .panel-subtitle{
+      margin:10px 0 0;
       color:var(--muted);
       font-size:15px;
-      line-height:1.7;
-      max-width:760px;
+      line-height:1.8;
+      max-width:820px;
+    }
+
+    .pricing-layout{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:start;
     }
 
     .toolbar{
       display:grid;
-      grid-template-columns:1.35fr 0.85fr 0.85fr 0.85fr;
+      grid-template-columns:1.2fr 0.9fr 0.9fr 0.9fr;
       gap:14px;
       margin-bottom:18px;
+      align-items:end;
     }
 
     .toolbar-secondary{
       display:grid;
-      grid-template-columns:1fr 1fr auto;
+      grid-template-columns:0.9fr 0.9fr auto;
       gap:14px;
-      margin-bottom:22px;
+      margin-bottom:18px;
       align-items:end;
     }
 
-    .pricing-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-      align-items:start;
-    }
-
-    .pricing-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:16px;
-    }
-
-    .toolbar-card,
-    .pricing-card{
-      background:rgba(255,255,255,0.58);
-      border:1px solid rgba(31,36,48,0.08);
+    .card-block{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(29,53,87,0.08);
       border-radius:18px;
-      padding:14px;
+      padding:16px;
     }
 
-    .pricing-card h3{
-      font-family:"Cormorant Garamond",serif;
+    .card-block h3{
+      margin:0 0 10px;
+      font-family:"Cormorant Garamond", serif;
       font-size:28px;
-      margin-bottom:10px;
-      line-height:1;
+      color:var(--navy);
     }
 
-    .pricing-card p{
+    .card-block p{
+      margin:0 0 14px;
       color:var(--muted);
       font-size:14px;
-      line-height:1.7;
-      margin-bottom:16px;
+      line-height:1.75;
     }
 
-    .toolbar label,
-    .pricing-card label{
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:0;
+    }
+
+    .field.full{ grid-column:1 / -1; }
+
+    .field label{
       display:block;
-      font-size:12px;
-      font-weight:600;
-      letter-spacing:0.06em;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
       text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:8px;
+      color:rgba(29,53,87,0.60);
     }
 
-    .toolbar input,
-    .toolbar select,
-    .toolbar-secondary select,
-    .pricing-card input,
-    .pricing-card select,
-    .pricing-card textarea,
-    .reservation-actions select{
+    .field input,
+    .field select,
+    .field textarea{
       width:100%;
-      border:1px solid rgba(31,36,48,0.10);
-      background:rgba(255,255,255,0.88);
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.90);
       color:var(--ink);
       border-radius:14px;
       padding:12px 14px;
       font:inherit;
       outline:none;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .pricing-card textarea{
-      min-height:90px;
+    .field textarea{
+      min-height:92px;
       resize:vertical;
     }
 
-    .pricing-card .inline-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-bottom:12px;
-    }
-
-    .checkbox-row{
+    .check-row{
       display:flex;
       align-items:center;
       gap:10px;
-      margin:12px 0;
       color:var(--ink);
       font-size:14px;
+      line-height:1.5;
+      margin-top:2px;
     }
 
-    .checkbox-row input{
-      width:auto;
-      transform:scale(1.1);
+    .check-row input{ width:auto; margin:0; }
+
+    .actions-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
     }
 
-    .pricing-status{
-      margin-top:14px;
-      font-size:13px;
-      line-height:1.7;
-      border-radius:16px;
-      padding:12px 14px;
+    .primary-btn,
+    .secondary-btn-light,
+    .danger-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 18px;
+      border:none;
+      border-radius:14px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:0.22s ease;
+      font-family:inherit;
+    }
+
+    .primary-btn{
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      color:#fff;
+      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+    }
+
+    .secondary-btn-light{
+      background:rgba(29,53,87,0.08);
+      color:var(--navy);
+    }
+
+    .danger-btn{
+      background:linear-gradient(135deg, #b76565, #9e4747);
+      color:#fff;
+      box-shadow:0 18px 34px rgba(181,74,74,0.14);
+    }
+
+    .status-message{
       display:none;
+      margin-top:14px;
+      padding:14px;
+      border-radius:16px;
+      font-size:14px;
+      line-height:1.75;
+      border:1px solid transparent;
     }
 
-    .pricing-status.show{display:block}
-    .pricing-status.error{
-      color:var(--danger);
-      background:var(--danger-soft);
-      border:1px solid rgba(181,74,74,0.18);
-    }
-    .pricing-status.info{
-      color:var(--info);
-      background:var(--info-soft);
-      border:1px solid rgba(81,109,143,0.16);
-    }
-    .pricing-status.success{
-      color:var(--success);
-      background:var(--success-soft);
-      border:1px solid rgba(47,122,75,0.18);
-    }
+    .status-message.show{ display:block; }
+    .status-message.success{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.18); }
+    .status-message.error{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.18); }
+    .status-message.info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.18); }
 
-    .pricing-preview{
-      margin-top:16px;
+    .preview-list{
       display:grid;
       gap:10px;
-      max-height:360px;
+      max-height:560px;
       overflow:auto;
       padding-right:4px;
     }
 
-    .pricing-preview-item{
-      border:1px solid rgba(31,36,48,0.08);
-      background:rgba(255,255,255,0.70);
-      border-radius:16px;
-      padding:12px 14px;
+    .preview-empty,
+    .empty-state{
+      border:1px dashed rgba(29,53,87,0.18);
+      border-radius:20px;
+      padding:24px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,0.52);
+      line-height:1.8;
     }
 
-    .pricing-preview-head{
+    .preview-item{
+      border:1px solid rgba(29,53,87,0.08);
+      background:rgba(255,255,255,0.84);
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .preview-head{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
-      margin-bottom:6px;
-      font-size:14px;
-      font-weight:700;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:8px;
     }
 
-    .pricing-preview-sub{
+    .preview-date,
+    .preview-price{
+      font-weight:700;
+      color:var(--navy);
+      font-size:15px;
+    }
+
+    .preview-sub{
       color:var(--muted);
       font-size:13px;
-      line-height:1.6;
+      line-height:1.7;
     }
+
+    .mini-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:5px 8px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      border:1px solid transparent;
+      margin-right:6px;
+      margin-top:4px;
+    }
+
+    .mini-ok{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.18); }
+    .mini-warn{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.20); }
+    .mini-danger{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.18); }
+    .mini-info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.18); }
 
     .reservation-card{
-      border:1px solid rgba(31,36,48,0.08);
-      background:rgba(255,255,255,0.70);
+      border:1px solid rgba(29,53,87,0.08);
+      background:rgba(255,255,255,0.84);
       border-radius:22px;
-      padding:18px;
+      padding:18px 18px 16px;
       margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.04);
     }
 
-    .reservation-card.priority-hold{
-      border-color:rgba(184,149,95,0.26);
-      box-shadow:0 0 0 1px rgba(184,149,95,0.08);
-    }
-
-    .reservation-card.priority-paid{
-      border-color:rgba(47,122,75,0.22);
-      box-shadow:0 0 0 1px rgba(47,122,75,0.06);
-    }
-
-    .reservation-card.priority-problem{
-      border-color:rgba(181,74,74,0.24);
-      box-shadow:0 0 0 1px rgba(181,74,74,0.06);
-    }
-
-    .reservation-head{
+    .reservation-top{
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap:16px;
-      margin-bottom:14px;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:12px;
     }
 
-    .reservation-title{
-      font-family:"Cormorant Garamond",serif;
+    .reservation-name{
+      font-family:"Cormorant Garamond", serif;
       font-size:30px;
+      font-weight:700;
       line-height:1;
-      font-weight:600;
+      color:var(--navy);
       margin-bottom:8px;
+    }
+
+    .reservation-subtext{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
     }
 
     .reservation-meta{
       display:flex;
       flex-wrap:wrap;
       gap:8px;
-      margin-bottom:10px;
+      margin-top:10px;
     }
 
     .mini-chip{
@@ -472,20 +774,9 @@
       font-weight:700;
       letter-spacing:0.08em;
       text-transform:uppercase;
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.84);
+      border:1px solid rgba(29,53,87,0.08);
       color:var(--muted);
-    }
-
-    .reservation-sub{
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.7;
-    }
-
-    .reservation-sub strong{
-      color:var(--ink);
-      font-weight:600;
     }
 
     .badge-stack{
@@ -510,54 +801,20 @@
       border:1px solid transparent;
     }
 
-    .status-pending,
-    .status-held{
-      background:var(--pending-soft);
-      color:var(--pending);
-      border-color:rgba(184,149,95,0.24);
-    }
-
-    .status-confirmed,
-    .status-booked,
-    .status-paid{
-      background:var(--success-soft);
-      color:var(--success);
-      border-color:rgba(47,122,75,0.24);
-    }
-
-    .status-cancelled,
-    .status-canceled,
-    .status-failed{
-      background:var(--danger-soft);
-      color:var(--danger);
-      border-color:rgba(181,74,74,0.24);
-    }
-
-    .status-completed,
-    .status-expired,
-    .status-open,
-    .status-stripe,
-    .status-base,
-    .status-manual,
-    .status-weekend,
-    .status-holiday,
-    .status-seasonal,
-    .status-base_override{
-      background:var(--info-soft);
-      color:var(--info);
-      border-color:rgba(81,109,143,0.24);
-    }
+    .badge-ok{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.12); }
+    .badge-warn{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.14); }
+    .badge-danger{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.12); }
+    .badge-info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.12); }
 
     .reservation-grid{
       display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:12px;
-      margin-bottom:14px;
+      grid-template-columns:1fr 1fr;
+      gap:12px 16px;
     }
 
     .reservation-item{
-      background:rgba(255,255,255,0.56);
-      border:1px solid rgba(31,36,48,0.06);
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(29,53,87,0.06);
       border-radius:16px;
       padding:12px 14px;
     }
@@ -575,1080 +832,782 @@
       display:block;
       font-size:15px;
       font-weight:600;
-      line-height:1.5;
+      color:var(--ink);
+      line-height:1.6;
       word-break:break-word;
     }
 
     .reservation-actions{
       display:flex;
-      flex-wrap:wrap;
       gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      justify-content:flex-end;
+      align-items:center;
+    }
+
+    .reservation-actions select{
+      min-width:200px;
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.90);
+      color:var(--ink);
+      border-radius:14px;
+      padding:12px 14px;
+      font:inherit;
+      outline:none;
+    }
+
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
       align-items:center;
       justify-content:flex-end;
+      padding:18px 34px;
     }
 
-    .save-btn{
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
       color:#fff;
-      background:linear-gradient(135deg, #b8955f, #9f7b45);
-      padding:12px 18px;
-      border-radius:999px;
-      font-size:14px;
-      font-weight:600;
-      box-shadow:0 14px 30px rgba(159,123,69,0.18);
+      text-align:left;
     }
 
-    .save-btn:hover{
-      transform:translateY(-1px);
+    @media (max-width:1100px){
+      .pricing-layout{ grid-template-columns:1fr; }
+      .toolbar{ grid-template-columns:1fr 1fr; }
+      .toolbar-secondary{ grid-template-columns:1fr 1fr auto; }
     }
 
-    .save-btn:disabled{
-      opacity:0.7;
-      cursor:not-allowed;
-      transform:none;
+    @media (max-width:980px){
+      .hero-shell{ grid-template-columns:1fr; gap:22px; }
+      .hero-copy{ text-align:center; }
+      .hero-text{ margin-left:auto; margin-right:auto; }
+      .hero-links{ justify-content:center; }
+      .summary-grid{ grid-template-columns:1fr 1fr; }
     }
 
-    .empty-state{
-      border:1px dashed rgba(31,36,48,0.16);
-      border-radius:20px;
-      padding:24px;
-      color:var(--muted);
-      text-align:center;
-      background:rgba(255,255,255,0.42);
-      line-height:1.7;
-    }
-
-    .small-note{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.7;
-    }
-
-    @media (max-width:1080px){
-      .toolbar{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .toolbar-secondary{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .pricing-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width:900px){
-      .summary-grid,
-      .reservation-grid,
-      .toolbar,
-      .toolbar-secondary{
-        grid-template-columns:1fr;
-      }
-
-      .reservation-head{
-        flex-direction:column;
-      }
-
-      .badge-stack{
-        align-items:flex-start;
-      }
-
-      .reservation-actions{
-        justify-content:flex-start;
-      }
-
-      .pricing-card .inline-grid{
-        grid-template-columns:1fr;
-      }
+    @media (max-width:640px){
+      .top-header{ padding:12px 16px; }
+      .top-header-inner{ gap:12px; }
+      .hero{ padding:118px 16px 74px; }
+      .hero-title{ font-size:34px; line-height:1.34; letter-spacing:1.2px; }
+      .hero-text{ font-size:18px; }
+      .card-title,.panel-title{ font-size:28px; line-height:1.34; letter-spacing:1px; }
+      .hero-card,.panel{ padding:22px 18px 20px; border-radius:22px; }
+      .section{ padding:54px 0; }
+      .wrap{ padding:0 16px; }
+      .summary-grid,.toolbar,.toolbar-secondary,.reservation-grid,.form-grid{ grid-template-columns:1fr; }
+      .reservation-top{ flex-direction:column; align-items:flex-start; }
+      .badge-stack{ align-items:flex-start; }
+      .reservation-actions{ justify-content:flex-start; }
     }
   </style>
 </head>
 <body>
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
-  <header class="top-header">
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+    <hr />
+    <a href="admin.html" onclick="toggleMenu(false)">Painel admin</a>
+    <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+    <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+    <hr />
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
     <div class="top-header-inner">
-      <a href="index.html" class="brand">
-        <span class="brand-title">Chateau Pireneus</span>
-        <span class="brand-subtitle">Painel administrativo</span>
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
       </a>
 
       <div class="header-actions">
-        <a href="dashboard.html" class="header-link">Área do hóspede</a>
-        <button id="logout-btn" class="logout-btn" type="button">Sair</button>
+        <a href="dashboard.html" class="ghost-btn">MINHA ÁREA</a>
+        <a href="booking.html" class="reserve-btn">RESERVAR</a>
+        <button id="headerLogoutBtn" class="logout-btn-public" type="button">SAIR</button>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
-  <main class="page-wrap">
-    <section class="hero-card">
-      <span class="eyebrow">Gestão de reservas</span>
-      <h1 class="hero-title">Painel administrativo</h1>
-      <p class="hero-text">
-        Visualize reservas, acompanhe o status operacional e o pagamento de cada hospedagem, e mantenha a gestão do Chateau Pireneus em um só lugar.
-      </p>
+  <section class="hero" aria-label="Painel administrativo">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker">Gestão do Chateau Pireneus</div>
+        <h1 class="hero-title">PAINEL ADMINISTRATIVO</h1>
+        <p class="hero-text">Gerencie reservas, acompanhe pagamentos e controle preços dinâmicos, mínimos de noites e datas especiais em um só lugar.</p>
+        <div class="hero-links">
+          <a class="ghost-btn" href="#pricing-section">PRECIFICAÇÃO</a>
+          <a class="ghost-btn" href="#reservations-section">RESERVAS</a>
+        </div>
+      </div>
 
+      <div class="hero-card">
+        <span class="card-eyebrow">Status do painel</span>
+        <h2 class="card-title">VISÃO GERAL</h2>
+        <p class="card-subtitle">Aqui você visualiza rapidamente o comportamento do fluxo de reservas e controla a precificação por data.</p>
+        <div class="orn"></div>
+        <div class="hero-meta">
+          <div class="meta-card"><span class="meta-label">Total de reservas</span><span class="meta-value" id="heroTotalReservations">0</span></div>
+          <div class="meta-card"><span class="meta-label">Pendentes / Holds</span><span class="meta-value" id="heroPendingReservations">0</span></div>
+          <div class="meta-card"><span class="meta-label">Confirmadas / Pagas</span><span class="meta-value" id="heroConfirmedReservations">0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
       <div class="summary-grid">
-        <div class="summary-card">
-          <span class="summary-label">Total</span>
-          <span class="summary-value" id="total-count">0</span>
-        </div>
-        <div class="summary-card">
-          <span class="summary-label">Holds / Pendentes</span>
-          <span class="summary-value" id="pending-count">0</span>
-        </div>
-        <div class="summary-card">
-          <span class="summary-label">Confirmadas / Pagas</span>
-          <span class="summary-value" id="confirmed-count">0</span>
-        </div>
-        <div class="summary-card">
-          <span class="summary-label">Canceladas / Expiradas</span>
-          <span class="summary-value" id="cancelled-count">0</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 class="panel-title">Precificação dinâmica</h2>
-          <p class="panel-subtitle">
-            Aqui você define preço base por suíte, cria preços especiais por faixa de datas e remove overrides quando quiser voltar para o valor base.
-          </p>
-        </div>
+        <div class="summary-card"><span class="summary-label">Total</span><span class="summary-value" id="total-count">0</span></div>
+        <div class="summary-card"><span class="summary-label">Holds / Pendentes</span><span class="summary-value" id="pending-count">0</span></div>
+        <div class="summary-card"><span class="summary-label">Confirmadas / Pagas</span><span class="summary-value" id="confirmed-count">0</span></div>
+        <div class="summary-card"><span class="summary-label">Canceladas / Expiradas</span><span class="summary-value" id="cancelled-count">0</span></div>
       </div>
 
-      <div class="pricing-grid">
-        <div class="pricing-card">
-          <h3>Configurar preços</h3>
-          <p>Use o mesmo nome da suíte exibido no sistema. O booking vai buscar a tarifa final por noite automaticamente.</p>
-
-          <div class="field">
-            <label for="pricing-room">Suíte</label>
-            <select id="pricing-room"></select>
+      <div class="panel" id="pricing-section">
+        <div class="panel-head">
+          <div>
+            <span class="panel-kicker">Controle de preço e regras</span>
+            <h2 class="panel-title">PRECIFICAÇÃO DINÂMICA</h2>
+            <p class="panel-subtitle">Defina preço base por suíte, aplique preços especiais por período e configure o mínimo de noites para feriados, alta temporada ou finais de semana.</p>
           </div>
+        </div>
 
-          <div class="inline-grid">
-            <div class="field">
-              <label for="base-price">Preço base</label>
-              <input type="number" id="base-price" min="0" step="0.01" placeholder="0,00">
+        <div class="pricing-layout">
+          <div class="card-block">
+            <h3>Configurar preços</h3>
+            <p>Use a suíte, escolha o intervalo e defina o valor da diária. Se quiser, aplique também um mínimo de noites.</p>
+
+            <div class="form-grid">
+              <div class="field full">
+                <label for="pricingRoom">Suíte</label>
+                <select id="pricingRoom"><option value="">Selecione</option></select>
+              </div>
+
+              <div class="field">
+                <label for="basePrice">Preço base</label>
+                <input type="number" id="basePrice" min="0" step="0.01" placeholder="0,00" />
+              </div>
+
+              <div class="field" style="justify-content:flex-end;">
+                <label>&nbsp;</label>
+                <button id="saveBasePriceBtn" class="secondary-btn-light" type="button">Salvar preço base</button>
+              </div>
+
+              <div class="field">
+                <label for="pricingStartDate">Data inicial</label>
+                <input type="date" id="pricingStartDate" />
+              </div>
+
+              <div class="field">
+                <label for="pricingEndDate">Data final</label>
+                <input type="date" id="pricingEndDate" />
+              </div>
+
+              <div class="field">
+                <label for="specialPrice">Preço especial</label>
+                <input type="number" id="specialPrice" min="0" step="0.01" placeholder="0,00" />
+              </div>
+
+              <div class="field">
+                <label for="minNights">Mínimo de noites</label>
+                <input type="number" id="minNights" min="1" step="1" placeholder="Ex: 3" />
+              </div>
+
+              <div class="field">
+                <label for="pricingSource">Tipo</label>
+                <select id="pricingSource">
+                  <option value="manual">Manual</option>
+                  <option value="weekend">Fim de semana</option>
+                  <option value="holiday">Feriado</option>
+                  <option value="seasonal">Temporada</option>
+                  <option value="base_override">Override</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="pricingNotes">Observações</label>
+                <textarea id="pricingNotes" placeholder="Ex: Carnaval, feriado prolongado, réveillon, julho, evento especial"></textarea>
+              </div>
+
+              <div class="field full"><div class="check-row"><input type="checkbox" id="applyWeekdays" checked /><label for="applyWeekdays" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em dias úteis</label></div></div>
+              <div class="field full"><div class="check-row"><input type="checkbox" id="applyWeekends" checked /><label for="applyWeekends" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em finais de semana</label></div></div>
+              <div class="field full"><div class="check-row"><input type="checkbox" id="overwriteExisting" checked /><label for="overwriteExisting" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Sobrescrever preços já existentes</label></div></div>
             </div>
 
-            <div class="field" style="display:flex;align-items:flex-end;">
-              <button id="save-base-price-btn" class="save-btn" type="button" style="width:100%;">Salvar preço base</button>
-            </div>
-          </div>
-
-          <div class="inline-grid">
-            <div class="field">
-              <label for="pricing-start-date">Data inicial</label>
-              <input type="date" id="pricing-start-date">
+            <div class="actions-row">
+              <button id="applyPricingBtn" class="primary-btn" type="button">Aplicar preço</button>
+              <button id="deletePricingBtn" class="danger-btn" type="button">Remover override</button>
+              <button id="loadPricingPreviewBtn" class="secondary-btn-light" type="button">Visualizar faixa</button>
             </div>
 
-            <div class="field">
-              <label for="pricing-end-date">Data final</label>
-              <input type="date" id="pricing-end-date">
-            </div>
+            <div id="pricingStatus" class="status-message info show">Selecione a suíte e defina uma faixa de datas para começar.</div>
           </div>
 
-          <div class="inline-grid">
-            <div class="field">
-              <label for="special-price">Preço especial</label>
-              <input type="number" id="special-price" min="0" step="0.01" placeholder="0,00">
-            </div>
-
-            <div class="field">
-              <label for="pricing-source">Tipo</label>
-              <select id="pricing-source">
-                <option value="manual">Manual</option>
-                <option value="weekend">Fim de semana</option>
-                <option value="holiday">Feriado</option>
-                <option value="seasonal">Temporada</option>
-                <option value="base_override">Override</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="checkbox-row">
-            <input type="checkbox" id="apply-weekdays" checked>
-            <label for="apply-weekdays" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Aplicar em dias úteis</label>
-          </div>
-
-          <div class="checkbox-row">
-            <input type="checkbox" id="apply-weekends" checked>
-            <label for="apply-weekends" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Aplicar em finais de semana</label>
-          </div>
-
-          <div class="checkbox-row">
-            <input type="checkbox" id="overwrite-existing" checked>
-            <label for="overwrite-existing" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Sobrescrever preços já existentes</label>
-          </div>
-
-          <div class="field">
-            <label for="pricing-notes">Observações</label>
-            <textarea id="pricing-notes" placeholder="Ex: férias de julho, réveillon, feriado prolongado"></textarea>
-          </div>
-
-          <div class="pricing-actions">
-            <button id="apply-pricing-btn" class="save-btn" type="button">Aplicar preço</button>
-            <button id="delete-pricing-btn" class="danger-btn" type="button">Remover overrides</button>
-            <button id="load-pricing-btn" class="secondary-btn" type="button">Visualizar faixa</button>
-          </div>
-
-          <div id="pricing-status" class="pricing-status info show">
-            Selecione uma suíte e um intervalo para começar a gerenciar os preços.
-          </div>
-        </div>
-
-        <div class="pricing-card">
-          <h3>Prévia da faixa</h3>
-          <p>Veja o preço efetivo final de cada data. Quando existir override, ele aparece acima do valor base.</p>
-
-          <div class="pricing-preview" id="pricing-preview">
-            <div class="empty-state">Nenhuma faixa carregada ainda.</div>
+          <div class="card-block">
+            <h3>Prévia da faixa</h3>
+            <p>Veja o preço efetivo, a origem do preço e o mínimo de noites configurado em cada data.</p>
+            <div id="pricingPreview" class="preview-list"><div class="preview-empty">Nenhuma faixa carregada ainda.</div></div>
           </div>
         </div>
       </div>
-    </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <div>
-          <h2 class="panel-title">Todas as reservas</h2>
-          <p class="panel-subtitle">
-            Filtre, pesquise e acompanhe o fluxo real das reservas, incluindo status geral, hold, confirmação e pagamento.
-          </p>
+      <div class="panel" id="reservations-section">
+        <div class="panel-head">
+          <div>
+            <span class="panel-kicker">Operação diária</span>
+            <h2 class="panel-title">RESERVAS</h2>
+            <p class="panel-subtitle">Filtre e acompanhe todas as reservas, os status de pagamento e o comportamento do fluxo de hospedagem.</p>
+          </div>
+          <button id="refreshReservationsBtn" class="secondary-btn-light" type="button">Atualizar</button>
         </div>
 
-        <button id="refresh-btn" class="secondary-btn" type="button">Atualizar dados</button>
+        <div class="toolbar">
+          <div class="field"><label for="searchInput">Buscar</label><input type="text" id="searchInput" placeholder="Hóspede, email, suíte, reserva..." /></div>
+          <div class="field"><label for="statusFilter">Situação</label><select id="statusFilter"><option value="all">Todos</option><option value="held_pending">Holds / Pendentes</option><option value="confirmed_paid">Confirmadas / Pagas</option><option value="cancelled_expired">Canceladas / Expiradas</option></select></div>
+          <div class="field"><label for="roomFilter">Suíte</label><select id="roomFilter"><option value="all">Todas</option></select></div>
+          <div class="field"><label for="paymentFilter">Pagamento</label><select id="paymentFilter"><option value="all">Todos</option><option value="paid">Pago</option><option value="pending">Pendente</option><option value="failed">Falhou</option><option value="expired">Expirado</option><option value="other">Outros</option></select></div>
+        </div>
+
+        <div class="toolbar-secondary">
+          <div class="field"><label for="sortFilter">Ordenar por</label><select id="sortFilter"><option value="created_desc">Mais recentes primeiro</option><option value="created_asc">Mais antigas primeiro</option><option value="checkin_asc">Check-in mais próximo</option><option value="checkin_desc">Check-in mais distante</option></select></div>
+          <div class="field"><label for="dateFilter">Período</label><select id="dateFilter"><option value="all">Todos</option><option value="future">Check-in futuro</option><option value="today">Check-in hoje</option><option value="past">Check-in passado</option></select></div>
+          <button id="clearFiltersBtn" class="secondary-btn-light" type="button">Limpar filtros</button>
+        </div>
+
+        <div id="reservationsList"><div class="empty-state">Nenhuma reserva encontrada.</div></div>
       </div>
+    </div>
+  </section>
 
-      <div class="toolbar">
-        <div class="toolbar-card">
-          <label for="search-input">Buscar hóspede, email, telefone, suíte ou pedidos</label>
-          <input type="text" id="search-input" placeholder="Digite para buscar...">
-        </div>
+  <footer>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus" />
+    <div class="footer-overlay"><div class="footer-contact"><a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a><a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a><div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div></div></div>
+  </footer>
 
-        <div class="toolbar-card">
-          <label for="status-filter">Situação operacional</label>
-          <select id="status-filter">
-            <option value="all">Todos</option>
-            <option value="held_pending">Holds / Pendentes</option>
-            <option value="confirmed_paid">Confirmadas / Pagas</option>
-            <option value="cancelled_expired">Canceladas / Expiradas</option>
-          </select>
-        </div>
-
-        <div class="toolbar-card">
-          <label for="room-filter">Filtrar por suíte</label>
-          <select id="room-filter">
-            <option value="all">Todas</option>
-          </select>
-        </div>
-
-        <div class="toolbar-card">
-          <label for="payment-filter">Filtrar por pagamento</label>
-          <select id="payment-filter">
-            <option value="all">Todos</option>
-            <option value="paid">Pago</option>
-            <option value="pending">Pendente</option>
-            <option value="failed">Falhou</option>
-            <option value="expired">Expirado</option>
-            <option value="other">Outros</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="toolbar-secondary">
-        <div class="toolbar-card">
-          <label for="sort-filter">Ordenar por</label>
-          <select id="sort-filter">
-            <option value="created_desc">Mais recentes primeiro</option>
-            <option value="created_asc">Mais antigas primeiro</option>
-            <option value="checkin_asc">Check-in mais próximo</option>
-            <option value="checkin_desc">Check-in mais distante</option>
-          </select>
-        </div>
-
-        <div class="toolbar-card">
-          <label for="date-filter">Recorte de período</label>
-          <select id="date-filter">
-            <option value="all">Todos</option>
-            <option value="future">Check-in futuro</option>
-            <option value="today">Check-in hoje</option>
-            <option value="past">Check-in passado</option>
-          </select>
-        </div>
-
-        <button id="clear-filters-btn" class="secondary-btn" type="button">Limpar filtros</button>
-      </div>
-
-      <div id="admin-reservations-list">
-        <div class="empty-state">Nenhuma reserva encontrada.</div>
-      </div>
-
-      <p class="small-note" id="results-note"></p>
-    </section>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const { createClient } = supabase
+    const { createClient } = supabase;
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+    const topHeader = document.getElementById("topHeader");
+    const pricingRoom = document.getElementById("pricingRoom");
+    const basePrice = document.getElementById("basePrice");
+    const pricingStartDate = document.getElementById("pricingStartDate");
+    const pricingEndDate = document.getElementById("pricingEndDate");
+    const specialPrice = document.getElementById("specialPrice");
+    const minNights = document.getElementById("minNights");
+    const pricingSource = document.getElementById("pricingSource");
+    const pricingNotes = document.getElementById("pricingNotes");
+    const applyWeekdays = document.getElementById("applyWeekdays");
+    const applyWeekends = document.getElementById("applyWeekends");
+    const overwriteExisting = document.getElementById("overwriteExisting");
+    const pricingStatus = document.getElementById("pricingStatus");
+    const pricingPreview = document.getElementById("pricingPreview");
+    const roomFilter = document.getElementById("roomFilter");
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+    const paymentFilter = document.getElementById("paymentFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const dateFilter = document.getElementById("dateFilter");
+    const reservationsList = document.getElementById("reservationsList");
 
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+    let currentUser = null;
+    let rooms = [];
+    let allReservations = [];
+    let profilesMap = {};
 
-    let allReservations = []
-    let profileMap = {}
-    let rooms = []
+    function onScrollHeader() {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      topHeader.classList.toggle("solid", y > 40);
+    }
+    window.addEventListener("scroll", onScrollHeader);
+    onScrollHeader();
 
-    const pricingStatus = document.getElementById("pricing-status")
-    const pricingPreview = document.getElementById("pricing-preview")
+    function toggleMenu(forceOpen) {
+      const menu = document.getElementById("sideMenu");
+      const backdrop = document.getElementById("backdrop");
+      const isOpen = menu.classList.contains("open");
+      const open = forceOpen === true || (forceOpen === undefined && !isOpen);
+      if (open) {
+        menu.classList.add("open");
+        backdrop.classList.add("open");
+      } else {
+        menu.classList.remove("open");
+        backdrop.classList.remove("open");
+      }
+    }
 
     function redirectToLogin() {
-      const returnTo = window.location.pathname + window.location.search
-      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
+      const returnTo = window.location.pathname + window.location.search;
+      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
     }
 
     function formatDate(dateString) {
-      if (!dateString) return "-"
-      const [year, month, day] = dateString.split("-")
-      if (!year || !month || !day) return dateString
-      return `${day}/${month}/${year}`
+      if (!dateString) return "-";
+      const [year, month, day] = String(dateString).split("-");
+      if (!year || !month || !day) return String(dateString);
+      return `${day}/${month}/${year}`;
     }
 
-    function formatDateTime(dateTimeString) {
-      if (!dateTimeString) return "-"
-      return new Date(dateTimeString).toLocaleString("pt-BR")
+    function formatDateTime(value) {
+      if (!value) return "-";
+      return new Date(value).toLocaleString("pt-BR");
     }
 
     function formatCurrency(value) {
-      if (value === null || value === undefined || value === "") return "-"
-      const number = Number(value)
-      if (Number.isNaN(number)) return "-"
-      return number.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      })
+      if (value === null || value === undefined || value === "") return "-";
+      const number = Number(value);
+      if (Number.isNaN(number)) return "-";
+      return number.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
     }
 
-    function normalizeStatus(status) {
-      if (!status) return ""
-      return String(status).toLowerCase()
-    }
+    function normalizeStatus(status) { return String(status || "").toLowerCase(); }
 
-    function generalStatusLabel(status) {
-      const map = {
-        pending: "Pendente",
-        confirmed: "Confirmada",
-        cancelled: "Cancelada",
-        canceled: "Cancelada",
-        completed: "Concluída",
-        expired: "Expirada"
-      }
-      return map[normalizeStatus(status)] || (status || "—")
+    function mainStatusLabel(status) {
+      const map = { pending:"Pendente", confirmed:"Confirmada", cancelled:"Cancelada", canceled:"Cancelada", completed:"Concluída", expired:"Expirada" };
+      return map[normalizeStatus(status)] || status || "Pendente";
     }
 
     function bookingStatusLabel(status) {
-      const map = {
-        held: "Em hold",
-        pending: "Pendente",
-        booked: "Reservada",
-        cancelled: "Cancelada",
-        canceled: "Cancelada",
-        expired: "Expirada",
-        open: "Aberta",
-        blocked: "Bloqueada"
-      }
-      return map[normalizeStatus(status)] || (status || "—")
+      const map = { held:"Em hold", pending:"Pendente", booked:"Reservada", cancelled:"Cancelada", canceled:"Cancelada", expired:"Expirada" };
+      return map[normalizeStatus(status)] || status || "—";
     }
 
     function paymentStatusLabel(status) {
-      const map = {
-        pending: "Pendente",
-        paid: "Pago",
-        failed: "Falhou",
-        cancelled: "Cancelado",
-        canceled: "Cancelado",
-        expired: "Expirado",
-        refunded: "Reembolsado"
-      }
-      return map[normalizeStatus(status)] || (status || "—")
+      const map = { pending:"Pendente", paid:"Pago", failed:"Falhou", cancelled:"Cancelado", canceled:"Cancelado", expired:"Expirado", refunded:"Reembolsado" };
+      return map[normalizeStatus(status)] || status || "—";
     }
 
-    function statusClass(status) {
-      const value = normalizeStatus(status)
-      if (value === "canceled") return "status-cancelled"
-      if (!value) return "status-pending"
-      return `status-${value}`
+    function statusBadgeClass(status) {
+      const value = normalizeStatus(status);
+      if (["confirmed","booked","paid"].includes(value)) return "badge-ok";
+      if (["cancelled","canceled","failed"].includes(value)) return "badge-danger";
+      if (["expired","completed","base","manual","weekend","holiday","seasonal","base_override"].includes(value)) return "badge-info";
+      return "badge-warn";
     }
 
-    function getReservationPriorityClass(reservation) {
-      const general = normalizeStatus(reservation.status)
-      const booking = normalizeStatus(reservation.booking_status)
-      const payment = normalizeStatus(reservation.payment_status)
-
-      if (
-        general === "cancelled" ||
-        general === "canceled" ||
-        general === "expired" ||
-        booking === "cancelled" ||
-        booking === "expired" ||
-        payment === "failed" ||
-        payment === "expired"
-      ) {
-        return "priority-problem"
-      }
-
-      if (payment === "paid" || booking === "booked" || general === "confirmed") {
-        return "priority-paid"
-      }
-
-      if (booking === "held" || general === "pending" || payment === "pending") {
-        return "priority-hold"
-      }
-
-      return ""
+    function previewBadgeClass(source) {
+      const value = normalizeStatus(source);
+      if (["holiday","weekend"].includes(value)) return "mini-warn";
+      if (["manual","base_override"].includes(value)) return "mini-info";
+      if (value === "seasonal") return "mini-ok";
+      return "mini-info";
     }
 
     function setPricingStatus(type, text) {
-      pricingStatus.className = `pricing-status show ${type}`
-      pricingStatus.textContent = text
+      pricingStatus.className = `status-message show ${type}`;
+      pricingStatus.textContent = text;
     }
 
-    function getPricingRoomName() {
-      const value = document.getElementById("pricing-room").value
-      return value || ""
-    }
-
-    function populateRoomSelectors() {
-      const roomFilter = document.getElementById("room-filter")
-      const pricingRoom = document.getElementById("pricing-room")
-
-      const roomNames = [...new Set(rooms.map(room => room.name).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"))
-
-      const roomOptions = roomNames.map(room => `<option value="${room}">${room}</option>`).join("")
-
-      const currentRoomFilter = roomFilter.value
-      roomFilter.innerHTML = '<option value="all">Todas</option>' + roomOptions
-      roomFilter.value = roomNames.includes(currentRoomFilter) ? currentRoomFilter : "all"
-
-      const currentPricingRoom = pricingRoom.value
-      pricingRoom.innerHTML = '<option value="">Selecione</option>' + roomOptions
-      pricingRoom.value = roomNames.includes(currentPricingRoom) ? currentPricingRoom : ""
-    }
-
-    async function checkAdminAccess() {
-      const { data: userData, error: userError } = await supabaseClient.auth.getUser()
-
-      if (userError || !userData.user) {
-        redirectToLogin()
-        return null
+    async function requireAdmin() {
+      const { data, error } = await supabaseClient.auth.getUser();
+      if (error || !data.user) {
+        redirectToLogin();
+        return false;
       }
-
-      const { data: adminRows, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", userData.user.id)
-
+      currentUser = data.user;
+      const { data: adminRow, error: adminError } = await supabaseClient.from("admins").select("id").eq("id", currentUser.id).maybeSingle();
       if (adminError) {
-        console.error(adminError)
-        alert("Não foi possível validar o acesso administrativo.")
-        window.location.href = "dashboard.html"
-        return null
+        console.error(adminError);
+        alert("Não foi possível validar o acesso administrativo.");
+        return false;
       }
-
-      if (!adminRows || adminRows.length === 0) {
-        alert("Acesso restrito ao administrador.")
-        window.location.href = "dashboard.html"
-        return null
+      if (!adminRow) {
+        window.location.href = "dashboard.html";
+        return false;
       }
-
-      return userData.user
+      return true;
     }
+
+    async function logout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+    }
+    document.getElementById("headerLogoutBtn").addEventListener("click", logout);
 
     async function loadRooms() {
-      const { data, error } = await supabaseClient
-        .from("rooms")
-        .select("id, name")
-        .eq("active", true)
-        .order("id", { ascending: true })
-
+      const { data, error } = await supabaseClient.from("rooms").select("id, name").eq("active", true).order("id", { ascending: true });
       if (error) {
-        console.error(error)
-        alert(error.message)
-        return
+        console.error(error);
+        alert(error.message);
+        return;
       }
-
-      rooms = data || []
-      populateRoomSelectors()
+      rooms = data || [];
+      pricingRoom.innerHTML = '<option value="">Selecione</option>' + rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
+      roomFilter.innerHTML = '<option value="all">Todas</option>' + rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
     }
 
-    async function loadAdminReservations() {
-      const refreshBtn = document.getElementById("refresh-btn")
-      refreshBtn.disabled = true
-      refreshBtn.textContent = "Atualizando..."
-
-      const { data: reservations, error: reservationsError } = await supabaseClient
-        .from("reservations")
-        .select("*")
-        .order("created_at", { ascending: false })
-
-      if (reservationsError) {
-        alert(reservationsError.message)
-        refreshBtn.disabled = false
-        refreshBtn.textContent = "Atualizar dados"
-        return
+    async function loadBasePrice() {
+      const roomName = pricingRoom.value;
+      if (!roomName) {
+        basePrice.value = "";
+        return;
       }
-
-      const { data: profiles, error: profilesError } = await supabaseClient
-        .from("profiles")
-        .select("id, full_name, phone, email")
-
-      if (profilesError) {
-        alert(profilesError.message)
-        refreshBtn.disabled = false
-        refreshBtn.textContent = "Atualizar dados"
-        return
-      }
-
-      profileMap = {}
-      ;(profiles || []).forEach(profile => {
-        profileMap[profile.id] = profile
-      })
-
-      allReservations = reservations || []
-      updateSummary(allReservations)
-      renderReservations()
-
-      refreshBtn.disabled = false
-      refreshBtn.textContent = "Atualizar dados"
-    }
-
-    function updateSummary(reservations) {
-      const total = reservations.length
-
-      const pending = reservations.filter(r => {
-        const general = normalizeStatus(r.status)
-        const booking = normalizeStatus(r.booking_status)
-        const payment = normalizeStatus(r.payment_status)
-        return general === "pending" || booking === "held" || payment === "pending"
-      }).length
-
-      const confirmed = reservations.filter(r => {
-        const general = normalizeStatus(r.status)
-        const booking = normalizeStatus(r.booking_status)
-        const payment = normalizeStatus(r.payment_status)
-        return general === "confirmed" || booking === "booked" || payment === "paid"
-      }).length
-
-      const cancelled = reservations.filter(r => {
-        const general = normalizeStatus(r.status)
-        const booking = normalizeStatus(r.booking_status)
-        const payment = normalizeStatus(r.payment_status)
-
-        return (
-          general === "cancelled" ||
-          general === "canceled" ||
-          general === "expired" ||
-          booking === "cancelled" ||
-          booking === "expired" ||
-          payment === "failed" ||
-          payment === "expired"
-        )
-      }).length
-
-      document.getElementById("total-count").textContent = total
-      document.getElementById("pending-count").textContent = pending
-      document.getElementById("confirmed-count").textContent = confirmed
-      document.getElementById("cancelled-count").textContent = cancelled
-    }
-
-    function getFilteredReservations() {
-      const search = document.getElementById("search-input").value.trim().toLowerCase()
-      const statusFilter = document.getElementById("status-filter").value
-      const roomFilter = document.getElementById("room-filter").value
-      const paymentFilter = document.getElementById("payment-filter").value
-      const sortFilter = document.getElementById("sort-filter").value
-      const dateFilter = document.getElementById("date-filter").value
-
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-
-      const filtered = allReservations.filter(reservation => {
-        const profile = profileMap[reservation.user_id] || {}
-        const room = (reservation.room_type || "").toLowerCase()
-        const fullName = (profile.full_name || "").toLowerCase()
-        const email = (profile.email || "").toLowerCase()
-        const phone = (profile.phone || "").toLowerCase()
-        const requests = (reservation.special_requests || "").toLowerCase()
-        const reservationId = String(reservation.id || "").toLowerCase()
-
-        const general = normalizeStatus(reservation.status)
-        const booking = normalizeStatus(reservation.booking_status)
-        const payment = normalizeStatus(reservation.payment_status)
-
-        const matchesSearch =
-          !search ||
-          fullName.includes(search) ||
-          email.includes(search) ||
-          phone.includes(search) ||
-          room.includes(search) ||
-          requests.includes(search) ||
-          reservationId.includes(search)
-
-        let matchesStatus = true
-        if (statusFilter === "held_pending") {
-          matchesStatus = general === "pending" || booking === "held" || payment === "pending"
-        } else if (statusFilter === "confirmed_paid") {
-          matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid"
-        } else if (statusFilter === "cancelled_expired") {
-          matchesStatus =
-            general === "cancelled" ||
-            general === "canceled" ||
-            general === "expired" ||
-            booking === "cancelled" ||
-            booking === "expired" ||
-            payment === "failed" ||
-            payment === "expired"
-        }
-
-        let matchesRoom = true
-        if (roomFilter !== "all") {
-          matchesRoom = (reservation.room_type || "") === roomFilter
-        }
-
-        let matchesPayment = true
-        if (paymentFilter === "paid") {
-          matchesPayment = payment === "paid"
-        } else if (paymentFilter === "pending") {
-          matchesPayment = payment === "pending"
-        } else if (paymentFilter === "failed") {
-          matchesPayment = payment === "failed"
-        } else if (paymentFilter === "expired") {
-          matchesPayment = payment === "expired"
-        } else if (paymentFilter === "other") {
-          matchesPayment = !["paid", "pending", "failed", "expired", ""].includes(payment)
-        }
-
-        let matchesDate = true
-        if (reservation.check_in) {
-          const checkInDate = new Date(reservation.check_in + "T00:00:00")
-          checkInDate.setHours(0, 0, 0, 0)
-
-          if (dateFilter === "future") {
-            matchesDate = checkInDate > today
-          } else if (dateFilter === "today") {
-            matchesDate = checkInDate.getTime() === today.getTime()
-          } else if (dateFilter === "past") {
-            matchesDate = checkInDate < today
-          }
-        } else if (dateFilter !== "all") {
-          matchesDate = false
-        }
-
-        return matchesSearch && matchesStatus && matchesRoom && matchesPayment && matchesDate
-      })
-
-      filtered.sort((a, b) => {
-        if (sortFilter === "created_asc") {
-          return new Date(a.created_at || 0) - new Date(b.created_at || 0)
-        }
-
-        if (sortFilter === "checkin_asc") {
-          return new Date(a.check_in || 0) - new Date(b.check_in || 0)
-        }
-
-        if (sortFilter === "checkin_desc") {
-          return new Date(b.check_in || 0) - new Date(a.check_in || 0)
-        }
-
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0)
-      })
-
-      return filtered
-    }
-
-    function renderReservations() {
-      const container = document.getElementById("admin-reservations-list")
-      const note = document.getElementById("results-note")
-      const reservations = getFilteredReservations()
-
-      if (!reservations.length) {
-        container.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>`
-        note.textContent = "0 resultados exibidos."
-        return
-      }
-
-      note.textContent = `${reservations.length} resultado(s) exibido(s).`
-
-      container.innerHTML = reservations.map(reservation => {
-        const profile = profileMap[reservation.user_id] || {}
-        const priorityClass = getReservationPriorityClass(reservation)
-
-        return `
-          <article class="reservation-card ${priorityClass}">
-            <div class="reservation-head">
-              <div>
-                <div class="reservation-title">${reservation.room_type || "Reserva solicitada"}</div>
-
-                <div class="reservation-meta">
-                  <span class="mini-chip">Reserva: ${reservation.id || "-"}</span>
-                  <span class="mini-chip">Room ID: ${reservation.room_id || "-"}</span>
-                  <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
-                </div>
-
-                <div class="reservation-sub">
-                  <div><strong>Hóspede:</strong> ${profile.full_name || "Hóspede não identificado"}</div>
-                  <div><strong>Telefone:</strong> ${profile.phone || "Sem telefone"}</div>
-                  <div><strong>Email:</strong> ${profile.email || "Sem email salvo"}</div>
-                </div>
-              </div>
-
-              <div class="badge-stack">
-                <span class="status-badge ${statusClass(reservation.status)}">${generalStatusLabel(reservation.status)}</span>
-                <span class="status-badge ${statusClass(reservation.booking_status)}">${bookingStatusLabel(reservation.booking_status)}</span>
-                <span class="status-badge ${statusClass(reservation.payment_status)}">${paymentStatusLabel(reservation.payment_status)}</span>
-              </div>
-            </div>
-
-            <div class="reservation-grid">
-              <div class="reservation-item">
-                <strong>Check-in</strong>
-                <span>${formatDate(reservation.check_in)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Check-out</strong>
-                <span>${formatDate(reservation.check_out)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Hóspedes</strong>
-                <span>${reservation.guests || "-"}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Valor total</strong>
-                <span>${formatCurrency(reservation.total_amount)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status geral</strong>
-                <span>${generalStatusLabel(reservation.status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status da reserva</strong>
-                <span>${bookingStatusLabel(reservation.booking_status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status do pagamento</strong>
-                <span>${paymentStatusLabel(reservation.payment_status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Meio de pagamento</strong>
-                <span>${reservation.payment_provider || "—"}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Expira em</strong>
-                <span>${formatDateTime(reservation.expires_at)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>User ID</strong>
-                <span>${reservation.user_id || "-"}</span>
-              </div>
-
-              <div class="reservation-item" style="grid-column:1 / -1;">
-                <strong>Pedidos especiais</strong>
-                <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
-              </div>
-            </div>
-
-            <div class="reservation-actions">
-              <select class="status-select" data-id="${reservation.id}">
-                <option value="pending" ${normalizeStatus(reservation.status) === "pending" ? "selected" : ""}>Pendente</option>
-                <option value="confirmed" ${normalizeStatus(reservation.status) === "confirmed" ? "selected" : ""}>Confirmada</option>
-                <option value="cancelled" ${(normalizeStatus(reservation.status) === "cancelled" || normalizeStatus(reservation.status) === "canceled") ? "selected" : ""}>Cancelada</option>
-                <option value="expired" ${normalizeStatus(reservation.status) === "expired" ? "selected" : ""}>Expirada</option>
-                <option value="completed" ${normalizeStatus(reservation.status) === "completed" ? "selected" : ""}>Concluída</option>
-              </select>
-
-              <button class="save-btn save-status-btn" type="button" data-id="${reservation.id}">
-                Salvar status geral
-              </button>
-            </div>
-          </article>
-        `
-      }).join("")
-    }
-
-    async function updateReservationStatus(reservationId, button) {
-      const select = document.querySelector(`.status-select[data-id="${reservationId}"]`)
-      if (!select) {
-        alert("Não foi possível encontrar o status da reserva.")
-        return
-      }
-
-      const status = select.value
-      button.disabled = true
-      button.textContent = "Salvando..."
-
-      const { error } = await supabaseClient.rpc("admin_update_reservation_status", {
-        p_reservation_id: reservationId,
-        p_status: status
-      })
-
+      const { data, error } = await supabaseClient.rpc("admin_get_room_base_price", { p_room_type: roomName });
       if (error) {
-        alert(error.message)
-        button.disabled = false
-        button.textContent = "Salvar status geral"
-        return
+        console.error(error);
+        setPricingStatus("error", error.message || "Não foi possível carregar o preço base.");
+        return;
       }
-
-      await loadAdminReservations()
-      alert("Status atualizado com segurança!")
-    }
-
-    async function loadBasePrice(roomType) {
-      if (!roomType) {
-        document.getElementById("base-price").value = ""
-        return
-      }
-
-      const { data, error } = await supabaseClient.rpc("admin_get_room_base_price", {
-        p_room_type: roomType
-      })
-
-      if (error) {
-        console.error(error)
-        setPricingStatus("error", error.message || "Não foi possível carregar o preço base.")
-        return
-      }
-
-      document.getElementById("base-price").value = data ?? ""
+      basePrice.value = data ?? "";
     }
 
     async function saveBasePrice() {
-      const roomType = getPricingRoomName()
-      const basePrice = document.getElementById("base-price").value
-
-      if (!roomType) {
-        setPricingStatus("error", "Selecione uma suíte para salvar o preço base.")
-        return
-      }
-
-      if (basePrice === "") {
-        setPricingStatus("error", "Informe o preço base.")
-        return
-      }
-
-      setPricingStatus("info", "Salvando preço base...")
-
+      const roomName = pricingRoom.value;
+      if (!roomName) return setPricingStatus("error", "Selecione uma suíte.");
+      if (basePrice.value === "") return setPricingStatus("error", "Informe o preço base.");
+      setPricingStatus("info", "Salvando preço base...");
       const { error } = await supabaseClient.rpc("admin_upsert_room_base_price", {
-        p_room_type: roomType,
-        p_base_price: Number(basePrice)
-      })
-
+        p_room_type: roomName,
+        p_base_price: Number(basePrice.value)
+      });
       if (error) {
-        console.error(error)
-        setPricingStatus("error", error.message || "Não foi possível salvar o preço base.")
-        return
+        console.error(error);
+        return setPricingStatus("error", error.message || "Não foi possível salvar o preço base.");
       }
-
-      setPricingStatus("success", "Preço base salvo com sucesso.")
-      await loadPricingRange()
+      setPricingStatus("success", "Preço base salvo com sucesso.");
+      await loadPricingPreview();
     }
 
-    async function applyBulkPricing() {
-      const roomType = getPricingRoomName()
-      const startDate = document.getElementById("pricing-start-date").value
-      const endDate = document.getElementById("pricing-end-date").value
-      const price = document.getElementById("special-price").value
-      const weekdays = document.getElementById("apply-weekdays").checked
-      const weekends = document.getElementById("apply-weekends").checked
-      const source = document.getElementById("pricing-source").value
-      const notes = document.getElementById("pricing-notes").value.trim()
-      const overwrite = document.getElementById("overwrite-existing").checked
-
-      if (!roomType || !startDate || !endDate || price === "") {
-        setPricingStatus("error", "Preencha suíte, datas e preço para aplicar a precificação.")
-        return
-      }
-
-      setPricingStatus("info", "Aplicando preço especial...")
-
+    async function applyPricing() {
+      const roomName = pricingRoom.value;
+      if (!roomName) return setPricingStatus("error", "Selecione uma suíte.");
+      if (!pricingStartDate.value || !pricingEndDate.value) return setPricingStatus("error", "Informe a faixa de datas.");
+      if (specialPrice.value === "") return setPricingStatus("error", "Informe o preço especial.");
+      setPricingStatus("info", "Aplicando preços e regras...");
       const { data, error } = await supabaseClient.rpc("admin_upsert_room_prices", {
-        p_room_type: roomType,
-        p_start_date: startDate,
-        p_end_date: endDate,
-        p_price: Number(price),
-        p_apply_weekdays: weekdays,
-        p_apply_weekends: weekends,
-        p_source: source,
-        p_notes: notes || null,
-        p_overwrite: overwrite
-      })
-
+        p_room_type: roomName,
+        p_start_date: pricingStartDate.value,
+        p_end_date: pricingEndDate.value,
+        p_price: Number(specialPrice.value),
+        p_apply_weekdays: applyWeekdays.checked,
+        p_apply_weekends: applyWeekends.checked,
+        p_source: pricingSource.value,
+        p_notes: pricingNotes.value.trim() || null,
+        p_overwrite: overwriteExisting.checked,
+        p_min_nights: minNights.value === "" ? null : Number(minNights.value)
+      });
       if (error) {
-        console.error(error)
-        setPricingStatus("error", error.message || "Não foi possível aplicar os preços.")
-        return
+        console.error(error);
+        return setPricingStatus("error", error.message || "Não foi possível aplicar a precificação.");
       }
-
-      setPricingStatus("success", `${data || 0} data(s) atualizada(s) com sucesso.`)
-      await loadPricingRange()
+      setPricingStatus("success", `${data || 0} data(s) atualizada(s) com sucesso.`);
+      await loadPricingPreview();
     }
 
-    async function deleteBulkPricing() {
-      const roomType = getPricingRoomName()
-      const startDate = document.getElementById("pricing-start-date").value
-      const endDate = document.getElementById("pricing-end-date").value
-      const weekdays = document.getElementById("apply-weekdays").checked
-      const weekends = document.getElementById("apply-weekends").checked
-
-      if (!roomType || !startDate || !endDate) {
-        setPricingStatus("error", "Preencha suíte e faixa de datas para remover overrides.")
-        return
-      }
-
-      setPricingStatus("info", "Removendo overrides...")
-
+    async function deletePricing() {
+      const roomName = pricingRoom.value;
+      if (!roomName) return setPricingStatus("error", "Selecione uma suíte.");
+      if (!pricingStartDate.value || !pricingEndDate.value) return setPricingStatus("error", "Informe a faixa de datas.");
+      setPricingStatus("info", "Removendo overrides...");
       const { data, error } = await supabaseClient.rpc("admin_delete_room_prices", {
-        p_room_type: roomType,
-        p_start_date: startDate,
-        p_end_date: endDate,
-        p_delete_weekdays: weekdays,
-        p_delete_weekends: weekends
-      })
-
+        p_room_type: roomName,
+        p_start_date: pricingStartDate.value,
+        p_end_date: pricingEndDate.value,
+        p_delete_weekdays: applyWeekdays.checked,
+        p_delete_weekends: applyWeekends.checked
+      });
       if (error) {
-        console.error(error)
-        setPricingStatus("error", error.message || "Não foi possível remover os overrides.")
-        return
+        console.error(error);
+        return setPricingStatus("error", error.message || "Não foi possível remover os overrides.");
       }
-
-      setPricingStatus("success", `${data || 0} override(s) removido(s).`)
-      await loadPricingRange()
+      setPricingStatus("success", `${data || 0} override(s) removido(s).`);
+      await loadPricingPreview();
     }
 
-    async function loadPricingRange() {
-      const roomType = getPricingRoomName()
-      const startDate = document.getElementById("pricing-start-date").value
-      const endDate = document.getElementById("pricing-end-date").value
-
-      if (!roomType) {
-        pricingPreview.innerHTML = '<div class="empty-state">Selecione uma suíte para visualizar os preços.</div>'
-        document.getElementById("base-price").value = ""
-        return
+    async function loadPricingPreview() {
+      const roomName = pricingRoom.value;
+      if (!roomName) {
+        pricingPreview.innerHTML = '<div class="preview-empty">Selecione uma suíte para visualizar os preços.</div>';
+        basePrice.value = "";
+        return;
       }
 
-      await loadBasePrice(roomType)
+      await loadBasePrice();
 
-      if (!startDate || !endDate) {
-        pricingPreview.innerHTML = '<div class="empty-state">Selecione uma faixa de datas para visualizar a precificação.</div>'
-        return
+      if (!pricingStartDate.value || !pricingEndDate.value) {
+        pricingPreview.innerHTML = '<div class="preview-empty">Selecione uma faixa de datas para visualizar a precificação.</div>';
+        return;
       }
 
-      setPricingStatus("info", "Carregando prévia da faixa...")
-
+      setPricingStatus("info", "Carregando prévia da faixa...");
       const { data, error } = await supabaseClient.rpc("admin_get_room_prices", {
-        p_room_type: roomType,
-        p_start_date: startDate,
-        p_end_date: endDate
-      })
-
+        p_room_type: roomName,
+        p_start_date: pricingStartDate.value,
+        p_end_date: pricingEndDate.value
+      });
       if (error) {
-        console.error(error)
-        setPricingStatus("error", error.message || "Não foi possível carregar a faixa de preços.")
-        return
+        console.error(error);
+        return setPricingStatus("error", error.message || "Não foi possível carregar a faixa.");
       }
-
-      const rows = data || []
-
+      const rows = data || [];
       if (!rows.length) {
-        pricingPreview.innerHTML = '<div class="empty-state">Nenhuma data encontrada nessa faixa.</div>'
-        setPricingStatus("info", "Faixa carregada, mas sem registros.")
-        return
+        pricingPreview.innerHTML = '<div class="preview-empty">Nenhuma data encontrada nessa faixa.</div>';
+        return setPricingStatus("info", "Faixa carregada, mas sem registros.");
       }
-
       pricingPreview.innerHTML = rows.map(item => `
-        <div class="pricing-preview-item">
-          <div class="pricing-preview-head">
-            <span>${formatDate(item.rate_date)}</span>
-            <span>${formatCurrency(item.effective_price)}</span>
+        <div class="preview-item">
+          <div class="preview-head">
+            <div class="preview-date">${formatDate(item.rate_date)}</div>
+            <div class="preview-price">${formatCurrency(item.effective_price)}</div>
           </div>
-          <div class="pricing-preview-sub">
-            Base: ${formatCurrency(item.base_price)}<br>
-            Override: ${item.override_price !== null ? formatCurrency(item.override_price) : "—"}<br>
-            Origem: <span class="status-badge ${statusClass(item.source)}" style="padding:4px 8px;font-size:10px;letter-spacing:0.08em;">${item.source || "base"}</span>
-            ${item.notes ? `<br>Obs: ${item.notes}` : ""}
+          <div class="preview-sub">
+            <div><span class="mini-badge ${previewBadgeClass(item.source)}">${item.source || 'base'}</span></div>
+            <div>Base: ${formatCurrency(item.base_price)}</div>
+            <div>Override: ${item.override_price !== null ? formatCurrency(item.override_price) : '—'}</div>
+            <div>Mínimo de noites: ${item.min_nights || 1}</div>
+            ${item.notes ? `<div>Obs: ${item.notes}</div>` : ''}
           </div>
         </div>
-      `).join("")
-
-      setPricingStatus("success", "Prévia carregada com sucesso.")
+      `).join("");
+      setPricingStatus("success", "Prévia carregada com sucesso.");
     }
 
-    function clearFilters() {
-      document.getElementById("search-input").value = ""
-      document.getElementById("status-filter").value = "all"
-      document.getElementById("room-filter").value = "all"
-      document.getElementById("payment-filter").value = "all"
-      document.getElementById("sort-filter").value = "created_desc"
-      document.getElementById("date-filter").value = "all"
-      renderReservations()
+    async function loadReservations() {
+      const { data: reservations, error: reservationError } = await supabaseClient.from("reservations").select("*").order("created_at", { ascending: false });
+      if (reservationError) {
+        console.error(reservationError);
+        alert(reservationError.message);
+        return;
+      }
+      const { data: profiles, error: profileError } = await supabaseClient.from("profiles").select("id, full_name, phone, email");
+      if (profileError) {
+        console.error(profileError);
+        alert(profileError.message);
+        return;
+      }
+      profilesMap = {};
+      (profiles || []).forEach(profile => { profilesMap[profile.id] = profile; });
+      allReservations = reservations || [];
+      updateSummaryCards();
+      renderReservations();
     }
 
-    document.addEventListener("click", async (event) => {
-      const button = event.target.closest(".save-status-btn")
-      if (!button) return
+    function updateSummaryCards() {
+      const total = allReservations.length;
+      const pending = allReservations.filter(r => {
+        const general = normalizeStatus(r.status);
+        const booking = normalizeStatus(r.booking_status);
+        const payment = normalizeStatus(r.payment_status);
+        return general === "pending" || booking === "held" || payment === "pending";
+      }).length;
+      const confirmed = allReservations.filter(r => {
+        const general = normalizeStatus(r.status);
+        const booking = normalizeStatus(r.booking_status);
+        const payment = normalizeStatus(r.payment_status);
+        return general === "confirmed" || booking === "booked" || payment === "paid";
+      }).length;
+      const cancelled = allReservations.filter(r => {
+        const general = normalizeStatus(r.status);
+        const booking = normalizeStatus(r.booking_status);
+        const payment = normalizeStatus(r.payment_status);
+        return ["cancelled","canceled","expired"].includes(general) || ["cancelled","expired"].includes(booking) || ["failed","expired"].includes(payment);
+      }).length;
 
-      const reservationId = button.getAttribute("data-id")
-      await updateReservationStatus(reservationId, button)
-    })
-
-    document.getElementById("search-input").addEventListener("input", renderReservations)
-    document.getElementById("status-filter").addEventListener("change", renderReservations)
-    document.getElementById("room-filter").addEventListener("change", renderReservations)
-    document.getElementById("payment-filter").addEventListener("change", renderReservations)
-    document.getElementById("sort-filter").addEventListener("change", renderReservations)
-    document.getElementById("date-filter").addEventListener("change", renderReservations)
-    document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
-    document.getElementById("refresh-btn").addEventListener("click", loadAdminReservations)
-
-    document.getElementById("pricing-room").addEventListener("change", async () => {
-      await loadPricingRange()
-    })
-
-    document.getElementById("load-pricing-btn").addEventListener("click", loadPricingRange)
-    document.getElementById("save-base-price-btn").addEventListener("click", saveBasePrice)
-    document.getElementById("apply-pricing-btn").addEventListener("click", applyBulkPricing)
-    document.getElementById("delete-pricing-btn").addEventListener("click", deleteBulkPricing)
-
-    async function logout() {
-      await supabaseClient.auth.signOut()
-      window.location.href = "login.html"
+      document.getElementById("total-count").textContent = total;
+      document.getElementById("pending-count").textContent = pending;
+      document.getElementById("confirmed-count").textContent = confirmed;
+      document.getElementById("cancelled-count").textContent = cancelled;
+      document.getElementById("heroTotalReservations").textContent = total;
+      document.getElementById("heroPendingReservations").textContent = pending;
+      document.getElementById("heroConfirmedReservations").textContent = confirmed;
     }
 
-    document.getElementById("logout-btn").addEventListener("click", logout)
+    function getFilteredReservations() {
+      const search = searchInput.value.trim().toLowerCase();
+      const statusValue = statusFilter.value;
+      const roomValue = roomFilter.value;
+      const paymentValue = paymentFilter.value;
+      const sortValue = sortFilter.value;
+      const dateValue = dateFilter.value;
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      const filtered = allReservations.filter(reservation => {
+        const profile = profilesMap[reservation.user_id] || {};
+        const room = String(reservation.room_type || "").toLowerCase();
+        const fullName = String(profile.full_name || "").toLowerCase();
+        const email = String(profile.email || "").toLowerCase();
+        const phone = String(profile.phone || "").toLowerCase();
+        const requests = String(reservation.special_requests || "").toLowerCase();
+        const reservationId = String(reservation.id || "").toLowerCase();
+        const general = normalizeStatus(reservation.status);
+        const booking = normalizeStatus(reservation.booking_status);
+        const payment = normalizeStatus(reservation.payment_status);
+
+        const matchesSearch = !search || fullName.includes(search) || email.includes(search) || phone.includes(search) || room.includes(search) || requests.includes(search) || reservationId.includes(search);
+        let matchesStatus = true;
+        if (statusValue === "held_pending") matchesStatus = general === "pending" || booking === "held" || payment === "pending";
+        if (statusValue === "confirmed_paid") matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid";
+        if (statusValue === "cancelled_expired") matchesStatus = ["cancelled","canceled","expired"].includes(general) || ["cancelled","expired"].includes(booking) || ["failed","expired"].includes(payment);
+        const matchesRoom = roomValue === "all" ? true : reservation.room_type === roomValue;
+        let matchesPayment = true;
+        if (paymentValue !== "all") {
+          if (paymentValue === "other") matchesPayment = !["paid","pending","failed","expired"].includes(payment);
+          else matchesPayment = payment === paymentValue;
+        }
+        let matchesDate = true;
+        if (reservation.check_in && dateValue !== "all") {
+          const checkInDate = new Date(reservation.check_in + "T00:00:00");
+          checkInDate.setHours(0,0,0,0);
+          if (dateValue === "future") matchesDate = checkInDate > today;
+          if (dateValue === "today") matchesDate = checkInDate.getTime() === today.getTime();
+          if (dateValue === "past") matchesDate = checkInDate < today;
+        }
+        return matchesSearch && matchesStatus && matchesRoom && matchesPayment && matchesDate;
+      });
+
+      filtered.sort((a, b) => {
+        if (sortValue === "created_asc") return new Date(a.created_at || 0) - new Date(b.created_at || 0);
+        if (sortValue === "checkin_asc") return new Date(a.check_in || 0) - new Date(b.check_in || 0);
+        if (sortValue === "checkin_desc") return new Date(b.check_in || 0) - new Date(a.check_in || 0);
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      });
+
+      return filtered;
+    }
+
+    function renderReservations() {
+      const reservations = getFilteredReservations();
+      if (!reservations.length) {
+        reservationsList.innerHTML = '<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>';
+        return;
+      }
+
+      reservationsList.innerHTML = reservations.map(reservation => {
+        const profile = profilesMap[reservation.user_id] || {};
+        return `
+          <article class="reservation-card">
+            <div class="reservation-top">
+              <div>
+                <div class="reservation-name">${reservation.room_type || 'Hospedagem'}</div>
+                <div class="reservation-subtext">${profile.full_name || 'Hóspede não identificado'} • ${profile.email || 'Sem email'} • ${profile.phone || 'Sem telefone'}</div>
+                <div class="reservation-meta">
+                  <span class="mini-chip">Reserva: ${reservation.id || '-'}</span>
+                  <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
+                </div>
+              </div>
+              <div class="badge-stack">
+                <span class="status-badge ${statusBadgeClass(reservation.status)}">${mainStatusLabel(reservation.status)}</span>
+                <span class="status-badge ${statusBadgeClass(reservation.booking_status)}">${bookingStatusLabel(reservation.booking_status)}</span>
+                <span class="status-badge ${statusBadgeClass(reservation.payment_status)}">${paymentStatusLabel(reservation.payment_status)}</span>
+              </div>
+            </div>
+            <div class="reservation-grid">
+              <div class="reservation-item"><strong>Check-in</strong><span>${formatDate(reservation.check_in)}</span></div>
+              <div class="reservation-item"><strong>Check-out</strong><span>${formatDate(reservation.check_out)}</span></div>
+              <div class="reservation-item"><strong>Hóspedes</strong><span>${reservation.guests || '-'}</span></div>
+              <div class="reservation-item"><strong>Valor total</strong><span>${formatCurrency(reservation.total_amount)}</span></div>
+              <div class="reservation-item"><strong>Expira em</strong><span>${formatDateTime(reservation.expires_at)}</span></div>
+              <div class="reservation-item"><strong>Meio de pagamento</strong><span>${reservation.payment_provider || '—'}</span></div>
+              <div class="reservation-item" style="grid-column:1 / -1;"><strong>Pedidos especiais</strong><span>${reservation.special_requests || 'Nenhum pedido especial informado.'}</span></div>
+            </div>
+            <div class="reservation-actions">
+              <select class="status-select" data-id="${reservation.id}">
+                <option value="pending" ${normalizeStatus(reservation.status) === 'pending' ? 'selected' : ''}>Pendente</option>
+                <option value="confirmed" ${normalizeStatus(reservation.status) === 'confirmed' ? 'selected' : ''}>Confirmada</option>
+                <option value="cancelled" ${['cancelled','canceled'].includes(normalizeStatus(reservation.status)) ? 'selected' : ''}>Cancelada</option>
+                <option value="expired" ${normalizeStatus(reservation.status) === 'expired' ? 'selected' : ''}>Expirada</option>
+                <option value="completed" ${normalizeStatus(reservation.status) === 'completed' ? 'selected' : ''}>Concluída</option>
+              </select>
+              <button class="secondary-btn-light save-status-btn" type="button" data-id="${reservation.id}">Salvar status</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    async function updateReservationStatus(reservationId, button) {
+      const select = document.querySelector(`.status-select[data-id="${reservationId}"]`);
+      if (!select) return;
+      button.disabled = true;
+      button.textContent = "Salvando...";
+      const { error } = await supabaseClient.rpc("admin_update_reservation_status", {
+        p_reservation_id: reservationId,
+        p_status: select.value
+      });
+      if (error) {
+        console.error(error);
+        alert(error.message || "Não foi possível salvar o status.");
+        button.disabled = false;
+        button.textContent = "Salvar status";
+        return;
+      }
+      await loadReservations();
+    }
+
+    function bindEvents() {
+      document.getElementById("saveBasePriceBtn").addEventListener("click", saveBasePrice);
+      document.getElementById("applyPricingBtn").addEventListener("click", applyPricing);
+      document.getElementById("deletePricingBtn").addEventListener("click", deletePricing);
+      document.getElementById("loadPricingPreviewBtn").addEventListener("click", loadPricingPreview);
+      document.getElementById("refreshReservationsBtn").addEventListener("click", loadReservations);
+      document.getElementById("clearFiltersBtn").addEventListener("click", () => {
+        searchInput.value = "";
+        statusFilter.value = "all";
+        roomFilter.value = "all";
+        paymentFilter.value = "all";
+        sortFilter.value = "created_desc";
+        dateFilter.value = "all";
+        renderReservations();
+      });
+      pricingRoom.addEventListener("change", async () => { await loadBasePrice(); await loadPricingPreview(); });
+      [searchInput, statusFilter, roomFilter, paymentFilter, sortFilter, dateFilter].forEach(el => el.addEventListener("input", renderReservations));
+      [statusFilter, roomFilter, paymentFilter, sortFilter, dateFilter].forEach(el => el.addEventListener("change", renderReservations));
+      document.addEventListener("click", async (event) => {
+        const button = event.target.closest(".save-status-btn");
+        if (!button) return;
+        await updateReservationStatus(button.getAttribute("data-id"), button);
+      });
+    }
 
     async function init() {
-      const user = await checkAdminAccess()
-      if (!user) return
-      await loadRooms()
-      await loadAdminReservations()
-      setPricingStatus("info", "Selecione uma suíte e um intervalo para começar a gerenciar os preços.")
+      const ok = await requireAdmin();
+      if (!ok) return;
+      bindEvents();
+      await loadRooms();
+      await loadReservations();
+      setPricingStatus("info", "Selecione a suíte e defina uma faixa de datas para começar.");
     }
 
-    init()
+    window.toggleMenu = toggleMenu;
+    window.logout = logout;
+    init();
   </script>
-
 </body>
 </html>

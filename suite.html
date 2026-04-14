@@ -60,7 +60,7 @@
 
   <script type="application/ld+json" id="suiteRoomStructuredData"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     *{ box-sizing:border-box; }
@@ -91,7 +91,7 @@
 
     body{
       margin:0;
-      font-family:Georgia, serif;
+      font-family:"Inter",sans-serif;
       background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
       color:var(--blue);
       overflow-x:hidden;
@@ -305,15 +305,15 @@
 
     .hero{
       position:relative;
-      min-height:64vh;
+      min-height:72vh;
       background:
-        linear-gradient(to bottom, rgba(0,0,0,0.50), rgba(0,0,0,0.38), rgba(0,0,0,0.54)),
+        linear-gradient(to bottom, rgba(0,0,0,0.52), rgba(0,0,0,0.34), rgba(0,0,0,0.56)),
         url("hero.jpg.webp") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding:130px 22px 80px;
+      padding:138px 22px 94px;
       overflow:hidden;
     }
 
@@ -338,7 +338,7 @@
       letter-spacing:2px;
       text-transform:uppercase;
       font-size:14px;
-      margin-bottom:10px;
+      margin-bottom:12px;
       opacity:0.95;
     }
 
@@ -346,38 +346,149 @@
       margin:0;
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:clamp(28px, 4vw, 42px);
-      letter-spacing:2px;
+      font-size:clamp(34px, 5.2vw, 56px);
+      letter-spacing:1.6px;
       text-transform:uppercase;
-      line-height:1.18;
+      line-height:1.24;
       text-shadow:0 12px 40px rgba(0,0,0,0.45);
     }
 
-    .wrap{
-      max-width:1120px;
-      margin:0 auto;
-      padding:44px 18px 84px;
-      display:grid;
-      grid-template-columns:minmax(0, 1fr) 360px;
-      gap:34px;
-      align-items:start;
+    .hero-lead{
+      margin:18px auto 0;
+      max-width:760px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:22px;
+      line-height:1.72;
+      text-shadow:0 10px 28px rgba(0,0,0,0.42);
+      opacity:0.98;
     }
 
-    body.room-cavalhadas .wrap{
-      transform:translateX(-18px);
+    .hero-highlights{
+      margin:24px auto 0;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:38px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.18);
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      backdrop-filter:blur(6px);
+    }
+
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:12px 18px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:0.22s ease;
+    }
+
+    .hero-btn.primary{
+      background:var(--beige);
+      color:#fff;
+      border:2px solid var(--beige);
+      box-shadow:0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .hero-btn.primary:hover{
+      background:var(--beige-dark);
+      border-color:var(--beige-dark);
+      transform:translateY(-1px);
+    }
+
+    .hero-btn.outline{
+      background:rgba(255,255,255,0.10);
+      color:#fff;
+      border:2px solid rgba(255,255,255,0.24);
+      backdrop-filter:blur(6px);
+    }
+
+    .hero-btn.outline:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
+    }
+
+    .error{
+      max-width:1100px;
+      margin:18px auto 0;
+      padding:12px 18px;
+      color:#7a1f2b;
+      background:rgba(122,31,43,0.08);
+      border:1px solid rgba(122,31,43,0.18);
+      border-radius:12px;
+      display:none;
+    }
+
+    .main-shell{
+      padding:48px 0 86px;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 18px;
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 390px;
+      gap:34px;
+      align-items:start;
     }
 
     aside{
       min-width:0;
     }
 
+    .gallery-card,
+    .info-card,
+    .detail-card,
+    .trust-card{
+      background:rgba(255,255,255,0.80);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:var(--radius);
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+    }
+
+    .gallery-card{
+      overflow:hidden;
+      padding:0;
+    }
+
     .carousel-box{
       position:relative;
       width:100%;
-      border-radius:var(--radius);
       overflow:hidden;
-      box-shadow:var(--shadow);
       background:#e8e1d4;
+      border-radius:var(--radius) var(--radius) 0 0;
     }
 
     .hero-img{
@@ -386,7 +497,6 @@
       object-fit:cover;
       display:block;
       background:#eee;
-      border-radius:0;
     }
 
     .img-arrow{
@@ -417,6 +527,26 @@
     .img-arrow.left{ left:14px; }
     .img-arrow.right{ right:14px; }
 
+    .gallery-info{
+      padding:18px 20px 20px;
+    }
+
+    .gallery-info-title{
+      margin:0;
+      font-family:"Cormorant Garamond", serif;
+      font-size:28px;
+      font-weight:700;
+      line-height:1.08;
+      color:var(--blue);
+    }
+
+    .gallery-info-text{
+      margin:10px 0 0;
+      color:var(--muted);
+      line-height:1.82;
+      font-size:15px;
+    }
+
     .dots{
       display:flex;
       justify-content:center;
@@ -440,24 +570,56 @@
       transform:none;
     }
 
-    .info{
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+
+    .detail-card{
+      padding:16px;
+    }
+
+    .detail-label{
+      display:block;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.58);
+      margin-bottom:8px;
+    }
+
+    .detail-value{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-size:24px;
+      font-weight:700;
+      color:var(--blue);
+      line-height:1.15;
+    }
+
+    .detail-text{
+      margin-top:6px;
+      color:var(--muted);
+      line-height:1.66;
+      font-size:14px;
+    }
+
+    .info-card{
       padding:24px 22px;
-      min-width:0;
-      background:rgba(255,255,255,0.80);
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:var(--radius);
-      box-shadow:var(--shadowSoft);
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
+      position:sticky;
+      top:96px;
     }
 
     .room-subtitle{
       color:var(--beige-dark);
-      font-size:13px;
-      letter-spacing:1px;
+      font-size:12px;
+      letter-spacing:1.2px;
       text-transform:uppercase;
       margin:0 0 8px;
-      font-weight:700;
+      font-weight:800;
     }
 
     .room-title{
@@ -467,8 +629,7 @@
       font-size:34px;
       letter-spacing:0.8px;
       color:var(--blue);
-      line-height:1.16;
-      white-space:normal;
+      line-height:1.18;
     }
 
     .gold-rule{
@@ -479,10 +640,41 @@
     }
 
     .subtitle{
-      margin:0 0 22px;
+      margin:0 0 20px;
       color:var(--muted);
       line-height:1.9;
       font-size:15.5px;
+    }
+
+    .mini-benefits{
+      display:grid;
+      gap:10px;
+      margin:0 0 20px;
+    }
+
+    .mini-benefit{
+      background:rgba(255,255,255,0.66);
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:14px 14px 13px;
+    }
+
+    .mini-benefit strong{
+      display:block;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.58);
+      margin-bottom:7px;
+    }
+
+    .mini-benefit span{
+      display:block;
+      font-size:14px;
+      line-height:1.72;
+      color:var(--ink);
+      font-weight:600;
     }
 
     .section-title{
@@ -529,6 +721,24 @@
       line-height:1.7;
     }
 
+    .ideal-for{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:14.5px;
+      line-height:1.82;
+    }
+
+    .reservation-note{
+      margin-top:18px;
+      padding:14px 14px;
+      border-radius:18px;
+      background:rgba(216,199,161,0.14);
+      border:1px solid rgba(203,181,140,0.20);
+      color:#7e6540;
+      font-size:13px;
+      line-height:1.78;
+    }
+
     .cta{
       margin-top:20px;
       display:flex;
@@ -540,7 +750,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-height:44px;
+      min-height:46px;
       text-decoration:none;
       font-weight:900;
       letter-spacing:1.2px;
@@ -549,6 +759,8 @@
       transition:0.2s ease;
       user-select:none;
       font-size:11px;
+      text-transform:uppercase;
+      flex:1 1 0;
     }
 
     .btn.primary{
@@ -578,30 +790,54 @@
       box-shadow:0 0 18px rgba(216,199,161,0.45);
     }
 
-    .error{
-      max-width:1100px;
-      margin:18px auto 0;
-      padding:12px 18px;
-      color:#7a1f2b;
-      background:rgba(122,31,43,0.08);
-      border:1px solid rgba(122,31,43,0.18);
-      border-radius:12px;
-      display:none;
+    .trust-grid{
+      max-width:var(--max);
+      margin:24px auto 0;
+      padding:0 18px;
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .trust-card{
+      padding:18px 18px 16px;
+    }
+
+    .trust-card strong{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:8px;
+    }
+
+    .trust-card p{
+      margin:0;
+      color:var(--ink);
+      font-size:14.5px;
+      line-height:1.82;
     }
 
     @media (max-width: 980px){
       .wrap{
         grid-template-columns:1fr;
         gap:24px;
-        padding:34px 18px 72px;
+        padding:0 18px;
+      }
+
+      .info-card{
+        position:static;
       }
 
       ul{
         grid-template-columns:1fr;
       }
 
-      body.room-cavalhadas .wrap{
-        transform:none;
+      .detail-grid,
+      .trust-grid{
+        grid-template-columns:1fr;
       }
     }
 
@@ -643,18 +879,22 @@
       }
 
       .hero{
-        min-height:56vh;
-        padding:120px 18px 72px;
+        min-height:62vh;
+        padding:126px 18px 82px;
       }
 
       .hero-title-page{
-        font-size:34px;
-        line-height:1.24;
-        letter-spacing:1.4px;
+        font-size:38px;
+        line-height:1.26;
+        letter-spacing:1.3px;
       }
 
-      .wrap{
-        padding:28px 16px 64px;
+      .hero-lead{
+        font-size:19px;
+      }
+
+      .main-shell{
+        padding:32px 0 64px;
       }
 
       .room-title{
@@ -664,6 +904,10 @@
       .subtitle{
         font-size:14.8px;
       }
+
+      .gallery-info-title{
+        font-size:26px;
+      }
     }
 
     @media (max-width: 560px){
@@ -671,7 +915,24 @@
         display:none;
       }
 
-      .info{
+      .hero{
+        padding:118px 16px 72px;
+      }
+
+      .hero-title-page{
+        font-size:34px;
+      }
+
+      .hero-lead{
+        font-size:18px;
+        line-height:1.66;
+      }
+
+      .wrap{
+        padding:0 16px;
+      }
+
+      .info-card{
         padding:20px 16px;
       }
 
@@ -689,6 +950,15 @@
       }
 
       .btn{
+        width:100%;
+        flex:1 1 100%;
+      }
+
+      .hero-cta{
+        gap:8px;
+      }
+
+      .hero-btn{
         width:100%;
       }
     }
@@ -754,46 +1024,115 @@
     </div>
   </header>
 
-  <section class="hero" aria-label="Acomodações">
+  <section class="hero" aria-label="Suíte">
     <div class="hero-content">
-      <div class="hero-kicker">Nossas</div>
-      <h1 class="hero-title-page">Acomodações</h1>
+      <div class="hero-kicker" id="heroKicker">Sua experiência no Chateau Pireneus</div>
+      <h1 class="hero-title-page" id="heroTitlePage">Suíte</h1>
+      <p class="hero-lead" id="heroLead">Carregando informações da suíte…</p>
+
+      <div class="hero-highlights">
+        <span class="hero-chip" id="heroChipOne">2 hóspedes</span>
+        <span class="hero-chip" id="heroChipTwo">Conforto e charme</span>
+        <span class="hero-chip" id="heroChipThree">Reserva direta</span>
+      </div>
+
+      <div class="hero-cta">
+        <a class="hero-btn primary" id="heroReserveBtn" href="booking.html?room_id=1">Reservar esta suíte</a>
+        <a class="hero-btn outline" href="#suiteDetails">Ver detalhes</a>
+      </div>
     </div>
   </section>
 
   <div id="errBox" class="error"></div>
 
-  <main class="wrap">
-    <section aria-label="Galeria da suíte">
-      <div class="carousel-box">
-        <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
-        <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
-        <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
-      </div>
+  <section class="main-shell">
+    <main class="wrap">
+      <section aria-label="Galeria da suíte" id="suiteDetails">
+        <div class="gallery-card">
+          <div class="carousel-box">
+            <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
+            <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
+            <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+          </div>
 
-      <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
-    </section>
+          <div class="gallery-info">
+            <h2 class="gallery-info-title" id="galleryTitle">Um ambiente pensado para desacelerar</h2>
+            <p class="gallery-info-text" id="galleryText">
+              Cada detalhe da suíte foi pensado para criar uma estadia mais leve, confortável e acolhedora a dois.
+            </p>
 
-    <aside>
-      <div class="info">
-        <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
-        <h1 class="room-title" id="roomName">Suíte</h1>
-        <div class="gold-rule" aria-hidden="true"></div>
-
-        <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
-
-        <div class="section-title">Comodidades</div>
-        <ul id="amenities"></ul>
-
-        <div class="capacity" id="capacityLine">Capacidade: —</div>
-
-        <div class="cta">
-          <a class="btn primary" id="reserveBtn" href="booking.html?room_id=1">RESERVAR</a>
-          <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">WHATSAPP</a>
+            <div class="dots" id="dots" aria-label="Indicadores do carrossel"></div>
+          </div>
         </div>
+
+        <div class="detail-grid">
+          <div class="detail-card">
+            <span class="detail-label">Ideal para</span>
+            <span class="detail-value" id="detailIdealFor">Casais</span>
+            <div class="detail-text" id="detailIdealText">Uma hospedagem charmosa para quem quer descansar com privacidade e conforto.</div>
+          </div>
+
+          <div class="detail-card">
+            <span class="detail-label">Estilo da experiência</span>
+            <span class="detail-value" id="detailExperience">Aconchego</span>
+            <div class="detail-text" id="detailExperienceText">Perfeita para dias tranquilos em Pirenópolis com uma atmosfera intimista.</div>
+          </div>
+
+          <div class="detail-card">
+            <span class="detail-label">Destaque</span>
+            <span class="detail-value" id="detailHighlight">Varanda</span>
+            <div class="detail-text" id="detailHighlightText">Um toque especial para relaxar com mais calma ao longo da estadia.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="info-card">
+          <p class="room-subtitle" id="roomSub">suíte padrão com tv</p>
+          <h2 class="room-title" id="roomName">Suíte</h2>
+          <div class="gold-rule" aria-hidden="true"></div>
+
+          <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
+
+          <div class="mini-benefits" id="miniBenefits"></div>
+
+          <div class="section-title">Comodidades</div>
+          <ul id="amenities"></ul>
+
+          <div class="capacity" id="capacityLine">Capacidade: —</div>
+
+          <div class="section-title">Ideal para</div>
+          <p class="ideal-for" id="idealForText">Carregando…</p>
+
+          <div class="reservation-note" id="reservationNote">
+            Ao clicar em reservar, esta suíte já seguirá pré-selecionada na página de reserva para tornar o processo mais rápido.
+          </div>
+
+          <div class="cta">
+            <a class="btn primary" id="reserveBtn" href="booking.html?room_id=1">Reservar esta suíte</a>
+            <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar no WhatsApp</a>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <div class="trust-grid">
+      <div class="trust-card">
+        <strong>Reserva mais direta</strong>
+        <p>Você segue com a suíte já selecionada no fluxo de reserva, com datas, valores e disponibilidade organizados de forma clara.</p>
       </div>
-    </aside>
-  </main>
+
+      <div class="trust-card">
+        <strong>Estadia pensada para dois</strong>
+        <p>As acomodações foram estruturadas para oferecer conforto, privacidade e uma experiência acolhedora para casais.</p>
+      </div>
+
+      <div class="trust-card">
+        <strong>Contato fácil</strong>
+        <p>Se quiser confirmar detalhes antes de reservar, o atendimento via WhatsApp fica disponível para agilizar sua decisão.</p>
+      </div>
+    </div>
+  </section>
 
   <script>
     function toggleMenu(forceOpen){
@@ -818,8 +1157,25 @@
         divino: {
           id: 1,
           name: "Suíte do Divino",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com tv",
+          desc: "A Suíte do Divino foi pensada para quem busca uma estadia a dois com charme, aconchego e praticidade. Um ambiente acolhedor para descansar com calma, aproveitar o ritmo de Pirenópolis e viver momentos especiais no Chateau Pireneus.",
+          heroLead: "Um espaço acolhedor para desacelerar, descansar com conforto e aproveitar uma experiência romântica em Pirenópolis.",
+          heroKicker: "Sua hospedagem a dois começa aqui",
+          galleryTitle: "Uma suíte que convida ao descanso",
+          galleryText: "Do enxoval ao clima do ambiente, tudo foi pensado para criar uma estadia confortável, leve e acolhedora a dois.",
+          idealFor: "Ideal para casais que querem viver dias tranquilos, com conforto, praticidade e uma atmosfera mais intimista.",
+          detailIdealFor: "Casais",
+          detailIdealText: "Perfeita para quem quer descansar, curtir a cidade e voltar para um espaço acolhedor.",
+          detailExperience: "Conforto",
+          detailExperienceText: "Uma experiência equilibrada entre charme, funcionalidade e tranquilidade.",
+          detailHighlight: "Varanda",
+          detailHighlightText: "Um detalhe especial para relaxar com mais calma ao longo da estadia.",
+          heroChips: ["2 hóspedes", "Varanda privativa", "Reserva direta"],
+          miniBenefits: [
+            { title: "Atmosfera acolhedora", text: "Uma suíte pensada para quem quer desacelerar e aproveitar a estadia com mais conforto." },
+            { title: "Praticidade no essencial", text: "Ar-condicionado, frigobar, Wi-Fi e banheiro privativo para uma experiência completa." },
+            { title: "Perfeita para momentos a dois", text: "Um ambiente ideal para casais que querem curtir Pirenópolis com mais charme." }
+          ],
           photos: [
             "public/suites/divino/divino1.jpeg",
             "public/suites/divino/divino2.jpeg",
@@ -831,12 +1187,12 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart Tv",
+            "Smart TV",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
+            "Varanda privativa com rede"
           ],
           capacity: "Capacidade: 2 hóspedes",
           maxGuests: 2
@@ -845,8 +1201,25 @@
         cavalhadas: {
           id: 2,
           name: "Suíte das Cavalhadas",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com tv",
+          desc: "A Suíte das Cavalhadas reúne conforto, aconchego e funcionalidade para uma estadia leve e agradável. É uma escolha ideal para quem quer relaxar a dois e aproveitar Pirenópolis com praticidade e charme.",
+          heroLead: "Conforto, praticidade e um ambiente acolhedor para viver dias especiais a dois em Pirenópolis.",
+          heroKicker: "Uma experiência tranquila e charmosa",
+          galleryTitle: "Conforto que acompanha sua viagem",
+          galleryText: "Uma suíte pensada para oferecer uma estadia agradável do começo ao fim, com detalhes que fazem diferença.",
+          idealFor: "Ideal para casais que valorizam conforto, boa energia e uma hospedagem prática para aproveitar melhor a viagem.",
+          detailIdealFor: "Casais",
+          detailIdealText: "Uma ótima escolha para dias tranquilos e uma hospedagem bem resolvida a dois.",
+          detailExperience: "Leveza",
+          detailExperienceText: "Um ambiente agradável para descansar com conforto depois de aproveitar a cidade.",
+          detailHighlight: "Aconchego",
+          detailHighlightText: "A proposta da suíte é unir simplicidade, charme e bem-estar na medida certa.",
+          heroChips: ["2 hóspedes", "Smart TV", "Reserva rápida"],
+          miniBenefits: [
+            { title: "Estadia confortável", text: "Um quarto agradável para relaxar com privacidade e praticidade durante a viagem." },
+            { title: "Boa estrutura", text: "Itens essenciais para um dia a dia mais fácil, com conforto para descansar melhor." },
+            { title: "Ritmo romântico", text: "Uma opção acolhedora para quem quer viver momentos especiais a dois." }
+          ],
           photos: [
             "public/suites/cavalhadas/cavalhadas1.jpeg",
             "public/suites/cavalhadas/cavalhadas2.jpeg",
@@ -858,12 +1231,12 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart Tv",
+            "Smart TV",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
+            "Varanda privativa com rede"
           ],
           capacity: "Capacidade: 2 hóspedes",
           maxGuests: 2
@@ -872,8 +1245,25 @@
         rosario: {
           id: 3,
           name: "Suíte do Rosário",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com tv",
+          desc: "A Suíte do Rosário oferece uma hospedagem confortável e acolhedora para quem quer desacelerar e curtir Pirenópolis em boa companhia. Uma escolha charmosa para viver uma experiência tranquila a dois.",
+          heroLead: "Uma acomodação charmosa e confortável para transformar sua viagem em uma experiência mais leve e especial.",
+          heroKicker: "Seu refúgio romântico em Pirenópolis",
+          galleryTitle: "Um espaço para aproveitar o tempo com calma",
+          galleryText: "A Suíte do Rosário foi pensada para criar uma sensação de acolhimento, descanso e praticidade durante a estadia.",
+          idealFor: "Ideal para casais que procuram uma experiência acolhedora, com conforto e um clima mais reservado.",
+          detailIdealFor: "Casais",
+          detailIdealText: "Perfeita para momentos a dois em uma estadia com mais calma e conforto.",
+          detailExperience: "Charme",
+          detailExperienceText: "Uma suíte com atmosfera acolhedora para quem quer viver dias mais leves.",
+          detailHighlight: "Privacidade",
+          detailHighlightText: "Um ambiente ideal para descansar com tranquilidade depois de aproveitar a cidade.",
+          heroChips: ["2 hóspedes", "Wi-Fi e ar", "Varanda com rede"],
+          miniBenefits: [
+            { title: "Clima acolhedor", text: "Uma suíte pensada para receber bem e tornar a estadia mais confortável." },
+            { title: "Estrutura funcional", text: "Tudo o que você precisa para viver dias leves com mais praticidade." },
+            { title: "Experiência a dois", text: "Uma ótima opção para casais que querem unir descanso e charme." }
+          ],
           photos: [
             "public/suites/rosario/rosario1.jpeg",
             "public/suites/rosario/rosario2.jpeg",
@@ -890,7 +1280,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
+            "Varanda privativa com rede"
           ],
           capacity: "Capacidade: 2 hóspedes",
           maxGuests: 2
@@ -899,8 +1289,25 @@
         aurora: {
           id: 5,
           name: "Suíte Aurora",
-          subtitle: "suíte padrão com Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão com tv",
+          desc: "A Suíte Aurora foi criada para oferecer uma experiência romântica, confortável e acolhedora. Um espaço ideal para casais que querem relaxar, desacelerar e aproveitar Pirenópolis com mais charme e tranquilidade.",
+          heroLead: "Uma suíte pensada para momentos a dois, com conforto, charme e a tranquilidade que a sua viagem merece.",
+          heroKicker: "Uma estadia delicada e especial",
+          galleryTitle: "Conforto com atmosfera romântica",
+          galleryText: "A Aurora convida você a viver dias mais leves, com uma combinação de praticidade, aconchego e charme.",
+          idealFor: "Ideal para casais que querem transformar a hospedagem em parte da experiência e não apenas em um lugar para dormir.",
+          detailIdealFor: "Casais",
+          detailIdealText: "Uma escolha perfeita para viagens românticas e dias tranquilos em Pirenópolis.",
+          detailExperience: "Romance",
+          detailExperienceText: "Uma atmosfera leve e acolhedora para quem quer curtir a viagem com mais intenção.",
+          detailHighlight: "Conforto",
+          detailHighlightText: "Um espaço equilibrado entre praticidade, descanso e clima especial.",
+          heroChips: ["2 hóspedes", "Experiência romântica", "Reserva direta"],
+          miniBenefits: [
+            { title: "Momentos especiais", text: "Uma suíte pensada para casais que querem viver a viagem com mais charme." },
+            { title: "Descanso com conforto", text: "Itens essenciais para tornar a estadia mais agradável do check-in ao check-out." },
+            { title: "Ambiente acolhedor", text: "Um espaço agradável para desacelerar e aproveitar o tempo a dois." }
+          ],
           photos: [
             "public/suites/aurora/aurora1.jpeg",
             "public/suites/aurora/aurora2.jpeg",
@@ -912,12 +1319,12 @@
             "Enxoval 200 fios",
             "Cortina blackout",
             "Arara de roupas",
-            "Smart Tv",
+            "Smart TV",
             "Frigobar",
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
+            "Varanda privativa com rede"
           ],
           capacity: "Capacidade: 2 hóspedes",
           maxGuests: 2
@@ -926,8 +1333,25 @@
         bonfim: {
           id: 6,
           name: "Suíte do Bonfim",
-          subtitle: "suíte padrão sem Tv",
-          desc: "Acomodação aconchegante e bem localizada, perfeita para uma estadia romântica com conforto e tranquilidade!",
+          subtitle: "suíte padrão sem tv",
+          desc: "A Suíte do Bonfim é uma opção acolhedora para quem busca descanso, privacidade e uma experiência mais tranquila a dois. Uma acomodação charmosa para relaxar com conforto e aproveitar Pirenópolis com leveza.",
+          heroLead: "Uma suíte acolhedora para quem quer descansar com calma, curtir a estadia a dois e viver dias mais leves em Pirenópolis.",
+          heroKicker: "Mais calma, conforto e conexão",
+          galleryTitle: "Uma proposta de descanso mais tranquila",
+          galleryText: "A Suíte do Bonfim valoriza o essencial para uma experiência acolhedora, confortável e mais desconectada do ritmo acelerado.",
+          idealFor: "Ideal para casais que querem um ambiente sereno, confortável e com uma proposta de descanso mais contemplativa.",
+          detailIdealFor: "Casais",
+          detailIdealText: "Perfeita para quem quer aproveitar a viagem com mais tranquilidade e simplicidade.",
+          detailExperience: "Tranquilidade",
+          detailExperienceText: "Uma suíte que convida a desacelerar e aproveitar melhor o tempo a dois.",
+          detailHighlight: "Essencial bem pensado",
+          detailHighlightText: "Conforto, privacidade e praticidade em uma proposta mais leve e acolhedora.",
+          heroChips: ["2 hóspedes", "Ambiente tranquilo", "Varanda com rede"],
+          miniBenefits: [
+            { title: "Estadia mais serena", text: "Uma proposta ideal para quem valoriza descanso e um ritmo mais calmo durante a viagem." },
+            { title: "Conforto no essencial", text: "Tudo o que importa para uma hospedagem agradável, acolhedora e prática." },
+            { title: "Mais conexão a dois", text: "Uma ótima opção para casais que querem viver a experiência com mais presença." }
+          ],
           photos: [
             "public/suites/bonfim/bonfim1.jpeg",
             "public/suites/bonfim/bonfim2.jpeg",
@@ -943,7 +1367,7 @@
             "Ar-condicionado",
             "Wi-Fi",
             "Banheiro privativo",
-            "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
+            "Varanda privativa com rede"
           ],
           capacity: "Capacidade: 2 hóspedes",
           maxGuests: 2
@@ -953,27 +1377,27 @@
       const ROOM_META = {
         divino: {
           title: "Suíte do Divino | Chateau Pireneus",
-          description: "Conheça a Suíte do Divino no Chateau Pireneus, uma acomodação aconchegante e romântica em Pirenópolis com conforto e praticidade.",
+          description: "Conheça a Suíte do Divino no Chateau Pireneus, uma acomodação acolhedora em Pirenópolis para viver uma experiência romântica e confortável a dois.",
           image: "https://chateaupireneus.com.br/public/suites/divino/divino1.jpeg"
         },
         cavalhadas: {
           title: "Suíte das Cavalhadas | Chateau Pireneus",
-          description: "Conheça a Suíte das Cavalhadas no Chateau Pireneus, uma acomodação aconchegante e romântica em Pirenópolis para sua estadia especial.",
+          description: "Conheça a Suíte das Cavalhadas no Chateau Pireneus, uma opção confortável e charmosa em Pirenópolis para uma estadia especial a dois.",
           image: "https://chateaupireneus.com.br/public/suites/cavalhadas/cavalhadas1.jpeg"
         },
         rosario: {
           title: "Suíte do Rosário | Chateau Pireneus",
-          description: "Conheça a Suíte do Rosário no Chateau Pireneus, uma acomodação charmosa e confortável em Pirenópolis para momentos especiais.",
+          description: "Conheça a Suíte do Rosário no Chateau Pireneus, uma acomodação charmosa e acolhedora em Pirenópolis ideal para casais.",
           image: "https://chateaupireneus.com.br/public/suites/rosario/rosario1.jpeg"
         },
         aurora: {
           title: "Suíte Aurora | Chateau Pireneus",
-          description: "Conheça a Suíte Aurora no Chateau Pireneus, uma acomodação romântica e aconchegante em Pirenópolis com conforto e tranquilidade.",
+          description: "Conheça a Suíte Aurora no Chateau Pireneus, uma acomodação romântica e confortável em Pirenópolis para uma experiência especial a dois.",
           image: "https://chateaupireneus.com.br/public/suites/aurora/aurora1.jpeg"
         },
         bonfim: {
           title: "Suíte do Bonfim | Chateau Pireneus",
-          description: "Conheça a Suíte do Bonfim no Chateau Pireneus, uma acomodação acolhedora em Pirenópolis ideal para uma estadia tranquila a dois.",
+          description: "Conheça a Suíte do Bonfim no Chateau Pireneus, uma acomodação acolhedora em Pirenópolis perfeita para descansar com conforto e tranquilidade a dois.",
           image: "https://chateaupireneus.com.br/public/suites/bonfim/bonfim1.jpeg"
         }
       };
@@ -987,10 +1411,6 @@
       const params = new URLSearchParams(location.search);
       const key = (params.get("room") || "divino").toLowerCase().trim();
       const room = ROOMS[key];
-
-      if (key === "cavalhadas") {
-        document.body.classList.add("room-cavalhadas");
-      }
 
       function upsertMeta(selector, attr, value) {
         const el = document.querySelector(selector);
@@ -1073,19 +1493,50 @@
       setSuiteMetadata(key);
       setSuiteStructuredData(key, room);
 
+      document.getElementById("heroKicker").textContent = room.heroKicker;
+      document.getElementById("heroTitlePage").textContent = room.name;
+      document.getElementById("heroLead").textContent = room.heroLead;
+
+      document.getElementById("heroChipOne").textContent = room.heroChips[0];
+      document.getElementById("heroChipTwo").textContent = room.heroChips[1];
+      document.getElementById("heroChipThree").textContent = room.heroChips[2];
+
       document.getElementById("roomSub").textContent = room.subtitle;
       document.getElementById("roomName").textContent = room.name;
       document.getElementById("roomDesc").textContent = room.desc;
-      document.getElementById("reserveBtn").href = `booking.html?room_id=${room.id}`;
+
+      document.getElementById("galleryTitle").textContent = room.galleryTitle;
+      document.getElementById("galleryText").textContent = room.galleryText;
+
+      document.getElementById("detailIdealFor").textContent = room.detailIdealFor;
+      document.getElementById("detailIdealText").textContent = room.detailIdealText;
+      document.getElementById("detailExperience").textContent = room.detailExperience;
+      document.getElementById("detailExperienceText").textContent = room.detailExperienceText;
+      document.getElementById("detailHighlight").textContent = room.detailHighlight;
+      document.getElementById("detailHighlightText").textContent = room.detailHighlightText;
+
+      document.getElementById("idealForText").textContent = room.idealFor;
+
+      const reserveHref = `booking.html?room_id=${room.id}`;
+      document.getElementById("reserveBtn").href = reserveHref;
+      document.getElementById("heroReserveBtn").href = reserveHref;
 
       document.getElementById("amenities").innerHTML =
-        room.amenities.map(x => "<li>" + x + "</li>").join("");
+        room.amenities.map(x => `<li>${x}</li>`).join("");
+
+      document.getElementById("miniBenefits").innerHTML =
+        room.miniBenefits.map(item => `
+          <div class="mini-benefit">
+            <strong>${item.title}</strong>
+            <span>${item.text}</span>
+          </div>
+        `).join("");
 
       document.getElementById("capacityLine").textContent = room.capacity;
 
       const waBtn = document.getElementById("waBtn");
-      const msg = encodeURIComponent("Olá! Tenho interesse na " + room.name + ". Pode me enviar disponibilidade e valores?");
-      waBtn.href = "https://wa.me/5562998167654?text=" + msg;
+      const msg = encodeURIComponent(`Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`);
+      waBtn.href = `https://wa.me/5562998167654?text=${msg}`;
 
       const heroImg = document.getElementById("heroImg");
       const dotsWrap = document.getElementById("dots");
@@ -1097,14 +1548,14 @@
 
       function renderDots(){
         dotsWrap.innerHTML = room.photos.map((_, idx) => (
-          '<div class="dot" data-i="' + idx + '" aria-label="Ir para foto ' + (idx + 1) + '"></div>'
+          `<div class="dot" data-i="${idx}" aria-label="Ir para foto ${idx + 1}"></div>`
         )).join("");
       }
 
       function setActive(idx){
         i = idx;
         heroImg.src = room.photos[i];
-        heroImg.alt = "Foto da " + room.name + " (" + (i + 1) + "/" + room.photos.length + ")";
+        heroImg.alt = `Foto da ${room.name} (${i + 1}/${room.photos.length})`;
 
         Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
           d.classList.toggle("active", di === i);

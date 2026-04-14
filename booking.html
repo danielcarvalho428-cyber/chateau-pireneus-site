@@ -37,1121 +37,834 @@
       --max:1180px;
     }
 
-    body {
-      margin: 0;
-      font-family: "Inter", sans-serif;
-      background: var(--bg);
-      color: var(--navy);
-      overflow-x: hidden;
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a{ text-decoration:none; color:inherit; }
 
-    @font-face {
-      font-family: "Gyahegi";
-      src: url("Gyahegi.otf") format("opentype");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
     }
 
-    .hidden { display: none !important; }
+    .hidden{ display:none !important; }
 
-    .top-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 12000;
-      padding: 14px 22px;
-      transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-      background: rgba(0,0,0,0.12);
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(10px);
+    .top-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
     }
 
-    .top-header.solid {
-      background: rgba(246,241,230,0.92);
-      border-bottom: 1px solid rgba(29,53,87,0.12);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
-    .top-header-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
+    .top-header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      color: #fff;
-      transition: color 0.25s ease;
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      color:#fff;
+      transition:color 0.25s ease;
     }
 
-    .top-header.solid .brand { color: var(--navy); }
+    .top-header.solid .brand{ color:var(--navy); }
 
-    .brand .line1 {
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 600;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      font-size: 12px;
-      opacity: 0.92;
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      opacity:0.92;
     }
 
-    .brand .line2 {
-      font-family: "Gyahegi", "Cormorant Garamond", serif;
-      font-size: 18px;
-      font-weight: 400;
-      letter-spacing: 2.2px;
-      text-transform: uppercase;
-      line-height: 1.14;
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-size:18px;
+      font-weight:400;
+      letter-spacing:2.2px;
+      text-transform:uppercase;
+      line-height:1.14;
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .instagram-btn {
-      width: 40px;
-      height: 40px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      color: #fff;
-      background: rgba(0,0,0,0.20);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(6px);
-      transition: 0.22s ease;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.16);
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
     }
 
-    .instagram-btn:hover {
-      transform: translateY(-1px);
-      background: rgba(0,0,0,0.28);
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
     }
 
-    .instagram-btn svg {
-      width: 18px;
-      height: 18px;
-      display: block;
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
+      display:block;
     }
 
-    .top-header.solid .instagram-btn {
-      color: var(--navy);
-      background: rgba(29,53,87,0.08);
-      border: 1px solid rgba(29,53,87,0.08);
-      box-shadow: none;
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
     }
 
-    .top-header.solid .instagram-btn:hover {
-      background: rgba(29,53,87,0.12);
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
     }
 
     .account-btn,
     .reserve-btn,
     .logout-btn-public,
-    .ghost-btn {
-      text-decoration: none;
-      font-weight: 900;
-      letter-spacing: 1.6px;
-      font-size: 11px;
-      padding: 10px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.14);
-      transition: 0.22s ease;
-      white-space: nowrap;
-      font-family: inherit;
-      cursor: pointer;
+    .ghost-btn{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      transition:0.22s ease;
+      white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
     }
 
-    .reserve-btn {
-      background: rgba(216,199,161,0.92);
-      color: #fff;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.20);
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
     }
 
-    .reserve-btn:hover {
-      background: rgba(203,181,140,0.98);
-      transform: translateY(-1px);
-      box-shadow: 0 22px 52px rgba(0,0,0,0.24);
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
 
     .account-btn,
     .logout-btn-public,
-    .ghost-btn {
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.16);
-      backdrop-filter: blur(6px);
+    .ghost-btn{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
     }
 
     .account-btn:hover,
     .logout-btn-public:hover,
-    .ghost-btn:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-1px);
+    .ghost-btn:hover{
+      background:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
     }
 
     .top-header.solid .account-btn,
     .top-header.solid .logout-btn-public,
-    .top-header.solid .ghost-btn {
-      color: var(--navy);
-      background: rgba(29,53,87,0.08);
-      border: 1px solid rgba(29,53,87,0.08);
-      box-shadow: none;
+    .top-header.solid .ghost-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
     }
 
     .top-header.solid .account-btn:hover,
     .top-header.solid .logout-btn-public:hover,
-    .top-header.solid .ghost-btn:hover {
-      background: rgba(29,53,87,0.12);
+    .top-header.solid .ghost-btn:hover{
+      background:rgba(29,53,87,0.12);
     }
 
-    .menu-button {
-      font-size: 28px;
-      line-height: 1;
-      color: #fff;
-      cursor: pointer;
-      user-select: none;
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.20);
-      backdrop-filter: blur(6px);
-      border: 0;
-      transition: 0.22s ease;
+    .menu-button{
+      font-size:28px;
+      line-height:1;
+      color:#fff;
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.20);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
     }
 
-    .top-header.solid .menu-button {
-      color: var(--navy);
-      background: rgba(29,53,87,0.08);
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
     }
 
-    .menu-button:hover {
-      transform: translateY(-1px);
-      background: rgba(0,0,0,0.28);
+    .menu-button:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
     }
 
-    .top-header.solid .menu-button:hover {
-      background: rgba(29,53,87,0.12);
+    .top-header.solid .menu-button:hover{
+      background:rgba(29,53,87,0.12);
     }
 
-    .backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.38);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.25s;
-      z-index: 11000;
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
     }
 
-    .backdrop.open { opacity: 1; pointer-events: auto; }
+    .backdrop.open{ opacity:1; pointer-events:auto; }
 
-    .side-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 270px;
-      height: 100vh;
-      background: #fff;
-      padding: 96px 26px 28px;
-      box-shadow: 12px 0 50px rgba(0,0,0,0.22);
-      transform: translateX(-100%);
-      transition: 0.3s ease;
-      z-index: 11500;
-      overflow-y: auto;
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+      overflow-y:auto;
     }
 
-    .side-menu.open { transform: translateX(0); }
+    .side-menu.open{ transform:translateX(0); }
 
     .side-menu a,
-    .side-menu button {
-      display: block;
-      margin: 0 0 16px;
-      color: var(--navy);
-      font-size: 15px;
-      letter-spacing: 0.2px;
-      background: none;
-      border: none;
-      padding: 0;
-      font-family: inherit;
-      cursor: pointer;
-      text-align: left;
-      width: 100%;
+    .side-menu button{
+      display:block;
+      margin:0 0 16px;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
     }
 
     .side-menu a:hover,
-    .side-menu button:hover { text-decoration: underline; }
+    .side-menu button:hover{ text-decoration:underline; }
 
-    .side-menu hr {
-      margin: 28px 0;
-      border: none;
-      border-top: 1px solid rgba(29,53,87,0.12);
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    .hero {
-      min-height: 92vh;
-      position: relative;
-      background-image: url("hero.jpg.webp");
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding: 136px 22px 88px;
+    .hero{
+      min-height:92vh;
+      position:relative;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      padding:136px 22px 88px;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.54), rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.56));
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,0.54), rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.56));
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      pointer-events: none;
-      background: radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
-      opacity: 0.95;
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
     }
 
-    .hero-shell {
-      position: relative;
-      z-index: 3;
-      width: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.03fr 0.97fr;
-      gap: 30px;
-      align-items: center;
+    .hero-shell{
+      position:relative;
+      z-index:3;
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1.03fr 0.97fr;
+      gap:30px;
+      align-items:center;
     }
 
-    .hero-copy {
-      color: #fff;
-      text-align: left;
-      opacity: 0;
-      transform: translateY(18px);
-      animation: heroIn 1.2s ease forwards;
+    .hero-copy{
+      color:#fff;
+      text-align:left;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
     }
 
-    .hero-kicker {
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-size: 14px;
-      margin-bottom: 12px;
-      opacity: 0.95;
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:0.95;
     }
 
-    .hero-title {
-      margin: 0;
-      font-family: "Gyahegi", "Cormorant Garamond", serif;
-      font-weight: 400;
-      font-size: clamp(34px, 5.5vw, 58px);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      line-height: 1.24;
-      text-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(34px, 5.5vw, 58px);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      line-height:1.24;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
     }
 
-    .hero-text {
-      margin: 18px 0 0;
-      max-width: 640px;
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 500;
-      font-size: 21px;
-      line-height: 1.7;
-      text-shadow: 0 10px 28px rgba(0,0,0,0.45);
-      opacity: 0.98;
+    .hero-text{
+      margin:18px 0 0;
+      max-width:640px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:21px;
+      line-height:1.7;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
     }
 
-    .hero-links {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .hero-links{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .hero-card {
-      position: relative;
-      z-index: 3;
-      background: linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
-      border: 1px solid rgba(255,255,255,0.30);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 28px 24px 24px;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      opacity: 0;
-      transform: translateY(18px);
-      animation: heroIn 1.2s ease forwards 0.12s;
-      animation-fill-mode: forwards;
-      text-align: left;
+    .hero-card{
+      position:relative;
+      z-index:3;
+      background:linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
+      border:1px solid rgba(255,255,255,0.30);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:28px 24px 24px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards 0.12s;
+      animation-fill-mode:forwards;
+      text-align:left;
     }
 
-    @keyframes heroIn {
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes heroIn{
+      to{ opacity:1; transform:translateY(0); }
     }
 
-    .card-eyebrow {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 700;
-      font-size: 18px;
-      color: rgba(29,53,87,0.76);
-      letter-spacing: 0.4px;
-      margin-bottom: 8px;
+    .card-eyebrow{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.76);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
     }
 
-    .card-title {
-      margin: 0;
-      font-family: "Gyahegi", "Cormorant Garamond", serif;
-      font-weight: 400;
-      font-size: 32px;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--navy);
-      line-height: 1.28;
+    .card-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.28;
     }
 
-    .card-subtitle {
-      margin: 12px 0 0;
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 15px;
+    .card-subtitle{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
     }
 
-    .orn {
-      width: 150px;
-      height: 1px;
-      background: linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
-      margin: 14px 0 0;
+    .orn{
+      width:150px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:14px 0 0;
     }
 
-    .hero-meta {
-      margin-top: 22px;
-      display: grid;
-      gap: 12px;
+    .hero-meta{
+      margin-top:18px;
+      display:grid;
+      gap:10px;
     }
 
-    .meta-card {
-      background: rgba(255,255,255,0.58);
-      border: 1px solid rgba(29,53,87,0.08);
-      border-radius: 18px;
-      padding: 14px 15px;
+    .meta-card{
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:14px 15px;
     }
 
-    .meta-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(29,53,87,0.60);
-      margin-bottom: 7px;
+    .meta-label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:7px;
     }
 
-    .meta-value {
-      display: block;
-      color: var(--ink);
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.6;
-      word-break: break-word;
+    .meta-value{
+      display:block;
+      color:var(--ink);
+      font-size:15px;
+      font-weight:600;
+      line-height:1.6;
+      word-break:break-word;
     }
 
-    .section {
-      padding: 74px 0;
+    .section{
+      padding:74px 0;
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
         radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
         linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
-      border-top: 1px solid rgba(29,53,87,0.08);
-    }
-
-    .wrap {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 22px;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 26px;
-    }
-
-    .summary-card {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(29,53,87,0.10);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: var(--shadowSoft);
-    }
-
-    .summary-label {
-      display: block;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(29,53,87,0.60);
-      margin-bottom: 8px;
-      line-height: 1.5;
-    }
-
-    .summary-value {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 34px;
-      font-weight: 700;
-      color: var(--navy);
-      line-height: 1;
-    }
-
-    .panel {
-      background: rgba(255,255,255,0.78);
-      border: 1px solid rgba(29,53,87,0.10);
-      border-radius: 24px;
-      box-shadow: var(--shadowSoft);
-      padding: 24px 22px;
-      margin-bottom: 24px;
+      border-top:1px solid rgba(29,53,87,0.08);
     }
 
-    .panel-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
     }
-
-    .panel-title-wrap { min-width: 0; }
 
-    .panel-kicker {
-      display: block;
-      font-family: "Cormorant Garamond", serif;
-      font-weight: 700;
-      font-size: 18px;
-      color: rgba(29,53,87,0.74);
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
+    .booking-layout{
+      display:grid;
+      grid-template-columns:1.04fr 0.96fr;
+      gap:24px;
+      align-items:start;
     }
 
-    .panel-title {
-      margin: 0;
-      font-family: "Gyahegi", "Cormorant Garamond", serif;
-      font-weight: 400;
-      font-size: 32px;
-      letter-spacing: 1.4px;
-      text-transform: uppercase;
-      color: var(--navy);
-      line-height: 1.2;
-    }
-
-    .panel-subtitle {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.8;
-      max-width: 820px;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr;
-      gap: 14px;
-      margin-bottom: 18px;
-      align-items: end;
-    }
-
-    .toolbar-secondary {
-      display: grid;
-      grid-template-columns: 0.9fr 0.9fr auto;
-      gap: 14px;
-      margin-bottom: 18px;
-      align-items: end;
-    }
-
-    .toolbar-card {
-      background: rgba(255,255,255,0.82);
-      border: 1px solid rgba(29,53,87,0.08);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .pricing-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .card-block {
-      background: rgba(255,255,255,0.82);
-      border: 1px solid rgba(29,53,87,0.08);
-      border-radius: 18px;
-      padding: 16px;
+    .panel{
+      background:rgba(255,255,255,0.78);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:24px;
+      box-shadow:var(--shadowSoft);
+      padding:24px 22px;
     }
-
-    .card-block h3 {
-      margin: 0 0 10px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 28px;
-      color: var(--navy);
-    }
-
-    .card-block p {
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.75;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-width: 0;
-    }
-
-    .field.full { grid-column: 1 / -1; }
-
-    .field label,
-    .toolbar-card label {
-      display: block;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      color: rgba(29,53,87,0.60);
-    }
 
-    .field input,
-    .field select,
-    .field textarea,
-    .toolbar-card input,
-    .toolbar-card select,
-    .reservation-actions select {
-      width: 100%;
-      border: 1px solid rgba(29,53,87,0.12);
-      background: rgba(255,255,255,0.90);
-      color: var(--ink);
-      border-radius: 14px;
-      padding: 12px 14px;
-      font: inherit;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus,
-    .toolbar-card input:focus,
-    .toolbar-card select:focus,
-    .reservation-actions select:focus {
-      border-color: rgba(184,149,95,0.80);
-      box-shadow: 0 0 0 4px rgba(216,199,161,0.18);
+    .panel-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.2;
     }
 
-    .field textarea {
-      min-height: 92px;
-      resize: vertical;
+    .panel-subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+      max-width:820px;
     }
 
-    .check-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--ink);
-      font-size: 14px;
-      line-height: 1.5;
-      margin-top: 2px;
-    }
-
-    .check-row input {
-      width: auto;
-      margin: 0;
-      transform: translateY(-1px);
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:22px;
     }
-
-    .actions-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .primary-btn,
-    .secondary-btn-light,
-    .danger-btn,
-    .save-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
-      border: none;
-      border-radius: 14px;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: 0.22s ease;
-      font-family: inherit;
-    }
 
-    .primary-btn,
-    .save-btn {
-      background: linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
-      color: #fff;
-      box-shadow: 0 18px 34px rgba(0,0,0,0.12);
-    }
-
-    .primary-btn:hover,
-    .save-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 22px 40px rgba(0,0,0,0.16);
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
     }
 
-    .secondary-btn-light {
-      background: rgba(29,53,87,0.08);
-      color: var(--navy);
-    }
+    .field.full{ grid-column:1 / -1; }
 
-    .secondary-btn-light:hover {
-      transform: translateY(-1px);
-      background: rgba(29,53,87,0.12);
-    }
-
-    .danger-btn {
-      background: linear-gradient(135deg, #b76565, #9e4747);
-      color: #fff;
-      box-shadow: 0 18px 34px rgba(181,74,74,0.14);
-    }
-
-    .danger-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .status-message {
-      display: none;
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 16px;
-      font-size: 14px;
-      line-height: 1.75;
-      border: 1px solid transparent;
+    label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
     }
 
-    .status-message.show { display: block; }
-    .status-message.success {
-      background: var(--ok-bg);
-      color: var(--ok-text);
-      border-color: rgba(47,122,75,0.18);
-    }
-    .status-message.error {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border-color: rgba(181,74,74,0.18);
+    input, select, textarea{
+      width:100%;
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.90);
+      color:var(--ink);
+      border-radius:14px;
+      padding:13px 14px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .status-message.info {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: rgba(81,109,143,0.18);
-    }
 
-    .preview-list {
-      display: grid;
-      gap: 10px;
-      max-height: 560px;
-      overflow: auto;
-      padding-right: 4px;
+    input:focus, select:focus, textarea:focus{
+      border-color:rgba(184,149,95,0.80);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.18);
     }
-
-    .preview-empty,
-    .empty-state {
-      border: 1px dashed rgba(29,53,87,0.18);
-      border-radius: 20px;
-      padding: 24px;
-      color: var(--muted);
-      text-align: center;
-      background: rgba(255,255,255,0.52);
-      line-height: 1.8;
-    }
 
-    .preview-item {
-      border: 1px solid rgba(29,53,87,0.08);
-      background: rgba(255,255,255,0.84);
-      border-radius: 18px;
-      padding: 14px;
+    select:disabled{
+      background:#f1ede3;
+      color:#5d5850;
+      cursor:not-allowed;
     }
 
-    .preview-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 8px;
+    textarea{
+      min-height:120px;
+      resize:vertical;
     }
 
-    .preview-date {
-      font-weight: 700;
-      color: var(--navy);
-      font-size: 15px;
+    .note-box,
+    .status-box{
+      font-size:13px;
+      line-height:1.75;
+      border-radius:16px;
+      padding:12px 14px;
     }
 
-    .preview-price {
-      font-weight: 700;
-      color: var(--navy);
-      font-size: 15px;
-      white-space: nowrap;
-    }
-
-    .preview-sub {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .mini-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 5px 8px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border: 1px solid transparent;
-      margin-right: 6px;
-      margin-top: 4px;
-    }
-
-    .mini-ok {
-      background: var(--ok-bg);
-      color: var(--ok-text);
-      border-color: rgba(47,122,75,0.18);
-    }
-
-    .mini-warn {
-      background: var(--warn-bg);
-      color: var(--warn-text);
-      border-color: rgba(184,149,95,0.20);
-    }
-
-    .mini-danger {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border-color: rgba(181,74,74,0.18);
-    }
-
-    .mini-info {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: rgba(81,109,143,0.18);
-    }
-
-    .reservation-card {
-      border: 1px solid rgba(29,53,87,0.08);
-      background: rgba(255,255,255,0.84);
-      border-radius: 22px;
-      padding: 18px 18px 16px;
-      margin-bottom: 14px;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.04);
+    .note-box{
+      background:rgba(255,255,255,0.62);
+      border:1px solid rgba(29,53,87,0.08);
+      color:var(--muted);
     }
 
-    .reservation-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 12px;
+    .note-box.gold{
+      background:rgba(184,149,95,0.10);
+      border-color:rgba(184,149,95,0.16);
+      color:#7d6542;
     }
 
-    .reservation-name {
-      font-family: "Cormorant Garamond", serif;
-      font-size: 30px;
-      font-weight: 700;
-      line-height: 1;
-      color: var(--navy);
-      margin-bottom: 8px;
+    .status-box{
+      display:none;
+      margin-top:2px;
+      border:1px solid transparent;
     }
+
+    .status-box.show{ display:block; }
+    .status-box.error{ color:var(--danger); background:var(--dangerBg); border-color:rgba(181,74,74,0.18); }
+    .status-box.success{ color:var(--success); background:var(--successBg); border-color:rgba(47,122,75,0.18); }
+    .status-box.info{ color:var(--info); background:var(--infoBg); border-color:rgba(81,109,143,0.18); }
+    .status-box.warn{ color:var(--warn); background:var(--warnBg); border-color:rgba(184,149,95,0.20); }
 
-    .reservation-subtext {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
+    .submit-btn,
+    .secondary-btn-light{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      border-radius:14px;
+      min-height:48px;
+      padding:14px 18px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:0.22s ease;
+      font-family:inherit;
     }
 
-    .reservation-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .mini-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.84);
-      border: 1px solid rgba(29,53,87,0.08);
-      color: var(--muted);
-    }
-
-    .badge-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: flex-end;
-      flex-shrink: 0;
-    }
-
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border: 1px solid transparent;
-    }
-
-    .badge-ok {
-      background: var(--ok-bg);
-      color: var(--ok-text);
-      border-color: rgba(47,122,75,0.12);
-    }
-
-    .badge-warn {
-      background: var(--warn-bg);
-      color: var(--warn-text);
-      border-color: rgba(184,149,95,0.14);
-    }
-
-    .badge-danger {
-      background: var(--danger-bg);
-      color: var(--danger-text);
-      border-color: rgba(181,74,74,0.12);
-    }
-
-    .badge-info {
-      background: var(--info-bg);
-      color: var(--info-text);
-      border-color: rgba(81,109,143,0.12);
-    }
-
-    .reservation-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 16px;
-    }
-
-    .reservation-item {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(29,53,87,0.06);
-      border-radius: 16px;
-      padding: 12px 14px;
-    }
-
-    .reservation-item strong {
-      display: block;
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .reservation-item span {
-      display: block;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.6;
-      word-break: break-word;
-    }
-
-    .reservation-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-      justify-content: flex-end;
-      align-items: center;
-    }
-
-    footer {
-      position: relative;
-      min-height: 160px;
-      max-height: 160px;
-      overflow: hidden;
-      margin-top: 0;
-      background: #032c52;
-    }
-
-    .footer-bg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .footer-overlay {
-      position: relative;
-      z-index: 2;
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 18px 34px;
-    }
-
-    .footer-contact {
-      width: min(410px, 100%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-family: "Cormorant Garamond", serif;
-      font-size: 22px;
-      line-height: 1.18;
-      color: #fff;
-      text-align: left;
-    }
-
-    .footer-contact a { color: inherit; }
-    .footer-contact a:hover { text-decoration: underline; }
-
-    @media (max-width: 1100px) {
-      .pricing-layout { grid-template-columns: 1fr; }
-      .toolbar { grid-template-columns: 1fr 1fr; }
-      .toolbar-secondary { grid-template-columns: 1fr 1fr auto; }
-    }
-
-    @media (max-width: 980px) {
-      .hero-shell { grid-template-columns: 1fr; gap: 22px; }
-      .hero-copy { text-align: center; }
-      .hero-text {
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .hero-links { justify-content: center; }
-      .summary-grid { grid-template-columns: 1fr 1fr; }
-
-      footer {
-        min-height: 200px;
-        max-height: none;
+    .submit-btn{
+      width:100%;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+    }
+
+    .submit-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 22px 40px rgba(0,0,0,0.16);
+    }
+
+    .submit-btn:disabled{
+      opacity:0.75;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .info-card{
+      border:1px solid rgba(29,53,87,0.08);
+      background:rgba(255,255,255,0.70);
+      border-radius:20px;
+      padding:18px;
+      margin-top:14px;
+    }
+
+    .info-card:first-of-type{ margin-top:22px; }
+
+    .info-card strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .info-card span,
+    .info-card p{
+      display:block;
+      font-size:15px;
+      line-height:1.75;
+      color:var(--ink);
+      margin:0;
+    }
+
+    .summary-line{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      padding:10px 0;
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      font-size:15px;
+    }
+
+    .summary-line:last-of-type{ border-bottom:none; }
+    .summary-label{ color:var(--muted); }
+    .summary-value{ font-weight:600; text-align:right; }
+
+    .breakdown-list{
+      margin-top:8px;
+      display:grid;
+      gap:8px;
+    }
+
+    .breakdown-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      color:var(--ink);
+      padding:8px 0;
+      border-bottom:1px dashed rgba(29,53,87,0.10);
+    }
+
+    .breakdown-row:last-child{ border-bottom:none; }
+
+    .summary-total{
+      margin-top:14px;
+      padding-top:16px;
+      border-top:1px solid rgba(29,53,87,0.10);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      font-size:18px;
+      font-weight:700;
+      color:var(--navy);
+    }
+
+    .help-text{
+      margin-top:2px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .calendar-day-price{
+      display:block;
+      margin-top:2px;
+      font-size:9px;
+      line-height:1.1;
+      color:#7c6340;
+      text-align:center;
+      white-space:nowrap;
+      transform:scale(0.95);
+    }
+
+    .calendar-day-min{
+      display:block;
+      margin-top:1px;
+      font-size:8px;
+      line-height:1.1;
+      color:#9a7642;
+      text-align:center;
+      white-space:nowrap;
+      transform:scale(0.92);
+    }
+
+    .flatpickr-day{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
+      padding-top:2px;
+      overflow:hidden;
+    }
+
+    .flatpickr-day span{
+      pointer-events:none;
+    }
+
+    .flatpickr-day.flatpickr-disabled,
+    .flatpickr-day.flatpickr-disabled:hover{
+      background:#eadfce;
+      color:#a69781;
+      text-decoration:line-through;
+      cursor:not-allowed;
+      border-color:#eadfce;
+    }
+
+    .flatpickr-day.flatpickr-disabled .calendar-day-price,
+    .flatpickr-day.flatpickr-disabled .calendar-day-min{
+      color:#a69781;
+    }
+
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{ color:inherit; }
+    .footer-contact a:hover{ text-decoration:underline; }
+
+    @media (max-width:980px){
+      .hero-shell,
+      .booking-layout,
+      .form-grid{
+        grid-template-columns:1fr;
       }
 
-      .footer-overlay {
-        height: 200px;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 18px 18px 20px;
+      .hero-copy{ text-align:center; }
+      .hero-text{ margin-left:auto; margin-right:auto; }
+      .hero-links{ justify-content:center; }
+
+      footer{
+        min-height:200px;
+        max-height:none;
       }
 
-      .footer-contact {
-        width: 100%;
-        font-size: 18px;
-        gap: 10px;
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
       }
     }
 
-    @media (max-width: 640px) {
-      .top-header { padding: 12px 16px; }
-      .top-header-inner { gap: 12px; }
-      .brand .line2 { font-size: 16px; }
-      .header-actions { gap: 8px; }
-      .hero { padding: 118px 16px 74px; }
-      .hero-title {
-        font-size: 34px;
-        line-height: 1.34;
-        letter-spacing: 1.2px;
-      }
-      .hero-text { font-size: 18px; }
-
-      .card-title,
-      .panel-title {
-        font-size: 28px;
-        line-height: 1.34;
-        letter-spacing: 1px;
-      }
-
-      .hero-card,
-      .panel {
-        padding: 22px 18px 20px;
-        border-radius: 22px;
-      }
-
-      .section { padding: 54px 0; }
-      .wrap { padding: 0 16px; }
-
-      .summary-grid,
-      .toolbar,
-      .toolbar-secondary,
-      .reservation-grid,
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .reservation-top {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .badge-stack {
-        align-items: flex-start;
-      }
-
-      .reservation-actions {
-        justify-content: flex-start;
-      }
-
-      .footer-contact { font-size: 17px; }
+    @media (max-width:640px){
+      .top-header{ padding:12px 16px; }
+      .top-header-inner{ gap:12px; }
+      .brand .line2{ font-size:16px; }
+      .header-actions{ gap:8px; }
+      .hero{ padding:118px 16px 74px; }
+      .hero-title{ font-size:34px; line-height:1.34; letter-spacing:1.2px; }
+      .hero-text{ font-size:18px; }
+      .card-title, .panel-title{ font-size:28px; line-height:1.34; letter-spacing:1px; }
+      .hero-card, .panel{ padding:22px 18px 20px; border-radius:22px; }
+      .section{ padding:54px 0; }
+      .wrap{ padding:0 16px; }
+      .footer-contact{ font-size:17px; }
+      .calendar-day-price{ font-size:8px; }
+      .calendar-day-min{ font-size:7px; }
     }
   </style>
 </head>
 <body>
-
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
@@ -1161,13 +874,19 @@
     <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
     <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
 
-    <hr />
+    <hr>
 
-    <a href="admin.html" onclick="toggleMenu(false)">Painel admin</a>
-    <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
-    <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+    <div id="sideLoggedOutLinks">
+      <a href="login.html" id="sideLoginLink" onclick="toggleMenu(false)">Login</a>
+      <a href="register.html" id="sideRegisterLink" onclick="toggleMenu(false)">Criar Conta</a>
+    </div>
 
-    <hr />
+    <div id="sideLoggedInLinks" class="hidden">
+      <a href="dashboard.html" id="sideDashboardLink" onclick="toggleMenu(false)">Minha área</a>
+      <button type="button" id="sideLogoutBtn">Sair</button>
+    </div>
+
+    <hr>
 
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
@@ -1190,49 +909,60 @@
           </svg>
         </a>
 
-        <a href="dashboard.html" class="ghost-btn">MINHA ÁREA</a>
+        <div id="headerLoggedOutLinks">
+          <a href="register.html" id="registerHeaderBtn" class="account-btn">CRIAR CONTA</a>
+        </div>
+
+        <div id="headerLoggedInLinks" class="hidden">
+          <a href="dashboard.html" id="headerDashboardBtn" class="account-btn">MINHA ÁREA</a>
+          <button id="headerLogoutBtn" class="logout-btn-public" type="button">SAIR</button>
+        </div>
+
         <a href="booking.html" class="reserve-btn">RESERVAR</a>
-        <button id="headerLogoutBtn" class="logout-btn-public" type="button">SAIR</button>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
-  <section class="hero" aria-label="Painel administrativo">
+  <section class="hero" aria-label="Reservas">
     <div class="hero-shell">
       <div class="hero-copy">
-        <div class="hero-kicker">Gestão do Chateau Pireneus</div>
-        <h1 class="hero-title">PAINEL ADMINISTRATIVO</h1>
+        <div class="hero-kicker">Reserve sua estadia</div>
+        <h1 class="hero-title">VIVA O CHARME DO CHATEAU PIRENEUS EM CADA NOITE</h1>
         <p class="hero-text">
-          Gerencie reservas, acompanhe pagamentos e controle preços dinâmicos, mínimos de noites e datas especiais em um só lugar.
+          Se você veio de uma acomodação específica, a suíte já ficará selecionada automaticamente. Os valores acompanham datas especiais, fins de semana e regras de mínimo de noites.
         </p>
 
         <div class="hero-links">
-          <a class="ghost-btn" href="#pricing-section">PRECIFICAÇÃO</a>
-          <a class="ghost-btn" href="#reservations-section">RESERVAS</a>
+          <a class="ghost-btn" href="acomodacoes.html">CONHECER ACOMODAÇÕES</a>
+          <a class="ghost-btn" href="pousada.html">A POUSADA</a>
         </div>
       </div>
 
       <div class="hero-card">
-        <span class="card-eyebrow">Status do painel</span>
-        <h2 class="card-title">VISÃO GERAL</h2>
+        <span class="card-eyebrow">Sua experiência começa aqui</span>
+        <h2 class="card-title">RESERVAR</h2>
         <p class="card-subtitle">
-          Aqui você visualiza rapidamente o comportamento do fluxo de reservas e controla a precificação por data.
+          Escolha a suíte, o período e confira o valor final por noite antes de seguir para o pagamento.
         </p>
         <div class="orn"></div>
 
         <div class="hero-meta">
           <div class="meta-card">
-            <span class="meta-label">Total de reservas</span>
-            <span class="meta-value" id="heroTotalReservations">0</span>
+            <span class="meta-label">Suíte</span>
+            <span class="meta-value" id="heroRoom">—</span>
           </div>
           <div class="meta-card">
-            <span class="meta-label">Pendentes / Holds</span>
-            <span class="meta-value" id="heroPendingReservations">0</span>
+            <span class="meta-label">Período</span>
+            <span class="meta-value"><span id="heroCheckIn">—</span> até <span id="heroCheckOut">—</span></span>
           </div>
           <div class="meta-card">
-            <span class="meta-label">Confirmadas / Pagas</span>
-            <span class="meta-value" id="heroConfirmedReservations">0</span>
+            <span class="meta-label">Resumo</span>
+            <span class="meta-value"><span id="heroNights">—</span> noite(s) • <span id="heroGuests">2</span> hóspede(s)</span>
+          </div>
+          <div class="meta-card">
+            <span class="meta-label">Total</span>
+            <span class="meta-value" id="heroTotal">A definir</span>
           </div>
         </div>
       </div>
@@ -1241,224 +971,105 @@
 
   <section class="section">
     <div class="wrap">
-      <div class="summary-grid">
-        <div class="summary-card">
-          <span class="summary-label">Total</span>
-          <span class="summary-value" id="total-count">0</span>
-        </div>
+      <div class="booking-layout">
+        <div class="panel">
+          <h2 class="panel-title">DADOS DA RESERVA</h2>
+          <p class="panel-subtitle">Preencha os dados abaixo para concluir sua solicitação.</p>
 
-        <div class="summary-card">
-          <span class="summary-label">Holds / Pendentes</span>
-          <span class="summary-value" id="pending-count">0</span>
-        </div>
-
-        <div class="summary-card">
-          <span class="summary-label">Confirmadas / Pagas</span>
-          <span class="summary-value" id="confirmed-count">0</span>
-        </div>
-
-        <div class="summary-card">
-          <span class="summary-label">Canceladas / Expiradas</span>
-          <span class="summary-value" id="cancelled-count">0</span>
-        </div>
-      </div>
-
-      <div class="panel" id="pricing-section">
-        <div class="panel-head">
-          <div class="panel-title-wrap">
-            <span class="panel-kicker">Controle de preço e regras</span>
-            <h2 class="panel-title">PRECIFICAÇÃO DINÂMICA</h2>
-            <p class="panel-subtitle">
-              Defina preço base por suíte, aplique preços especiais por período e configure o mínimo de noites para feriados, alta temporada ou finais de semana.
-            </p>
-          </div>
-        </div>
-
-        <div class="pricing-layout">
-          <div class="card-block">
-            <h3>Configurar preços</h3>
-            <p>Use a suíte, escolha o intervalo e defina o valor da diária. Se quiser, aplique também um mínimo de noites.</p>
-
+          <form id="bookingForm">
             <div class="form-grid">
               <div class="field full">
-                <label for="pricingRoom">Suíte</label>
-                <select id="pricingRoom">
-                  <option value="">Selecione</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="basePrice">Preço base</label>
-                <input type="number" id="basePrice" min="0" step="0.01" placeholder="0,00" />
-              </div>
-
-              <div class="field" style="justify-content:flex-end;">
-                <label>&nbsp;</label>
-                <button id="saveBasePriceBtn" class="secondary-btn-light" type="button">Salvar preço base</button>
-              </div>
-
-              <div class="field">
-                <label for="pricingStartDate">Data inicial</label>
-                <input type="date" id="pricingStartDate" />
-              </div>
-
-              <div class="field">
-                <label for="pricingEndDate">Data final</label>
-                <input type="date" id="pricingEndDate" />
-              </div>
-
-              <div class="field">
-                <label for="specialPrice">Preço especial</label>
-                <input type="number" id="specialPrice" min="0" step="0.01" placeholder="0,00" />
-              </div>
-
-              <div class="field">
-                <label for="minNights">Mínimo de noites</label>
-                <input type="number" id="minNights" min="1" step="1" placeholder="Ex: 3" />
-              </div>
-
-              <div class="field">
-                <label for="pricingSource">Tipo</label>
-                <select id="pricingSource">
-                  <option value="manual">Manual</option>
-                  <option value="weekend">Fim de semana</option>
-                  <option value="holiday">Feriado</option>
-                  <option value="seasonal">Temporada</option>
-                  <option value="base_override">Override</option>
-                </select>
+                <label for="room_id">Escolha a suíte</label>
+                <select id="room_id" required></select>
+                <div id="lockedRoomNote" class="note-box gold hidden">Esta reserva está vinculada à suíte que você escolheu anteriormente.</div>
               </div>
 
               <div class="field full">
-                <label for="pricingNotes">Observações</label>
-                <textarea id="pricingNotes" placeholder="Ex: Carnaval, feriado prolongado, réveillon, julho, evento especial"></textarea>
+                <label for="date_range">Período da hospedagem</label>
+                <input type="text" id="date_range" placeholder="Selecione check-in e check-out" required readonly>
+                <div class="note-box">Datas indisponíveis ficam bloqueadas. O calendário também mostra o valor da diária e, quando existir, o mínimo de noites.</div>
+                <div id="availabilityStatus" class="status-box info show">Selecione uma suíte para carregar a disponibilidade.</div>
+              </div>
+
+              <div class="field">
+                <label for="guests">Número de hóspedes</label>
+                <input type="number" id="guests" min="1" value="2" required>
               </div>
 
               <div class="field full">
-                <div class="check-row">
-                  <input type="checkbox" id="applyWeekdays" checked />
-                  <label for="applyWeekdays" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em dias úteis</label>
-                </div>
+                <label for="special_requests">Pedidos especiais</label>
+                <textarea id="special_requests" placeholder="Ex: decoração romântica, cama extra, horário previsto de chegada"></textarea>
+                <div class="help-text">Opcional. Você poderá alinhar detalhes adicionais depois da reserva.</div>
               </div>
 
               <div class="field full">
-                <div class="check-row">
-                  <input type="checkbox" id="applyWeekends" checked />
-                  <label for="applyWeekends" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em finais de semana</label>
-                </div>
-              </div>
-
-              <div class="field full">
-                <div class="check-row">
-                  <input type="checkbox" id="overwriteExisting" checked />
-                  <label for="overwriteExisting" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Sobrescrever preços já existentes</label>
-                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">CONFIRMAR SOLICITAÇÃO</button>
               </div>
             </div>
-
-            <div class="actions-row">
-              <button id="applyPricingBtn" class="primary-btn" type="button">Aplicar preço</button>
-              <button id="deletePricingBtn" class="danger-btn" type="button">Remover override</button>
-              <button id="loadPricingPreviewBtn" class="secondary-btn-light" type="button">Visualizar faixa</button>
-            </div>
-
-            <div id="pricingStatus" class="status-message info show">
-              Selecione a suíte e defina uma faixa de datas para começar.
-            </div>
-          </div>
-
-          <div class="card-block">
-            <h3>Prévia da faixa</h3>
-            <p>Veja o preço efetivo, a origem do preço e o mínimo de noites configurado em cada data.</p>
-
-            <div id="pricingPreview" class="preview-list">
-              <div class="preview-empty">Nenhuma faixa carregada ainda.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel" id="reservations-section">
-        <div class="panel-head">
-          <div class="panel-title-wrap">
-            <span class="panel-kicker">Operação diária</span>
-            <h2 class="panel-title">RESERVAS</h2>
-            <p class="panel-subtitle">
-              Filtre e acompanhe todas as reservas, os status de pagamento e o comportamento do fluxo de hospedagem.
-            </p>
-          </div>
-
-          <button id="refreshReservationsBtn" class="secondary-btn-light" type="button">Atualizar</button>
+          </form>
         </div>
 
-        <div class="toolbar">
-          <div class="toolbar-card">
-            <label for="searchInput">Buscar</label>
-            <input type="text" id="searchInput" placeholder="Hóspede, email, suíte, reserva..." />
+        <div class="panel">
+          <h2 class="panel-title">RESUMO ATUAL</h2>
+          <p class="panel-subtitle">Confira as noites, o valor final e as regras que serão aplicadas à sua reserva.</p>
+
+          <div class="info-card">
+            <span>
+              <div class="summary-line">
+                <span class="summary-label">Suíte</span>
+                <span class="summary-value" id="summaryRoom">—</span>
+              </div>
+              <div class="summary-line">
+                <span class="summary-label">Check-in</span>
+                <span class="summary-value" id="summaryCheckIn">—</span>
+              </div>
+              <div class="summary-line">
+                <span class="summary-label">Check-out</span>
+                <span class="summary-value" id="summaryCheckOut">—</span>
+              </div>
+              <div class="summary-line">
+                <span class="summary-label">Noites</span>
+                <span class="summary-value" id="summaryNights">—</span>
+              </div>
+              <div class="summary-line">
+                <span class="summary-label">Hóspedes</span>
+                <span class="summary-value" id="summaryGuests">2</span>
+              </div>
+              <div class="summary-line">
+                <span class="summary-label">Mínimo exigido</span>
+                <span class="summary-value" id="summaryMinNights">—</span>
+              </div>
+
+              <div id="summaryBreakdown" class="breakdown-list"></div>
+
+              <div class="summary-total">
+                <span>Total</span>
+                <span id="summaryTotal">A definir</span>
+              </div>
+            </span>
           </div>
 
-          <div class="toolbar-card">
-            <label for="statusFilter">Situação</label>
-            <select id="statusFilter">
-              <option value="all">Todos</option>
-              <option value="held_pending">Holds / Pendentes</option>
-              <option value="confirmed_paid">Confirmadas / Pagas</option>
-              <option value="cancelled_expired">Canceladas / Expiradas</option>
-            </select>
+          <div class="info-card">
+            <strong>Como funciona</strong>
+            <p>O sistema valida disponibilidade, cria um hold temporário e depois te leva direto para o Stripe Checkout.</p>
           </div>
 
-          <div class="toolbar-card">
-            <label for="roomFilter">Suíte</label>
-            <select id="roomFilter">
-              <option value="all">Todas</option>
-            </select>
+          <div class="info-card">
+            <strong>Preços dinâmicos</strong>
+            <p>Finais de semana, feriados e datas especiais podem ter valores diferentes por noite, calculados automaticamente.</p>
           </div>
 
-          <div class="toolbar-card">
-            <label for="paymentFilter">Pagamento</label>
-            <select id="paymentFilter">
-              <option value="all">Todos</option>
-              <option value="paid">Pago</option>
-              <option value="pending">Pendente</option>
-              <option value="failed">Falhou</option>
-              <option value="expired">Expirado</option>
-              <option value="other">Outros</option>
-            </select>
+          <div class="info-card">
+            <strong>Mínimo de noites</strong>
+            <p>Se o período escolhido incluir uma regra especial, você verá o aviso antes de tentar concluir a reserva.</p>
           </div>
-        </div>
-
-        <div class="toolbar-secondary">
-          <div class="toolbar-card">
-            <label for="sortFilter">Ordenar por</label>
-            <select id="sortFilter">
-              <option value="created_desc">Mais recentes primeiro</option>
-              <option value="created_asc">Mais antigas primeiro</option>
-              <option value="checkin_asc">Check-in mais próximo</option>
-              <option value="checkin_desc">Check-in mais distante</option>
-            </select>
-          </div>
-
-          <div class="toolbar-card">
-            <label for="dateFilter">Período</label>
-            <select id="dateFilter">
-              <option value="all">Todos</option>
-              <option value="future">Check-in futuro</option>
-              <option value="today">Check-in hoje</option>
-              <option value="past">Check-in passado</option>
-            </select>
-          </div>
-
-          <button id="clearFiltersBtn" class="secondary-btn-light" type="button">Limpar filtros</button>
-        </div>
-
-        <div id="reservationsList">
-          <div class="empty-state">Nenhuma reserva encontrada.</div>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus" />
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
     <div class="footer-overlay">
       <div class="footer-contact">
         <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
@@ -1473,37 +1084,47 @@
 
     const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
+    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
     const topHeader = document.getElementById("topHeader");
+    const bookingForm = document.getElementById("bookingForm");
+    const roomSelect = document.getElementById("room_id");
+    const lockedRoomNote = document.getElementById("lockedRoomNote");
+    const availabilityStatus = document.getElementById("availabilityStatus");
+    const submitBtn = document.getElementById("submitBtn");
+    const dateRangeInput = document.getElementById("date_range");
+    const guestsInput = document.getElementById("guests");
+    const specialRequestsInput = document.getElementById("special_requests");
 
-    const pricingRoom = document.getElementById("pricingRoom");
-    const basePrice = document.getElementById("basePrice");
-    const pricingStartDate = document.getElementById("pricingStartDate");
-    const pricingEndDate = document.getElementById("pricingEndDate");
-    const specialPrice = document.getElementById("specialPrice");
-    const minNights = document.getElementById("minNights");
-    const pricingSource = document.getElementById("pricingSource");
-    const pricingNotes = document.getElementById("pricingNotes");
-    const applyWeekdays = document.getElementById("applyWeekdays");
-    const applyWeekends = document.getElementById("applyWeekends");
-    const overwriteExisting = document.getElementById("overwriteExisting");
-    const pricingStatus = document.getElementById("pricingStatus");
-    const pricingPreview = document.getElementById("pricingPreview");
+    const summaryRoom = document.getElementById("summaryRoom");
+    const summaryCheckIn = document.getElementById("summaryCheckIn");
+    const summaryCheckOut = document.getElementById("summaryCheckOut");
+    const summaryNights = document.getElementById("summaryNights");
+    const summaryGuests = document.getElementById("summaryGuests");
+    const summaryMinNights = document.getElementById("summaryMinNights");
+    const summaryBreakdown = document.getElementById("summaryBreakdown");
+    const summaryTotal = document.getElementById("summaryTotal");
 
-    const searchInput = document.getElementById("searchInput");
-    const statusFilter = document.getElementById("statusFilter");
-    const roomFilter = document.getElementById("roomFilter");
-    const paymentFilter = document.getElementById("paymentFilter");
-    const sortFilter = document.getElementById("sortFilter");
-    const dateFilter = document.getElementById("dateFilter");
-    const reservationsList = document.getElementById("reservationsList");
+    const heroRoom = document.getElementById("heroRoom");
+    const heroCheckIn = document.getElementById("heroCheckIn");
+    const heroCheckOut = document.getElementById("heroCheckOut");
+    const heroNights = document.getElementById("heroNights");
+    const heroGuests = document.getElementById("heroGuests");
+    const heroTotal = document.getElementById("heroTotal");
 
+    let roomsMap = new Map();
+    let selectedCheckIn = "";
+    let selectedCheckOut = "";
+    let unavailableDates = [];
+    let calendarPricesMap = {};
+    let datePicker = null;
+    let availabilityLoadedForRoomId = null;
+    let currentQuote = null;
     let currentUser = null;
-    let rooms = [];
-    let allReservations = [];
-    let profilesMap = {};
+    let currentIsAdmin = false;
+    let currentMinStayViolated = false;
 
     function onScrollHeader() {
       const y = window.scrollY || document.documentElement.scrollTop;
@@ -1528,123 +1149,73 @@
       }
     }
 
-    function redirectToLogin() {
-      const returnTo = window.location.pathname + window.location.search;
-      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+    async function isAdminUser(userId) {
+      if (!userId) return false;
+
+      const { data, error } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error(error);
+        return false;
+      }
+
+      return !!data;
     }
 
-    function formatDate(dateString) {
-      if (!dateString) return "-";
-      const [year, month, day] = String(dateString).split("-");
-      if (!year || !month || !day) return String(dateString);
-      return `${day}/${month}/${year}`;
-    }
+    async function applySessionHeader() {
+      const headerLoggedOutLinks = document.getElementById("headerLoggedOutLinks");
+      const headerLoggedInLinks = document.getElementById("headerLoggedInLinks");
+      const sideLoggedOutLinks = document.getElementById("sideLoggedOutLinks");
+      const sideLoggedInLinks = document.getElementById("sideLoggedInLinks");
+      const headerDashboardBtn = document.getElementById("headerDashboardBtn");
+      const sideDashboardLink = document.getElementById("sideDashboardLink");
+      const sideLogoutBtn = document.getElementById("sideLogoutBtn");
+      const headerLogoutBtn = document.getElementById("headerLogoutBtn");
+      const registerHeaderBtn = document.getElementById("registerHeaderBtn");
+      const sideLoginLink = document.getElementById("sideLoginLink");
+      const sideRegisterLink = document.getElementById("sideRegisterLink");
 
-    function formatDateTime(value) {
-      if (!value) return "-";
-      return new Date(value).toLocaleString("pt-BR");
-    }
-
-    function formatCurrency(value) {
-      if (value === null || value === undefined || value === "") return "-";
-      const number = Number(value);
-      if (Number.isNaN(number)) return "-";
-      return number.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      });
-    }
-
-    function normalizeStatus(status) {
-      return String(status || "").toLowerCase();
-    }
-
-    function mainStatusLabel(status) {
-      const map = {
-        pending: "Pendente",
-        confirmed: "Confirmada",
-        cancelled: "Cancelada",
-        canceled: "Cancelada",
-        completed: "Concluída",
-        expired: "Expirada"
-      };
-      return map[normalizeStatus(status)] || status || "Pendente";
-    }
-
-    function bookingStatusLabel(status) {
-      const map = {
-        held: "Em hold",
-        pending: "Pendente",
-        booked: "Reservada",
-        cancelled: "Cancelada",
-        canceled: "Cancelada",
-        expired: "Expirada"
-      };
-      return map[normalizeStatus(status)] || status || "—";
-    }
-
-    function paymentStatusLabel(status) {
-      const map = {
-        pending: "Pendente",
-        paid: "Pago",
-        failed: "Falhou",
-        cancelled: "Cancelado",
-        canceled: "Cancelado",
-        expired: "Expirado",
-        refunded: "Reembolsado"
-      };
-      return map[normalizeStatus(status)] || status || "—";
-    }
-
-    function statusBadgeClass(status) {
-      const value = normalizeStatus(status);
-      if (["confirmed", "booked", "paid"].includes(value)) return "badge-ok";
-      if (["cancelled", "canceled", "failed"].includes(value)) return "badge-danger";
-      if (["expired", "completed", "base", "manual", "weekend", "holiday", "seasonal", "base_override"].includes(value)) return "badge-info";
-      return "badge-warn";
-    }
-
-    function previewBadgeClass(source) {
-      const value = normalizeStatus(source);
-      if (["holiday", "weekend"].includes(value)) return "mini-warn";
-      if (["manual", "base_override"].includes(value)) return "mini-info";
-      if (value === "seasonal") return "mini-ok";
-      return "mini-info";
-    }
-
-    function setPricingStatus(type, text) {
-      pricingStatus.className = `status-message show ${type}`;
-      pricingStatus.textContent = text;
-    }
-
-    async function requireAdmin() {
       const { data, error } = await supabaseClient.auth.getUser();
+      const returnTo = window.location.pathname + window.location.search;
 
       if (error || !data.user) {
-        redirectToLogin();
-        return false;
+        currentUser = null;
+        currentIsAdmin = false;
+        headerLoggedOutLinks.classList.remove("hidden");
+        headerLoggedInLinks.classList.add("hidden");
+        sideLoggedOutLinks.classList.remove("hidden");
+        sideLoggedInLinks.classList.add("hidden");
+        registerHeaderBtn.href = `register.html?return_to=${encodeURIComponent(returnTo)}`;
+        sideLoginLink.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+        sideRegisterLink.href = `register.html?return_to=${encodeURIComponent(returnTo)}`;
+        return;
       }
 
       currentUser = data.user;
+      currentIsAdmin = await isAdminUser(currentUser.id);
 
-      const { data: adminRow, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+      const areaHref = currentIsAdmin ? "admin.html" : "dashboard.html";
+      const areaLabel = currentIsAdmin ? "ADMIN" : "MINHA ÁREA";
 
-      if (adminError) {
-        console.error(adminError);
-        alert("Não foi possível validar o acesso administrativo.");
-        return false;
-      }
+      headerDashboardBtn.href = areaHref;
+      sideDashboardLink.href = areaHref;
+      headerDashboardBtn.textContent = areaLabel;
+      sideDashboardLink.textContent = currentIsAdmin ? "Painel admin" : "Minha área";
 
-      if (!adminRow) {
-        window.location.href = "dashboard.html";
-        return false;
-      }
+      headerLoggedOutLinks.classList.add("hidden");
+      headerLoggedInLinks.classList.remove("hidden");
+      sideLoggedOutLinks.classList.add("hidden");
+      sideLoggedInLinks.classList.remove("hidden");
 
-      return true;
+      headerLogoutBtn.onclick = logout;
+      sideLogoutBtn.onclick = async function() {
+        toggleMenu(false);
+        await logout();
+      };
     }
 
     async function logout() {
@@ -1652,186 +1223,135 @@
       window.location.href = "login.html";
     }
 
-    document.getElementById("headerLogoutBtn").addEventListener("click", logout);
-
-    async function loadRooms() {
-      const { data, error } = await supabaseClient
-        .from("rooms")
-        .select("id, name")
-        .eq("active", true)
-        .order("id", { ascending: true });
-
-      if (error) {
-        console.error(error);
-        alert(error.message);
-        return;
-      }
-
-      rooms = data || [];
-
-      pricingRoom.innerHTML =
-        '<option value="">Selecione</option>' +
-        rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
-
-      roomFilter.innerHTML =
-        '<option value="all">Todas</option>' +
-        rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
+    function getLockedRoomIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const value = params.get("room_id");
+      if (!value) return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
     }
 
-    async function loadBasePrice() {
-      const roomName = pricingRoom.value;
-
-      if (!roomName) {
-        basePrice.value = "";
-        return;
-      }
-
-      const { data, error } = await supabaseClient.rpc("admin_get_room_base_price", {
-        p_room_type: roomName
-      });
-
-      if (error) {
-        console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível carregar o preço base.");
-        return;
-      }
-
-      basePrice.value = data ?? "";
+    function formatDateDisplay(dateStr) {
+      if (!dateStr) return "—";
+      const [year, month, day] = dateStr.split("-");
+      return `${day}/${month}/${year}`;
     }
 
-    async function saveBasePrice() {
-      const roomName = pricingRoom.value;
-      const value = basePrice.value;
+    function formatDateLocal(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
 
-      if (!roomName) {
-        setPricingStatus("error", "Selecione uma suíte.");
+    function countNights(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 0;
+      const start = new Date(checkIn + "T00:00:00");
+      const end = new Date(checkOut + "T00:00:00");
+      return Math.round((end - start) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      }).format(Number(value || 0));
+    }
+
+    function setAvailabilityMessage(type, text) {
+      availabilityStatus.className = `status-box show ${type}`;
+      availabilityStatus.textContent = text;
+    }
+
+    function resetDates() {
+      selectedCheckIn = "";
+      selectedCheckOut = "";
+      currentQuote = null;
+      currentMinStayViolated = false;
+      dateRangeInput.value = "";
+      if (datePicker) datePicker.clear();
+    }
+
+    function clearQuoteDisplay() {
+      currentQuote = null;
+      currentMinStayViolated = false;
+      summaryBreakdown.innerHTML = "";
+      summaryTotal.textContent = "A definir";
+      heroTotal.textContent = "A definir";
+      summaryMinNights.textContent = "—";
+      updateSubmitState();
+    }
+
+    function updateSubmitState() {
+      const hasValidQuote = !!currentQuote && !currentMinStayViolated;
+      submitBtn.disabled = !hasValidQuote;
+    }
+
+    function renderQuoteBreakdown() {
+      if (!currentQuote || !Array.isArray(currentQuote.nightly_prices) || currentQuote.nightly_prices.length === 0) {
+        summaryBreakdown.innerHTML = "";
+        summaryTotal.textContent = "A definir";
+        heroTotal.textContent = "A definir";
+        summaryMinNights.textContent = "—";
+        updateSubmitState();
         return;
       }
 
-      if (value === "") {
-        setPricingStatus("error", "Informe o preço base.");
-        return;
-      }
+      summaryBreakdown.innerHTML = currentQuote.nightly_prices.map(item => {
+        const dateLabel = new Date(item.date + "T00:00:00").toLocaleDateString("pt-BR");
+        const minLabel = item.min_nights ? ` • mín ${item.min_nights} noite${item.min_nights > 1 ? "s" : ""}` : "";
+        return `
+          <div class="breakdown-row">
+            <span>${dateLabel}${minLabel}</span>
+            <span>${formatCurrency(item.price)}</span>
+          </div>
+        `;
+      }).join("");
 
-      setPricingStatus("info", "Salvando preço base...");
+      const totalText = formatCurrency(currentQuote.total || 0);
+      summaryTotal.textContent = totalText;
+      heroTotal.textContent = totalText;
 
-      const { error } = await supabaseClient.rpc("admin_upsert_room_base_price", {
+      const requiredMin = Number(currentQuote.required_min_nights || 1);
+      summaryMinNights.textContent = `${requiredMin} noite${requiredMin > 1 ? "s" : ""}`;
+
+      updateSubmitState();
+    }
+
+    function updateSummary() {
+      const roomId = Number(roomSelect.value);
+      const selectedRoom = roomsMap.get(roomId);
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const guests = Number(guestsInput.value || 0);
+
+      summaryRoom.textContent = selectedRoom ? selectedRoom.name : "—";
+      summaryCheckIn.textContent = formatDateDisplay(selectedCheckIn);
+      summaryCheckOut.textContent = formatDateDisplay(selectedCheckOut);
+      summaryNights.textContent = nights > 0 ? String(nights) : "—";
+      summaryGuests.textContent = guests > 0 ? String(guests) : "—";
+
+      heroRoom.textContent = selectedRoom ? selectedRoom.name : "—";
+      heroCheckIn.textContent = formatDateDisplay(selectedCheckIn);
+      heroCheckOut.textContent = formatDateDisplay(selectedCheckOut);
+      heroNights.textContent = nights > 0 ? String(nights) : "—";
+      heroGuests.textContent = guests > 0 ? String(guests) : "—";
+
+      renderQuoteBreakdown();
+    }
+
+    async function fetchQuote(roomName, checkIn, checkOut) {
+      const { data, error } = await supabaseClient.rpc("get_room_price_breakdown", {
         p_room_type: roomName,
-        p_base_price: Number(value)
+        p_check_in: checkIn,
+        p_check_out: checkOut
       });
 
-      if (error) {
-        console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível salvar o preço base.");
-        return;
-      }
-
-      setPricingStatus("success", "Preço base salvo com sucesso.");
-      await loadPricingPreview();
+      if (error) throw error;
+      return data;
     }
 
-    async function applyPricing() {
-      const roomName = pricingRoom.value;
-      const startDate = pricingStartDate.value;
-      const endDate = pricingEndDate.value;
-      const price = specialPrice.value;
-      const minimumNights = minNights.value === "" ? null : Number(minNights.value);
-
-      if (!roomName) {
-        setPricingStatus("error", "Selecione uma suíte.");
-        return;
-      }
-
-      if (!startDate || !endDate) {
-        setPricingStatus("error", "Informe a faixa de datas.");
-        return;
-      }
-
-      if (price === "") {
-        setPricingStatus("error", "Informe o preço especial.");
-        return;
-      }
-
-      setPricingStatus("info", "Aplicando preços e regras...");
-
-      const { data, error } = await supabaseClient.rpc("admin_upsert_room_prices", {
-        p_room_type: roomName,
-        p_start_date: startDate,
-        p_end_date: endDate,
-        p_price: Number(price),
-        p_apply_weekdays: applyWeekdays.checked,
-        p_apply_weekends: applyWeekends.checked,
-        p_source: pricingSource.value,
-        p_notes: pricingNotes.value.trim() || null,
-        p_overwrite: overwriteExisting.checked,
-        p_min_nights: minimumNights
-      });
-
-      if (error) {
-        console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível aplicar o preço.");
-        return;
-      }
-
-      setPricingStatus("success", `${data || 0} data(s) atualizada(s) com sucesso.`);
-      await loadPricingPreview();
-    }
-
-    async function deletePricing() {
-      const roomName = pricingRoom.value;
-      const startDate = pricingStartDate.value;
-      const endDate = pricingEndDate.value;
-
-      if (!roomName) {
-        setPricingStatus("error", "Selecione uma suíte.");
-        return;
-      }
-
-      if (!startDate || !endDate) {
-        setPricingStatus("error", "Informe a faixa de datas para remover override.");
-        return;
-      }
-
-      setPricingStatus("info", "Removendo overrides...");
-
-      const { data, error } = await supabaseClient.rpc("admin_delete_room_prices", {
-        p_room_type: roomName,
-        p_start_date: startDate,
-        p_end_date: endDate,
-        p_delete_weekdays: applyWeekdays.checked,
-        p_delete_weekends: applyWeekends.checked
-      });
-
-      if (error) {
-        console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível remover o override.");
-        return;
-      }
-
-      setPricingStatus("success", `${data || 0} override(s) removido(s).`);
-      await loadPricingPreview();
-    }
-
-    async function loadPricingPreview() {
-      const roomName = pricingRoom.value;
-      const startDate = pricingStartDate.value;
-      const endDate = pricingEndDate.value;
-
-      if (!roomName) {
-        pricingPreview.innerHTML = `<div class="preview-empty">Selecione uma suíte para visualizar a faixa.</div>`;
-        return;
-      }
-
-      await loadBasePrice();
-
-      if (!startDate || !endDate) {
-        pricingPreview.innerHTML = `<div class="preview-empty">Escolha a faixa de datas para visualizar preços e regras.</div>`;
-        return;
-      }
-
-      setPricingStatus("info", "Carregando prévia da faixa...");
-
-      const { data, error } = await supabaseClient.rpc("admin_get_room_prices", {
+    async function loadCalendarPrices(roomName, startDate, endDate) {
+      const { data, error } = await supabaseClient.rpc("get_room_calendar_prices", {
         p_room_type: roomName,
         p_start_date: startDate,
         p_end_date: endDate
@@ -1839,327 +1359,390 @@
 
       if (error) {
         console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível carregar a prévia.");
+        calendarPricesMap = {};
         return;
       }
 
-      const rows = data || [];
-
-      if (!rows.length) {
-        pricingPreview.innerHTML = `<div class="preview-empty">Nenhum dia encontrado nessa faixa.</div>`;
-        setPricingStatus("info", "Faixa carregada sem resultados.");
-        return;
-      }
-
-      pricingPreview.innerHTML = rows.map(row => `
-        <div class="preview-item">
-          <div class="preview-head">
-            <div class="preview-date">${formatDate(row.rate_date)}</div>
-            <div class="preview-price">${formatCurrency(row.effective_price)}</div>
-          </div>
-
-          <div class="preview-sub">
-            <span class="mini-badge ${previewBadgeClass(row.source)}">${row.source || "base"}</span>
-            ${row.min_nights ? `<span class="mini-badge mini-warn">Min ${row.min_nights} noite${row.min_nights > 1 ? "s" : ""}</span>` : `<span class="mini-badge mini-info">Min 1 noite</span>`}
-            <br />
-            Base: ${formatCurrency(row.base_price)}<br />
-            Override: ${row.override_price !== null ? formatCurrency(row.override_price) : "—"}<br />
-            ${row.notes ? `Obs: ${row.notes}` : ""}
-          </div>
-        </div>
-      `).join("");
-
-      setPricingStatus("success", "Prévia carregada com sucesso.");
-    }
-
-    async function loadReservations() {
-      const { data: reservations, error: reservationsError } = await supabaseClient
-        .from("reservations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (reservationsError) {
-        console.error(reservationsError);
-        alert(reservationsError.message);
-        return;
-      }
-
-      const { data: profiles, error: profilesError } = await supabaseClient
-        .from("profiles")
-        .select("id, full_name, phone");
-
-      if (profilesError) {
-        console.error(profilesError);
-        alert(profilesError.message);
-        return;
-      }
-
-      profilesMap = {};
-      (profiles || []).forEach(profile => {
-        profilesMap[profile.id] = profile;
+      calendarPricesMap = {};
+      (data || []).forEach(item => {
+        calendarPricesMap[item.rate_date] = {
+          price: item.effective_price,
+          min_nights: item.min_nights
+        };
       });
-
-      allReservations = reservations || [];
-      updateReservationSummary();
-      renderReservations();
     }
 
-    function updateReservationSummary() {
-      const total = allReservations.length;
+    async function refreshQuote() {
+      const roomId = Number(roomSelect.value);
+      const selectedRoom = roomsMap.get(roomId);
 
-      const pending = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return general === "pending" || booking === "held" || payment === "pending";
-      }).length;
+      if (!selectedRoom || !selectedCheckIn || !selectedCheckOut) {
+        clearQuoteDisplay();
+        updateSummary();
+        return;
+      }
 
-      const confirmed = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return general === "confirmed" || booking === "booked" || payment === "paid";
-      }).length;
+      try {
+        const quote = await fetchQuote(selectedRoom.name, selectedCheckIn, selectedCheckOut);
+        currentQuote = quote;
+        currentMinStayViolated = false;
 
-      const cancelled = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return (
-          general === "cancelled" ||
-          general === "canceled" ||
-          general === "expired" ||
-          booking === "cancelled" ||
-          booking === "expired" ||
-          payment === "failed" ||
-          payment === "expired"
-        );
-      }).length;
+        const nights = countNights(selectedCheckIn, selectedCheckOut);
+        const requiredMin = Number(quote.required_min_nights || 1);
 
-      document.getElementById("total-count").textContent = total;
-      document.getElementById("pending-count").textContent = pending;
-      document.getElementById("confirmed-count").textContent = confirmed;
-      document.getElementById("cancelled-count").textContent = cancelled;
+        if (nights < requiredMin) {
+          currentMinStayViolated = true;
+          setAvailabilityMessage("warn", `Este período exige mínimo de ${requiredMin} noite${requiredMin > 1 ? "s" : ""}. Você selecionou ${nights}.`);
+        }
+      } catch (error) {
+        console.error(error);
+        currentQuote = null;
+        currentMinStayViolated = false;
+        setAvailabilityMessage("error", error.message || "Não foi possível calcular o valor da hospedagem.");
+      }
 
-      document.getElementById("heroTotalReservations").textContent = total;
-      document.getElementById("heroPendingReservations").textContent = pending;
-      document.getElementById("heroConfirmedReservations").textContent = confirmed;
+      updateSummary();
     }
 
-    function getFilteredReservations() {
-      const search = searchInput.value.trim().toLowerCase();
-      const statusValue = statusFilter.value;
-      const roomValue = roomFilter.value;
-      const paymentValue = paymentFilter.value;
-      const sortValue = sortFilter.value;
-      const dateValue = dateFilter.value;
+    function injectDayPrice(dayElem, dateStr) {
+      const info = calendarPricesMap[dateStr];
+      if (!info) return;
+
+      const existingPrice = dayElem.querySelector(".calendar-day-price");
+      const existingMin = dayElem.querySelector(".calendar-day-min");
+      if (existingPrice) existingPrice.remove();
+      if (existingMin) existingMin.remove();
+
+      const price = document.createElement("span");
+      price.className = "calendar-day-price";
+      price.textContent = formatCurrency(info.price).replace(",00", "");
+      dayElem.appendChild(price);
+
+      if (info.min_nights && Number(info.min_nights) > 1) {
+        const min = document.createElement("span");
+        min.className = "calendar-day-min";
+        min.textContent = `mín ${info.min_nights}n`;
+        dayElem.appendChild(min);
+      }
+    }
+
+    function rebuildCalendar() {
+      if (datePicker) datePicker.destroy();
+
+      datePicker = flatpickr("#date_range", {
+        mode: "range",
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        disable: unavailableDates.slice(),
+        locale: { firstDayOfWeek: 0 },
+        onDayCreate: function(_, __, ___, dayElem) {
+          const dateStr = formatDateLocal(dayElem.dateObj);
+          injectDayPrice(dayElem, dateStr);
+        },
+        onChange: async function(selectedDates) {
+          selectedCheckIn = "";
+          selectedCheckOut = "";
+          currentQuote = null;
+          currentMinStayViolated = false;
+
+          if (selectedDates.length >= 2) {
+            const checkIn = formatDateLocal(selectedDates[0]);
+            const checkOut = formatDateLocal(selectedDates[1]);
+
+            if (checkOut > checkIn) {
+              selectedCheckIn = checkIn;
+              selectedCheckOut = checkOut;
+              setAvailabilityMessage("info", "Calculando valores e regras da hospedagem...");
+              await refreshQuote();
+
+              if (!currentMinStayViolated && currentQuote) {
+                setAvailabilityMessage("success", "Período selecionado. Revise o resumo e confirme sua solicitação.");
+              }
+            } else {
+              setAvailabilityMessage("error", "O check-out precisa ser depois do check-in.");
+            }
+          } else if (selectedDates.length === 1) {
+            clearQuoteDisplay();
+            updateSummary();
+            setAvailabilityMessage("info", "Agora selecione a data de check-out.");
+          } else {
+            clearQuoteDisplay();
+            updateSummary();
+          }
+        }
+      });
+    }
+
+    async function loadUnavailableDates(roomId) {
+      resetDates();
+      unavailableDates = [];
+      availabilityLoadedForRoomId = null;
+      calendarPricesMap = {};
+      clearQuoteDisplay();
+
+      if (!roomId) {
+        rebuildCalendar();
+        setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.");
+        updateSummary();
+        return;
+      }
+
+      setAvailabilityMessage("info", "Carregando datas e valores...");
+      updateSummary();
 
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const start = formatDateLocal(today);
+      const future = new Date();
+      future.setMonth(future.getMonth() + 12);
+      const end = formatDateLocal(future);
 
-      const filtered = allReservations.filter(reservation => {
-        const profile = profilesMap[reservation.user_id] || {};
-        const roomText = String(reservation.room_type || "").toLowerCase();
-        const requests = String(reservation.special_requests || "").toLowerCase();
-        const reservationId = String(reservation.id || "").toLowerCase();
-        const fullName = String(profile.full_name || "").toLowerCase();
-        const phone = String(profile.phone || "").toLowerCase();
+      const roomIdNumber = Number(roomId);
+      const roomName = roomsMap.get(roomIdNumber)?.name || "";
 
-        const general = normalizeStatus(reservation.status);
-        const booking = normalizeStatus(reservation.booking_status);
-        const payment = normalizeStatus(reservation.payment_status);
+      const { data, error } = await supabaseClient
+        .from("room_availability")
+        .select("room_id, date, status, reservation_id, source, created_at")
+        .eq("room_id", roomIdNumber)
+        .gte("date", start)
+        .lte("date", end)
+        .neq("status", "open")
+        .order("date", { ascending: true });
 
-        const matchesSearch =
-          !search ||
-          roomText.includes(search) ||
-          requests.includes(search) ||
-          reservationId.includes(search) ||
-          fullName.includes(search) ||
-          phone.includes(search);
-
-        let matchesStatus = true;
-        if (statusValue === "held_pending") {
-          matchesStatus = general === "pending" || booking === "held" || payment === "pending";
-        } else if (statusValue === "confirmed_paid") {
-          matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid";
-        } else if (statusValue === "cancelled_expired") {
-          matchesStatus =
-            general === "cancelled" ||
-            general === "canceled" ||
-            general === "expired" ||
-            booking === "cancelled" ||
-            booking === "expired" ||
-            payment === "failed" ||
-            payment === "expired";
-        }
-
-        let matchesRoom = true;
-        if (roomValue !== "all") {
-          matchesRoom = String(reservation.room_type || "") === roomValue;
-        }
-
-        let matchesPayment = true;
-        if (paymentValue === "paid") matchesPayment = payment === "paid";
-        else if (paymentValue === "pending") matchesPayment = payment === "pending";
-        else if (paymentValue === "failed") matchesPayment = payment === "failed";
-        else if (paymentValue === "expired") matchesPayment = payment === "expired";
-        else if (paymentValue === "other") matchesPayment = !["paid", "pending", "failed", "expired", ""].includes(payment);
-
-        let matchesDate = true;
-        if (reservation.check_in) {
-          const checkInDate = new Date(reservation.check_in + "T00:00:00");
-          checkInDate.setHours(0, 0, 0, 0);
-
-          if (dateValue === "future") matchesDate = checkInDate > today;
-          else if (dateValue === "today") matchesDate = checkInDate.getTime() === today.getTime();
-          else if (dateValue === "past") matchesDate = checkInDate < today;
-        } else if (dateValue !== "all") {
-          matchesDate = false;
-        }
-
-        return matchesSearch && matchesStatus && matchesRoom && matchesPayment && matchesDate;
-      });
-
-      filtered.sort((a, b) => {
-        if (sortValue === "created_asc") return new Date(a.created_at || 0) - new Date(b.created_at || 0);
-        if (sortValue === "checkin_asc") return new Date(a.check_in || 0) - new Date(b.check_in || 0);
-        if (sortValue === "checkin_desc") return new Date(b.check_in || 0) - new Date(a.check_in || 0);
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      });
-
-      return filtered;
-    }
-
-    function renderReservations() {
-      const reservations = getFilteredReservations();
-
-      if (!reservations.length) {
-        reservationsList.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>`;
+      if (error) {
+        console.error(error);
+        rebuildCalendar();
+        setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.");
+        updateSummary();
         return;
       }
 
-      reservationsList.innerHTML = reservations.map(reservation => {
-        const profile = profilesMap[reservation.user_id] || {};
-        return `
-          <article class="reservation-card">
-            <div class="reservation-top">
-              <div>
-                <div class="reservation-name">${reservation.room_type || "Hospedagem"}</div>
-                <div class="reservation-subtext">
-                  Hóspede: ${profile.full_name || "Não informado"}<br />
-                  Telefone: ${profile.phone || "Não informado"}
-                </div>
-                <div class="reservation-meta">
-                  <span class="mini-chip">Reserva: ${reservation.id || "-"}</span>
-                  <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
-                </div>
-              </div>
+      await loadCalendarPrices(roomName, start, end);
 
-              <div class="badge-stack">
-                <span class="status-badge ${statusBadgeClass(reservation.status)}">${mainStatusLabel(reservation.status)}</span>
-                <span class="status-badge ${statusBadgeClass(reservation.booking_status)}">${bookingStatusLabel(reservation.booking_status)}</span>
-                <span class="status-badge ${statusBadgeClass(reservation.payment_status)}">${paymentStatusLabel(reservation.payment_status)}</span>
-              </div>
-            </div>
+      unavailableDates = [...new Set((data || []).map(row => row.date))];
+      availabilityLoadedForRoomId = roomIdNumber;
+      rebuildCalendar();
 
-            <div class="reservation-grid">
-              <div class="reservation-item">
-                <strong>Check-in</strong>
-                <span>${formatDate(reservation.check_in)}</span>
-              </div>
+      if (unavailableDates.length > 0) {
+        setAvailabilityMessage("info", "Disponibilidade carregada. Escolha check-in e check-out no calendário.");
+      } else {
+        setAvailabilityMessage("success", "Esta suíte não possui indisponibilidades carregadas para os próximos meses.");
+      }
 
-              <div class="reservation-item">
-                <strong>Check-out</strong>
-                <span>${formatDate(reservation.check_out)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Hóspedes</strong>
-                <span>${reservation.guests || "-"}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Valor total</strong>
-                <span>${formatCurrency(reservation.total_amount)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status geral</strong>
-                <span>${mainStatusLabel(reservation.status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status da reserva</strong>
-                <span>${bookingStatusLabel(reservation.booking_status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Status do pagamento</strong>
-                <span>${paymentStatusLabel(reservation.payment_status)}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Meio de pagamento</strong>
-                <span>${reservation.payment_provider || "—"}</span>
-              </div>
-
-              <div class="reservation-item">
-                <strong>Expira em</strong>
-                <span>${formatDateTime(reservation.expires_at)}</span>
-              </div>
-
-              <div class="reservation-item" style="grid-column:1 / -1;">
-                <strong>Pedidos especiais</strong>
-                <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
+      updateSummary();
     }
 
-    function clearReservationFilters() {
-      searchInput.value = "";
-      statusFilter.value = "all";
-      roomFilter.value = "all";
-      paymentFilter.value = "all";
-      sortFilter.value = "created_desc";
-      dateFilter.value = "all";
-      renderReservations();
+    async function loadRooms() {
+      const lockedRoomId = getLockedRoomIdFromUrl();
+
+      if (lockedRoomId) {
+        const { data: room, error } = await supabaseClient
+          .from("rooms")
+          .select("id, name")
+          .eq("id", lockedRoomId)
+          .eq("active", true)
+          .single();
+
+        if (error || !room) {
+          alert("A suíte selecionada não foi encontrada.");
+          window.location.href = "acomodacoes.html";
+          return;
+        }
+
+        roomsMap = new Map();
+        roomsMap.set(Number(room.id), room);
+        roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`;
+        roomSelect.value = String(room.id);
+        roomSelect.disabled = true;
+        lockedRoomNote.classList.remove("hidden");
+
+        updateSummary();
+        await loadUnavailableDates(room.id);
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("rooms")
+        .select("id, name")
+        .eq("active", true)
+        .order("id", { ascending: true });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      roomsMap = new Map();
+      (data || []).forEach(room => roomsMap.set(Number(room.id), room));
+      roomSelect.innerHTML = '<option value="">Selecione</option>' + (data || []).map(room => `<option value="${room.id}">${room.name}</option>`).join("");
+      updateSummary();
     }
 
-    pricingRoom.addEventListener("change", async () => {
-      await loadBasePrice();
+    function setSubmitLoading(isLoading, text = "CONFIRMAR SOLICITAÇÃO") {
+      submitBtn.disabled = isLoading || currentMinStayViolated || !currentQuote;
+      submitBtn.textContent = isLoading ? "PROCESSANDO..." : text;
+    }
+
+    function validateBookingForm() {
+      const roomId = Number(roomSelect.value);
+      const guests = Number(guestsInput.value);
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+
+      if (!roomId) {
+        setAvailabilityMessage("error", "Selecione uma suíte para continuar.");
+        return false;
+      }
+
+      if (availabilityLoadedForRoomId !== roomId) {
+        setAvailabilityMessage("error", "A disponibilidade da suíte ainda não foi carregada. Aguarde e tente novamente.");
+        return false;
+      }
+
+      if (!selectedCheckIn || !selectedCheckOut) {
+        setAvailabilityMessage("error", "Selecione check-in e check-out no calendário.");
+        return false;
+      }
+
+      if (selectedCheckOut <= selectedCheckIn) {
+        setAvailabilityMessage("error", "O check-out deve ser depois do check-in.");
+        return false;
+      }
+
+      if (nights <= 0) {
+        setAvailabilityMessage("error", "Selecione um período válido de hospedagem.");
+        return false;
+      }
+
+      if (!guests || guests < 1) {
+        setAvailabilityMessage("error", "Informe pelo menos 1 hóspede.");
+        return false;
+      }
+
+      if (!currentQuote || Number(currentQuote.total || 0) <= 0) {
+        setAvailabilityMessage("error", "Não foi possível calcular o valor da reserva. Revise as datas selecionadas.");
+        return false;
+      }
+
+      const requiredMin = Number(currentQuote.required_min_nights || 1);
+      if (nights < requiredMin) {
+        setAvailabilityMessage("warn", `Este período exige mínimo de ${requiredMin} noite${requiredMin > 1 ? "s" : ""}. Você selecionou ${nights}.`);
+        return false;
+      }
+
+      return true;
+    }
+
+    roomSelect.addEventListener("change", async function() {
+      updateSummary();
+      await loadUnavailableDates(roomSelect.value);
     });
 
-    document.getElementById("saveBasePriceBtn").addEventListener("click", saveBasePrice);
-    document.getElementById("applyPricingBtn").addEventListener("click", applyPricing);
-    document.getElementById("deletePricingBtn").addEventListener("click", deletePricing);
-    document.getElementById("loadPricingPreviewBtn").addEventListener("click", loadPricingPreview);
+    guestsInput.addEventListener("input", updateSummary);
 
-    searchInput.addEventListener("input", renderReservations);
-    statusFilter.addEventListener("change", renderReservations);
-    roomFilter.addEventListener("change", renderReservations);
-    paymentFilter.addEventListener("change", renderReservations);
-    sortFilter.addEventListener("change", renderReservations);
-    dateFilter.addEventListener("change", renderReservations);
+    bookingForm.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      setSubmitLoading(true);
 
-    document.getElementById("clearFiltersBtn").addEventListener("click", clearReservationFilters);
-    document.getElementById("refreshReservationsBtn").addEventListener("click", loadReservations);
+      try {
+        if (!validateBookingForm()) {
+          setSubmitLoading(false);
+          return;
+        }
 
-    async function init() {
-      const ok = await requireAdmin();
-      if (!ok) return;
+        const room_id = Number(roomSelect.value);
+        const guests = Number(guestsInput.value);
+        const special_requests = specialRequestsInput.value.trim();
+        const room_name = roomSelect.selectedOptions[0]?.textContent || "";
+        const check_in = selectedCheckIn;
+        const check_out = selectedCheckOut;
 
+        const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+
+        if (userError || !userData.user) {
+          setAvailabilityMessage("error", "Faça login ou crie sua conta para concluir a reserva.");
+          setSubmitLoading(false);
+          const returnTo = window.location.pathname + window.location.search;
+          setTimeout(function() {
+            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+          }, 1200);
+          return;
+        }
+
+        const currentSessionUser = userData.user;
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+
+        if (!accessToken) {
+          setAvailabilityMessage("error", "Sua sessão expirou. Faça login novamente.");
+          setSubmitLoading(false);
+          const returnTo = window.location.pathname + window.location.search;
+          setTimeout(function() {
+            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+          }, 1200);
+          return;
+        }
+
+        const { data: reservationId, error: bookingError } = await supabaseClient.rpc("create_booking_and_hold_dates", {
+          p_user_id: currentSessionUser.id,
+          p_room_id: room_id,
+          p_check_in: check_in,
+          p_check_out: check_out,
+          p_guests: guests,
+          p_room_type: room_name,
+          p_special_requests: special_requests || null
+        });
+
+        if (bookingError) {
+          console.error(bookingError);
+          setAvailabilityMessage("error", bookingError.message || "Não foi possível criar a reserva.");
+          setSubmitLoading(false);
+          await loadUnavailableDates(room_id);
+          return;
+        }
+
+        if (!reservationId) {
+          setAvailabilityMessage("error", "A reserva foi criada, mas não retornou um identificador válido.");
+          setSubmitLoading(false);
+          return;
+        }
+
+        setAvailabilityMessage("success", "Reserva criada. Redirecionando para o pagamento...");
+
+        const checkoutResponse = await fetch(CHECKOUTSTRIPE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+          body: JSON.stringify({ reservation_id: reservationId })
+        });
+
+        const checkoutData = await checkoutResponse.json().catch(() => null);
+
+        if (!checkoutResponse.ok || !checkoutData?.checkout_url) {
+          console.error("checkoutstripe error:", checkoutData);
+          setAvailabilityMessage("error", checkoutData?.error || "Não foi possível iniciar o pagamento.");
+          setSubmitLoading(false);
+          return;
+        }
+
+        window.location.href = checkoutData.checkout_url;
+      } catch (err) {
+        console.error(err);
+        setAvailabilityMessage("error", "Erro inesperado ao processar a reserva.");
+        setSubmitLoading(false);
+      }
+    });
+
+    (async function init() {
+      await applySessionHeader();
+      rebuildCalendar();
       await loadRooms();
-      await loadReservations();
-      setPricingStatus("info", "Selecione a suíte e defina uma faixa de datas para começar.");
-    }
-
-    init();
+      updateSummary();
+      updateSubmitState();
+    })();
 
     window.toggleMenu = toggleMenu;
-    window.logout = logout;
   </script>
 </body>
 </html>

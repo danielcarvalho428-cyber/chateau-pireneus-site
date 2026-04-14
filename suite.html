@@ -36,6 +36,30 @@
   <link rel="shortcut icon" href="chateau-logo.png" />
   <link rel="apple-touch-icon" href="chateau-logo.png" />
 
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://chateaupireneus.com.br/suite.html#webpage",
+      "url": "https://chateaupireneus.com.br/suite.html",
+      "name": "Suíte | Chateau Pireneus",
+      "description": "Conheça as suítes do Chateau Pireneus em Pirenópolis, com conforto, charme e praticidade para uma hospedagem especial.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Chateau Pireneus",
+        "url": "https://chateaupireneus.com.br/"
+      },
+      "about": {
+        "@type": "LodgingBusiness",
+        "@id": "https://chateaupireneus.com.br/#lodgingbusiness",
+        "name": "Chateau Pireneus",
+        "url": "https://chateaupireneus.com.br/"
+      }
+    }
+  </script>
+
+  <script type="application/ld+json" id="suiteRoomStructuredData"></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -748,7 +772,8 @@
             "Banheiro privativo",
             "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
-          capacity: "Capacidade: 2 hóspedes"
+          capacity: "Capacidade: 2 hóspedes",
+          maxGuests: 2
         },
 
         cavalhadas: {
@@ -774,7 +799,8 @@
             "Banheiro privativo",
             "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
-          capacity: "Capacidade: 2 hóspedes"
+          capacity: "Capacidade: 2 hóspedes",
+          maxGuests: 2
         },
 
         rosario: {
@@ -800,7 +826,8 @@
             "Banheiro privativo",
             "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
-          capacity: "Capacidade: 2 hóspedes"
+          capacity: "Capacidade: 2 hóspedes",
+          maxGuests: 2
         },
 
         aurora: {
@@ -826,7 +853,8 @@
             "Banheiro privativo",
             "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
-          capacity: "Capacidade: 2 hóspedes"
+          capacity: "Capacidade: 2 hóspedes",
+          maxGuests: 2
         },
 
         bonfim: {
@@ -851,7 +879,8 @@
             "Banheiro privativo",
             "Varanda&nbsp;privativa&nbsp;com&nbsp;rede"
           ],
-          capacity: "Capacidade: 2 hóspedes"
+          capacity: "Capacidade: 2 hóspedes",
+          maxGuests: 2
         }
       };
 
@@ -898,9 +927,13 @@
       }
 
       function upsertMeta(selector, attr, value) {
-        let el = document.querySelector(selector);
+        const el = document.querySelector(selector);
         if (!el) return;
         el.setAttribute(attr, value);
+      }
+
+      function cleanAmenity(text) {
+        return text.replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
       }
 
       function setSuiteMetadata(roomKey) {
@@ -924,13 +957,55 @@
         upsertMeta('meta[name="twitter:image"]', "content", meta.image);
       }
 
+      function setSuiteStructuredData(roomKey, roomData) {
+        const meta = ROOM_META[roomKey];
+        const script = document.getElementById("suiteRoomStructuredData");
+        if (!meta || !script) return;
+
+        const canonicalUrl = `https://chateaupireneus.com.br/suite.html?room=${encodeURIComponent(roomKey)}`;
+        const roomImages = roomData.photos.map(photo => `https://chateaupireneus.com.br/${photo}`);
+
+        const structuredData = {
+          "@context": "https://schema.org",
+          "@type": "HotelRoom",
+          "@id": `${canonicalUrl}#hotelroom`,
+          "name": roomData.name,
+          "description": meta.description,
+          "url": canonicalUrl,
+          "image": roomImages,
+          "containedInPlace": {
+            "@type": "LodgingBusiness",
+            "@id": "https://chateaupireneus.com.br/#lodgingbusiness",
+            "name": "Chateau Pireneus",
+            "url": "https://chateaupireneus.com.br/",
+            "telephone": "+55 62 99816-7654",
+            "email": "chateaupireneus@gmail.com"
+          },
+          "occupancy": {
+            "@type": "QuantitativeValue",
+            "maxValue": roomData.maxGuests,
+            "unitText": "hóspedes"
+          },
+          "amenityFeature": roomData.amenities.map((item) => ({
+            "@type": "LocationFeatureSpecification",
+            "name": cleanAmenity(item),
+            "value": true
+          }))
+        };
+
+        script.textContent = JSON.stringify(structuredData, null, 2);
+      }
+
       if (!room){
         showError("Suíte inválida. Volte e selecione uma acomodação novamente.");
         upsertMeta('meta[name="robots"]', "content", "noindex, follow");
+        const roomSchema = document.getElementById("suiteRoomStructuredData");
+        if (roomSchema) roomSchema.textContent = "";
         return;
       }
 
       setSuiteMetadata(key);
+      setSuiteStructuredData(key, room);
 
       document.getElementById("roomSub").textContent = room.subtitle;
       document.getElementById("roomName").textContent = room.name;

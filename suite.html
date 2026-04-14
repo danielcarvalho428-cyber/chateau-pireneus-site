@@ -3,7 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Suíte • Chateau Pireneus</title>
+
+  <title>Suíte | Chateau Pireneus</title>
+  <meta
+    name="description"
+    content="Conheça as suítes do Chateau Pireneus em Pirenópolis, com conforto, charme e praticidade para uma hospedagem especial."
+  />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://chateaupireneus.com.br/suite.html" />
+
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Suíte | Chateau Pireneus" />
+  <meta
+    property="og:description"
+    content="Veja detalhes das suítes do Chateau Pireneus em Pirenópolis e escolha a acomodação ideal para sua estadia."
+  />
+  <meta property="og:url" content="https://chateaupireneus.com.br/suite.html" />
+  <meta property="og:site_name" content="Chateau Pireneus" />
+  <meta property="og:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
+  <meta property="og:image:type" content="image/png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Suíte | Chateau Pireneus" />
+  <meta
+    name="twitter:description"
+    content="Conheça as suítes do Chateau Pireneus e encontre a acomodação ideal para sua experiência em Pirenópolis."
+  />
+  <meta name="twitter:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
+
+  <link rel="icon" type="image/png" href="chateau-logo.png" />
+  <link rel="shortcut icon" href="chateau-logo.png" />
+  <link rel="apple-touch-icon" href="chateau-logo.png" />
 
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -824,6 +855,34 @@
         }
       };
 
+      const ROOM_META = {
+        divino: {
+          title: "Suíte do Divino | Chateau Pireneus",
+          description: "Conheça a Suíte do Divino no Chateau Pireneus, uma acomodação aconchegante e romântica em Pirenópolis com conforto e praticidade.",
+          image: "https://chateaupireneus.com.br/public/suites/divino/divino1.jpeg"
+        },
+        cavalhadas: {
+          title: "Suíte das Cavalhadas | Chateau Pireneus",
+          description: "Conheça a Suíte das Cavalhadas no Chateau Pireneus, uma acomodação aconchegante e romântica em Pirenópolis para sua estadia especial.",
+          image: "https://chateaupireneus.com.br/public/suites/cavalhadas/cavalhadas1.jpeg"
+        },
+        rosario: {
+          title: "Suíte do Rosário | Chateau Pireneus",
+          description: "Conheça a Suíte do Rosário no Chateau Pireneus, uma acomodação charmosa e confortável em Pirenópolis para momentos especiais.",
+          image: "https://chateaupireneus.com.br/public/suites/rosario/rosario1.jpeg"
+        },
+        aurora: {
+          title: "Suíte Aurora | Chateau Pireneus",
+          description: "Conheça a Suíte Aurora no Chateau Pireneus, uma acomodação romântica e aconchegante em Pirenópolis com conforto e tranquilidade.",
+          image: "https://chateaupireneus.com.br/public/suites/aurora/aurora1.jpeg"
+        },
+        bonfim: {
+          title: "Suíte do Bonfim | Chateau Pireneus",
+          description: "Conheça a Suíte do Bonfim no Chateau Pireneus, uma acomodação acolhedora em Pirenópolis ideal para uma estadia tranquila a dois.",
+          image: "https://chateaupireneus.com.br/public/suites/bonfim/bonfim1.jpeg"
+        }
+      };
+
       const errBox = document.getElementById("errBox");
       const showError = (msg) => {
         errBox.style.display = "block";
@@ -838,12 +897,40 @@
         document.body.classList.add("room-cavalhadas");
       }
 
+      function upsertMeta(selector, attr, value) {
+        let el = document.querySelector(selector);
+        if (!el) return;
+        el.setAttribute(attr, value);
+      }
+
+      function setSuiteMetadata(roomKey) {
+        const meta = ROOM_META[roomKey];
+        if (!meta) return;
+
+        const canonicalUrl = `https://chateaupireneus.com.br/suite.html?room=${encodeURIComponent(roomKey)}`;
+
+        document.title = meta.title;
+
+        upsertMeta('meta[name="description"]', "content", meta.description);
+        upsertMeta('link[rel="canonical"]', "href", canonicalUrl);
+
+        upsertMeta('meta[property="og:title"]', "content", meta.title);
+        upsertMeta('meta[property="og:description"]', "content", meta.description);
+        upsertMeta('meta[property="og:url"]', "content", canonicalUrl);
+        upsertMeta('meta[property="og:image"]', "content", meta.image);
+
+        upsertMeta('meta[name="twitter:title"]', "content", meta.title);
+        upsertMeta('meta[name="twitter:description"]', "content", meta.description);
+        upsertMeta('meta[name="twitter:image"]', "content", meta.image);
+      }
+
       if (!room){
         showError("Suíte inválida. Volte e selecione uma acomodação novamente.");
+        upsertMeta('meta[name="robots"]', "content", "noindex, follow");
         return;
       }
 
-      document.title = room.name + " • Chateau Pireneus";
+      setSuiteMetadata(key);
 
       document.getElementById("roomSub").textContent = room.subtitle;
       document.getElementById("roomName").textContent = room.name;

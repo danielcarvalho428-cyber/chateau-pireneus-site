@@ -933,10 +933,34 @@
       submitBtn.textContent = isLoading ? "ENTRANDO..." : "ENTRAR"
     }
 
+    async function isAdminUser(userId) {
+      if (!userId) return false
+
+      const { data, error } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", userId)
+        .maybeSingle()
+
+      if (error) {
+        console.error(error)
+        return false
+      }
+
+      return !!data
+    }
+
     async function redirectIfLoggedIn() {
       const { data, error } = await supabaseClient.auth.getUser()
 
       if (error || !data.user) return false
+
+      const admin = await isAdminUser(data.user.id)
+
+      if (admin) {
+        window.location.href = "admin.html"
+        return true
+      }
 
       const returnTo = sanitizeReturnTo(getReturnTo())
       window.location.href = returnTo
@@ -957,7 +981,7 @@
       setLoading(true)
       setStatus("info", "Validando seus dados...")
 
-      const { error } = await supabaseClient.auth.signInWithPassword({
+      const { data: signInData, error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
       })
@@ -968,10 +992,17 @@
         return
       }
 
+      const admin = await isAdminUser(signInData?.user?.id)
+
       setStatus("success", "Login realizado com sucesso. Redirecionando...")
-      const returnTo = sanitizeReturnTo(getReturnTo())
 
       setTimeout(() => {
+        if (admin) {
+          window.location.href = "admin.html"
+          return
+        }
+
+        const returnTo = sanitizeReturnTo(getReturnTo())
         window.location.href = returnTo
       }, 700)
     })

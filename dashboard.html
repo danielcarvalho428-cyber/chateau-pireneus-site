@@ -66,10 +66,6 @@
       font-display:swap;
     }
 
-    .hidden{
-      display:none !important;
-    }
-
     .top-header{
       position:fixed;
       top:0;
@@ -173,7 +169,6 @@
       background:rgba(29,53,87,0.12);
     }
 
-    .account-btn,
     .reserve-btn,
     .logout-btn-public,
     .ghost-btn{
@@ -202,7 +197,6 @@
       box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
 
-    .account-btn,
     .logout-btn-public,
     .ghost-btn{
       background:rgba(255,255,255,0.12);
@@ -211,14 +205,12 @@
       backdrop-filter:blur(6px);
     }
 
-    .account-btn:hover,
     .logout-btn-public:hover,
     .ghost-btn:hover{
       background:rgba(255,255,255,0.18);
       transform:translateY(-1px);
     }
 
-    .top-header.solid .account-btn,
     .top-header.solid .logout-btn-public,
     .top-header.solid .ghost-btn{
       color:var(--navy);
@@ -227,7 +219,6 @@
       box-shadow:none;
     }
 
-    .top-header.solid .account-btn:hover,
     .top-header.solid .logout-btn-public:hover,
     .top-header.solid .ghost-btn:hover{
       background:rgba(29,53,87,0.12);
@@ -1258,7 +1249,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script>
     const { createClient } = supabase
 
@@ -1408,6 +1398,23 @@
       )
     }
 
+    async function isAdminUser(userId) {
+      if (!userId) return false
+
+      const { data, error } = await supabaseClient
+        .from("admins")
+        .select("id")
+        .eq("id", userId)
+        .maybeSingle()
+
+      if (error) {
+        console.error(error)
+        return false
+      }
+
+      return !!data
+    }
+
     function updateSummary() {
       const total = allReservations.length
 
@@ -1457,6 +1464,12 @@
       }
 
       currentUser = userData.user
+
+      const admin = await isAdminUser(currentUser.id)
+      if (admin) {
+        window.location.href = "admin.html"
+        return false
+      }
 
       const { data: profile, error: profileError } = await supabaseClient
         .from("profiles")
@@ -1610,7 +1623,7 @@
       document.getElementById("reservation-count").textContent = reservations.length
 
       if (!reservations.length) {
-        container.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>`
+        container.innerHTML = '<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>'
         return
       }
 

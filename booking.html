@@ -385,6 +385,26 @@
       font-weight:700;
     }
 
+    .breakdown-list{
+      margin-top:6px;
+      display:grid;
+      gap:8px;
+    }
+
+    .breakdown-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-size:14px;
+      color:var(--ink);
+      padding:8px 0;
+      border-bottom:1px dashed rgba(31,36,48,0.10);
+    }
+
+    .breakdown-row:last-child{
+      border-bottom:none;
+    }
+
     .help-text{
       margin-top:10px;
       font-size:12px;
@@ -559,6 +579,9 @@
               <span class="summary-label">Hóspedes</span>
               <span class="summary-value" id="summaryGuests">2</span>
             </div>
+
+            <div id="summaryBreakdown" class="breakdown-list"></div>
+
             <div class="summary-total">
               <span>Total</span>
               <span id="summaryTotal">A definir</span>
@@ -597,6 +620,7 @@
     const summaryCheckOut = document.getElementById("summaryCheckOut");
     const summaryNights = document.getElementById("summaryNights");
     const summaryGuests = document.getElementById("summaryGuests");
+    const summaryBreakdown = document.getElementById("summaryBreakdown");
     const summaryTotal = document.getElementById("summaryTotal");
 
     let roomsMap = new Map();
@@ -605,6 +629,7 @@
     let unavailableDates = [];
     let datePicker = null;
     let availabilityLoadedForRoomId = null;
+    let currentQuote = null;
 
     function getLockedRoomIdFromUrl() {
       const params = new URLSearchParams(window.location.search);
@@ -650,10 +675,37 @@
     function resetDates() {
       selectedCheckIn = "";
       selectedCheckOut = "";
+      currentQuote = null;
       dateRangeInput.value = "";
       if (datePicker) {
         datePicker.clear();
       }
+    }
+
+    function clearQuoteDisplay() {
+      currentQuote = null;
+      summaryBreakdown.innerHTML = "";
+      summaryTotal.textContent = "A definir";
+    }
+
+    function renderQuoteBreakdown() {
+      if (!currentQuote || !Array.isArray(currentQuote.nightly_prices) || currentQuote.nightly_prices.length === 0) {
+        summaryBreakdown.innerHTML = "";
+        summaryTotal.textContent = "A definir";
+        return;
+      }
+
+      summaryBreakdown.innerHTML = currentQuote.nightly_prices.map(item => {
+        const dateLabel = new Date(item.date + "T00:00:00").toLocaleDateString("pt-BR");
+        return `
+          <div class="breakdown-row">
+            <span>${dateLabel}</span>
+            <span>${formatCurrency(item.price)}</span>
+          </div>
+        `;
+      }).join("");
+
+      summaryTotal.textContent = formatCurrency(currentQuote.total || 0);
     }
 
     function updateSummary() {
@@ -668,12 +720,43 @@
       summaryNights.textContent = nights > 0 ? String(nights) : "—";
       summaryGuests.textContent = guests > 0 ? String(guests) : "—";
 
-      if (selectedRoom && selectedRoom.price_per_night && nights > 0) {
-        const total = Number(selectedRoom.price_per_night) * nights;
-        summaryTotal.textContent = formatCurrency(total);
-      } else {
-        summaryTotal.textContent = "A definir";
+      renderQuoteBreakdown();
+    }
+
+    async function fetchQuote(roomName, checkIn, checkOut) {
+      const { data, error } = await supabaseClient.rpc("get_room_price_breakdown", {
+        p_room_type: roomName,
+        p_check_in: checkIn,
+        p_check_out: checkOut
+      });
+
+      if (error) {
+        throw error;
       }
+
+      return data;
+    }
+
+    async function refreshQuote() {
+      const roomId = Number(roomSelect.value);
+      const selectedRoom = roomsMap.get(roomId);
+
+      if (!selectedRoom || !selectedCheckIn || !selectedCheckOut) {
+        clearQuoteDisplay();
+        updateSummary();
+        return;
+      }
+
+      try {
+        const quote = await fetchQuote(selectedRoom.name, selectedCheckIn, selectedCheckOut);
+        currentQuote = quote;
+      } catch (error) {
+        console.error(error);
+        currentQuote = null;
+        setAvailabilityMessage("error", error.message || "Não foi possível calcular o valor da hospedagem.");
+      }
+
+      updateSummary();
     }
 
     function rebuildCalendar() {
@@ -689,9 +772,10 @@
         locale: {
           firstDayOfWeek: 0
         },
-        onChange(selectedDates) {
+        onChange: async function(selectedDates) {
           selectedCheckIn = "";
           selectedCheckOut = "";
+          currentQuote = null;
 
           if (selectedDates.length >= 2) {
             const checkIn = formatDateLocal(selectedDates[0]);
@@ -700,15 +784,20 @@
             if (checkOut > checkIn) {
               selectedCheckIn = checkIn;
               selectedCheckOut = checkOut;
+              setAvailabilityMessage("info", "Calculando valores da hospedagem...");
+              await refreshQuote();
               setAvailabilityMessage("success", "Período selecionado. Revise o resumo e confirme sua solicitação.");
             } else {
               setAvailabilityMessage("error", "O check-out precisa ser depois do check-in.");
             }
           } else if (selectedDates.length === 1) {
+            clearQuoteDisplay();
+            updateSummary();
             setAvailabilityMessage("info", "Agora selecione a data de check-out.");
+          } else {
+            clearQuoteDisplay();
+            updateSummary();
           }
-
-          updateSummary();
         }
       });
     }
@@ -717,6 +806,7 @@
       resetDates();
       unavailableDates = [];
       availabilityLoadedForRoomId = null;
+      clearQuoteDisplay();
 
       if (!roomId) {
         rebuildCalendar();
@@ -773,7 +863,7 @@
       if (lockedRoomId) {
         const { data: room, error } = await supabaseClient
           .from("rooms")
-          .select("id, name, price_per_night")
+          .select("id, name")
           .eq("id", lockedRoomId)
           .eq("active", true)
           .single();
@@ -799,7 +889,7 @@
 
       const { data, error } = await supabaseClient
         .from("rooms")
-        .select("id, name, price_per_night")
+        .select("id, name")
         .eq("active", true)
         .order("id", { ascending: true });
 
@@ -858,17 +948,22 @@
         return false;
       }
 
+      if (!currentQuote || Number(currentQuote.total || 0) <= 0) {
+        setAvailabilityMessage("error", "Não foi possível calcular o valor da reserva. Revise as datas selecionadas.");
+        return false;
+      }
+
       return true;
     }
 
-    roomSelect.addEventListener("change", async () => {
+    roomSelect.addEventListener("change", async function() {
       updateSummary();
       await loadUnavailableDates(roomSelect.value);
     });
 
     guestsInput.addEventListener("input", updateSummary);
 
-    bookingForm.addEventListener("submit", async (e) => {
+    bookingForm.addEventListener("submit", async function(e) {
       e.preventDefault();
       setSubmitLoading(true);
 
@@ -894,7 +989,7 @@
 
           const returnTo = window.location.pathname + window.location.search;
 
-          setTimeout(() => {
+          setTimeout(function() {
             window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
           }, 1200);
           return;
@@ -910,7 +1005,7 @@
           setSubmitLoading(false);
 
           const returnTo = window.location.pathname + window.location.search;
-          setTimeout(() => {
+          setTimeout(function() {
             window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
           }, 1200);
           return;

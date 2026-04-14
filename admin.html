@@ -106,7 +106,8 @@
     .header-link,
     .logout-btn,
     .save-btn,
-    .secondary-btn{
+    .secondary-btn,
+    .danger-btn{
       appearance:none;
       border:none;
       text-decoration:none;
@@ -132,6 +133,20 @@
     .secondary-btn:hover{
       transform:translateY(-1px);
       background:rgba(255,255,255,0.92);
+    }
+
+    .danger-btn{
+      color:#fff;
+      background:linear-gradient(135deg, #b54a4a, #9a2f2f);
+      padding:12px 18px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:600;
+      box-shadow:0 14px 30px rgba(181,74,74,0.16);
+    }
+
+    .danger-btn:hover{
+      transform:translateY(-1px);
     }
 
     .page-wrap{
@@ -212,6 +227,7 @@
       padding:26px 22px;
       backdrop-filter:blur(14px);
       -webkit-backdrop-filter:blur(14px);
+      margin-bottom:24px;
     }
 
     .panel-head{
@@ -252,14 +268,44 @@
       align-items:end;
     }
 
-    .toolbar-card{
+    .pricing-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+      align-items:start;
+    }
+
+    .pricing-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .toolbar-card,
+    .pricing-card{
       background:rgba(255,255,255,0.58);
       border:1px solid rgba(31,36,48,0.08);
       border-radius:18px;
       padding:14px;
     }
 
-    .toolbar label{
+    .pricing-card h3{
+      font-family:"Cormorant Garamond",serif;
+      font-size:28px;
+      margin-bottom:10px;
+      line-height:1;
+    }
+
+    .pricing-card p{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      margin-bottom:16px;
+    }
+
+    .toolbar label,
+    .pricing-card label{
       display:block;
       font-size:12px;
       font-weight:600;
@@ -272,6 +318,9 @@
     .toolbar input,
     .toolbar select,
     .toolbar-secondary select,
+    .pricing-card input,
+    .pricing-card select,
+    .pricing-card textarea,
     .reservation-actions select{
       width:100%;
       border:1px solid rgba(31,36,48,0.10);
@@ -281,6 +330,90 @@
       padding:12px 14px;
       font:inherit;
       outline:none;
+    }
+
+    .pricing-card textarea{
+      min-height:90px;
+      resize:vertical;
+    }
+
+    .pricing-card .inline-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .checkbox-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:12px 0;
+      color:var(--ink);
+      font-size:14px;
+    }
+
+    .checkbox-row input{
+      width:auto;
+      transform:scale(1.1);
+    }
+
+    .pricing-status{
+      margin-top:14px;
+      font-size:13px;
+      line-height:1.7;
+      border-radius:16px;
+      padding:12px 14px;
+      display:none;
+    }
+
+    .pricing-status.show{display:block}
+    .pricing-status.error{
+      color:var(--danger);
+      background:var(--danger-soft);
+      border:1px solid rgba(181,74,74,0.18);
+    }
+    .pricing-status.info{
+      color:var(--info);
+      background:var(--info-soft);
+      border:1px solid rgba(81,109,143,0.16);
+    }
+    .pricing-status.success{
+      color:var(--success);
+      background:var(--success-soft);
+      border:1px solid rgba(47,122,75,0.18);
+    }
+
+    .pricing-preview{
+      margin-top:16px;
+      display:grid;
+      gap:10px;
+      max-height:360px;
+      overflow:auto;
+      padding-right:4px;
+    }
+
+    .pricing-preview-item{
+      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.70);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .pricing-preview-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .pricing-preview-sub{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
     }
 
     .reservation-card{
@@ -403,7 +536,13 @@
     .status-completed,
     .status-expired,
     .status-open,
-    .status-stripe{
+    .status-stripe,
+    .status-base,
+    .status-manual,
+    .status-weekend,
+    .status-holiday,
+    .status-seasonal,
+    .status-base_override{
       background:var(--info-soft);
       color:var(--info);
       border-color:rgba(81,109,143,0.24);
@@ -493,6 +632,10 @@
       .toolbar-secondary{
         grid-template-columns:1fr 1fr;
       }
+
+      .pricing-grid{
+        grid-template-columns:1fr;
+      }
     }
 
     @media (max-width:900px){
@@ -513,6 +656,10 @@
 
       .reservation-actions{
         justify-content:flex-start;
+      }
+
+      .pricing-card .inline-grid{
+        grid-template-columns:1fr;
       }
     }
   </style>
@@ -557,6 +704,109 @@
         <div class="summary-card">
           <span class="summary-label">Canceladas / Expiradas</span>
           <span class="summary-value" id="cancelled-count">0</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2 class="panel-title">Precificação dinâmica</h2>
+          <p class="panel-subtitle">
+            Aqui você define preço base por suíte, cria preços especiais por faixa de datas e remove overrides quando quiser voltar para o valor base.
+          </p>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <h3>Configurar preços</h3>
+          <p>Use o mesmo nome da suíte exibido no sistema. O booking vai buscar a tarifa final por noite automaticamente.</p>
+
+          <div class="field">
+            <label for="pricing-room">Suíte</label>
+            <select id="pricing-room"></select>
+          </div>
+
+          <div class="inline-grid">
+            <div class="field">
+              <label for="base-price">Preço base</label>
+              <input type="number" id="base-price" min="0" step="0.01" placeholder="0,00">
+            </div>
+
+            <div class="field" style="display:flex;align-items:flex-end;">
+              <button id="save-base-price-btn" class="save-btn" type="button" style="width:100%;">Salvar preço base</button>
+            </div>
+          </div>
+
+          <div class="inline-grid">
+            <div class="field">
+              <label for="pricing-start-date">Data inicial</label>
+              <input type="date" id="pricing-start-date">
+            </div>
+
+            <div class="field">
+              <label for="pricing-end-date">Data final</label>
+              <input type="date" id="pricing-end-date">
+            </div>
+          </div>
+
+          <div class="inline-grid">
+            <div class="field">
+              <label for="special-price">Preço especial</label>
+              <input type="number" id="special-price" min="0" step="0.01" placeholder="0,00">
+            </div>
+
+            <div class="field">
+              <label for="pricing-source">Tipo</label>
+              <select id="pricing-source">
+                <option value="manual">Manual</option>
+                <option value="weekend">Fim de semana</option>
+                <option value="holiday">Feriado</option>
+                <option value="seasonal">Temporada</option>
+                <option value="base_override">Override</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="apply-weekdays" checked>
+            <label for="apply-weekdays" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Aplicar em dias úteis</label>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="apply-weekends" checked>
+            <label for="apply-weekends" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Aplicar em finais de semana</label>
+          </div>
+
+          <div class="checkbox-row">
+            <input type="checkbox" id="overwrite-existing" checked>
+            <label for="overwrite-existing" style="margin:0;letter-spacing:0;text-transform:none;font-size:14px;font-weight:600;color:var(--ink);">Sobrescrever preços já existentes</label>
+          </div>
+
+          <div class="field">
+            <label for="pricing-notes">Observações</label>
+            <textarea id="pricing-notes" placeholder="Ex: férias de julho, réveillon, feriado prolongado"></textarea>
+          </div>
+
+          <div class="pricing-actions">
+            <button id="apply-pricing-btn" class="save-btn" type="button">Aplicar preço</button>
+            <button id="delete-pricing-btn" class="danger-btn" type="button">Remover overrides</button>
+            <button id="load-pricing-btn" class="secondary-btn" type="button">Visualizar faixa</button>
+          </div>
+
+          <div id="pricing-status" class="pricing-status info show">
+            Selecione uma suíte e um intervalo para começar a gerenciar os preços.
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <h3>Prévia da faixa</h3>
+          <p>Veja o preço efetivo final de cada data. Quando existir override, ele aparece acima do valor base.</p>
+
+          <div class="pricing-preview" id="pricing-preview">
+            <div class="empty-state">Nenhuma faixa carregada ainda.</div>
+          </div>
         </div>
       </div>
     </section>
@@ -652,6 +902,10 @@
 
     let allReservations = []
     let profileMap = {}
+    let rooms = []
+
+    const pricingStatus = document.getElementById("pricing-status")
+    const pricingPreview = document.getElementById("pricing-preview")
 
     function redirectToLogin() {
       const returnTo = window.location.pathname + window.location.search
@@ -759,24 +1013,31 @@
       return ""
     }
 
-    function populateRoomFilter() {
+    function setPricingStatus(type, text) {
+      pricingStatus.className = `pricing-status show ${type}`
+      pricingStatus.textContent = text
+    }
+
+    function getPricingRoomName() {
+      const value = document.getElementById("pricing-room").value
+      return value || ""
+    }
+
+    function populateRoomSelectors() {
       const roomFilter = document.getElementById("room-filter")
-      const currentValue = roomFilter.value
-      const rooms = [...new Set(
-        allReservations
-          .map(item => item.room_type || "")
-          .filter(Boolean)
-      )].sort((a, b) => a.localeCompare(b, "pt-BR"))
+      const pricingRoom = document.getElementById("pricing-room")
 
-      roomFilter.innerHTML =
-        '<option value="all">Todas</option>' +
-        rooms.map(room => `<option value="${room}">${room}</option>`).join("")
+      const roomNames = [...new Set(rooms.map(room => room.name).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"))
 
-      if (rooms.includes(currentValue)) {
-        roomFilter.value = currentValue
-      } else {
-        roomFilter.value = "all"
-      }
+      const roomOptions = roomNames.map(room => `<option value="${room}">${room}</option>`).join("")
+
+      const currentRoomFilter = roomFilter.value
+      roomFilter.innerHTML = '<option value="all">Todas</option>' + roomOptions
+      roomFilter.value = roomNames.includes(currentRoomFilter) ? currentRoomFilter : "all"
+
+      const currentPricingRoom = pricingRoom.value
+      pricingRoom.innerHTML = '<option value="">Selecione</option>' + roomOptions
+      pricingRoom.value = roomNames.includes(currentPricingRoom) ? currentPricingRoom : ""
     }
 
     async function checkAdminAccess() {
@@ -806,6 +1067,23 @@
       }
 
       return userData.user
+    }
+
+    async function loadRooms() {
+      const { data, error } = await supabaseClient
+        .from("rooms")
+        .select("id, name")
+        .eq("active", true)
+        .order("id", { ascending: true })
+
+      if (error) {
+        console.error(error)
+        alert(error.message)
+        return
+      }
+
+      rooms = data || []
+      populateRoomSelectors()
     }
 
     async function loadAdminReservations() {
@@ -842,7 +1120,6 @@
       })
 
       allReservations = reservations || []
-      populateRoomFilter()
       updateSummary(allReservations)
       renderReservations()
 
@@ -1139,6 +1416,186 @@
       alert("Status atualizado com segurança!")
     }
 
+    async function loadBasePrice(roomType) {
+      if (!roomType) {
+        document.getElementById("base-price").value = ""
+        return
+      }
+
+      const { data, error } = await supabaseClient.rpc("admin_get_room_base_price", {
+        p_room_type: roomType
+      })
+
+      if (error) {
+        console.error(error)
+        setPricingStatus("error", error.message || "Não foi possível carregar o preço base.")
+        return
+      }
+
+      document.getElementById("base-price").value = data ?? ""
+    }
+
+    async function saveBasePrice() {
+      const roomType = getPricingRoomName()
+      const basePrice = document.getElementById("base-price").value
+
+      if (!roomType) {
+        setPricingStatus("error", "Selecione uma suíte para salvar o preço base.")
+        return
+      }
+
+      if (basePrice === "") {
+        setPricingStatus("error", "Informe o preço base.")
+        return
+      }
+
+      setPricingStatus("info", "Salvando preço base...")
+
+      const { error } = await supabaseClient.rpc("admin_upsert_room_base_price", {
+        p_room_type: roomType,
+        p_base_price: Number(basePrice)
+      })
+
+      if (error) {
+        console.error(error)
+        setPricingStatus("error", error.message || "Não foi possível salvar o preço base.")
+        return
+      }
+
+      setPricingStatus("success", "Preço base salvo com sucesso.")
+      await loadPricingRange()
+    }
+
+    async function applyBulkPricing() {
+      const roomType = getPricingRoomName()
+      const startDate = document.getElementById("pricing-start-date").value
+      const endDate = document.getElementById("pricing-end-date").value
+      const price = document.getElementById("special-price").value
+      const weekdays = document.getElementById("apply-weekdays").checked
+      const weekends = document.getElementById("apply-weekends").checked
+      const source = document.getElementById("pricing-source").value
+      const notes = document.getElementById("pricing-notes").value.trim()
+      const overwrite = document.getElementById("overwrite-existing").checked
+
+      if (!roomType || !startDate || !endDate || price === "") {
+        setPricingStatus("error", "Preencha suíte, datas e preço para aplicar a precificação.")
+        return
+      }
+
+      setPricingStatus("info", "Aplicando preço especial...")
+
+      const { data, error } = await supabaseClient.rpc("admin_upsert_room_prices", {
+        p_room_type: roomType,
+        p_start_date: startDate,
+        p_end_date: endDate,
+        p_price: Number(price),
+        p_apply_weekdays: weekdays,
+        p_apply_weekends: weekends,
+        p_source: source,
+        p_notes: notes || null,
+        p_overwrite: overwrite
+      })
+
+      if (error) {
+        console.error(error)
+        setPricingStatus("error", error.message || "Não foi possível aplicar os preços.")
+        return
+      }
+
+      setPricingStatus("success", `${data || 0} data(s) atualizada(s) com sucesso.`)
+      await loadPricingRange()
+    }
+
+    async function deleteBulkPricing() {
+      const roomType = getPricingRoomName()
+      const startDate = document.getElementById("pricing-start-date").value
+      const endDate = document.getElementById("pricing-end-date").value
+      const weekdays = document.getElementById("apply-weekdays").checked
+      const weekends = document.getElementById("apply-weekends").checked
+
+      if (!roomType || !startDate || !endDate) {
+        setPricingStatus("error", "Preencha suíte e faixa de datas para remover overrides.")
+        return
+      }
+
+      setPricingStatus("info", "Removendo overrides...")
+
+      const { data, error } = await supabaseClient.rpc("admin_delete_room_prices", {
+        p_room_type: roomType,
+        p_start_date: startDate,
+        p_end_date: endDate,
+        p_delete_weekdays: weekdays,
+        p_delete_weekends: weekends
+      })
+
+      if (error) {
+        console.error(error)
+        setPricingStatus("error", error.message || "Não foi possível remover os overrides.")
+        return
+      }
+
+      setPricingStatus("success", `${data || 0} override(s) removido(s).`)
+      await loadPricingRange()
+    }
+
+    async function loadPricingRange() {
+      const roomType = getPricingRoomName()
+      const startDate = document.getElementById("pricing-start-date").value
+      const endDate = document.getElementById("pricing-end-date").value
+
+      if (!roomType) {
+        pricingPreview.innerHTML = '<div class="empty-state">Selecione uma suíte para visualizar os preços.</div>'
+        document.getElementById("base-price").value = ""
+        return
+      }
+
+      await loadBasePrice(roomType)
+
+      if (!startDate || !endDate) {
+        pricingPreview.innerHTML = '<div class="empty-state">Selecione uma faixa de datas para visualizar a precificação.</div>'
+        return
+      }
+
+      setPricingStatus("info", "Carregando prévia da faixa...")
+
+      const { data, error } = await supabaseClient.rpc("admin_get_room_prices", {
+        p_room_type: roomType,
+        p_start_date: startDate,
+        p_end_date: endDate
+      })
+
+      if (error) {
+        console.error(error)
+        setPricingStatus("error", error.message || "Não foi possível carregar a faixa de preços.")
+        return
+      }
+
+      const rows = data || []
+
+      if (!rows.length) {
+        pricingPreview.innerHTML = '<div class="empty-state">Nenhuma data encontrada nessa faixa.</div>'
+        setPricingStatus("info", "Faixa carregada, mas sem registros.")
+        return
+      }
+
+      pricingPreview.innerHTML = rows.map(item => `
+        <div class="pricing-preview-item">
+          <div class="pricing-preview-head">
+            <span>${formatDate(item.rate_date)}</span>
+            <span>${formatCurrency(item.effective_price)}</span>
+          </div>
+          <div class="pricing-preview-sub">
+            Base: ${formatCurrency(item.base_price)}<br>
+            Override: ${item.override_price !== null ? formatCurrency(item.override_price) : "—"}<br>
+            Origem: <span class="status-badge ${statusClass(item.source)}" style="padding:4px 8px;font-size:10px;letter-spacing:0.08em;">${item.source || "base"}</span>
+            ${item.notes ? `<br>Obs: ${item.notes}` : ""}
+          </div>
+        </div>
+      `).join("")
+
+      setPricingStatus("success", "Prévia carregada com sucesso.")
+    }
+
     function clearFilters() {
       document.getElementById("search-input").value = ""
       document.getElementById("status-filter").value = "all"
@@ -1166,6 +1623,15 @@
     document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
     document.getElementById("refresh-btn").addEventListener("click", loadAdminReservations)
 
+    document.getElementById("pricing-room").addEventListener("change", async () => {
+      await loadPricingRange()
+    })
+
+    document.getElementById("load-pricing-btn").addEventListener("click", loadPricingRange)
+    document.getElementById("save-base-price-btn").addEventListener("click", saveBasePrice)
+    document.getElementById("apply-pricing-btn").addEventListener("click", applyBulkPricing)
+    document.getElementById("delete-pricing-btn").addEventListener("click", deleteBulkPricing)
+
     async function logout() {
       await supabaseClient.auth.signOut()
       window.location.href = "login.html"
@@ -1176,7 +1642,9 @@
     async function init() {
       const user = await checkAdminAccess()
       if (!user) return
+      await loadRooms()
       await loadAdminReservations()
+      setPricingStatus("info", "Selecione uma suíte e um intervalo para começar a gerenciar os preços.")
     }
 
     init()

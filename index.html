@@ -557,87 +557,6 @@
 
     .welcome-text p:last-child{ margin-bottom:0; }
 
-    .welcome-benefits{
-      margin-top:26px;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .welcome-benefit{
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(29,53,87,0.08);
-      border-radius:20px;
-      padding:18px 18px 16px;
-      box-shadow:var(--shadowSoft);
-    }
-
-    .welcome-benefit strong{
-      display:block;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.3px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.60);
-      margin-bottom:8px;
-    }
-
-    .welcome-benefit p{
-      margin:0;
-      color:var(--ink);
-      font-size:14.5px;
-      line-height:1.82;
-    }
-
-    .welcome-cta{
-      margin-top:22px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .welcome-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:46px;
-      padding:12px 18px;
-      border-radius:12px;
-      text-decoration:none;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      transition:0.22s ease;
-    }
-
-    .welcome-btn.primary{
-      background:var(--navy);
-      color:#fff;
-      border:2px solid var(--navy);
-      box-shadow:0 14px 28px rgba(0,0,0,0.10);
-    }
-
-    .welcome-btn.primary:hover{
-      background:var(--navy2);
-      border-color:var(--navy2);
-      transform:translateY(-1px);
-    }
-
-    .welcome-btn.outline{
-      background:transparent;
-      color:var(--navy);
-      border:2px solid var(--gold2);
-    }
-
-    .welcome-btn.outline:hover{
-      background:var(--gold);
-      border-color:var(--gold);
-      color:#fff;
-      transform:translateY(-1px);
-      box-shadow:0 0 18px rgba(216,199,161,0.45);
-    }
-
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
       color:#fff;
@@ -767,83 +686,6 @@
       display:grid;
       grid-template-rows:1fr 1fr;
       gap:14px;
-    }
-
-    .gallery-conversion{
-      margin-top:24px;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px;
-    }
-
-    .gallery-conversion-card{
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.12);
-      border-radius:18px;
-      padding:16px 16px 14px;
-      backdrop-filter:blur(6px);
-    }
-
-    .gallery-conversion-card strong{
-      display:block;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(216,199,161,0.96);
-      margin-bottom:8px;
-    }
-
-    .gallery-conversion-card p{
-      margin:0;
-      color:rgba(255,255,255,0.86);
-      font-size:14px;
-      line-height:1.8;
-    }
-
-    .gallery-cta{
-      margin-top:22px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .gallery-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:46px;
-      padding:12px 18px;
-      border-radius:12px;
-      text-decoration:none;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      transition:0.22s ease;
-    }
-
-    .gallery-btn.primary{
-      background:var(--gold);
-      color:#fff;
-      border:2px solid var(--gold);
-    }
-
-    .gallery-btn.primary:hover{
-      background:var(--gold2);
-      border-color:var(--gold2);
-      transform:translateY(-1px);
-    }
-
-    .gallery-btn.outline{
-      background:rgba(255,255,255,0.08);
-      color:#fff;
-      border:2px solid rgba(255,255,255,0.18);
-    }
-
-    .gallery-btn.outline:hover{
-      background:rgba(255,255,255,0.14);
-      transform:translateY(-1px);
     }
 
     .suites{
@@ -1092,8 +934,6 @@
       margin-top:30px;
       display:flex;
       justify-content:flex-start;
-      gap:10px;
-      flex-wrap:wrap;
     }
 
     .piri-cta{
@@ -1117,19 +957,6 @@
       transform:translateY(-1px);
       background:var(--navy2);
       box-shadow:0 18px 34px rgba(0,0,0,0.14);
-    }
-
-    .piri-cta.outline{
-      background:transparent;
-      color:var(--navy);
-      border:2px solid var(--gold2);
-      box-shadow:none;
-    }
-
-    .piri-cta.outline:hover{
-      background:var(--gold);
-      border-color:var(--gold);
-      color:#fff;
     }
 
     footer{
@@ -1201,10 +1028,6 @@
         font-size:32px;
       }
 
-      .welcome-benefits{
-        grid-template-columns:1fr;
-      }
-
       .gallery{
         padding-top:56px;
         padding-bottom:72px;
@@ -1214,10 +1037,6 @@
       .gallery-right{ grid-template-rows:none; grid-template-columns:1fr 1fr; }
       .photo{ min-height:260px; }
       .photo.small{ min-height:220px; }
-
-      .gallery-conversion{
-        grid-template-columns:1fr;
-      }
 
       .piri-grid{ grid-template-columns:1fr; }
       .piri-title{ font-size:28px; }
@@ -1421,28 +1240,6 @@
             Com apenas seis acomodações, a pousada valoriza a privacidade e a atmosfera acolhedora. Os quartos foram preparados para proporcionar conforto e praticidade durante a estadia, enquanto as áreas compartilhadas de lazer e o espaço gourmet complementam a experiência dos hóspedes. Aqui, o luxo é simples: silêncio, atenção aos detalhes e uma experiência feita para desacelerar.
           </p>
         </div>
-
-        <div class="welcome-benefits">
-          <div class="welcome-benefit">
-            <strong>Experiência a dois</strong>
-            <p>Um ambiente pensado para casais que buscam descanso, privacidade e uma estadia com clima mais intimista em Pirenópolis.</p>
-          </div>
-
-          <div class="welcome-benefit">
-            <strong>Conforto sem excesso</strong>
-            <p>O foco está no que realmente importa: acolhimento, cuidado nos detalhes e uma hospedagem confortável do check-in ao check-out.</p>
-          </div>
-
-          <div class="welcome-benefit">
-            <strong>Reserva mais simples</strong>
-            <p>Você conhece as suítes, escolhe a que combina mais com a sua viagem e segue direto para um fluxo de reserva mais claro.</p>
-          </div>
-        </div>
-
-        <div class="welcome-cta">
-          <a href="acomodacoes.html" class="welcome-btn primary">Escolher suíte</a>
-          <a href="booking.html" class="welcome-btn outline">Ver disponibilidade</a>
-        </div>
       </div>
     </div>
   </section>
@@ -1515,28 +1312,6 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="gallery-conversion">
-        <div class="gallery-conversion-card">
-          <strong>Descanso com atmosfera</strong>
-          <p>Os ambientes foram pensados para que a estadia não seja apenas funcional, mas parte especial da experiência.</p>
-        </div>
-
-        <div class="gallery-conversion-card">
-          <strong>Momentos a dois</strong>
-          <p>Da piscina aos espaços de convivência, tudo reforça um ritmo mais leve para quem quer desacelerar com privacidade.</p>
-        </div>
-
-        <div class="gallery-conversion-card">
-          <strong>Escolha o seu estilo</strong>
-          <p>Depois de conhecer os ambientes, o próximo passo é escolher a suíte que melhor combina com a sua viagem.</p>
-        </div>
-      </div>
-
-      <div class="gallery-cta">
-        <a href="acomodacoes.html" class="gallery-btn primary">Ver acomodações</a>
-        <a href="booking.html" class="gallery-btn outline">Ir para reserva</a>
       </div>
     </div>
   </section>
@@ -1667,7 +1442,6 @@
 
       <div class="piri-cta-wrap">
         <a href="https://maps.google.com/?q=Piren%C3%B3polis+GO" target="_blank" class="piri-cta">EXPLORAR PIRENÓPOLIS</a>
-        <a href="acomodacoes.html" class="piri-cta outline">ESCOLHER SUÍTE</a>
       </div>
     </div>
   </section>

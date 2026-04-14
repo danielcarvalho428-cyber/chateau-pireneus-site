@@ -1,16 +1,51 @@
-## `login.html`
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | Chateau Pireneus</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --ivory:#fbfaf7;
+      --beigeSoft:#f3ecdf;
+      --beigeWash:#f6f1e6;
+
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --line:rgba(29,53,87,0.14);
+
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+      --radius:20px;
+      --max:1180px;
+    }
+
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
     @font-face{
       font-family:"Gyahegi";
       src:url("Gyahegi.otf") format("opentype");
@@ -19,342 +54,818 @@
       font-display:swap;
     }
 
-    :root{
-      --bg:#f6f1e6;
-      --bg-2:#efe5d2;
-      --ink:#1f2430;
-      --muted:#6f6a62;
-      --gold:#b8955f;
-      --gold-soft:rgba(184,149,95,0.18);
-      --line:rgba(31,36,48,0.10);
-      --white:rgba(255,255,255,0.72);
-      --shadow:0 20px 60px rgba(31,36,48,0.10);
-      --danger:#9a2f2f;
-      --danger-bg:#fff3f3;
-      --success:#1f6b46;
-      --success-bg:#eefaf3;
-      --info:#5a5d66;
-      --info-bg:#f8f7f3;
+    .top-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    }
 
-    body{
-      min-height:100vh;
+    .top-header-inner{
+      max-width:var(--max);
+      margin:0 auto;
       display:flex;
       align-items:center;
-      justify-content:center;
-      padding:24px;
-      font-family:"Inter",sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
-        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
-    }
-
-    .auth-shell{
-      width:100%;
-      max-width:1120px;
-      display:grid;
-      grid-template-columns:1.02fr 0.98fr;
-      border-radius:32px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,0.55);
-      background:rgba(255,255,255,0.52);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-    }
-
-    .auth-visual{
-      position:relative;
-      min-height:720px;
-      padding:48px;
-      display:flex;
-      flex-direction:column;
       justify-content:space-between;
-      background:
-        linear-gradient(rgba(22,22,22,0.20), rgba(22,22,22,0.26)),
-        url("pousada.png") center/cover no-repeat;
-    }
-
-    .auth-visual::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(15,15,15,0.10), rgba(15,15,15,0.34));
-      pointer-events:none;
-    }
-
-    .brand,
-    .visual-copy{
-      position:relative;
-      z-index:1;
-      color:#fff;
+      gap:16px;
     }
 
     .brand{
-      text-decoration:none;
-      display:inline-flex;
+      display:flex;
       flex-direction:column;
-      align-self:flex-start;
+      gap:2px;
+      text-decoration:none;
+      color:#fff;
+      transition:color 0.25s ease;
     }
 
-    .brand-title{
-      font-family:"Gyahegi","Cormorant Garamond",serif;
-      font-size:44px;
-      line-height:1;
-      font-weight:400;
+    .top-header.solid .brand{
+      color:var(--navy);
     }
 
-    .brand-subtitle{
-      margin-top:8px;
-      font-size:12px;
-      letter-spacing:0.22em;
-      text-transform:uppercase;
-      opacity:0.9;
-    }
-
-    .visual-copy h1{
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(42px, 5vw, 64px);
-      line-height:0.95;
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
       font-weight:600;
-      max-width:520px;
-      margin-bottom:16px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      opacity:0.92;
     }
 
-    .visual-copy p{
-      max-width:480px;
-      font-size:16px;
-      line-height:1.8;
-      color:rgba(255,255,255,0.92);
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      letter-spacing:2.2px;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1.14;
     }
 
-    .auth-panel{
-      padding:48px 40px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
+    .header-actions{
       display:flex;
       align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    .auth-card{
-      width:100%;
-      max-width:440px;
-      margin:0 auto;
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
     }
 
-    .eyebrow{
-      display:inline-block;
-      font-size:12px;
-      letter-spacing:0.24em;
-      text-transform:uppercase;
-      color:var(--gold);
-      margin-bottom:12px;
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
     }
 
-    h2{
-      font-family:"Cormorant Garamond",serif;
-      font-size:48px;
-      line-height:0.95;
-      font-weight:600;
-      margin-bottom:14px;
-    }
-
-    .subtitle{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.75;
-      margin-bottom:18px;
-    }
-
-    .return-note{
-      margin-bottom:22px;
-      border-radius:16px;
-      padding:12px 14px;
-      font-size:13px;
-      line-height:1.7;
-      color:var(--info);
-      background:var(--info-bg);
-      border:1px solid rgba(31,36,48,0.08);
-      display:none;
-    }
-
-    .return-note.show{
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
       display:block;
     }
 
-    .field{margin-bottom:16px}
-
-    label{
-      display:block;
-      font-size:13px;
-      font-weight:600;
-      margin-bottom:8px;
-      color:var(--ink);
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
     }
 
-    input{
-      width:100%;
-      border:1px solid rgba(31,36,48,0.10);
-      background:rgba(255,255,255,0.78);
-      color:var(--ink);
-      border-radius:16px;
-      padding:14px 15px;
-      font:inherit;
-      outline:none;
-      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
     }
 
-    input:focus{
-      border-color:rgba(184,149,95,0.72);
-      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
+    .account-btn,
+    .reserve-btn,
+    .logout-btn-public{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      transition:0.22s ease;
+      white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
+    }
+
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+    }
+
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
+    }
+
+    .account-btn,
+    .logout-btn-public{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
+    }
+
+    .account-btn:hover,
+    .logout-btn-public:hover{
+      background:rgba(255,255,255,0.18);
       transform:translateY(-1px);
     }
 
-    .status-box{
-      margin:14px 0 0;
-      font-size:13px;
-      line-height:1.7;
-      border-radius:16px;
-      padding:12px 14px;
-      display:none;
+    .top-header.solid .account-btn,
+    .top-header.solid .logout-btn-public{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
     }
 
-    .status-box.show{display:block}
-    .status-box.error{
-      color:var(--danger);
-      background:var(--danger-bg);
-      border:1px solid rgba(154,47,47,0.18);
-    }
-    .status-box.success{
-      color:var(--success);
-      background:var(--success-bg);
-      border:1px solid rgba(31,107,70,0.18);
-    }
-    .status-box.info{
-      color:var(--info);
-      background:var(--info-bg);
-      border:1px solid rgba(31,36,48,0.08);
+    .top-header.solid .account-btn:hover,
+    .top-header.solid .logout-btn-public:hover{
+      background:rgba(29,53,87,0.12);
     }
 
-    .btn{
-      width:100%;
-      appearance:none;
-      border:none;
-      border-radius:999px;
-      padding:15px 18px;
-      font:inherit;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.25s ease;
+    .hidden{
+      display:none !important;
     }
 
-    .btn-primary{
+    .menu-button{
+      font-size:28px;
+      line-height:1;
       color:#fff;
-      background:linear-gradient(135deg, #b8955f, #9f7b45);
-      box-shadow:0 14px 30px rgba(159,123,69,0.22);
-      margin-top:8px;
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.20);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
     }
 
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 34px rgba(159,123,69,0.28);
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
     }
 
-    .btn-primary:disabled{
-      opacity:.65;
+    .menu-button:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
+    }
+
+    .top-header.solid .menu-button:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
+    }
+
+    .backdrop.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+      overflow-y:auto;
+    }
+
+    .side-menu.open{
+      transform:translateX(0);
+    }
+
+    .side-menu a,
+    .side-menu button{
+      display:block;
+      margin:0 0 16px;
+      text-decoration:none;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
+    }
+
+    .side-menu a:hover,
+    .side-menu button:hover{
+      text-decoration:underline;
+    }
+
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
+    }
+
+    .hero{
+      min-height:100vh;
+      position:relative;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+      padding:130px 22px 90px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.54),
+        rgba(0,0,0,0.34) 40%,
+        rgba(0,0,0,0.56)
+      );
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
+    }
+
+    .hero-shell{
+      position:relative;
+      z-index:3;
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr 520px;
+      gap:34px;
+      align-items:center;
+    }
+
+    .hero-copy{
+      color:#fff;
+      text-align:left;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+    }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:0.95;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(34px, 5.5vw, 58px);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      line-height:1.28;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .hero-text{
+      margin:18px 0 0;
+      max-width:620px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:21px;
+      line-height:1.7;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+    }
+
+    .hero-links{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-links a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 16px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      transition:0.22s ease;
+    }
+
+    .hero-links .ghost{
+      background:rgba(255,255,255,0.10);
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(6px);
+    }
+
+    .hero-links .ghost:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
+    }
+
+    .login-card{
+      position:relative;
+      z-index:3;
+      background:linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
+      border:1px solid rgba(255,255,255,0.30);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:28px 24px 24px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards 0.12s;
+      animation-fill-mode:forwards;
+      text-align:left;
+    }
+
+    @keyframes heroIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .card-eyebrow{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.76);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
+    }
+
+    .card-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.28;
+    }
+
+    .card-subtitle{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .orn{
+      width:150px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:14px 0 0;
+    }
+
+    .form{
+      margin-top:24px;
+      display:grid;
+      gap:14px;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.72);
+    }
+
+    .field input{
+      width:100%;
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.88);
+      color:var(--ink);
+      border-radius:14px;
+      padding:14px 15px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus{
+      border-color:rgba(184,149,95,0.80);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.18);
+    }
+
+    .helper-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:2px;
+    }
+
+    .helper-text,
+    .helper-link{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .helper-link{
+      color:var(--navy);
+      font-weight:700;
+    }
+
+    .helper-link:hover{
+      text-decoration:underline;
+    }
+
+    .submit-btn{
+      margin-top:4px;
+      width:100%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px 18px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.6px;
+      cursor:pointer;
+      transition:0.22s ease;
+      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+    }
+
+    .submit-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 22px 40px rgba(0,0,0,0.16);
+    }
+
+    .submit-btn:disabled{
+      opacity:0.75;
       cursor:not-allowed;
       transform:none;
-      box-shadow:0 14px 30px rgba(159,123,69,0.16);
     }
 
-    .bottom-link{
-      margin-top:22px;
+    .status-box{
+      display:none;
+      margin-top:16px;
+      padding:14px 14px;
+      border-radius:16px;
       font-size:14px;
-      color:var(--muted);
-      text-align:center;
+      line-height:1.75;
+      border:1px solid transparent;
     }
 
-    .bottom-link a{
-      color:var(--gold);
-      text-decoration:none;
-      font-weight:600;
+    .status-box.show{
+      display:block;
     }
 
-    .bottom-link a:hover{text-decoration:underline}
+    .status-box.error{
+      background:rgba(181,74,74,0.12);
+      color:#8e3535;
+      border-color:rgba(181,74,74,0.18);
+    }
 
-    .back-site{
-      display:inline-block;
+    .status-box.success{
+      background:rgba(47,122,75,0.12);
+      color:#2f7a4b;
+      border-color:rgba(47,122,75,0.18);
+    }
+
+    .status-box.info{
+      background:rgba(81,109,143,0.12);
+      color:#355474;
+      border-color:rgba(81,109,143,0.18);
+    }
+
+    .bottom-links{
       margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(29,53,87,0.10);
+      display:grid;
+      gap:10px;
+    }
+
+    .bottom-links a{
       font-size:14px;
-      color:var(--ink);
+      color:var(--navy);
+      font-weight:700;
+    }
+
+    .bottom-links a:hover{
+      text-decoration:underline;
+    }
+
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
       text-decoration:none;
     }
 
-    .back-site:hover{text-decoration:underline}
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
 
-    @media (max-width: 920px){
-      .auth-shell{grid-template-columns:1fr}
-      .auth-visual{min-height:360px;padding:30px 24px}
-      .auth-panel{padding:34px 22px}
-      .brand-title{font-size:38px}
+    @media (max-width:980px){
+      .hero-shell{
+        grid-template-columns:1fr;
+        gap:22px;
+      }
+
+      .hero-copy{
+        text-align:center;
+      }
+
+      .hero-text{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero-links{
+        justify-content:center;
+      }
+
+      footer{
+        min-height:200px;
+        max-height:none;
+      }
+
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
+      }
+    }
+
+    @media (max-width:640px){
+      .top-header{
+        padding:12px 16px;
+      }
+
+      .top-header-inner{
+        gap:12px;
+      }
+
+      .brand .line2{
+        font-size:16px;
+      }
+
+      .header-actions{
+        gap:8px;
+      }
+
+      .hero{
+        padding:118px 16px 74px;
+      }
+
+      .hero-title{
+        font-size:34px;
+        line-height:1.34;
+        letter-spacing:1.2px;
+      }
+
+      .hero-text{
+        font-size:18px;
+      }
+
+      .card-title{
+        font-size:28px;
+        line-height:1.34;
+        letter-spacing:1px;
+      }
+
+      .login-card{
+        padding:22px 18px 20px;
+        border-radius:22px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <div class="auth-shell">
-    <section class="auth-visual">
-      <a href="index.html" class="brand">
-        <span class="brand-title">Chateau Pireneus</span>
-        <span class="brand-subtitle">Pirenópolis · Goiás</span>
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login</a>
+      <a href="register.html" id="sideRegisterLink" onclick="toggleMenu(false)">Criar Conta</a>
+    </div>
+
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
       </a>
 
-      <div class="visual-copy">
-        <h1>Seu refúgio começa antes da chegada.</h1>
-        <p>
-          Acesse sua área exclusiva para acompanhar reservas, enviar solicitações e viver uma experiência acolhedora no charme de Pirenópolis.
-        </p>
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a href="register.html" id="registerHeaderBtn" class="account-btn">CRIAR CONTA</a>
+        <a href="booking.html" class="reserve-btn">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <section class="auth-panel">
-      <div class="auth-card">
-        <span class="eyebrow">Área do hóspede</span>
-        <h2>Entrar</h2>
-        <p class="subtitle">
-          Faça login para acessar sua conta e acompanhar suas solicitações de hospedagem.
+  <section class="hero" aria-label="Login">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker">Acesse sua conta</div>
+        <h1 class="hero-title">ENTRE PARA CONTINUAR SUA EXPERIÊNCIA</h1>
+        <p class="hero-text">
+          Faça login para acompanhar reservas, concluir pagamentos e acessar sua área exclusiva no Chateau Pireneus.
         </p>
 
-        <div id="returnNote" class="return-note">
-          Depois do login, você será redirecionado para continuar sua reserva.
+        <div class="hero-links">
+          <a class="ghost" href="acomodacoes.html">CONHECER ACOMODAÇÕES</a>
         </div>
+      </div>
 
-        <form id="login-form">
+      <div class="login-card">
+        <span class="card-eyebrow">Bem-vindo de volta</span>
+        <h2 class="card-title">LOGIN</h2>
+        <p class="card-subtitle">
+          Entre com seu email e senha para acessar sua conta. Se você veio de uma reserva, vamos te levar de volta ao fluxo correto.
+        </p>
+        <div class="orn"></div>
+
+        <form id="loginForm" class="form">
           <div class="field">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+            <input type="email" id="email" autocomplete="email" required />
           </div>
 
           <div class="field">
             <label for="password">Senha</label>
-            <input type="password" id="password" placeholder="Digite sua senha" required>
+            <input type="password" id="password" autocomplete="current-password" required />
           </div>
 
-          <button type="submit" id="submitBtn" class="btn btn-primary">Entrar</button>
-          <div id="statusBox" class="status-box info"></div>
+          <div class="helper-row">
+            <span class="helper-text">Use o mesmo email cadastrado na sua conta.</span>
+            <a href="register.html" id="registerInlineLink" class="helper-link">Criar conta</a>
+          </div>
+
+          <button type="submit" id="submitBtn" class="submit-btn">ENTRAR</button>
         </form>
 
-        <p class="bottom-link">
-          Não tem conta? <a id="registerLink" href="register.html">Criar conta</a>
-        </p>
+        <div id="statusBox" class="status-box info">
+          Carregando...
+        </div>
 
-        <a href="index.html" class="back-site">Voltar ao site</a>
+        <div class="bottom-links">
+          <a href="index.html">Voltar para a página inicial</a>
+          <a href="booking.html">Ir para reservas</a>
+        </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+
+  <footer>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -365,656 +876,118 @@
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 
-    const loginForm = document.getElementById("login-form")
-    const submitBtn = document.getElementById("submitBtn")
+    const topHeader = document.getElementById("topHeader")
     const statusBox = document.getElementById("statusBox")
-    const registerLink = document.getElementById("registerLink")
-    const returnNote = document.getElementById("returnNote")
-    const emailInput = document.getElementById("email")
-    const passwordInput = document.getElementById("password")
+    const loginForm = document.getElementById("loginForm")
+    const submitBtn = document.getElementById("submitBtn")
+    const registerHeaderBtn = document.getElementById("registerHeaderBtn")
+    const registerInlineLink = document.getElementById("registerInlineLink")
+    const sideRegisterLink = document.getElementById("sideRegisterLink")
 
-    function getParam(name) {
-      const params = new URLSearchParams(window.location.search)
-      return params.get(name) || ""
+    function onScrollHeader(){
+      const y = window.scrollY || document.documentElement.scrollTop
+      topHeader.classList.toggle("solid", y > 40)
     }
 
-    function setStatus(type, message) {
-      statusBox.className = `status-box show ${type}`
-      statusBox.textContent = message
+    window.addEventListener("scroll", onScrollHeader)
+    onScrollHeader()
+
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
+
+      if(open){
+        menu.classList.add("open")
+        backdrop.classList.add("open")
+      }else{
+        menu.classList.remove("open")
+        backdrop.classList.remove("open")
+      }
+    }
+
+    function getReturnTo() {
+      const params = new URLSearchParams(window.location.search)
+      return params.get("return_to") || "dashboard.html"
+    }
+
+    function sanitizeReturnTo(value) {
+      if (!value) return "dashboard.html"
+      if (value.startsWith("http://") || value.startsWith("https://")) return "dashboard.html"
+      return value
+    }
+
+    function buildRegisterHref() {
+      const returnTo = sanitizeReturnTo(getReturnTo())
+      return `register.html?return_to=${encodeURIComponent(returnTo)}`
+    }
+
+    function setStatus(type, text) {
+      statusBox.className = `status-box ${type} show`
+      statusBox.textContent = text
     }
 
     function setLoading(isLoading) {
       submitBtn.disabled = isLoading
-      submitBtn.textContent = isLoading ? "Entrando..." : "Entrar"
+      submitBtn.textContent = isLoading ? "ENTRANDO..." : "ENTRAR"
     }
 
-    function sanitizeReturnTo(value) {
-      if (!value) return ""
-      if (!value.startsWith("/")) return ""
-      if (value.startsWith("//")) return ""
-      return value
+    async function redirectIfLoggedIn() {
+      const { data, error } = await supabaseClient.auth.getUser()
+
+      if (error || !data.user) return false
+
+      const returnTo = sanitizeReturnTo(getReturnTo())
+      window.location.href = returnTo
+      return true
     }
 
-    async function getDestinationForUser(user, returnTo) {
-      const { data: adminRows, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", user.id)
-
-      if (adminError) {
-        throw adminError
-      }
-
-      if (adminRows && adminRows.length > 0) {
-        return "admin.html"
-      }
-
-      if (returnTo) {
-        return returnTo
-      }
-
-      return "dashboard.html"
-    }
-
-    const returnTo = sanitizeReturnTo(getParam("return_to"))
-    const emailFromQuery = getParam("email")
-
-    if (returnTo) {
-      returnNote.classList.add("show")
-      registerLink.href = `register.html?return_to=${encodeURIComponent(returnTo)}`
-    }
-
-    if (emailFromQuery) {
-      emailInput.value = emailFromQuery
-    }
-
-    async function redirectIfAlreadyLoggedIn() {
-      try {
-        const { data, error } = await supabaseClient.auth.getUser()
-
-        if (error) {
-          return
-        }
-
-        if (!data.user) {
-          return
-        }
-
-        emailInput.disabled = true
-        passwordInput.disabled = true
-        setLoading(true)
-        setStatus("info", "Você já está logado. Redirecionando...")
-
-        const destination = await getDestinationForUser(data.user, returnTo)
-        window.location.href = destination
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault()
-      setLoading(true)
-      setStatus("info", "Validando suas credenciais...")
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault()
 
       const email = document.getElementById("email").value.trim()
       const password = document.getElementById("password").value
 
-      try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        })
-
-        if (error) {
-          setStatus("error", error.message)
-          setLoading(false)
-          return
-        }
-
-        const destination = await getDestinationForUser(data.user, returnTo)
-
-        setStatus("success", "Login realizado com sucesso. Redirecionando...")
-        window.location.href = destination
-      } catch (err) {
-        console.error(err)
-        setStatus("error", "Erro inesperado ao tentar entrar.")
-        setLoading(false)
-      }
-    })
-
-    redirectIfAlreadyLoggedIn()
-  </script>
-
-</body>
-</html>
-```
-
----
-
-## `register.html`
-
-```html
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar conta | Chateau Pireneus</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    @font-face{
-      font-family:"Gyahegi";
-      src:url("Gyahegi.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-
-    :root{
-      --bg:#f6f1e6;
-      --bg-2:#efe5d2;
-      --ink:#1f2430;
-      --muted:#6f6a62;
-      --gold:#b8955f;
-      --line:rgba(31,36,48,0.10);
-      --shadow:0 20px 60px rgba(31,36,48,0.10);
-      --danger:#9a2f2f;
-      --danger-bg:#fff3f3;
-      --success:#1f6b46;
-      --success-bg:#eefaf3;
-      --info:#5a5d66;
-      --info-bg:#f8f7f3;
-    }
-
-    *{box-sizing:border-box;margin:0;padding:0}
-
-    body{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      font-family:"Inter",sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(184,149,95,0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 26%),
-        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
-    }
-
-    .auth-shell{
-      width:100%;
-      max-width:1160px;
-      display:grid;
-      grid-template-columns:0.98fr 1.02fr;
-      border-radius:32px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,0.55);
-      background:rgba(255,255,255,0.52);
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-    }
-
-    .auth-panel{
-      padding:48px 40px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));
-      display:flex;
-      align-items:center;
-    }
-
-    .auth-card{
-      width:100%;
-      max-width:460px;
-      margin:0 auto;
-    }
-
-    .eyebrow{
-      display:inline-block;
-      font-size:12px;
-      letter-spacing:0.24em;
-      text-transform:uppercase;
-      color:var(--gold);
-      margin-bottom:12px;
-    }
-
-    h2{
-      font-family:"Cormorant Garamond",serif;
-      font-size:48px;
-      line-height:0.95;
-      font-weight:600;
-      margin-bottom:14px;
-    }
-
-    .subtitle{
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.75;
-      margin-bottom:18px;
-    }
-
-    .return-note{
-      margin-bottom:22px;
-      border-radius:16px;
-      padding:12px 14px;
-      font-size:13px;
-      line-height:1.7;
-      color:var(--info);
-      background:var(--info-bg);
-      border:1px solid rgba(31,36,48,0.08);
-      display:none;
-    }
-
-    .return-note.show{
-      display:block;
-    }
-
-    .field{margin-bottom:16px}
-
-    label{
-      display:block;
-      font-size:13px;
-      font-weight:600;
-      margin-bottom:8px;
-      color:var(--ink);
-    }
-
-    input{
-      width:100%;
-      border:1px solid rgba(31,36,48,0.10);
-      background:rgba(255,255,255,0.78);
-      color:var(--ink);
-      border-radius:16px;
-      padding:14px 15px;
-      font:inherit;
-      outline:none;
-      transition:border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-    }
-
-    input:focus{
-      border-color:rgba(184,149,95,0.72);
-      box-shadow:0 0 0 4px rgba(184,149,95,0.12);
-      transform:translateY(-1px);
-    }
-
-    .status-box{
-      margin:14px 0 0;
-      font-size:13px;
-      line-height:1.7;
-      border-radius:16px;
-      padding:12px 14px;
-      display:none;
-    }
-
-    .status-box.show{display:block}
-    .status-box.error{
-      color:var(--danger);
-      background:var(--danger-bg);
-      border:1px solid rgba(154,47,47,0.18);
-    }
-    .status-box.success{
-      color:var(--success);
-      background:var(--success-bg);
-      border:1px solid rgba(31,107,70,0.18);
-    }
-    .status-box.info{
-      color:var(--info);
-      background:var(--info-bg);
-      border:1px solid rgba(31,36,48,0.08);
-    }
-
-    .btn{
-      width:100%;
-      appearance:none;
-      border:none;
-      border-radius:999px;
-      padding:15px 18px;
-      font:inherit;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.25s ease;
-    }
-
-    .btn-primary{
-      color:#fff;
-      background:linear-gradient(135deg, #b8955f, #9f7b45);
-      box-shadow:0 14px 30px rgba(159,123,69,0.22);
-      margin-top:8px;
-    }
-
-    .btn-primary:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 34px rgba(159,123,69,0.28);
-    }
-
-    .btn-primary:disabled{
-      opacity:.65;
-      cursor:not-allowed;
-      transform:none;
-      box-shadow:0 14px 30px rgba(159,123,69,0.16);
-    }
-
-    .bottom-link{
-      margin-top:22px;
-      font-size:14px;
-      color:var(--muted);
-      text-align:center;
-    }
-
-    .bottom-link a{
-      color:var(--gold);
-      text-decoration:none;
-      font-weight:600;
-    }
-
-    .bottom-link a:hover{text-decoration:underline}
-
-    .back-site{
-      display:inline-block;
-      margin-top:18px;
-      font-size:14px;
-      color:var(--ink);
-      text-decoration:none;
-    }
-
-    .back-site:hover{text-decoration:underline}
-
-    .auth-visual{
-      position:relative;
-      min-height:760px;
-      padding:48px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      background:
-        linear-gradient(rgba(22,22,22,0.20), rgba(22,22,22,0.26)),
-        url("pousada.png") center/cover no-repeat;
-    }
-
-    .auth-visual::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(15,15,15,0.08), rgba(15,15,15,0.32));
-      pointer-events:none;
-    }
-
-    .brand,
-    .visual-copy{
-      position:relative;
-      z-index:1;
-      color:#fff;
-    }
-
-    .brand{
-      text-decoration:none;
-      display:inline-flex;
-      flex-direction:column;
-      align-self:flex-start;
-    }
-
-    .brand-title{
-      font-family:"Gyahegi","Cormorant Garamond",serif;
-      font-size:44px;
-      line-height:1;
-      font-weight:400;
-    }
-
-    .brand-subtitle{
-      margin-top:8px;
-      font-size:12px;
-      letter-spacing:0.22em;
-      text-transform:uppercase;
-      opacity:0.9;
-    }
-
-    .visual-copy h1{
-      font-family:"Cormorant Garamond",serif;
-      font-size:clamp(42px, 5vw, 64px);
-      line-height:0.95;
-      font-weight:600;
-      max-width:520px;
-      margin-bottom:16px;
-    }
-
-    .visual-copy p{
-      max-width:500px;
-      font-size:16px;
-      line-height:1.8;
-      color:rgba(255,255,255,0.92);
-    }
-
-    @media (max-width: 920px){
-      .auth-shell{grid-template-columns:1fr}
-      .auth-visual{order:-1;min-height:360px;padding:30px 24px}
-      .auth-panel{padding:34px 22px}
-      .brand-title{font-size:38px}
-    }
-  </style>
-</head>
-<body>
-
-  <div class="auth-shell">
-    <section class="auth-panel">
-      <div class="auth-card">
-        <span class="eyebrow">Área do hóspede</span>
-        <h2>Criar conta</h2>
-        <p class="subtitle">
-          Cadastre seus dados para enviar solicitações de hospedagem e acompanhar suas reservas com mais praticidade.
-        </p>
-
-        <div id="returnNote" class="return-note">
-          Depois do cadastro, você será direcionado para entrar e continuar sua reserva.
-        </div>
-
-        <form id="register-form">
-          <div class="field">
-            <label for="full_name">Nome completo</label>
-            <input type="text" id="full_name" placeholder="Seu nome completo" required>
-          </div>
-
-          <div class="field">
-            <label for="phone">Telefone</label>
-            <input type="text" id="phone" placeholder="(00) 00000-0000" required>
-          </div>
-
-          <div class="field">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
-          </div>
-
-          <div class="field">
-            <label for="password">Senha</label>
-            <input type="password" id="password" placeholder="Crie uma senha" required>
-          </div>
-
-          <button type="submit" id="submitBtn" class="btn btn-primary">Cadastrar</button>
-          <div id="statusBox" class="status-box info"></div>
-        </form>
-
-        <p class="bottom-link">
-          Já tem conta? <a id="loginLink" href="login.html">Entrar</a>
-        </p>
-
-        <a href="index.html" class="back-site">Voltar ao site</a>
-      </div>
-    </section>
-
-    <section class="auth-visual">
-      <a href="index.html" class="brand">
-        <span class="brand-title">Chateau Pireneus</span>
-        <span class="brand-subtitle">Pirenópolis · Goiás</span>
-      </a>
-
-      <div class="visual-copy">
-        <h1>Uma estadia especial começa com um simples cadastro.</h1>
-        <p>
-          Crie sua conta para acessar sua área do hóspede, solicitar reservas e acompanhar sua experiência com mais conforto e exclusividade.
-        </p>
-      </div>
-    </section>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const { createClient } = supabase
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-
-    const registerForm = document.getElementById("register-form")
-    const submitBtn = document.getElementById("submitBtn")
-    const statusBox = document.getElementById("statusBox")
-    const loginLink = document.getElementById("loginLink")
-    const returnNote = document.getElementById("returnNote")
-    const fullNameInput = document.getElementById("full_name")
-    const phoneInput = document.getElementById("phone")
-    const emailInput = document.getElementById("email")
-    const passwordInput = document.getElementById("password")
-
-    function getParam(name) {
-      const params = new URLSearchParams(window.location.search)
-      return params.get(name) || ""
-    }
-
-    function setStatus(type, message) {
-      statusBox.className = `status-box show ${type}`
-      statusBox.textContent = message
-    }
-
-    function setLoading(isLoading) {
-      submitBtn.disabled = isLoading
-      submitBtn.textContent = isLoading ? "Cadastrando..." : "Cadastrar"
-    }
-
-    function sanitizeReturnTo(value) {
-      if (!value) return ""
-      if (!value.startsWith("/")) return ""
-      if (value.startsWith("//")) return ""
-      return value
-    }
-
-    async function getDestinationForUser(user, returnTo) {
-      const { data: adminRows, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", user.id)
-
-      if (adminError) {
-        throw adminError
+      if (!email || !password) {
+        setStatus("error", "Preencha email e senha para continuar.")
+        return
       }
 
-      if (adminRows && adminRows.length > 0) {
-        return "admin.html"
-      }
-
-      if (returnTo) {
-        return returnTo
-      }
-
-      return "dashboard.html"
-    }
-
-    const returnTo = sanitizeReturnTo(getParam("return_to"))
-
-    if (returnTo) {
-      returnNote.classList.add("show")
-      loginLink.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
-    }
-
-    async function redirectIfAlreadyLoggedIn() {
-      try {
-        const { data, error } = await supabaseClient.auth.getUser()
-
-        if (error) {
-          return
-        }
-
-        if (!data.user) {
-          return
-        }
-
-        fullNameInput.disabled = true
-        phoneInput.disabled = true
-        emailInput.disabled = true
-        passwordInput.disabled = true
-        setLoading(true)
-        setStatus("info", "Você já está logado. Redirecionando...")
-
-        const destination = await getDestinationForUser(data.user, returnTo)
-        window.location.href = destination
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    registerForm.addEventListener("submit", async (e) => {
-      e.preventDefault()
       setLoading(true)
-      setStatus("info", "Criando sua conta...")
+      setStatus("info", "Validando seus dados...")
 
-      const full_name = fullNameInput.value.trim()
-      const phone = phoneInput.value.trim()
-      const email = emailInput.value.trim()
-      const password = passwordInput.value
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      })
 
-      try {
-        const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password
-        })
-
-        if (error) {
-          setStatus("error", error.message)
-          setLoading(false)
-          return
-        }
-
-        const user = data.user
-
-        if (user) {
-          const { error: profileError } = await supabaseClient
-            .from("profiles")
-            .upsert([
-              {
-                id: user.id,
-                full_name,
-                phone,
-                email
-              }
-            ])
-
-          if (profileError) {
-            setStatus("error", profileError.message)
-            setLoading(false)
-            return
-          }
-        }
-
-        setStatus("success", "Conta criada com sucesso. Redirecionando para o login...")
-
-        const nextLoginUrl = returnTo
-          ? `login.html?return_to=${encodeURIComponent(returnTo)}&email=${encodeURIComponent(email)}`
-          : `login.html?email=${encodeURIComponent(email)}`
-
-        setTimeout(() => {
-          window.location.href = nextLoginUrl
-        }, 900)
-      } catch (err) {
-        console.error(err)
-        setStatus("error", "Erro inesperado ao criar a conta.")
+      if (error) {
         setLoading(false)
+        setStatus("error", error.message || "Não foi possível fazer login.")
+        return
       }
+
+      setStatus("success", "Login realizado com sucesso. Redirecionando...")
+      const returnTo = sanitizeReturnTo(getReturnTo())
+
+      setTimeout(() => {
+        window.location.href = returnTo
+      }, 700)
     })
 
-    redirectIfAlreadyLoggedIn()
-  </script>
+    ;(async function init() {
+      registerHeaderBtn.href = buildRegisterHref()
+      registerInlineLink.href = buildRegisterHref()
+      sideRegisterLink.href = buildRegisterHref()
 
+      const redirected = await redirectIfLoggedIn()
+      if (redirected) return
+
+      setStatus("info", "Digite seus dados para acessar sua conta.")
+    })()
+
+    window.toggleMenu = toggleMenu
+  </script>
 </body>
 </html>
-```

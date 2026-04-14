@@ -485,7 +485,7 @@
       line-height:1.7;
     }
 
-    @media (max-width: 1080px){
+    @media (max-width:1080px){
       .toolbar{
         grid-template-columns:1fr 1fr;
       }
@@ -495,7 +495,7 @@
       }
     }
 
-    @media (max-width: 900px){
+    @media (max-width:900px){
       .summary-grid,
       .reservation-grid,
       .toolbar,
@@ -1123,10 +1123,10 @@
       button.disabled = true
       button.textContent = "Salvando..."
 
-      const { error } = await supabaseClient
-        .from("reservations")
-        .update({ status })
-        .eq("id", reservationId)
+      const { error } = await supabaseClient.rpc("admin_update_reservation_status", {
+        p_reservation_id: reservationId,
+        p_status: status
+      })
 
       if (error) {
         alert(error.message)
@@ -1135,14 +1135,8 @@
         return
       }
 
-      const target = allReservations.find(item => String(item.id) === String(reservationId))
-      if (target) {
-        target.status = status
-      }
-
-      updateSummary(allReservations)
-      renderReservations()
-      alert("Status geral atualizado com sucesso!")
+      await loadAdminReservations()
+      alert("Status atualizado com segurança!")
     }
 
     function clearFilters() {

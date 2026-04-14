@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Status da Reserva | Chateau Pireneus</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     @font-face{
       font-family:"Gyahegi";
@@ -29,6 +32,8 @@
       --warning-bg: #fff7ea;
       --error: #9a2f2f;
       --error-bg: #fff3f3;
+      --info: #5a5d66;
+      --info-bg: #f8f7f3;
     }
 
     * {
@@ -53,7 +58,7 @@
 
     .page {
       width: 100%;
-      max-width: 860px;
+      max-width: 920px;
     }
 
     .card {
@@ -119,6 +124,12 @@
       border: 1px solid rgba(154,47,47,0.16);
     }
 
+    .status-pill.info {
+      color: var(--info);
+      background: var(--info-bg);
+      border: 1px solid rgba(31,36,48,0.08);
+    }
+
     .center {
       text-align: center;
     }
@@ -133,7 +144,7 @@
 
     p.lead {
       margin: 0 auto 10px;
-      max-width: 620px;
+      max-width: 680px;
       font-size: 16px;
       line-height: 1.8;
       color: var(--muted);
@@ -141,7 +152,7 @@
 
     .reservation-box {
       margin: 28px 0 18px;
-      padding: 18px 18px;
+      padding: 18px;
       border-radius: 22px;
       background: rgba(255,255,255,0.74);
       border: 1px solid var(--border);
@@ -209,6 +220,12 @@
       border-color: rgba(154,47,47,0.16);
     }
 
+    .notice.info {
+      color: var(--info);
+      background: var(--info-bg);
+      border-color: rgba(31,36,48,0.08);
+    }
+
     .actions {
       display: flex;
       gap: 12px;
@@ -230,10 +247,17 @@
       border: none;
       cursor: pointer;
       transition: .25s ease;
+      font-family: inherit;
     }
 
     .btn:hover {
       transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .btn-dark {
@@ -257,6 +281,7 @@
       font-size: 13px;
       color: var(--muted);
       text-align: center;
+      line-height: 1.8;
     }
 
     @media (max-width: 640px) {
@@ -298,34 +323,63 @@
       </div>
 
       <div class="center">
-        <div id="statusPill" class="status-pill warning">Processando</div>
+        <div id="statusPill" class="status-pill info">Processando</div>
         <h1 id="titleText">Status da Reserva</h1>
-        <p id="messageLine1" class="lead">Estamos processando sua reserva.</p>
-        <p id="messageLine2" class="lead">Aguarde enquanto confirmamos os detalhes.</p>
+        <p id="messageLine1" class="lead">Estamos validando os dados da sua reserva.</p>
+        <p id="messageLine2" class="lead">Aguarde alguns instantes enquanto buscamos a confirmação mais recente.</p>
       </div>
 
       <div id="reservationBox" class="reservation-box">
         <h2>Resumo</h2>
+
         <div class="detail-row">
           <span class="detail-label">Reserva</span>
           <span id="reservationIdText" class="detail-value">Carregando...</span>
         </div>
+
         <div class="detail-row">
           <span class="detail-label">Sessão de pagamento</span>
           <span id="sessionIdText" class="detail-value">—</span>
         </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Suíte</span>
+          <span id="roomText" class="detail-value">—</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Check-in</span>
+          <span id="checkInText" class="detail-value">—</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Check-out</span>
+          <span id="checkOutText" class="detail-value">—</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Hóspedes</span>
+          <span id="guestsText" class="detail-value">—</span>
+        </div>
+
+        <div class="detail-row">
+          <span class="detail-label">Total</span>
+          <span id="totalText" class="detail-value">—</span>
+        </div>
+
         <div class="detail-row">
           <span class="detail-label">Situação</span>
           <span id="situationText" class="detail-value">Carregando...</span>
         </div>
       </div>
 
-      <div id="noticeBox" class="notice warning">
+      <div id="noticeBox" class="notice info">
         Aguarde enquanto validamos o retorno do pagamento.
       </div>
 
       <div class="actions">
-        <a id="retryLink" class="btn btn-dark hidden" href="#">Tentar pagamento novamente</a>
+        <button id="retryBtn" class="btn btn-dark hidden" type="button">Tentar pagamento novamente</button>
+        <a id="dashboardLink" href="/dashboard.html" class="btn btn-light">Minha área</a>
         <a href="/acomodacoes.html" class="btn btn-light">Voltar para acomodações</a>
         <a href="/index.html" class="btn btn-light">Ir para início</a>
       </div>
@@ -336,11 +390,31 @@
 
   <script>
     (function () {
-      var SUPABASE_PROJECT_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+      const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+      const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
+      const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
+
+      const { createClient } = supabase;
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
       function getParam(name) {
-        var params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window.location.search);
         return params.get(name) || "";
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return "—";
+        const [year, month, day] = dateStr.split("-");
+        if (!year || !month || !day) return dateStr;
+        return `${day}/${month}/${year}`;
+      }
+
+      function formatCurrency(value) {
+        if (value === null || value === undefined || value === "") return "—";
+        return new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        }).format(Number(value || 0));
       }
 
       function setPill(type, text) {
@@ -353,25 +427,44 @@
         noticeBox.textContent = text;
       }
 
-      var reservationId = getParam("reservation_id");
-      var cancelled = getParam("cancelled");
-      var sessionId = getParam("session_id");
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
 
-      var statusPill = document.getElementById("statusPill");
-      var titleText = document.getElementById("titleText");
-      var messageLine1 = document.getElementById("messageLine1");
-      var messageLine2 = document.getElementById("messageLine2");
-      var reservationIdText = document.getElementById("reservationIdText");
-      var sessionIdText = document.getElementById("sessionIdText");
-      var situationText = document.getElementById("situationText");
-      var retryLink = document.getElementById("retryLink");
-      var statusText = document.getElementById("statusText");
-      var noticeBox = document.getElementById("noticeBox");
+      function buildReturnTo() {
+        return window.location.pathname + window.location.search + window.location.hash;
+      }
 
-      reservationIdText.textContent = reservationId || "Não informado";
-      sessionIdText.textContent = sessionId || "Não informado";
+      function isRetryEligible(reservation) {
+        if (!reservation) return false;
 
-      if (!reservationId) {
+        const allowedStatuses = ["pending", "held", "confirmed"];
+        const allowedBookingStatuses = ["pending", "held", "booked"];
+        const blockedPaymentStatuses = ["paid", "refunded"];
+
+        return (
+          allowedStatuses.includes(String(reservation.status || "")) &&
+          allowedBookingStatuses.includes(String(reservation.booking_status || "")) &&
+          !blockedPaymentStatuses.includes(String(reservation.payment_status || ""))
+        );
+      }
+
+      function fillReservationDetails(reservation) {
+        reservationIdText.textContent = reservation?.id || reservationId || "Não informado";
+        sessionIdText.textContent =
+          sessionId ||
+          reservation?.stripe_checkout_session_id ||
+          reservation?.payment_id ||
+          "Não informado";
+
+        roomText.textContent = reservation?.room_type || "—";
+        checkInText.textContent = formatDate(reservation?.check_in);
+        checkOutText.textContent = formatDate(reservation?.check_out);
+        guestsText.textContent = reservation?.guests ? String(reservation.guests) : "—";
+        totalText.textContent = reservation?.total_amount ? formatCurrency(reservation.total_amount) : "—";
+      }
+
+      function renderMissingReservation() {
         setPill("error", "Reserva não localizada");
         titleText.textContent = "Reserva não localizada";
         messageLine1.textContent = "Não foi possível localizar o código da reserva.";
@@ -379,36 +472,263 @@
         situationText.textContent = "URL sem reservation_id";
         setNotice("error", "Esta página foi aberta sem um identificador de reserva válido.");
         statusText.textContent = "Página carregada sem reservation_id.";
-        return;
       }
 
-      if (cancelled === "1") {
+      function renderCancelledPending(reservation) {
         setPill("warning", "Pagamento pendente");
         titleText.textContent = "Pagamento não concluído";
         messageLine1.textContent = "Sua reserva foi criada, mas o pagamento não foi finalizado.";
         messageLine2.textContent = "Você pode tentar novamente abaixo sem refazer a reserva.";
         situationText.textContent = "Pagamento pendente";
-        setNotice("warning", "A reserva continua vinculada a este código. Para concluir, basta tentar o pagamento novamente." );
-        retryLink.classList.remove("hidden");
-        retryLink.href =
-          SUPABASE_PROJECT_URL +
-          "/functions/v1/checkoutstripe?reservation_id=" +
-          encodeURIComponent(reservationId);
-        statusText.textContent = sessionId
-          ? "Retorno recebido com cancelamento do checkout."
-          : "Pagamento cancelado antes da conclusão.";
+        setNotice("warning", "A reserva continua disponível para nova tentativa de pagamento enquanto permanecer elegível.");
+        statusText.textContent = "Retorno recebido com cancelamento do checkout.";
+        if (isRetryEligible(reservation)) {
+          retryBtn.classList.remove("hidden");
+        }
+      }
+
+      function renderConfirmed(reservation) {
+        setPill("success", "Reserva confirmada");
+        titleText.textContent = "Reserva confirmada";
+        messageLine1.textContent = "Seu pagamento foi aprovado e sua reserva está confirmada.";
+        messageLine2.textContent = "Você pode acompanhar os detalhes também na sua área do cliente.";
+        situationText.textContent = "Pagamento aprovado";
+        setNotice("success", "Tudo certo. Sua hospedagem foi confirmada com sucesso.");
+        statusText.textContent =
+          `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+      }
+
+      function renderProcessing(reservation) {
+        setPill("info", "Processando");
+        titleText.textContent = "Pagamento em validação";
+        messageLine1.textContent = "Recebemos o retorno do checkout.";
+        messageLine2.textContent = "Estamos aguardando a confirmação final do pagamento pelo sistema.";
+        situationText.textContent = "Validação em andamento";
+        setNotice("info", "Isso normalmente leva apenas alguns segundos. Esta página será atualizada automaticamente.");
+        statusText.textContent =
+          `Status atual: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+      }
+
+      function renderFailedOrExpired(reservation) {
+        setPill("error", "Reserva encerrada");
+        titleText.textContent = "Pagamento não confirmado";
+        messageLine1.textContent = "Esta reserva não pôde ser concluída.";
+        messageLine2.textContent = "As datas podem ter sido liberadas novamente para nova tentativa de reserva.";
+        situationText.textContent = "Reserva cancelada ou expirada";
+        setNotice("error", "Para continuar, volte às acomodações e crie uma nova solicitação de reserva.");
+        statusText.textContent =
+          `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+      }
+
+      function renderGenericFallback() {
+        setPill("info", "Aguardando");
+        titleText.textContent = "Reserva em análise";
+        messageLine1.textContent = "Não foi possível carregar todos os detalhes desta reserva neste momento.";
+        messageLine2.textContent = "Tente novamente em instantes ou acesse sua área para acompanhar.";
+        situationText.textContent = "Consulta parcial";
+        setNotice("info", "Se você acabou de concluir o checkout, o processamento ainda pode estar finalizando.");
+        statusText.textContent = "Consulta sem detalhes completos da reserva.";
+      }
+
+      async function fetchReservation() {
+        const { data, error } = await supabaseClient
+          .from("reservations")
+          .select(`
+            id,
+            room_type,
+            check_in,
+            check_out,
+            guests,
+            total_amount,
+            status,
+            booking_status,
+            payment_status,
+            payment_provider,
+            payment_id,
+            stripe_checkout_session_id
+          `)
+          .eq("id", reservationId)
+          .maybeSingle();
+
+        return { data, error };
+      }
+
+      async function loadReservationState() {
+        const maxAttempts = cancelled === "1" ? 1 : (sessionId ? 8 : 3);
+        let lastReservation = null;
+        let lastError = null;
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+          const { data, error } = await fetchReservation();
+
+          if (data) {
+            lastReservation = data;
+            fillReservationDetails(data);
+
+            if (
+              data.payment_status === "paid" ||
+              (data.booking_status === "booked" && data.status === "confirmed")
+            ) {
+              renderConfirmed(data);
+              return;
+            }
+
+            if (
+              data.booking_status === "cancelled" ||
+              data.booking_status === "expired" ||
+              data.status === "cancelled"
+            ) {
+              if (cancelled === "1" && isRetryEligible(data)) {
+                renderCancelledPending(data);
+              } else {
+                renderFailedOrExpired(data);
+              }
+              return;
+            }
+
+            if (cancelled === "1") {
+              renderCancelledPending(data);
+              return;
+            }
+
+            if (isRetryEligible(data)) {
+              renderProcessing(data);
+            } else {
+              renderGenericFallback();
+              return;
+            }
+          } else {
+            lastError = error || null;
+          }
+
+          if (attempt < maxAttempts - 1) {
+            await sleep(2000);
+          }
+        }
+
+        if (lastReservation) {
+          if (cancelled === "1") {
+            renderCancelledPending(lastReservation);
+          } else if (
+            lastReservation.payment_status === "paid" ||
+            (lastReservation.booking_status === "booked" && lastReservation.status === "confirmed")
+          ) {
+            renderConfirmed(lastReservation);
+          } else if (
+            lastReservation.booking_status === "cancelled" ||
+            lastReservation.booking_status === "expired" ||
+            lastReservation.status === "cancelled"
+          ) {
+            renderFailedOrExpired(lastReservation);
+          } else {
+            renderProcessing(lastReservation);
+          }
+          return;
+        }
+
+        if (cancelled === "1") {
+          setPill("warning", "Pagamento pendente");
+          titleText.textContent = "Pagamento não concluído";
+          messageLine1.textContent = "Sua reserva foi criada, mas o pagamento não foi finalizado.";
+          messageLine2.textContent = "Faça login novamente para tentar o pagamento outra vez.";
+          situationText.textContent = "Pagamento pendente";
+          setNotice("warning", "Não foi possível carregar os detalhes completos da reserva agora, mas você pode tentar novamente.");
+          retryBtn.classList.remove("hidden");
+          statusText.textContent = lastError?.message || "Reserva sem detalhes carregados.";
+          return;
+        }
+
+        renderGenericFallback();
+        if (lastError?.message) {
+          statusText.textContent = lastError.message;
+        }
+      }
+
+      async function retryPayment() {
+        retryBtn.disabled = true;
+        retryBtn.textContent = "Redirecionando...";
+
+        try {
+          const { data: userData, error: userError } = await supabaseClient.auth.getUser();
+
+          if (userError || !userData.user) {
+            window.location.href = `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
+            return;
+          }
+
+          const { data: sessionData } = await supabaseClient.auth.getSession();
+          const accessToken = sessionData?.session?.access_token;
+
+          if (!accessToken) {
+            window.location.href = `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
+            return;
+          }
+
+          const response = await fetch(CHECKOUTSTRIPE_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${accessToken}`,
+              "apikey": SUPABASE_PUBLISHABLE_KEY
+            },
+            body: JSON.stringify({
+              reservation_id: reservationId
+            })
+          });
+
+          const payload = await response.json().catch(() => null);
+
+          if (!response.ok || !payload?.checkout_url) {
+            setPill("error", "Erro no pagamento");
+            setNotice("error", payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento.");
+            statusText.textContent = payload?.error || "Falha ao gerar novo checkout.";
+            retryBtn.disabled = false;
+            retryBtn.textContent = "Tentar pagamento novamente";
+            return;
+          }
+
+          window.location.href = payload.checkout_url;
+        } catch (error) {
+          console.error(error);
+          setPill("error", "Erro no pagamento");
+          setNotice("error", "Ocorreu um erro inesperado ao iniciar uma nova tentativa de pagamento.");
+          statusText.textContent = error instanceof Error ? error.message : "Erro inesperado.";
+          retryBtn.disabled = false;
+          retryBtn.textContent = "Tentar pagamento novamente";
+        }
+      }
+
+      const reservationId = getParam("reservation_id");
+      const cancelled = getParam("cancelled");
+      const sessionId = getParam("session_id");
+
+      const statusPill = document.getElementById("statusPill");
+      const titleText = document.getElementById("titleText");
+      const messageLine1 = document.getElementById("messageLine1");
+      const messageLine2 = document.getElementById("messageLine2");
+      const reservationIdText = document.getElementById("reservationIdText");
+      const sessionIdText = document.getElementById("sessionIdText");
+      const roomText = document.getElementById("roomText");
+      const checkInText = document.getElementById("checkInText");
+      const checkOutText = document.getElementById("checkOutText");
+      const guestsText = document.getElementById("guestsText");
+      const totalText = document.getElementById("totalText");
+      const situationText = document.getElementById("situationText");
+      const retryBtn = document.getElementById("retryBtn");
+      const statusText = document.getElementById("statusText");
+      const noticeBox = document.getElementById("noticeBox");
+
+      reservationIdText.textContent = reservationId || "Não informado";
+      sessionIdText.textContent = sessionId || "Não informado";
+
+      retryBtn.addEventListener("click", retryPayment);
+
+      if (!reservationId) {
+        renderMissingReservation();
         return;
       }
 
-      setPill("success", "Pagamento enviado");
-      titleText.textContent = "Pagamento concluído";
-      messageLine1.textContent = "Seu pagamento foi enviado com sucesso.";
-      messageLine2.textContent = "Sua reserva está sendo confirmada pelo sistema.";
-      situationText.textContent = "Pagamento concluído";
-      setNotice("success", "Se você acabou de sair do checkout, este é o comportamento esperado. Sua reserva seguirá o fluxo normal de confirmação." );
-      statusText.textContent = sessionId
-        ? "Sessão Stripe recebida com sucesso."
-        : "Reserva recebida sem session_id na URL.";
+      loadReservationState();
     })();
   </script>
 </body>

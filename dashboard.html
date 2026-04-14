@@ -109,13 +109,21 @@
     }
 
     .header-link,
-    .logout-btn{
+    .logout-btn,
+    .secondary-btn,
+    .cta-btn,
+    .retry-btn{
       appearance:none;
       border:none;
       text-decoration:none;
       cursor:pointer;
       transition:0.25s ease;
       font-family:inherit;
+    }
+
+    .header-link,
+    .logout-btn,
+    .secondary-btn{
       color:var(--ink);
       font-size:14px;
       font-weight:600;
@@ -126,7 +134,8 @@
     }
 
     .header-link:hover,
-    .logout-btn:hover{
+    .logout-btn:hover,
+    .secondary-btn:hover{
       background:rgba(255,255,255,0.92);
       transform:translateY(-1px);
     }
@@ -222,6 +231,35 @@
       word-break:break-word;
     }
 
+    .summary-grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .summary-card{
+      background:rgba(255,255,255,0.52);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:20px;
+      padding:16px 18px;
+    }
+
+    .summary-label{
+      display:block;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:0.18em;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .summary-value{
+      font-size:24px;
+      font-weight:700;
+      color:var(--ink);
+    }
+
     .grid{
       display:grid;
       grid-template-columns:1fr;
@@ -239,6 +277,15 @@
       -webkit-backdrop-filter:blur(14px);
     }
 
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
     .panel-title{
       font-family:"Cormorant Garamond",serif;
       font-size:34px;
@@ -250,7 +297,8 @@
       color:var(--muted);
       font-size:15px;
       line-height:1.7;
-      margin-bottom:22px;
+      margin-bottom:0;
+      max-width:760px;
     }
 
     .list-title{
@@ -275,6 +323,43 @@
       font-weight:700;
     }
 
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.2fr 0.9fr 0.9fr auto;
+      gap:14px;
+      margin-bottom:18px;
+      align-items:end;
+    }
+
+    .toolbar-card{
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(31,36,48,0.08);
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .toolbar label{
+      display:block;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    .toolbar input,
+    .toolbar select{
+      width:100%;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.88);
+      color:var(--ink);
+      border-radius:14px;
+      padding:12px 14px;
+      font:inherit;
+      outline:none;
+    }
+
     .reservation-card{
       border:1px solid rgba(31,36,48,0.08);
       background:rgba(255,255,255,0.68);
@@ -296,13 +381,35 @@
       font-size:28px;
       font-weight:600;
       line-height:1;
-      margin-bottom:6px;
+      margin-bottom:8px;
     }
 
     .reservation-subtext{
       color:var(--muted);
       font-size:14px;
       line-height:1.6;
+    }
+
+    .reservation-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .mini-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(31,36,48,0.08);
+      color:var(--muted);
     }
 
     .badge-stack{
@@ -377,6 +484,41 @@
       word-break:break-word;
     }
 
+    .reservation-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      justify-content:flex-end;
+    }
+
+    .retry-btn,
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:14px 20px;
+      font-size:14px;
+      font-weight:700;
+      color:#fff;
+      background:linear-gradient(135deg, #b8955f, #9f7b45);
+      box-shadow:0 14px 30px rgba(159,123,69,0.22);
+    }
+
+    .retry-btn:hover,
+    .cta-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 34px rgba(159,123,69,0.28);
+    }
+
+    .retry-btn:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:0 14px 30px rgba(159,123,69,0.12);
+    }
+
     .empty-state{
       border:1px dashed rgba(31,36,48,0.16);
       border-radius:20px;
@@ -407,32 +549,13 @@
       max-width:700px;
     }
 
-    .cta-btn{
-      appearance:none;
-      border:none;
-      text-decoration:none;
-      cursor:pointer;
-      transition:0.25s ease;
-      font-family:inherit;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:999px;
-      padding:14px 20px;
-      font-size:14px;
-      font-weight:700;
-      color:#fff;
-      background:linear-gradient(135deg, #b8955f, #9f7b45);
-      box-shadow:0 14px 30px rgba(159,123,69,0.22);
-    }
-
-    .cta-btn:hover{
-      transform:translateY(-2px);
-      box-shadow:0 18px 34px rgba(159,123,69,0.28);
-    }
-
     @media (max-width: 980px){
-      .hero-meta{
+      .hero-meta,
+      .summary-grid{
+        grid-template-columns:1fr;
+      }
+
+      .toolbar{
         grid-template-columns:1fr;
       }
     }
@@ -469,6 +592,10 @@
       .badge-stack{
         align-items:flex-start;
       }
+
+      .reservation-actions{
+        justify-content:flex-start;
+      }
     }
   </style>
 </head>
@@ -484,6 +611,7 @@
       <div class="header-actions">
         <a href="index.html" class="header-link">Voltar ao site</a>
         <a href="booking.html" class="header-link">Reservar</a>
+        <button id="refresh-top-btn" class="secondary-btn" type="button">Atualizar</button>
         <button id="logout-btn-top" class="logout-btn" type="button">Sair</button>
       </div>
     </div>
@@ -511,16 +639,66 @@
           <span class="meta-value">Hóspede cadastrado</span>
         </div>
       </div>
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Total de reservas</span>
+          <span class="summary-value" id="total-reservations">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Pendentes / Holds</span>
+          <span class="summary-value" id="pending-reservations">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Confirmadas / Pagas</span>
+          <span class="summary-value" id="confirmed-reservations">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="summary-label">Canceladas / Expiradas</span>
+          <span class="summary-value" id="cancelled-reservations">0</span>
+        </div>
+      </div>
     </section>
 
     <section class="grid">
       <div class="panel">
-        <div class="list-title">
-          <div>
-            <h2 class="panel-title" style="margin-bottom:4px;">Minhas reservas</h2>
-            <p class="panel-subtitle" style="margin-bottom:0;">Veja o histórico e o andamento real das suas reservas e pagamentos.</p>
+        <div class="panel-head">
+          <div class="list-title">
+            <div>
+              <h2 class="panel-title" style="margin-bottom:4px;">Minhas reservas</h2>
+              <p class="panel-subtitle" style="margin-bottom:0;">Veja o histórico e o andamento real das suas reservas e pagamentos.</p>
+            </div>
+            <span class="list-count" id="reservation-count">0</span>
           </div>
-          <span class="list-count" id="reservation-count">0</span>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-card">
+            <label for="search-input">Buscar por suíte, id da reserva ou pedido especial</label>
+            <input type="text" id="search-input" placeholder="Digite para buscar...">
+          </div>
+
+          <div class="toolbar-card">
+            <label for="status-filter">Filtrar por situação</label>
+            <select id="status-filter">
+              <option value="all">Todos</option>
+              <option value="pending">Pendentes / Holds</option>
+              <option value="confirmed">Confirmadas / Pagas</option>
+              <option value="cancelled">Canceladas / Expiradas</option>
+            </select>
+          </div>
+
+          <div class="toolbar-card">
+            <label for="sort-filter">Ordenar por</label>
+            <select id="sort-filter">
+              <option value="created_desc">Mais recentes primeiro</option>
+              <option value="created_asc">Mais antigas primeiro</option>
+              <option value="checkin_asc">Check-in mais próximo</option>
+              <option value="checkin_desc">Check-in mais distante</option>
+            </select>
+          </div>
+
+          <button id="clear-filters-btn" class="secondary-btn" type="button">Limpar filtros</button>
         </div>
 
         <div id="reservations-list">
@@ -544,10 +722,12 @@
 
     const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 
     let currentUser = null
+    let allReservations = []
 
     function redirectToLogin() {
       const returnTo = window.location.pathname + window.location.search
@@ -557,7 +737,13 @@
     function formatDate(dateString) {
       if (!dateString) return "-"
       const [year, month, day] = dateString.split("-")
+      if (!year || !month || !day) return dateString
       return `${day}/${month}/${year}`
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "-"
+      return new Date(value).toLocaleString("pt-BR")
     }
 
     function formatCurrency(value) {
@@ -570,11 +756,11 @@
       })
     }
 
+    function normalizeStatus(status) {
+      return String(status || "").toLowerCase()
+    }
+
     function formatMainStatus(status) {
-      if (!status) return "Pendente"
-
-      const normalized = String(status).toLowerCase()
-
       const map = {
         pending: "Pendente",
         confirmed: "Confirmada",
@@ -584,47 +770,38 @@
         paid: "Paga",
         expired: "Expirada"
       }
-
-      return map[normalized] || status
+      return map[normalizeStatus(status)] || status || "Pendente"
     }
 
     function formatBookingStatus(status) {
-      if (!status) return "Não definido"
-
-      const normalized = String(status).toLowerCase()
-
       const map = {
         held: "Em hold",
+        pending: "Pendente",
         booked: "Reservada",
         cancelled: "Cancelada",
         canceled: "Cancelada",
         expired: "Expirada"
       }
-
-      return map[normalized] || status
+      return map[normalizeStatus(status)] || status || "Não definido"
     }
 
     function formatPaymentStatus(status) {
-      if (!status) return "Não iniciado"
-
-      const normalized = String(status).toLowerCase()
-
       const map = {
         pending: "Pendente",
         paid: "Pago",
         failed: "Falhou",
         cancelled: "Cancelado",
         canceled: "Cancelado",
-        expired: "Expirado"
+        expired: "Expirado",
+        refunded: "Reembolsado"
       }
-
-      return map[normalized] || status
+      return map[normalizeStatus(status)] || status || "Não iniciado"
     }
 
     function getMainBadgeClass(reservation) {
-      const status = String(reservation.status || "").toLowerCase()
-      const bookingStatus = String(reservation.booking_status || "").toLowerCase()
-      const paymentStatus = String(reservation.payment_status || "").toLowerCase()
+      const status = normalizeStatus(reservation.status)
+      const bookingStatus = normalizeStatus(reservation.booking_status)
+      const paymentStatus = normalizeStatus(reservation.payment_status)
 
       if (status === "confirmed" || bookingStatus === "booked" || paymentStatus === "paid") {
         return "badge-ok"
@@ -642,12 +819,66 @@
     }
 
     function getPaymentBadgeClass(paymentStatus) {
-      const normalized = String(paymentStatus || "").toLowerCase()
+      const normalized = normalizeStatus(paymentStatus)
 
       if (normalized === "paid") return "badge-ok"
       if (normalized === "failed" || normalized === "cancelled" || normalized === "canceled") return "badge-danger"
-      if (normalized === "expired") return "badge-info"
+      if (normalized === "expired" || normalized === "refunded") return "badge-info"
       return "badge-warn"
+    }
+
+    function isRetryEligible(reservation) {
+      if (!reservation) return false
+
+      const allowedStatuses = ["pending", "held", "confirmed"]
+      const allowedBookingStatuses = ["pending", "held", "booked"]
+      const blockedPaymentStatuses = ["paid", "refunded"]
+
+      return (
+        allowedStatuses.includes(normalizeStatus(reservation.status)) &&
+        allowedBookingStatuses.includes(normalizeStatus(reservation.booking_status)) &&
+        !blockedPaymentStatuses.includes(normalizeStatus(reservation.payment_status))
+      )
+    }
+
+    function updateSummary() {
+      const total = allReservations.length
+
+      const pending = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+        return general === "pending" || booking === "held" || payment === "pending"
+      }).length
+
+      const confirmed = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+        return general === "confirmed" || booking === "booked" || payment === "paid"
+      }).length
+
+      const cancelled = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+
+        return (
+          general === "cancelled" ||
+          general === "canceled" ||
+          general === "expired" ||
+          booking === "cancelled" ||
+          booking === "expired" ||
+          payment === "failed" ||
+          payment === "expired"
+        )
+      }).length
+
+      document.getElementById("total-reservations").textContent = total
+      document.getElementById("pending-reservations").textContent = pending
+      document.getElementById("confirmed-reservations").textContent = confirmed
+      document.getElementById("cancelled-reservations").textContent = cancelled
+      document.getElementById("reservation-count").textContent = total
     }
 
     async function loadProfile() {
@@ -680,33 +911,153 @@
     async function loadReservations() {
       if (!currentUser) return
 
+      const refreshBtn = document.getElementById("refresh-top-btn")
+      refreshBtn.disabled = true
+      refreshBtn.textContent = "Atualizando..."
+
       const { data, error } = await supabaseClient
         .from("reservations")
         .select("*")
         .eq("user_id", currentUser.id)
         .order("created_at", { ascending: false })
 
+      refreshBtn.disabled = false
+      refreshBtn.textContent = "Atualizar"
+
       if (error) {
         alert(error.message)
         return
       }
 
-      const container = document.getElementById("reservations-list")
-      const count = document.getElementById("reservation-count")
-      count.textContent = data ? data.length : 0
+      allReservations = data || []
+      updateSummary()
+      renderReservations()
+    }
 
-      if (!data || data.length === 0) {
-        container.innerHTML = `<div class="empty-state">Você ainda não possui reservas registradas.</div>`
+    function getFilteredReservations() {
+      const search = document.getElementById("search-input").value.trim().toLowerCase()
+      const statusFilter = document.getElementById("status-filter").value
+      const sortFilter = document.getElementById("sort-filter").value
+
+      const filtered = allReservations.filter(reservation => {
+        const room = String(reservation.room_type || "").toLowerCase()
+        const requests = String(reservation.special_requests || "").toLowerCase()
+        const reservationId = String(reservation.id || "").toLowerCase()
+
+        const general = normalizeStatus(reservation.status)
+        const booking = normalizeStatus(reservation.booking_status)
+        const payment = normalizeStatus(reservation.payment_status)
+
+        const matchesSearch =
+          !search ||
+          room.includes(search) ||
+          requests.includes(search) ||
+          reservationId.includes(search)
+
+        let matchesStatus = true
+
+        if (statusFilter === "pending") {
+          matchesStatus = general === "pending" || booking === "held" || payment === "pending"
+        } else if (statusFilter === "confirmed") {
+          matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid"
+        } else if (statusFilter === "cancelled") {
+          matchesStatus =
+            general === "cancelled" ||
+            general === "canceled" ||
+            general === "expired" ||
+            booking === "cancelled" ||
+            booking === "expired" ||
+            payment === "failed" ||
+            payment === "expired"
+        }
+
+        return matchesSearch && matchesStatus
+      })
+
+      filtered.sort((a, b) => {
+        if (sortFilter === "created_asc") {
+          return new Date(a.created_at || 0) - new Date(b.created_at || 0)
+        }
+
+        if (sortFilter === "checkin_asc") {
+          return new Date(a.check_in || 0) - new Date(b.check_in || 0)
+        }
+
+        if (sortFilter === "checkin_desc") {
+          return new Date(b.check_in || 0) - new Date(a.check_in || 0)
+        }
+
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      })
+
+      return filtered
+    }
+
+    async function retryPayment(reservationId, button) {
+      button.disabled = true
+      button.textContent = "Redirecionando..."
+
+      try {
+        const { data: sessionData } = await supabaseClient.auth.getSession()
+        const accessToken = sessionData?.session?.access_token
+
+        if (!accessToken) {
+          redirectToLogin()
+          return
+        }
+
+        const response = await fetch(CHECKOUTSTRIPE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+          body: JSON.stringify({
+            reservation_id: reservationId
+          })
+        })
+
+        const payload = await response.json().catch(() => null)
+
+        if (!response.ok || !payload?.checkout_url) {
+          alert(payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento.")
+          button.disabled = false
+          button.textContent = "Tentar pagamento novamente"
+          return
+        }
+
+        window.location.href = payload.checkout_url
+      } catch (error) {
+        console.error(error)
+        alert("Ocorreu um erro inesperado ao iniciar o pagamento.")
+        button.disabled = false
+        button.textContent = "Tentar pagamento novamente"
+      }
+    }
+
+    function renderReservations() {
+      const container = document.getElementById("reservations-list")
+      const reservations = getFilteredReservations()
+
+      document.getElementById("reservation-count").textContent = reservations.length
+
+      if (!reservations.length) {
+        container.innerHTML = `<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>`
         return
       }
 
-      container.innerHTML = data.map(reservation => `
+      container.innerHTML = reservations.map(reservation => `
         <article class="reservation-card">
           <div class="reservation-top">
             <div>
               <div class="reservation-name">${reservation.room_type || "Hospedagem"}</div>
               <div class="reservation-subtext">
-                Reserva ${reservation.id ? reservation.id.slice(0, 8) : ""}
+                Acompanhe o status real desta reserva e do pagamento.
+              </div>
+              <div class="reservation-meta">
+                <span class="mini-chip">Reserva: ${reservation.id || "-"}</span>
+                <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
               </div>
             </div>
 
@@ -757,13 +1108,33 @@
               <span>${reservation.payment_provider || "—"}</span>
             </div>
 
+            <div class="reservation-item">
+              <strong>Expira em</strong>
+              <span>${formatDateTime(reservation.expires_at)}</span>
+            </div>
+
             <div class="reservation-item" style="grid-column:1 / -1;">
               <strong>Pedidos especiais</strong>
               <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
             </div>
           </div>
+
+          ${isRetryEligible(reservation) ? `
+            <div class="reservation-actions">
+              <button class="retry-btn retry-payment-btn" type="button" data-id="${reservation.id}">
+                Tentar pagamento novamente
+              </button>
+            </div>
+          ` : ""}
         </article>
       `).join("")
+    }
+
+    function clearFilters() {
+      document.getElementById("search-input").value = ""
+      document.getElementById("status-filter").value = "all"
+      document.getElementById("sort-filter").value = "created_desc"
+      renderReservations()
     }
 
     async function logout() {
@@ -772,6 +1143,19 @@
     }
 
     document.getElementById("logout-btn-top").addEventListener("click", logout)
+    document.getElementById("refresh-top-btn").addEventListener("click", loadReservations)
+    document.getElementById("search-input").addEventListener("input", renderReservations)
+    document.getElementById("status-filter").addEventListener("change", renderReservations)
+    document.getElementById("sort-filter").addEventListener("change", renderReservations)
+    document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
+
+    document.addEventListener("click", async (event) => {
+      const button = event.target.closest(".retry-payment-btn")
+      if (!button) return
+
+      const reservationId = button.getAttribute("data-id")
+      await retryPayment(reservationId, button)
+    })
 
     async function init() {
       const ok = await loadProfile()

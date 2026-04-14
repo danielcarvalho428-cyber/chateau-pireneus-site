@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Políticas da Pousada | Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --ivory:#fbfaf7;
+      --beigeSoft:#f3ecdf;
+      --beigeWash:#f6f1e6;
+
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --line:rgba(29,53,87,0.14);
+
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+      --radius:20px;
+      --max:1180px;
+    }
+
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    .top-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
+    }
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    }
+    .top-header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      text-decoration:none;
+      color:#fff;
+      transition:color 0.25s ease;
+    }
+    .top-header.solid .brand{ color:var(--navy); }
+
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      opacity:0.92;
+    }
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      text-decoration:none;
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
+    }
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
+    }
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
+      display:block;
+    }
+
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .reserve-btn,
+    .account-btn,
+    .logout-btn-public{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      transition:0.22s ease;
+      white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
+    }
+
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+    }
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
+    }
+
+    .account-btn,
+    .logout-btn-public{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
+    }
+    .account-btn:hover,
+    .logout-btn-public:hover{
+      background:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
+    }
+
+    .top-header.solid .account-btn,
+    .top-header.solid .logout-btn-public{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+    .top-header.solid .account-btn:hover,
+    .top-header.solid .logout-btn-public:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .hidden{ display:none !important; }
+
+    .menu-button{
+      font-size:28px;
+      line-height:1;
+      color:#fff;
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,0.20);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
+    }
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+    }
+    .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
+    .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
+
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
+    }
+    .backdrop.open{ opacity:1; pointer-events:auto; }
+
+    .side-menu{
+      position:fixed;
+      top:0; left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+      overflow-y:auto;
+    }
+    .side-menu.open{ transform:translateX(0); }
+    .side-menu a,
+    .side-menu button{
+      display:block;
+      margin:0 0 16px;
+      text-decoration:none;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
+    }
+    .side-menu a:hover,
+    .side-menu button:hover{ text-decoration:underline; }
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
+    }
+
+    .hero{
+      min-height:72vh;
+      position:relative;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+      padding:120px 20px 90px;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.54),
+        rgba(0,0,0,0.36) 40%,
+        rgba(0,0,0,0.56)
+      );
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:3;
+      color:#fff;
+      padding:0 18px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+      max-width:920px;
+    }
+    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:0.95;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(32px, 6vw, 60px);
+      letter-spacing:3px;
+      text-transform:uppercase;
+      line-height:1.08;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .hero-slogan{
+      margin:18px auto 0;
+      max-width:860px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:20px;
+      letter-spacing:0.4px;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+      line-height:1.7;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .section{ padding:88px 0; }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:0.95s ease;
+    }
+    .reveal.show{ opacity:1; transform:translateY(0); }
+
+    .orn{
+      width:170px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0.0), rgba(216,199,161,1), rgba(216,199,161,0.0));
+      margin:18px 0 0;
+    }
+
+    .intro{
+      background:
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding:46px 0 58px;
+    }
+
+    .intro-head{
+      display:flex;
+      align-items:flex-start;
+      gap:18px;
+      margin-bottom:14px;
+    }
+
+    .intro-logo img{
+      width:118px;
+      height:auto;
+      display:block;
+      margin-top:-4px;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,0.10));
+      opacity:0.98;
+    }
+
+    .intro-title-small{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:21px;
+      color:#111;
+      letter-spacing:0.35px;
+      margin:0 0 6px;
+      line-height:1.05;
+    }
+
+    .intro-title-big{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:40px;
+      color:var(--navy);
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      margin:0;
+      line-height:1.02;
+    }
+
+    .intro .orn{ margin-top:10px; width:150px; }
+
+    .intro-text{
+      width:100%;
+      max-width:none;
+      color:rgba(22,37,58,0.82);
+      line-height:1.88;
+      font-size:14.9px;
+    }
+
+    .intro-text p{
+      margin:0 0 12px;
+    }
+
+    .intro-text p:last-child{ margin-bottom:0; }
+
+    .policies{
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color:#fff;
+      padding-top:58px;
+      padding-bottom:84px;
+    }
+
+    .policies-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:28px;
+      letter-spacing:1.8px;
+      margin:0;
+      text-transform:uppercase;
+    }
+
+    .policies-sub{
+      margin:10px 0 0;
+      max-width:860px;
+      color:rgba(255,255,255,0.86);
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    .policies-grid{
+      margin-top:34px;
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:18px;
+    }
+
+    .policy-card{
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:22px;
+      padding:24px 22px;
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .policy-card:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--shadow);
+    }
+
+    .policy-card h3{
+      margin:0 0 10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:30px;
+      line-height:1.05;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .policy-card p{
+      margin:0;
+      color:rgba(255,255,255,0.88);
+      line-height:1.85;
+      font-size:14px;
+    }
+
+    .notes{
+      background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
+    }
+
+    .notes-kicker{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      letter-spacing:0.4px;
+      color:rgba(29,53,87,0.78);
+      margin-bottom:8px;
+    }
+
+    .notes-title{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:1.8px;
+      margin:0;
+      text-transform:uppercase;
+      color:var(--navy);
+    }
+
+    .notes-sub{
+      margin:12px 0 0;
+      max-width:760px;
+      color:rgba(22,37,58,0.74);
+      line-height:1.9;
+      font-size:15px;
+    }
+
+    .notes-grid{
+      margin-top:26px;
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:18px;
+    }
+
+    .note-card{
+      overflow:hidden;
+      border-radius:22px;
+      background:rgba(255,255,255,0.84);
+      border:1px solid rgba(29,53,87,0.10);
+      box-shadow:0 16px 36px rgba(0,0,0,0.08);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      backdrop-filter:blur(6px);
+      padding:22px 20px;
+    }
+
+    .note-card:hover{
+      transform:translateY(-6px);
+      box-shadow:0 22px 48px rgba(0,0,0,0.12);
+    }
+
+    .note-card b{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:22px;
+      color:var(--navy);
+      margin-bottom:8px;
+      letter-spacing:0.3px;
+    }
+
+    .note-card p{
+      margin:0;
+      color:rgba(22,37,58,0.74);
+      line-height:1.8;
+      font-size:14px;
+    }
+
+    .contact-cta-wrap{
+      margin-top:28px;
+      display:flex;
+      justify-content:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .contact-cta,
+    .reserve-cta{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding:12px 18px;
+      border-radius:14px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      transition:0.22s ease;
+    }
+
+    .contact-cta{
+      background:var(--navy);
+      color:#fff;
+      border:1px solid rgba(29,53,87,0.16);
+      box-shadow:0 14px 28px rgba(0,0,0,0.10);
+    }
+    .contact-cta:hover{
+      transform:translateY(-1px);
+      background:var(--navy2);
+      box-shadow:0 18px 34px rgba(0,0,0,0.14);
+    }
+
+    .reserve-cta{
+      background:transparent;
+      color:var(--navy);
+      border:2px solid var(--gold2);
+    }
+    .reserve-cta:hover{
+      background:var(--gold);
+      color:#fff;
+      border-color:var(--gold);
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.45);
+    }
+
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:980px){
+      .hero-title{ font-size:46px; }
+
+      .intro{
+        padding:38px 0 34px;
+      }
+      .intro-head{
+        gap:12px;
+        margin-bottom:12px;
+      }
+      .intro-logo img{
+        width:82px;
+        margin-top:-2px;
+      }
+      .intro-title-big{
+        font-size:34px;
+      }
+
+      .policies{
+        padding-top:46px;
+        padding-bottom:74px;
+      }
+      .policies-grid{
+        grid-template-columns:1fr;
+      }
+
+      .notes-grid{
+        grid-template-columns:1fr;
+      }
+      .notes-title{
+        font-size:30px;
+      }
+
+      footer{
+        min-height:200px;
+        max-height:none;
+      }
+
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
+      }
+    }
+
+    @media (max-width:640px){
+      .top-header{
+        padding:12px 16px;
+      }
+      .top-header-inner{
+        gap:12px;
+      }
+      .brand .line2{
+        font-size:16px;
+      }
+      .header-actions{
+        gap:8px;
+      }
+
+      .hero{
+        min-height:62vh;
+        padding:116px 18px 70px;
+      }
+      .hero-slogan{
+        font-size:18px;
+      }
+
+      .intro-title-big{
+        font-size:28px;
+      }
+
+      .policy-card,
+      .note-card{
+        padding:20px 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a id="accountActionBtn" class="account-btn" href="login.html">ENTRAR</a>
+        <button id="logoutBtnHeader" class="logout-btn-public hidden" type="button">SAIR</button>
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="top" aria-label="Políticas da pousada">
+    <div class="hero-content">
+      <div class="hero-kicker">Informações importantes</div>
+      <h1 class="hero-title">POLÍTICAS DA POUSADA</h1>
+      <p class="hero-slogan">
+        Para que sua experiência no Chateau Pireneus seja tranquila e especial do início ao fim, reunimos aqui as principais orientações da hospedagem.
+      </p>
+    </div>
+  </section>
+
+  <section class="intro reveal">
+    <div class="wrap">
+      <div class="intro-head">
+        <div class="intro-logo" aria-hidden="true">
+          <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+        </div>
+
+        <div>
+          <div class="intro-title-small">Antes da sua estadia</div>
+          <h2 class="intro-title-big">TRANSPARÊNCIA E ACOLHIMENTO</h2>
+          <div class="orn"></div>
+        </div>
+      </div>
+
+      <div class="intro-text">
+        <p>
+          Nosso objetivo é proporcionar uma estadia confortável, organizada e memorável. As políticas abaixo ajudam a alinhar expectativas e garantir uma experiência agradável para todos os hóspedes.
+        </p>
+        <p>
+          Em caso de dúvidas, condições especiais ou necessidade de atendimento personalizado, nossa equipe está disponível para orientar você antes da reserva ou durante a hospedagem.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section policies reveal">
+    <div class="wrap">
+      <h2 class="policies-title">REGRAS E CONDIÇÕES</h2>
+      <p class="policies-sub">
+        Leia com atenção as condições gerais da hospedagem. Ao concluir a reserva, entendemos que estas orientações foram lidas e aceitas.
+      </p>
+      <div class="orn"></div>
+
+      <div class="policies-grid">
+        <article class="policy-card">
+          <h3>Check-in e check-out</h3>
+          <p>
+            O check-in e o check-out devem respeitar os horários informados no momento da reserva ou alinhados previamente com a pousada. Solicitações de chegada antecipada ou saída tardia estão sujeitas à disponibilidade operacional.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Reserva e pagamento</h3>
+          <p>
+            A reserva só é considerada confirmada após a conclusão do pagamento no fluxo oficial do site ou conforme orientação expressa da pousada. Reservas em hold podem expirar automaticamente quando o pagamento não for finalizado no prazo.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Cancelamento e alterações</h3>
+          <p>
+            Pedidos de cancelamento, remarcação ou alteração de datas devem ser solicitados pelos canais oficiais de atendimento. A análise dependerá das condições da tarifa, da antecedência do pedido e da disponibilidade do período desejado.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Número de hóspedes</h3>
+          <p>
+            Cada acomodação deve respeitar a capacidade máxima informada no momento da reserva. O uso por quantidade superior à permitida precisa de autorização prévia da pousada e pode estar sujeito à cobrança adicional ou indisponibilidade.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Silêncio e convivência</h3>
+          <p>
+            Prezamos por um ambiente acolhedor e tranquilo. Pedimos atenção com barulhos excessivos, som alto e comportamentos que prejudiquem o descanso dos demais hóspedes, especialmente nos períodos noturnos e nas áreas comuns.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Danos e responsabilidade</h3>
+          <p>
+            Itens, enxoval, mobília e equipamentos das suítes e áreas compartilhadas devem ser utilizados com cuidado. Eventuais danos causados durante a hospedagem poderão ser avaliados e cobrados conforme a natureza da ocorrência.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Pedidos especiais</h3>
+          <p>
+            Solicitações especiais podem ser registradas durante a reserva, mas dependem de disponibilidade e confirmação da pousada. Nosso time fará o possível para atender cada pedido com o mesmo cuidado dedicado à experiência de hospedagem.
+          </p>
+        </article>
+
+        <article class="policy-card">
+          <h3>Objetos pessoais</h3>
+          <p>
+            Recomendamos atenção com pertences pessoais durante toda a estadia. Caso algum objeto seja esquecido, o hóspede pode entrar em contato para verificar a possibilidade de localização e orientações sobre retirada ou envio.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section notes reveal">
+    <div class="wrap">
+      <span class="notes-kicker">Informações complementares</span>
+      <h2 class="notes-title">ORIENTAÇÕES IMPORTANTES</h2>
+      <p class="notes-sub">
+        Alguns pontos podem variar conforme a acomodação, o período da reserva e a política comercial vigente. Em caso de necessidade, fale conosco antes da confirmação da hospedagem.
+      </p>
+      <div class="orn"></div>
+
+      <div class="notes-grid">
+        <article class="note-card">
+          <b>Atendimento</b>
+          <p>
+            Para suporte antes, durante ou após a reserva, utilize nossos canais oficiais. Assim conseguimos acompanhar sua solicitação com mais agilidade e segurança.
+          </p>
+        </article>
+
+        <article class="note-card">
+          <b>Experiência personalizada</b>
+          <p>
+            Sempre que possível, buscamos adaptar a estadia a momentos especiais, como viagens românticas, comemorações e pequenas surpresas, mediante alinhamento prévio.
+          </p>
+        </article>
+
+        <article class="note-card">
+          <b>Confirmações finais</b>
+          <p>
+            Recomendamos que o hóspede confira os detalhes da reserva, datas escolhidas, número de hóspedes e canais de contato antes da chegada para evitar qualquer divergência.
+          </p>
+        </article>
+      </div>
+
+      <div class="contact-cta-wrap">
+        <a href="https://wa.me/5562998167654" target="_blank" class="contact-cta">FALAR NO WHATSAPP</a>
+        <a href="booking.html" class="reserve-cta">FAZER RESERVA</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase
+
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+    const topHeader = document.getElementById("topHeader")
+    const accountActionBtn = document.getElementById("accountActionBtn")
+    const logoutBtnHeader = document.getElementById("logoutBtnHeader")
+    const sideAuthLinks = document.getElementById("sideAuthLinks")
+
+    function onScrollHeader(){
+      const y = window.scrollY || document.documentElement.scrollTop
+      topHeader.classList.toggle("solid", y > 40)
+    }
+    window.addEventListener("scroll", onScrollHeader)
+    onScrollHeader()
+
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
+
+      if(open){
+        menu.classList.add("open")
+        backdrop.classList.add("open")
+      }else{
+        menu.classList.remove("open")
+        backdrop.classList.remove("open")
+      }
+    }
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add("show")
+      })
+    }, { threshold: 0.14 })
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el))
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "policies.html"
+    }
+
+    logoutBtnHeader.addEventListener("click", logout)
+
+    async function applySessionAwareUI() {
+      try {
+        const { data, error } = await supabaseClient.auth.getUser()
+
+        if (error || !data.user) {
+          accountActionBtn.textContent = "ENTRAR"
+          accountActionBtn.href = "login.html"
+          logoutBtnHeader.classList.add("hidden")
+          sideAuthLinks.innerHTML = `<a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>`
+          return
+        }
+
+        accountActionBtn.textContent = "MINHA ÁREA"
+        accountActionBtn.href = "dashboard.html"
+        logoutBtnHeader.classList.remove("hidden")
+        sideAuthLinks.innerHTML = `
+          <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+          <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+        `
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    window.toggleMenu = toggleMenu
+    window.logout = logout
+    applySessionAwareUI()
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.chateaupireneus.com.br/sitemap.xml
+Sitemap: https://chateaupireneus.com.br/sitemap.xml

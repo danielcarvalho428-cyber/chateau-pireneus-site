@@ -89,7 +89,7 @@
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     *{ box-sizing:border-box; }
@@ -100,22 +100,19 @@
       --navy2:#142a45;
       --gold:#d8c7a1;
       --gold2:#cbb58c;
-
       --bg:#f7f6f2;
       --line:rgba(29,53,87,0.12);
       --text:rgba(18,28,44,0.92);
       --muted:rgba(18,28,44,0.72);
-
       --shadow:0 24px 60px rgba(0,0,0,0.12);
       --shadowSoft:0 14px 34px rgba(0,0,0,0.08);
-
       --radius:22px;
       --max:1180px;
     }
 
     body{
       margin:0;
-      font-family:Georgia, serif;
+      font-family:"Inter",sans-serif;
       background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
       color:var(--navy);
       overflow-x:hidden;
@@ -337,7 +334,7 @@
 
     .hero{
       position:relative;
-      min-height:64vh;
+      min-height:72vh;
       background:
         linear-gradient(to bottom, rgba(0,0,0,0.50), rgba(0,0,0,0.38), rgba(0,0,0,0.54)),
         url("hero.jpg.webp") center/cover no-repeat;
@@ -345,7 +342,7 @@
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding:130px 22px 80px;
+      padding:138px 22px 94px;
       overflow:hidden;
     }
 
@@ -360,7 +357,7 @@
     .hero-content{
       position:relative;
       z-index:2;
-      max-width:900px;
+      max-width:960px;
       color:#fff;
     }
 
@@ -378,11 +375,95 @@
       margin:0;
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:clamp(28px, 4vw, 42px);
-      letter-spacing:2px;
+      font-size:clamp(34px, 5.2vw, 54px);
+      letter-spacing:1.8px;
       text-transform:uppercase;
-      line-height:1.18;
+      line-height:1.22;
       text-shadow:0 12px 40px rgba(0,0,0,0.45);
+    }
+
+    .hero-lead{
+      margin:18px auto 0;
+      max-width:760px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:22px;
+      line-height:1.74;
+      text-shadow:0 10px 28px rgba(0,0,0,0.42);
+      opacity:0.98;
+    }
+
+    .hero-chips{
+      margin-top:24px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-chip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:38px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.18);
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      backdrop-filter:blur(6px);
+    }
+
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:12px 18px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:0.22s ease;
+    }
+
+    .hero-btn.primary{
+      background:var(--gold);
+      color:#fff;
+      border:2px solid var(--gold);
+      box-shadow:0 18px 40px rgba(0,0,0,0.18);
+    }
+
+    .hero-btn.primary:hover{
+      background:var(--gold2);
+      border-color:var(--gold2);
+      transform:translateY(-1px);
+    }
+
+    .hero-btn.outline{
+      background:rgba(255,255,255,0.10);
+      color:#fff;
+      border:2px solid rgba(255,255,255,0.24);
+      backdrop-filter:blur(6px);
+    }
+
+    .hero-btn.outline:hover{
+      background:rgba(255,255,255,0.16);
+      transform:translateY(-1px);
     }
 
     .section{
@@ -404,9 +485,9 @@
     .section-sub{
       margin:0 auto;
       color:var(--muted);
-      line-height:1.85;
+      line-height:1.88;
       font-size:15.5px;
-      max-width:860px;
+      max-width:900px;
     }
 
     .orn{
@@ -414,6 +495,38 @@
       height:1px;
       background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
       margin:18px auto 0;
+    }
+
+    .trust-strip{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .trust-card{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:20px;
+      box-shadow:var(--shadowSoft);
+      padding:18px 18px 16px;
+    }
+
+    .trust-card strong{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:8px;
+    }
+
+    .trust-card p{
+      margin:0;
+      color:var(--text);
+      font-size:14.5px;
+      line-height:1.82;
     }
 
     .grid{
@@ -445,6 +558,7 @@
       overflow:hidden;
       aspect-ratio:1 / 1;
       background:#e9e2d5;
+      position:relative;
     }
 
     .card-image img{
@@ -457,6 +571,27 @@
 
     .card:hover .card-image img{
       transform:scale(1.05);
+    }
+
+    .card-badge{
+      position:absolute;
+      left:14px;
+      top:14px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:30px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.88);
+      border:1px solid rgba(29,53,87,0.08);
+      color:var(--navy);
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:1.1px;
+      text-transform:uppercase;
+      backdrop-filter:blur(6px);
     }
 
     .card-body{
@@ -483,16 +618,64 @@
       color:var(--navy);
     }
 
-    .card p{
+    .card-lead{
       margin:12px 0 0;
       color:var(--muted);
       line-height:1.85;
       font-size:14.5px;
-      flex:1;
+    }
+
+    .card-highlights{
+      display:grid;
+      gap:8px;
+      margin-top:16px;
+    }
+
+    .card-highlight{
+      display:flex;
+      gap:8px;
+      align-items:flex-start;
+      color:var(--text);
+      font-size:13.5px;
+      line-height:1.72;
+    }
+
+    .card-highlight::before{
+      content:"✦";
+      color:var(--gold2);
+      font-size:11px;
+      margin-top:2px;
+      flex-shrink:0;
+    }
+
+    .card-foot{
+      margin-top:16px;
+      padding-top:14px;
+      border-top:1px solid rgba(29,53,87,0.08);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .card-capacity{
+      color:var(--navy);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .card-note{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.72;
+      margin-top:12px;
     }
 
     .card-actions{
-      margin-top:20px;
+      margin-top:18px;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -512,6 +695,7 @@
       border:2px solid var(--gold2);
       color:var(--navy);
       background:transparent;
+      flex:1 1 0;
     }
 
     .btn-outline:hover{
@@ -536,6 +720,7 @@
       border:2px solid var(--gold2);
       background:var(--gold2);
       color:#fff;
+      flex:1 1 0;
     }
 
     .btn-solid:hover{
@@ -543,6 +728,27 @@
       border-color:var(--gold);
       transform:translateY(-1px);
       box-shadow:0 0 18px rgba(216,199,161,0.45);
+    }
+
+    .card.master{
+      background:linear-gradient(180deg, rgba(255,255,255,0.88), rgba(247,242,233,0.94));
+    }
+
+    .card.master .card-badge{
+      background:rgba(216,199,161,0.90);
+      color:#fff;
+      border-color:rgba(203,181,140,0.28);
+    }
+
+    .master-note{
+      margin-top:16px;
+      padding:14px 14px;
+      border-radius:16px;
+      background:rgba(216,199,161,0.14);
+      border:1px solid rgba(203,181,140,0.20);
+      color:#7e6540;
+      font-size:13px;
+      line-height:1.78;
     }
 
     footer{
@@ -598,6 +804,10 @@
         grid-template-columns:repeat(2, minmax(0, 1fr));
       }
 
+      .trust-strip{
+        grid-template-columns:1fr;
+      }
+
       .section-sub{
         max-width:900px;
       }
@@ -631,14 +841,18 @@
       }
 
       .hero{
-        min-height:56vh;
-        padding:120px 18px 72px;
+        min-height:62vh;
+        padding:126px 18px 82px;
       }
 
       .hero-title{
-        font-size:34px;
-        line-height:1.24;
-        letter-spacing:1.4px;
+        font-size:38px;
+        line-height:1.26;
+        letter-spacing:1.3px;
+      }
+
+      .hero-lead{
+        font-size:19px;
       }
 
       .section{
@@ -683,6 +897,19 @@
         display:none;
       }
 
+      .hero{
+        padding:118px 16px 72px;
+      }
+
+      .hero-title{
+        font-size:34px;
+      }
+
+      .hero-lead{
+        font-size:18px;
+        line-height:1.68;
+      }
+
       .section{
         padding:58px 0 66px;
       }
@@ -703,12 +930,13 @@
         font-size:26px;
       }
 
-      .card p{
+      .card-lead{
         font-size:14px;
       }
 
       .btn-outline,
-      .btn-solid{
+      .btn-solid,
+      .hero-btn{
         width:100%;
       }
 
@@ -781,102 +1009,207 @@
 
   <section class="hero" aria-label="Acomodações">
     <div class="hero-content">
-      <div class="hero-kicker">Nossas</div>
+      <div class="hero-kicker">Escolha seu refúgio</div>
       <h1 class="hero-title">Acomodações</h1>
+      <p class="hero-lead">
+        Suítes pensadas para casais que buscam conforto, privacidade e uma experiência acolhedora em Pirenópolis.
+      </p>
+
+      <div class="hero-chips">
+        <span class="hero-chip">Estadia a dois</span>
+        <span class="hero-chip">Reserva direta</span>
+        <span class="hero-chip">Suíte já pré-selecionada no booking</span>
+      </div>
+
+      <div class="hero-cta">
+        <a href="booking.html" class="hero-btn primary">Ver disponibilidade</a>
+        <a href="https://wa.me/5562998167654" target="_blank" class="hero-btn outline">Falar no WhatsApp</a>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <div class="section-head">
-        <p class="section-sub">Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis.</p>
+        <p class="section-sub">
+          Cada suíte foi pensada para oferecer uma experiência confortável, charmosa e acolhedora. Ao escolher uma acomodação e clicar em reservar, ela já segue pré-selecionada na página de reserva para deixar o processo mais rápido.
+        </p>
         <div class="orn"></div>
+      </div>
+
+      <div class="trust-strip">
+        <div class="trust-card">
+          <strong>Conforto com privacidade</strong>
+          <p>Ambientes pensados para quem quer descansar com tranquilidade e viver uma hospedagem mais íntima a dois.</p>
+        </div>
+
+        <div class="trust-card">
+          <strong>Escolha mais clara</strong>
+          <p>Você consegue comparar melhor o estilo de cada suíte antes de entrar na página individual e decidir com mais confiança.</p>
+        </div>
+
+        <div class="trust-card">
+          <strong>Reserva mais rápida</strong>
+          <p>Ao sair desta página para reservar, a suíte escolhida já entra no fluxo de booking para facilitar a sua decisão.</p>
+        </div>
       </div>
 
       <div class="grid">
 
         <article class="card">
           <div class="card-image">
+            <span class="card-badge">Suíte 01</span>
             <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
           </div>
           <div class="card-body">
-            <div class="suite-number">SUÍTE 01</div>
             <h3>Suíte do Divino</h3>
-            <p>Suíte padrão com TV.</p>
+            <p class="card-lead">Uma opção acolhedora para casais que querem unir conforto, charme e praticidade em uma estadia tranquila.</p>
+
+            <div class="card-highlights">
+              <div class="card-highlight">Cama queen, ar-condicionado, frigobar e varanda privativa com rede.</div>
+              <div class="card-highlight">Boa escolha para quem quer descansar e aproveitar Pirenópolis em ritmo mais leve.</div>
+            </div>
+
+            <div class="card-foot">
+              <span class="card-capacity">2 hóspedes</span>
+              <span class="card-capacity">Com TV</span>
+            </div>
+
             <div class="card-actions">
-              <a href="suite.html?room=divino" class="btn-outline">CONHECER</a>
-              <a href="booking.html?room_id=1" class="btn-solid">RESERVAR</a>
+              <a href="suite.html?room=divino" class="btn-outline">Conhecer suíte</a>
+              <a href="booking.html?room_id=1" class="btn-solid">Reservar agora</a>
             </div>
           </div>
         </article>
 
         <article class="card">
           <div class="card-image">
+            <span class="card-badge">Suíte 02</span>
             <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
           </div>
           <div class="card-body">
-            <div class="suite-number">SUÍTE 02</div>
             <h3>Suíte das Cavalhadas</h3>
-            <p>Suíte padrão com TV.</p>
+            <p class="card-lead">Uma acomodação confortável e bem resolvida para quem quer uma experiência romântica com estrutura prática.</p>
+
+            <div class="card-highlights">
+              <div class="card-highlight">Ambiente acolhedor com itens essenciais para uma hospedagem leve e confortável.</div>
+              <div class="card-highlight">Ideal para casais que querem curtir a cidade e voltar para um espaço agradável ao fim do dia.</div>
+            </div>
+
+            <div class="card-foot">
+              <span class="card-capacity">2 hóspedes</span>
+              <span class="card-capacity">Com TV</span>
+            </div>
+
             <div class="card-actions">
-              <a href="suite.html?room=cavalhadas" class="btn-outline">CONHECER</a>
-              <a href="booking.html?room_id=2" class="btn-solid">RESERVAR</a>
+              <a href="suite.html?room=cavalhadas" class="btn-outline">Conhecer suíte</a>
+              <a href="booking.html?room_id=2" class="btn-solid">Reservar agora</a>
             </div>
           </div>
         </article>
 
         <article class="card">
           <div class="card-image">
+            <span class="card-badge">Suíte 03</span>
             <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
           </div>
           <div class="card-body">
-            <div class="suite-number">SUÍTE 03</div>
             <h3>Suíte do Rosário</h3>
-            <p>Suíte padrão com TV.</p>
+            <p class="card-lead">Uma suíte charmosa para quem procura uma estadia acolhedora, com conforto e clima mais reservado.</p>
+
+            <div class="card-highlights">
+              <div class="card-highlight">Boa combinação entre funcionalidade, privacidade e atmosfera tranquila.</div>
+              <div class="card-highlight">Excelente para casais que querem desacelerar e aproveitar a viagem com mais calma.</div>
+            </div>
+
+            <div class="card-foot">
+              <span class="card-capacity">2 hóspedes</span>
+              <span class="card-capacity">Com TV</span>
+            </div>
+
             <div class="card-actions">
-              <a href="suite.html?room=rosario" class="btn-outline">CONHECER</a>
-              <a href="booking.html?room_id=3" class="btn-solid">RESERVAR</a>
+              <a href="suite.html?room=rosario" class="btn-outline">Conhecer suíte</a>
+              <a href="booking.html?room_id=3" class="btn-solid">Reservar agora</a>
             </div>
           </div>
         </article>
 
-        <article class="card">
+        <article class="card master">
           <div class="card-image">
+            <span class="card-badge">Em breve</span>
             <img src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
           </div>
           <div class="card-body">
-            <div class="suite-number">SUÍTE 04</div>
             <h3>Suíte dos Pireneus (Master)</h3>
-            <p>Suíte Master com banheira de imersão. Disponível em breve!</p>
-          </div>
-        </article>
+            <p class="card-lead">Nossa suíte master está sendo preparada para oferecer uma experiência ainda mais especial, com banheira de imersão e proposta premium.</p>
 
-        <article class="card">
-          <div class="card-image">
-            <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
-          </div>
-          <div class="card-body">
-            <div class="suite-number">SUÍTE 05</div>
-            <h3>Suíte Aurora</h3>
-            <p>Suíte padrão com TV.</p>
+            <div class="card-highlights">
+              <div class="card-highlight">Uma acomodação pensada para elevar a experiência romântica dentro do Chateau Pireneus.</div>
+              <div class="card-highlight">Ideal para hóspedes que desejam um nível extra de exclusividade e conforto.</div>
+            </div>
+
+            <div class="master-note">
+              Lançamento em breve. Se quiser ser avisado primeiro sobre a disponibilidade, fale com a pousada pelo WhatsApp.
+            </div>
+
             <div class="card-actions">
-              <a href="suite.html?room=aurora" class="btn-outline">CONHECER</a>
-              <a href="booking.html?room_id=5" class="btn-solid">RESERVAR</a>
+              <a href="https://wa.me/5562998167654?text=Olá! Tenho interesse na Suíte dos Pireneus (Master) e gostaria de ser avisado quando ela estiver disponível." target="_blank" class="btn-outline">Quero ser avisado</a>
             </div>
           </div>
         </article>
 
         <article class="card">
           <div class="card-image">
+            <span class="card-badge">Suíte 05</span>
+            <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+          </div>
+          <div class="card-body">
+            <h3>Suíte Aurora</h3>
+            <p class="card-lead">Uma opção pensada para momentos a dois, com atmosfera romântica, conforto e uma experiência acolhedora.</p>
+
+            <div class="card-highlights">
+              <div class="card-highlight">Ideal para casais que querem transformar a hospedagem em parte especial da viagem.</div>
+              <div class="card-highlight">Combina praticidade, aconchego e clima romântico na medida certa.</div>
+            </div>
+
+            <div class="card-foot">
+              <span class="card-capacity">2 hóspedes</span>
+              <span class="card-capacity">Com TV</span>
+            </div>
+
+            <div class="card-actions">
+              <a href="suite.html?room=aurora" class="btn-outline">Conhecer suíte</a>
+              <a href="booking.html?room_id=5" class="btn-solid">Reservar agora</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <span class="card-badge">Suíte 06</span>
             <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
           </div>
           <div class="card-body">
-            <div class="suite-number">SUÍTE 06</div>
             <h3>Suíte do Bonfim</h3>
-            <p>Suíte padrão sem TV.</p>
+            <p class="card-lead">Uma acomodação mais serena para quem valoriza descanso, simplicidade bem pensada e uma experiência tranquila a dois.</p>
+
+            <div class="card-highlights">
+              <div class="card-highlight">Boa escolha para hóspedes que querem um ambiente confortável com proposta mais leve e contemplativa.</div>
+              <div class="card-highlight">Perfeita para desacelerar e aproveitar a viagem com mais presença.</div>
+            </div>
+
+            <div class="card-foot">
+              <span class="card-capacity">2 hóspedes</span>
+              <span class="card-capacity">Sem TV</span>
+            </div>
+
             <div class="card-actions">
-              <a href="suite.html?room=bonfim" class="btn-outline">CONHECER</a>
-              <a href="booking.html?room_id=6" class="btn-solid">RESERVAR</a>
+              <a href="suite.html?room=bonfim" class="btn-outline">Conhecer suíte</a>
+              <a href="booking.html?room_id=6" class="btn-solid">Reservar agora</a>
+            </div>
+
+            <div class="card-note">
+              Uma opção interessante para quem prefere um clima mais tranquilo e menos estímulo dentro da suíte.
             </div>
           </div>
         </article>

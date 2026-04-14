@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.chateaupireneus.com.br/</loc>
+    <loc>https://chateaupireneus.com.br/</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/index.html</loc>
+    <loc>https://chateaupireneus.com.br/index.html</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/pousada.html</loc>
+    <loc>https://chateaupireneus.com.br/pousada.html</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/acomodacoes.html</loc>
+    <loc>https://chateaupireneus.com.br/acomodacoes.html</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/booking.html</loc>
+    <loc>https://chateaupireneus.com.br/booking.html</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/policies.html</loc>
+    <loc>https://chateaupireneus.com.br/policies.html</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/login.html</loc>
+    <loc>https://chateaupireneus.com.br/suite.html?room=divino</loc>
   </url>
   <url>
-    <loc>https://www.chateaupireneus.com.br/register.html</loc>
+    <loc>https://chateaupireneus.com.br/suite.html?room=cavalhadas</loc>
+  </url>
+  <url>
+    <loc>https://chateaupireneus.com.br/suite.html?room=rosario</loc>
+  </url>
+  <url>
+    <loc>https://chateaupireneus.com.br/suite.html?room=aurora</loc>
+  </url>
+  <url>
+    <loc>https://chateaupireneus.com.br/suite.html?room=bonfim</loc>
   </url>
 </urlset>

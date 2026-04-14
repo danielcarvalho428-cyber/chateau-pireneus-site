@@ -5,24 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pousada | Chateau Pireneus</title>
 
-  <!-- ===== FONTS ===== -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-    }
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
 
-    html{
-      scroll-behavior:smooth;
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --ink:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+      --line:rgba(29,53,87,0.14);
+
+      --shadow:0 26px 70px rgba(0,0,0,0.16);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+      --radius:20px;
+      --max:1180px;
     }
 
     body{
+      margin:0;
       font-family:Georgia, serif;
-      background:#f7f6f2;
-      color:#1d3557;
+      background:var(--bg);
+      color:var(--navy);
       overflow-x:hidden;
     }
 
@@ -44,14 +55,6 @@
       font-display:swap;
     }
 
-    :root{
-      --navy:#1d3557;
-      --navy2:#142a45;
-      --gold:#d8c7a1;
-      --gold2:#cbb58c;
-      --max:1180px;
-    }
-
     .wrap{
       max-width:var(--max);
       margin:0 auto;
@@ -66,10 +69,20 @@
       width:170px;
       height:1px;
       background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
-      margin:16px 0 0;
+      margin:18px 0 0;
     }
 
-    /* ===== HEADER / MENU ===== */
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:0.95s ease;
+    }
+
+    .reveal.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
     .top-header{
       position:fixed;
       top:0;
@@ -77,15 +90,20 @@
       right:0;
       z-index:12000;
       padding:14px 22px;
-      background:rgba(246,241,230,0.72);
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.06);
+      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      background:rgba(0,0,0,0.12);
+      border-bottom:1px solid rgba(255,255,255,0.10);
+      backdrop-filter:blur(10px);
+    }
+
+    .top-header.solid{
+      background:rgba(246,241,230,0.92);
+      border-bottom:1px solid rgba(29,53,87,0.12);
+      box-shadow:0 12px 30px rgba(0,0,0,0.08);
     }
 
     .top-header-inner{
-      max-width:1180px;
+      max-width:var(--max);
       margin:0 auto;
       display:flex;
       align-items:center;
@@ -97,8 +115,13 @@
       display:flex;
       flex-direction:column;
       gap:2px;
-      color:#1d3557;
       text-decoration:none;
+      color:#fff;
+      transition:color 0.25s ease;
+    }
+
+    .top-header.solid .brand{
+      color:var(--navy);
     }
 
     .brand .line1{
@@ -107,7 +130,7 @@
       letter-spacing:1.4px;
       text-transform:uppercase;
       font-size:12px;
-      opacity:0.9;
+      opacity:0.92;
     }
 
     .brand .line2{
@@ -116,13 +139,14 @@
       letter-spacing:2px;
       text-transform:uppercase;
       font-size:18px;
-      line-height:1;
+      line-height:1.08;
     }
 
     .header-actions{
       display:flex;
       align-items:center;
       gap:12px;
+      flex-wrap:wrap;
     }
 
     .instagram-btn{
@@ -133,16 +157,17 @@
       justify-content:center;
       border-radius:12px;
       text-decoration:none;
-      color:#1d3557;
-      background:rgba(29,53,87,0.08);
-      border:1px solid rgba(29,53,87,0.08);
+      color:#fff;
+      background:rgba(0,0,0,0.20);
+      border:1px solid rgba(255,255,255,0.12);
       backdrop-filter:blur(6px);
       transition:0.22s ease;
+      box-shadow:0 12px 26px rgba(0,0,0,0.16);
     }
 
     .instagram-btn:hover{
       transform:translateY(-1px);
-      background:rgba(29,53,87,0.12);
+      background:rgba(0,0,0,0.28);
     }
 
     .instagram-btn svg{
@@ -151,22 +176,101 @@
       display:block;
     }
 
+    .top-header.solid .instagram-btn{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+
+    .top-header.solid .instagram-btn:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .reserve-btn,
+    .account-btn,
+    .logout-btn-public{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.14);
+      transition:0.22s ease;
+      white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
+    }
+
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+    }
+
+    .reserve-btn:hover{
+      background:rgba(203,181,140,0.98);
+      transform:translateY(-1px);
+      box-shadow:0 22px 52px rgba(0,0,0,0.24);
+    }
+
+    .account-btn,
+    .logout-btn-public{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
+    }
+
+    .account-btn:hover,
+    .logout-btn-public:hover{
+      background:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
+    }
+
+    .top-header.solid .account-btn,
+    .top-header.solid .logout-btn-public{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+
+    .top-header.solid .account-btn:hover,
+    .top-header.solid .logout-btn-public:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .hidden{
+      display:none !important;
+    }
+
     .menu-button{
       font-size:28px;
       line-height:1;
-      color:#1d3557;
+      color:#fff;
       cursor:pointer;
       user-select:none;
       padding:10px 12px;
       border-radius:14px;
-      background:rgba(29,53,87,0.08);
+      background:rgba(0,0,0,0.20);
       backdrop-filter:blur(6px);
       border:0;
       transition:0.22s ease;
     }
 
+    .top-header.solid .menu-button{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+    }
+
     .menu-button:hover{
       transform:translateY(-1px);
+      background:rgba(0,0,0,0.28);
+    }
+
+    .top-header.solid .menu-button:hover{
       background:rgba(29,53,87,0.12);
     }
 
@@ -197,22 +301,32 @@
       transform:translateX(-100%);
       transition:0.3s ease;
       z-index:11500;
+      overflow-y:auto;
     }
 
     .side-menu.open{
       transform:translateX(0);
     }
 
-    .side-menu a{
+    .side-menu a,
+    .side-menu button{
       display:block;
       margin:0 0 16px;
       text-decoration:none;
-      color:#1d3557;
+      color:var(--navy);
       font-size:15px;
       letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
     }
 
-    .side-menu a:hover{
+    .side-menu a:hover,
+    .side-menu button:hover{
       text-decoration:underline;
     }
 
@@ -222,34 +336,57 @@
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    /* ===== HERO ===== */
     .hero{
+      min-height:72vh;
       position:relative;
-      min-height:64vh;
-      background:
-        linear-gradient(to bottom, rgba(0,0,0,0.50), rgba(0,0,0,0.38), rgba(0,0,0,0.54)),
-        url("hero.jpg.webp") center/cover no-repeat;
+      background-image:url("hero.jpg.webp");
+      background-size:cover;
+      background-position:center;
       display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding:130px 22px 80px;
       overflow:hidden;
+      padding:120px 20px 90px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.54),
+        rgba(0,0,0,0.36) 40%,
+        rgba(0,0,0,0.56)
+      );
     }
 
     .hero::before{
       content:"";
       position:absolute;
       inset:-2px;
-      background:radial-gradient(900px 420px at 50% 30%, rgba(216,199,161,0.14), transparent 60%);
       pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
     }
 
     .hero-content{
       position:relative;
-      z-index:2;
-      max-width:900px;
+      z-index:3;
       color:#fff;
+      padding:0 18px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+      max-width:920px;
+    }
+
+    @keyframes heroIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
     }
 
     .hero-kicker{
@@ -258,7 +395,7 @@
       letter-spacing:2px;
       text-transform:uppercase;
       font-size:14px;
-      margin-bottom:10px;
+      margin-bottom:12px;
       opacity:0.95;
     }
 
@@ -266,14 +403,25 @@
       margin:0;
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
-      font-size:clamp(22px, 3.5vw, 38px);
-      letter-spacing:2px;
+      font-size:clamp(32px, 6vw, 60px);
+      letter-spacing:1.6px;
       text-transform:uppercase;
-      line-height:1.06;
-      text-shadow:0 12px 40px rgba(0,0,0,0.45);
+      line-height:1.24;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
     }
 
-    /* ===== CONTENT ===== */
+    .hero-slogan{
+      margin:18px auto 0;
+      max-width:860px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:20px;
+      letter-spacing:0.4px;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+      line-height:1.7;
+    }
+
     .intro{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -281,6 +429,7 @@
         linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
       border-top:1px solid rgba(29,53,87,0.08);
       border-bottom:1px solid rgba(29,53,87,0.08);
+      padding:46px 0 58px;
     }
 
     .intro-grid{
@@ -304,10 +453,10 @@
       font-family:"Gyahegi","Cormorant Garamond", serif;
       font-weight:400;
       font-size:34px;
-      letter-spacing:1.8px;
+      letter-spacing:0.7px;
       text-transform:uppercase;
       color:var(--navy);
-      line-height:1.08;
+      line-height:1.28;
     }
 
     .section-text{
@@ -371,6 +520,8 @@
       font-size:24px;
       font-weight:700;
       color:#fff;
+      line-height:1.24;
+      letter-spacing:0.2px;
     }
 
     .highlight-card p{
@@ -418,6 +569,8 @@
       font-family:"Cormorant Garamond", serif;
       font-size:34px;
       font-weight:700;
+      line-height:1.2;
+      letter-spacing:0.2px;
     }
 
     .cta-box p{
@@ -451,7 +604,6 @@
       box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
-    /* ===== FOOTER ===== */
     footer{
       position:relative;
       min-height:160px;
@@ -502,6 +654,11 @@
     }
 
     @media (max-width:980px){
+      .hero-title{
+        line-height:1.24;
+        letter-spacing:1.2px;
+      }
+
       .intro-grid,
       .highlight-grid,
       .gallery-grid{
@@ -534,15 +691,68 @@
         gap:10px;
       }
     }
+
+    @media (max-width:640px){
+      .top-header{
+        padding:12px 16px;
+      }
+
+      .top-header-inner{
+        gap:12px;
+      }
+
+      .brand .line2{
+        font-size:16px;
+      }
+
+      .header-actions{
+        gap:8px;
+      }
+
+      .hero{
+        min-height:62vh;
+        padding:116px 18px 70px;
+      }
+
+      .hero-slogan{
+        font-size:18px;
+      }
+
+      .hero-title{
+        font-size:34px;
+        line-height:1.24;
+        letter-spacing:1px;
+      }
+
+      .section-title{
+        font-size:28px;
+        line-height:1.28;
+        letter-spacing:0.6px;
+      }
+
+      .highlight-card h3{
+        font-size:22px;
+        line-height:1.24;
+      }
+
+      .cta-box h3{
+        font-size:28px;
+        line-height:1.22;
+      }
+
+      .highlight-card,
+      .cta-box{
+        padding:22px 18px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ===== GLASS HEADER + MENU ===== -->
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
-    <a href="index.html" onclick="toggleMenu(false)">Home</a>
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
     <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
     <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
     <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
@@ -550,15 +760,18 @@
 
     <hr>
 
-    <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
   </nav>
 
-  <header class="top-header">
+  <header class="top-header" id="topHeader">
     <div class="top-header-inner">
-      <a class="brand" href="index.html" aria-label="Chateau Pireneus">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
         <span class="line2">Chateau Pireneus</span>
       </a>
@@ -572,21 +785,25 @@
           </svg>
         </a>
 
+        <a id="accountActionBtn" class="account-btn" href="login.html">ENTRAR</a>
+        <button id="logoutBtnHeader" class="logout-btn-public hidden" type="button">SAIR</button>
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
-  <!-- ===== HERO ===== -->
   <section class="hero" aria-label="A pousada">
     <div class="hero-content">
-      <div class="hero-kicker">A</div>
-      <h1 class="hero-title">Pousada</h1>
+      <div class="hero-kicker">Conheça</div>
+      <h1 class="hero-title">A Pousada</h1>
+      <p class="hero-slogan">
+        Um refúgio acolhedor em Pirenópolis, pensado para transformar descanso, charme e simplicidade em uma experiência memorável.
+      </p>
     </div>
   </section>
 
-  <!-- ===== INTRO ===== -->
-  <section class="section intro">
+  <section class="section intro reveal">
     <div class="wrap">
       <div class="intro-grid">
         <div>
@@ -596,27 +813,22 @@
 
           <div class="section-text">
             <p>
-              A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais,
-              viagens especiais e dias de descanso no coração de Pirenópolis. Cada detalhe foi
-              pensado para proporcionar bem-estar, privacidade e uma estadia acolhedora.
+              A Chateau Pireneus oferece uma atmosfera intimista e elegante, ideal para casais, viagens especiais e dias de descanso no coração de Pirenópolis. Cada detalhe foi pensado para proporcionar bem-estar, privacidade e uma estadia acolhedora.
             </p>
             <p>
-              Com uma proposta charmosa e acolhedora, a pousada convida os hóspedes a viverem
-              momentos especiais em um ambiente que une tranquilidade, conforto e o estilo
-              pitoresco que torna Pirenópolis tão única.
+              Com uma proposta charmosa e acolhedora, a pousada convida os hóspedes a viverem momentos especiais em um ambiente que une tranquilidade, conforto e o estilo pitoresco que torna Pirenópolis tão única.
             </p>
           </div>
         </div>
 
         <div class="intro-image">
-          <img src="images/pousada-intro.jpg" alt="Vista da pousada Chateau Pireneus">
+          <img src="public/galeria/sala-jantar1.jpeg" alt="Ambiente da pousada Chateau Pireneus">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== HIGHLIGHTS ===== -->
-  <section class="section highlights">
+  <section class="section highlights reveal">
     <div class="wrap">
       <div class="eyebrow">Diferenciais</div>
       <h2 class="section-title">O QUE TORNA A EXPERIÊNCIA ESPECIAL</h2>
@@ -625,47 +837,44 @@
       <div class="highlight-grid">
         <div class="highlight-card">
           <h3>Ambiente acolhedor</h3>
-          <p>Espaços planejados para oferecer tranquilidade, charme e conforto em cada detalhe.</p>
+          <p>Espaços planejados para oferecer tranquilidade, charme e conforto em cada detalhe, valorizando uma experiência mais íntima e especial.</p>
         </div>
 
         <div class="highlight-card">
           <h3>Localização privilegiada</h3>
-          <p>Próxima aos encantos de Pirenópolis, com praticidade para viver o melhor da cidade.</p>
+          <p>Próxima aos encantos de Pirenópolis, com praticidade para viver o melhor da cidade e, ao mesmo tempo, desfrutar de descanso e sossego.</p>
         </div>
 
         <div class="highlight-card">
           <h3>Estadia memorável</h3>
-          <p>Uma experiência ideal para casais e hóspedes que buscam descanso com um toque especial.</p>
+          <p>Uma proposta ideal para casais e hóspedes que buscam desacelerar, celebrar ocasiões especiais e aproveitar o charme singular de Piri.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== GALLERY ===== -->
-  <section class="section gallery-section">
+  <section class="section gallery-section reveal">
     <div class="wrap">
       <div class="eyebrow">Ambientes</div>
       <h2 class="section-title">CONHEÇA UM POUCO MAIS DA POUSADA</h2>
       <div class="orn"></div>
 
       <div class="gallery-grid">
-        <img src="images/pousada1.jpg" alt="Ambiente da pousada">
-        <img src="images/pousada2.jpg" alt="Área externa da pousada">
-        <img src="images/pousada3.jpg" alt="Detalhes da pousada">
+        <img src="public/galeria/piscina1.jpeg" alt="Área da piscina da pousada">
+        <img src="public/galeria/sala-jantar2.jpeg" alt="Sala de jantar da pousada">
+        <img src="public/galeria/lazer2.jpeg" alt="Área de lazer da pousada">
       </div>
 
       <div class="cta-box">
         <h3>Descubra sua próxima estadia em Pirenópolis</h3>
         <p>
-          Viva dias de descanso, charme e aconchego em um ambiente pensado para tornar
-          sua experiência ainda mais especial.
+          Viva dias de descanso, charme e aconchego em um ambiente pensado para tornar sua experiência ainda mais especial.
         </p>
         <a class="cta-btn" href="acomodacoes.html">VER ACOMODAÇÕES</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
   <footer>
     <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
@@ -678,22 +887,85 @@
     </div>
   </footer>
 
-  <!-- ===== MENU SCRIPT ===== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const { createClient } = supabase
+
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+    const topHeader = document.getElementById("topHeader")
+    const accountActionBtn = document.getElementById("accountActionBtn")
+    const logoutBtnHeader = document.getElementById("logoutBtnHeader")
+    const sideAuthLinks = document.getElementById("sideAuthLinks")
+
+    function onScrollHeader(){
+      const y = window.scrollY || document.documentElement.scrollTop
+      topHeader.classList.toggle("solid", y > 40)
+    }
+
+    window.addEventListener("scroll", onScrollHeader)
+    onScrollHeader()
+
     function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu");
-      const backdrop = document.getElementById("backdrop");
-      const isOpen = menu.classList.contains("open");
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
 
       if(open){
-        menu.classList.add("open");
-        backdrop.classList.add("open");
+        menu.classList.add("open")
+        backdrop.classList.add("open")
       }else{
-        menu.classList.remove("open");
-        backdrop.classList.remove("open");
+        menu.classList.remove("open")
+        backdrop.classList.remove("open")
       }
     }
+
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add("show")
+      })
+    }, { threshold: 0.14 })
+
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el))
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "pousada.html"
+    }
+
+    logoutBtnHeader.addEventListener("click", logout)
+
+    async function applySessionAwareUI() {
+      try {
+        const { data, error } = await supabaseClient.auth.getUser()
+
+        if (error || !data.user) {
+          accountActionBtn.textContent = "ENTRAR"
+          accountActionBtn.href = "login.html"
+          logoutBtnHeader.classList.add("hidden")
+          sideAuthLinks.innerHTML = `<a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>`
+          return
+        }
+
+        accountActionBtn.textContent = "MINHA ÁREA"
+        accountActionBtn.href = "dashboard.html"
+        logoutBtnHeader.classList.remove("hidden")
+        sideAuthLinks.innerHTML = `
+          <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+          <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+        `
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    window.toggleMenu = toggleMenu
+    window.logout = logout
+    applySessionAwareUI()
   </script>
 </body>
 </html>

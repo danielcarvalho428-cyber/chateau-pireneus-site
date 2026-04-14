@@ -87,6 +87,50 @@
       gap:12px;
     }
 
+    .header-auth{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .auth-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      transition:0.22s ease;
+      cursor:pointer;
+      border:2px solid var(--beige-dark);
+      background:transparent;
+      color:var(--blue);
+      font-family:inherit;
+      text-decoration:none;
+    }
+
+    .auth-btn:hover{
+      transform:translateY(-1px);
+      background:var(--beige);
+      border-color:var(--beige);
+      color:#fff;
+      box-shadow:0 0 18px rgba(216,199,161,0.45);
+    }
+
+    .auth-btn.solid{
+      background:var(--beige-dark);
+      color:#fff;
+    }
+
+    .auth-btn.solid:hover{
+      background:var(--beige);
+      border-color:var(--beige);
+    }
+
     .instagram-btn{
       width:40px;
       height:40px;
@@ -159,22 +203,32 @@
       transform:translateX(-100%);
       transition:0.3s ease;
       z-index:11500;
+      overflow-y:auto;
     }
 
     .side-menu.open{
       transform:translateX(0);
     }
 
-    .side-menu a{
+    .side-menu a,
+    .side-menu button{
       display:block;
       margin:0 0 16px;
       text-decoration:none;
       color:#1d3557;
       font-size:15px;
       letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
     }
 
-    .side-menu a:hover{
+    .side-menu a:hover,
+    .side-menu button:hover{
       text-decoration:underline;
     }
 
@@ -486,6 +540,16 @@
         gap:10px;
       }
 
+      .header-auth{
+        gap:6px;
+      }
+
+      .auth-btn{
+        padding:9px 10px;
+        min-height:38px;
+        font-size:10px;
+      }
+
       .instagram-btn{
         width:38px;
         height:38px;
@@ -499,6 +563,12 @@
       .hero{
         min-height:52vh;
         padding:110px 18px 60px;
+      }
+    }
+
+    @media (max-width: 560px){
+      .header-auth{
+        display:none;
       }
     }
   </style>
@@ -516,7 +586,15 @@
 
     <hr>
 
-    <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    <div id="sideLoggedOut">
+      <a id="sideLoginLink" href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+
+    <div id="sideLoggedIn" style="display:none;">
+      <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+      <button type="button" id="sideLogoutBtn">Sair</button>
+    </div>
+
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
@@ -530,6 +608,18 @@
       </a>
 
       <div class="header-actions">
+        <div class="header-auth">
+          <a id="headerLoginBtn" class="auth-btn solid" href="login.html">Entrar</a>
+
+          <a id="headerDashboardBtn" class="auth-btn solid" href="dashboard.html" style="display:none;">
+            Minha área
+          </a>
+
+          <button id="headerLogoutBtn" class="auth-btn" type="button" style="display:none;">
+            Sair
+          </button>
+        </div>
+
         <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
@@ -599,7 +689,9 @@
         backdrop.classList.remove("open");
       }
     }
+  </script>
 
+  <script>
     (function () {
       const ROOMS = {
         divino: {
@@ -820,6 +912,84 @@
         restartTimer();
       });
     })();
+  </script>
+
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const headerLoginBtn = document.getElementById("headerLoginBtn");
+    const headerDashboardBtn = document.getElementById("headerDashboardBtn");
+    const headerLogoutBtn = document.getElementById("headerLogoutBtn");
+
+    const sideLoggedOut = document.getElementById("sideLoggedOut");
+    const sideLoggedIn = document.getElementById("sideLoggedIn");
+    const sideLoginLink = document.getElementById("sideLoginLink");
+    const sideLogoutBtn = document.getElementById("sideLogoutBtn");
+
+    function getCurrentReturnTo() {
+      return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    }
+
+    function getLoginHref() {
+      return `login.html?return_to=${encodeURIComponent(getCurrentReturnTo())}`;
+    }
+
+    function renderAuth(session) {
+      const isLoggedIn = !!session?.user;
+
+      if (headerLoginBtn) {
+        headerLoginBtn.style.display = isLoggedIn ? "none" : "inline-flex";
+        headerLoginBtn.href = getLoginHref();
+      }
+
+      if (headerDashboardBtn) {
+        headerDashboardBtn.style.display = isLoggedIn ? "inline-flex" : "none";
+      }
+
+      if (headerLogoutBtn) {
+        headerLogoutBtn.style.display = isLoggedIn ? "inline-flex" : "none";
+      }
+
+      if (sideLoggedOut) {
+        sideLoggedOut.style.display = isLoggedIn ? "none" : "block";
+      }
+
+      if (sideLoggedIn) {
+        sideLoggedIn.style.display = isLoggedIn ? "block" : "none";
+      }
+
+      if (sideLoginLink) {
+        sideLoginLink.href = getLoginHref();
+      }
+    }
+
+    async function logoutUser() {
+      try {
+        await supabase.auth.signOut();
+      } catch (error) {
+        console.error("Erro ao sair:", error);
+      } finally {
+        window.location.href = "index.html";
+      }
+    }
+
+    headerLogoutBtn?.addEventListener("click", logoutUser);
+    sideLogoutBtn?.addEventListener("click", async () => {
+      toggleMenu(false);
+      await logoutUser();
+    });
+
+    const { data: { session } } = await supabase.auth.getSession();
+    renderAuth(session);
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      renderAuth(session);
+    });
   </script>
 </body>
 </html>

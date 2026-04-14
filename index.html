@@ -1,3 +1,6 @@
+## `index.html`
+
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -51,9 +54,6 @@
       font-display:swap;
     }
 
-    /* =========================
-       GLASS HEADER (LOCKED)
-       ========================= */
     .top-header{
       position:fixed;
       top:0;
@@ -111,6 +111,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      flex-wrap:wrap;
     }
 
     .instagram-btn{
@@ -148,25 +149,59 @@
       background:rgba(29,53,87,0.12);
     }
 
-    .reserve-btn{
+    .reserve-btn,
+    .account-btn,
+    .logout-btn-public{
       text-decoration:none;
       font-weight:900;
       letter-spacing:1.6px;
       font-size:11px;
       padding:10px 16px;
       border-radius:12px;
-      background:rgba(216,199,161,0.92);
-      color:#fff;
       border:1px solid rgba(255,255,255,0.14);
-      box-shadow:0 18px 40px rgba(0,0,0,0.20);
       transition:0.22s ease;
       white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
+    }
+
+    .reserve-btn{
+      background:rgba(216,199,161,0.92);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
     }
     .reserve-btn:hover{
       background:rgba(203,181,140,0.98);
       transform:translateY(-1px);
       box-shadow:0 22px 52px rgba(0,0,0,0.24);
     }
+
+    .account-btn,
+    .logout-btn-public{
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      box-shadow:0 18px 40px rgba(0,0,0,0.16);
+      backdrop-filter:blur(6px);
+    }
+    .account-btn:hover,
+    .logout-btn-public:hover{
+      background:rgba(255,255,255,0.18);
+      transform:translateY(-1px);
+    }
+
+    .top-header.solid .account-btn,
+    .top-header.solid .logout-btn-public{
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      box-shadow:none;
+    }
+    .top-header.solid .account-btn:hover,
+    .top-header.solid .logout-btn-public:hover{
+      background:rgba(29,53,87,0.12);
+    }
+
+    .hidden{ display:none !important; }
 
     .menu-button{
       font-size:28px;
@@ -212,22 +247,30 @@
       z-index:11500;
     }
     .side-menu.open{ transform:translateX(0); }
-    .side-menu a{
+    .side-menu a,
+    .side-menu button{
       display:block;
       margin:0 0 16px;
       text-decoration:none;
       color:var(--navy);
       font-size:15px;
       letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
     }
-    .side-menu a:hover{ text-decoration:underline; }
+    .side-menu a:hover,
+    .side-menu button:hover{ text-decoration:underline; }
     .side-menu hr{
       margin:28px 0;
       border:none;
       border-top:1px solid rgba(29,53,87,0.12);
     }
 
-    /* HERO (LOCKED) */
     .hero{
       height:100vh;
       position:relative;
@@ -382,7 +425,6 @@
     }
     .reveal.show{ opacity:1; transform:translateY(0); }
 
-    /* WELCOME */
     .welcome{
       background:
         radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
@@ -465,7 +507,6 @@
 
     .welcome-text p:last-child{ margin-bottom:0; }
 
-    /* AMBIENTES */
     .gallery{
       background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
       color:#fff;
@@ -597,7 +638,6 @@
       gap:14px;
     }
 
-    /* SUITES (LOCKED) */
     .suites{
       background:linear-gradient(to bottom, #f5ecde 0%, #e5d2b4 100%);
       border-top:1px solid rgba(29,53,87,0.10);
@@ -738,7 +778,6 @@
     .arrow-left{ left:10px; }
     .arrow-right{ right:10px; }
 
-    /* CONHEÇA PIRI */
     .piri{
       background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
       border-top:1px solid rgba(29,53,87,0.08);
@@ -870,7 +909,6 @@
       box-shadow:0 18px 34px rgba(0,0,0,0.14);
     }
 
-    /* FOOTER */
     footer{
       position:relative;
       min-height:160px;
@@ -990,7 +1028,10 @@
 
     <hr>
 
-    <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
@@ -1012,6 +1053,8 @@
           </svg>
         </a>
 
+        <a id="accountActionBtn" class="account-btn" href="login.html">ENTRAR</a>
+        <button id="logoutBtnHeader" class="logout-btn-public hidden" type="button">SAIR</button>
         <a class="reserve-btn" href="booking.html">RESERVAR</a>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
@@ -1276,89 +1319,947 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const topHeader = document.getElementById("topHeader");
+    const { createClient } = supabase
+
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+    const topHeader = document.getElementById("topHeader")
+    const accountActionBtn = document.getElementById("accountActionBtn")
+    const logoutBtnHeader = document.getElementById("logoutBtnHeader")
+    const sideAuthLinks = document.getElementById("sideAuthLinks")
+
     function onScrollHeader(){
-      const y = window.scrollY || document.documentElement.scrollTop;
-      topHeader.classList.toggle("solid", y > 40);
+      const y = window.scrollY || document.documentElement.scrollTop
+      topHeader.classList.toggle("solid", y > 40)
     }
-    window.addEventListener("scroll", onScrollHeader);
-    onScrollHeader();
+    window.addEventListener("scroll", onScrollHeader)
+    onScrollHeader()
 
     function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu");
-      const backdrop = document.getElementById("backdrop");
-      const isOpen = menu.classList.contains("open");
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
 
       if(open){
-        menu.classList.add("open");
-        backdrop.classList.add("open");
+        menu.classList.add("open")
+        backdrop.classList.add("open")
       }else{
-        menu.classList.remove("open");
-        backdrop.classList.remove("open");
+        menu.classList.remove("open")
+        backdrop.classList.remove("open")
       }
     }
 
-    const track = document.getElementById("carouselTrack");
-    let index = 0;
-    const visible = 3;
-    const total = track.children.length;
-    const maxIndex = Math.max(0, total - visible);
+    const track = document.getElementById("carouselTrack")
+    let index = 0
+    const visible = 3
+    const total = track.children.length
+    const maxIndex = Math.max(0, total - visible)
 
     function applySlide(){
-      track.style.transform = "translateX(-" + (index * 33.3333) + "%)";
+      track.style.transform = "translateX(-" + (index * 33.3333) + "%)"
     }
 
     function moveSlide(dir){
-      index += dir;
-      if(index < 0) index = maxIndex;
-      if(index > maxIndex) index = 0;
-      applySlide();
+      index += dir
+      if(index < 0) index = maxIndex
+      if(index > maxIndex) index = 0
+      applySlide()
     }
 
-    setInterval(()=>{
-      index++;
-      if(index > maxIndex) index = 0;
-      applySlide();
-    }, 5500);
+    window.moveSlide = moveSlide
 
-    const ambienteSliders = document.querySelectorAll(".ambiente-slider");
+    setInterval(()=>{
+      index++
+      if(index > maxIndex) index = 0
+      applySlide()
+    }, 5500)
+
+    const ambienteSliders = document.querySelectorAll(".ambiente-slider")
 
     ambienteSliders.forEach((slider)=>{
-      const slides = slider.querySelectorAll(".gallery-slide");
-      const dots = slider.querySelectorAll(".gallery-dot");
-      let current = 0;
+      const slides = slider.querySelectorAll(".gallery-slide")
+      const dots = slider.querySelectorAll(".gallery-dot")
+      let current = 0
 
       function showSlide(i){
         slides.forEach((slide, index)=>{
-          slide.classList.toggle("active", index === i);
-        });
+          slide.classList.toggle("active", index === i)
+        })
         dots.forEach((dot, index)=>{
-          dot.classList.toggle("active", index === i);
-        });
-        current = i;
+          dot.classList.toggle("active", index === i)
+        })
+        current = i
       }
 
       dots.forEach((dot, index)=>{
         dot.addEventListener("click", ()=>{
-          showSlide(index);
-        });
-      });
+          showSlide(index)
+        })
+      })
 
       setInterval(()=>{
-        let next = current + 1;
-        if(next >= slides.length) next = 0;
-        showSlide(next);
-      }, 4200);
-    });
+        let next = current + 1
+        if(next >= slides.length) next = 0
+        showSlide(next)
+      }, 4200)
+    })
 
     const observer = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add("show");
-      });
-    }, { threshold: 0.14 });
-    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+        if(e.isIntersecting) e.target.classList.add("show")
+      })
+    }, { threshold: 0.14 })
+    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el))
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "index.html"
+    }
+
+    logoutBtnHeader.addEventListener("click", logout)
+
+    async function applySessionAwareUI() {
+      try {
+        const { data, error } = await supabaseClient.auth.getUser()
+
+        if (error || !data.user) {
+          accountActionBtn.textContent = "ENTRAR"
+          accountActionBtn.href = "login.html"
+          logoutBtnHeader.classList.add("hidden")
+          sideAuthLinks.innerHTML = `<a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>`
+          return
+        }
+
+        accountActionBtn.textContent = "MINHA ÁREA"
+        accountActionBtn.href = "dashboard.html"
+        logoutBtnHeader.classList.remove("hidden")
+        sideAuthLinks.innerHTML = `
+          <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+          <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+        `
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    window.logout = logout
+    applySessionAwareUI()
   </script>
 </body>
 </html>
+```
+
+---
+
+## `acomodacoes.html`
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acomodações | Pousada Chateau Pireneus</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+
+    :root{
+      --navy:#1d3557;
+      --navy2:#142a45;
+      --gold:#d8c7a1;
+      --gold2:#cbb58c;
+
+      --bg:#f7f6f2;
+      --line:rgba(29,53,87,0.12);
+      --text:rgba(18,28,44,0.92);
+      --muted:rgba(18,28,44,0.72);
+
+      --shadow:0 24px 60px rgba(0,0,0,0.12);
+      --shadowSoft:0 14px 34px rgba(0,0,0,0.08);
+
+      --radius:22px;
+      --max:1180px;
+    }
+
+    body{
+      margin:0;
+      font-family:Georgia, serif;
+      background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    a{ text-decoration:none; color:inherit; }
+
+    .top-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:12000;
+      padding:14px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(29,53,87,0.10);
+      backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    }
+
+    .top-header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      color:var(--navy);
+    }
+
+    .brand .line1{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      opacity:0.9;
+    }
+
+    .brand .line2{
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:18px;
+      line-height:1;
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .instagram-btn{
+      width:40px;
+      height:40px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:12px;
+      text-decoration:none;
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+      backdrop-filter:blur(6px);
+      transition:0.22s ease;
+    }
+
+    .instagram-btn:hover{
+      transform:translateY(-1px);
+      background:rgba(29,53,87,0.12);
+    }
+
+    .instagram-btn svg{
+      width:18px;
+      height:18px;
+      display:block;
+    }
+
+    .account-btn,
+    .logout-btn-public{
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:1.6px;
+      font-size:11px;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(29,53,87,0.12);
+      transition:0.22s ease;
+      white-space:nowrap;
+      font-family:inherit;
+      cursor:pointer;
+      color:var(--navy);
+      background:rgba(29,53,87,0.08);
+    }
+
+    .account-btn:hover,
+    .logout-btn-public:hover{
+      transform:translateY(-1px);
+      background:rgba(29,53,87,0.12);
+    }
+
+    .hidden{ display:none !important; }
+
+    .menu-button{
+      font-size:28px;
+      line-height:1;
+      color:var(--navy);
+      cursor:pointer;
+      user-select:none;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(29,53,87,0.08);
+      backdrop-filter:blur(6px);
+      border:0;
+      transition:0.22s ease;
+    }
+
+    .menu-button:hover{
+      transform:translateY(-1px);
+      background:rgba(29,53,87,0.12);
+    }
+
+    .backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.38);
+      opacity:0;
+      pointer-events:none;
+      transition:0.25s;
+      z-index:11000;
+    }
+
+    .backdrop.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    .side-menu{
+      position:fixed;
+      top:0;
+      left:0;
+      width:270px;
+      height:100vh;
+      background:#fff;
+      padding:96px 26px 28px;
+      box-shadow:12px 0 50px rgba(0,0,0,0.22);
+      transform:translateX(-100%);
+      transition:0.3s ease;
+      z-index:11500;
+    }
+
+    .side-menu.open{
+      transform:translateX(0);
+    }
+
+    .side-menu a,
+    .side-menu button{
+      display:block;
+      margin:0 0 16px;
+      text-decoration:none;
+      color:var(--navy);
+      font-size:15px;
+      letter-spacing:0.2px;
+      background:none;
+      border:none;
+      padding:0;
+      font-family:inherit;
+      cursor:pointer;
+      text-align:left;
+      width:100%;
+    }
+
+    .side-menu a:hover,
+    .side-menu button:hover{
+      text-decoration:underline;
+    }
+
+    .side-menu hr{
+      margin:28px 0;
+      border:none;
+      border-top:1px solid rgba(29,53,87,0.12);
+    }
+
+    .hero{
+      position:relative;
+      min-height:64vh;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.50), rgba(0,0,0,0.38), rgba(0,0,0,0.54)),
+        url("hero.jpg.webp") center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:130px 22px 80px;
+      overflow:hidden;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:radial-gradient(900px 420px at 50% 30%, rgba(216,199,161,0.14), transparent 60%);
+      pointer-events:none;
+    }
+
+    .hero-content{
+      position:relative;
+      z-index:2;
+      max-width:900px;
+      color:#fff;
+    }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:10px;
+      opacity:0.95;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(22px, 3.5vw, 38px);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      line-height:1.06;
+      text-shadow:0 12px 40px rgba(0,0,0,0.45);
+    }
+
+    .section{
+      padding:72px 0 90px;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .section-head{
+      max-width:100%;
+      margin-bottom:32px;
+      text-align:center;
+    }
+
+    .section-sub{
+      margin:0 auto;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:22px;
+      max-width:980px;
+      white-space:nowrap;
+      position:relative;
+      left:-85px;
+    }
+
+    .orn{
+      width:170px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:16px auto 0;
+      position:relative;
+      left:-18px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:24px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.82);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadowSoft);
+      backdrop-filter:blur(6px);
+      -webkit-backdrop-filter:blur(6px);
+      transition:transform 0.25s ease, box-shadow 0.25s ease;
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow);
+    }
+
+    .card-image{
+      overflow:hidden;
+      aspect-ratio:1 / 1;
+      background:#e9e2d5;
+    }
+
+    .card-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform 0.55s ease;
+    }
+
+    .card:hover .card-image img{
+      transform:scale(1.05);
+    }
+
+    .card-body{
+      padding:20px 20px 22px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+    }
+
+    .suite-number{
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.5px;
+      color:rgba(29,53,87,0.58);
+      margin-bottom:10px;
+    }
+
+    .card h3{
+      margin:0;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:28px;
+      line-height:1.1;
+      color:var(--navy);
+    }
+
+    .card p{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:14px;
+      flex:1;
+    }
+
+    .card-actions{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn-outline{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+      transition:0.2s ease;
+      border:2px solid var(--gold2);
+      color:var(--navy);
+      background:transparent;
+    }
+
+    .btn-outline:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      color:#fff;
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.45);
+    }
+
+    .btn-solid{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1px;
+      transition:0.2s ease;
+      border:2px solid var(--gold2);
+      background:var(--gold2);
+      color:#fff;
+    }
+
+    .btn-solid:hover{
+      background:var(--gold);
+      border-color:var(--gold);
+      transform:translateY(-1px);
+      box-shadow:0 0 18px rgba(216,199,161,0.45);
+    }
+
+    footer{
+      position:relative;
+      min-height:160px;
+      max-height:160px;
+      overflow:hidden;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .footer-overlay{
+      position:relative;
+      z-index:2;
+      height:160px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:1024px){
+      .grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      .section-sub{
+        white-space:normal;
+        left:0;
+        max-width:900px;
+      }
+
+      .orn{
+        left:0;
+      }
+    }
+
+    @media (max-width:780px){
+      .top-header{
+        padding:12px 16px;
+      }
+
+      .top-header-inner{
+        gap:12px;
+      }
+
+      .brand .line2{
+        font-size:16px;
+      }
+
+      .header-actions{
+        gap:8px;
+      }
+
+      .hero{
+        min-height:56vh;
+        padding:120px 18px 72px;
+      }
+
+      .section{
+        padding:58px 0 74px;
+      }
+
+      .section-sub{
+        white-space:normal;
+        left:0;
+        font-size:18px;
+      }
+
+      .orn{
+        left:0;
+      }
+
+      .grid{
+        grid-template-columns:1fr;
+        gap:18px;
+      }
+
+      footer{
+        min-height:200px;
+        max-height:none;
+      }
+
+      .footer-overlay{
+        height:200px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html" onclick="toggleMenu(false)">Home</a>
+    <a href="index.html#welcome" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+  </nav>
+
+  <header class="top-header">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a id="accountActionBtn" class="account-btn" href="login.html">ENTRAR</a>
+        <button id="logoutBtnHeader" class="logout-btn-public hidden" type="button">SAIR</button>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Acomodações">
+    <div class="hero-content">
+      <div class="hero-kicker">Nossas</div>
+      <h1 class="hero-title">Acomodações</h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="section-sub">Ambientes pensados para proporcionar conforto, privacidade e uma experiência acolhedora no charme de Pirenópolis!</p>
+        <div class="orn"></div>
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 01</div>
+            <h3>Suíte do Divino</h3>
+            <p>Suíte padrão com TV.</p>
+            <div class="card-actions">
+              <a href="suite.html?room=divino" class="btn-outline">CONHECER</a>
+              <a href="booking.html?room_id=1" class="btn-solid">RESERVAR</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 02</div>
+            <h3>Suíte das Cavalhadas</h3>
+            <p>Suíte padrão com TV.</p>
+            <div class="card-actions">
+              <a href="suite.html?room=cavalhadas" class="btn-outline">CONHECER</a>
+              <a href="booking.html?room_id=2" class="btn-solid">RESERVAR</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 03</div>
+            <h3>Suíte do Rosário</h3>
+            <p>Suíte padrão com TV.</p>
+            <div class="card-actions">
+              <a href="suite.html?room=rosario" class="btn-outline">CONHECER</a>
+              <a href="booking.html?room_id=3" class="btn-solid">RESERVAR</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 04</div>
+            <h3>Suíte dos Pireneus (Master)</h3>
+            <p>Suíte Master com banheira de imersão. Disponível em breve!</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 05</div>
+            <h3>Suíte Aurora</h3>
+            <p>Suíte padrão com TV.</p>
+            <div class="card-actions">
+              <a href="suite.html?room=aurora" class="btn-outline">CONHECER</a>
+              <a href="booking.html?room_id=5" class="btn-solid">RESERVAR</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-image">
+            <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+          </div>
+          <div class="card-body">
+            <div class="suite-number">SUÍTE 06</div>
+            <h3>Suíte do Bonfim</h3>
+            <p>Suíte padrão sem TV.</p>
+            <div class="card-actions">
+              <a href="suite.html?room=bonfim" class="btn-outline">CONHECER</a>
+              <a href="booking.html?room_id=6" class="btn-solid">RESERVAR</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const { createClient } = supabase
+
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+    const accountActionBtn = document.getElementById("accountActionBtn")
+    const logoutBtnHeader = document.getElementById("logoutBtnHeader")
+    const sideAuthLinks = document.getElementById("sideAuthLinks")
+
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
+
+      if(open){
+        menu.classList.add("open")
+        backdrop.classList.add("open")
+      }else{
+        menu.classList.remove("open")
+        backdrop.classList.remove("open")
+      }
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "acomodacoes.html"
+    }
+
+    logoutBtnHeader.addEventListener("click", logout)
+
+    async function applySessionAwareUI() {
+      try {
+        const { data, error } = await supabaseClient.auth.getUser()
+
+        if (error || !data.user) {
+          accountActionBtn.textContent = "ENTRAR"
+          accountActionBtn.href = "login.html"
+          logoutBtnHeader.classList.add("hidden")
+          sideAuthLinks.innerHTML = `<a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>`
+          return
+        }
+
+        accountActionBtn.textContent = "MINHA ÁREA"
+        accountActionBtn.href = "dashboard.html"
+        logoutBtnHeader.classList.remove("hidden")
+        sideAuthLinks.innerHTML = `
+          <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+          <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+        `
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    window.toggleMenu = toggleMenu
+    window.logout = logout
+    applySessionAwareUI()
+  </script>
+
+</body>
+</html>
+```

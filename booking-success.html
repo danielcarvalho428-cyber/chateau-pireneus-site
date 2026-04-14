@@ -4,49 +4,209 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Status da Reserva | Chateau Pireneus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
+    @font-face{
+      font-family:"Gyahegi";
+      src:url("Gyahegi.otf") format("opentype");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root {
+      --ink: #1f2430;
+      --muted: #6f6a62;
+      --gold: #b8955f;
+      --gold-deep: #9f7b45;
+      --soft: #f7f2e8;
+      --panel: rgba(255,255,255,0.88);
+      --border: rgba(31,36,48,0.08);
+      --shadow: 0 20px 60px rgba(31,36,48,0.10);
+      --success: #1f6b46;
+      --success-bg: #eefaf3;
+      --warning: #8a5a16;
+      --warning-bg: #fff7ea;
+      --error: #9a2f2f;
+      --error-bg: #fff3f3;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f4ef;
-      color: #222;
+      padding: 0;
+    }
+
+    body {
       min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(184,149,95,0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 24%),
+        linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
+      padding: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 860px;
     }
 
     .card {
       width: 100%;
-      max-width: 700px;
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 40px 28px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.58);
+      border-radius: 28px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-title {
+      font-family: "Gyahegi", "Cormorant Garamond", serif;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .brand-subtitle {
+      margin-top: 8px;
+      font-size: 12px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      margin: 0 auto 18px;
+    }
+
+    .status-pill.success {
+      color: var(--success);
+      background: var(--success-bg);
+      border: 1px solid rgba(31,107,70,0.16);
+    }
+
+    .status-pill.warning {
+      color: var(--warning);
+      background: var(--warning-bg);
+      border: 1px solid rgba(138,90,22,0.16);
+    }
+
+    .status-pill.error {
+      color: var(--error);
+      background: var(--error-bg);
+      border: 1px solid rgba(154,47,47,0.16);
+    }
+
+    .center {
       text-align: center;
     }
 
     h1 {
-      margin: 0 0 16px;
-      font-size: 30px;
-      line-height: 1.2;
+      margin: 0 0 14px;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(38px, 6vw, 54px);
+      line-height: .95;
+      font-weight: 600;
     }
 
-    p {
-      margin: 0 0 12px;
+    p.lead {
+      margin: 0 auto 10px;
+      max-width: 620px;
       font-size: 16px;
-      line-height: 1.6;
-      color: #555;
+      line-height: 1.8;
+      color: var(--muted);
     }
 
     .reservation-box {
-      margin: 24px 0;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #f3f3f3;
-      font-size: 14px;
+      margin: 28px 0 18px;
+      padding: 18px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.74);
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .reservation-box h2 {
+      margin: 0 0 14px;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(31,36,48,0.08);
+      font-size: 15px;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: var(--muted);
+    }
+
+    .detail-value {
+      font-weight: 600;
+      text-align: right;
       word-break: break-word;
+    }
+
+    .notice {
+      margin-top: 18px;
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 14px;
+      line-height: 1.8;
+      text-align: left;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.62);
+      color: var(--muted);
+    }
+
+    .notice.success {
+      color: var(--success);
+      background: var(--success-bg);
+      border-color: rgba(31,107,70,0.16);
+    }
+
+    .notice.warning {
+      color: var(--warning);
+      background: var(--warning-bg);
+      border-color: rgba(138,90,22,0.16);
+    }
+
+    .notice.error {
+      color: var(--error);
+      background: var(--error-bg);
+      border-color: rgba(154,47,47,0.16);
     }
 
     .actions {
@@ -54,64 +214,124 @@
       gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 24px;
+      margin-top: 26px;
     }
 
     .btn {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       min-width: 220px;
-      padding: 14px 18px;
-      border-radius: 12px;
+      padding: 15px 18px;
+      border-radius: 999px;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       border: none;
       cursor: pointer;
+      transition: .25s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
     }
 
     .btn-dark {
-      background: #1c1c1c;
+      background: linear-gradient(135deg, var(--gold), var(--gold-deep));
       color: #fff;
+      box-shadow: 0 14px 30px rgba(159,123,69,0.22);
     }
 
     .btn-light {
-      background: #ece7de;
-      color: #222;
+      background: rgba(255,255,255,0.72);
+      color: var(--ink);
+      border: 1px solid rgba(31,36,48,0.08);
     }
 
     .hidden {
       display: none !important;
     }
 
-    .status {
+    .status-text {
       margin-top: 18px;
-      font-size: 14px;
-      color: #777;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px;
+      }
+
+      .card {
+        border-radius: 22px;
+        padding: 26px 18px;
+      }
+
+      .brand-title {
+        font-size: 34px;
+      }
+
+      .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .detail-value {
+        text-align: left;
+      }
+
+      .btn {
+        width: 100%;
+        min-width: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1 id="titleText">Status da Reserva</h1>
+  <div class="page">
+    <div class="card">
+      <div class="brand">
+        <div class="brand-title">Chateau Pireneus</div>
+        <div class="brand-subtitle">Status da reserva</div>
+      </div>
 
-    <p id="messageLine1">Estamos processando sua reserva.</p>
-    <p id="messageLine2">Aguarde enquanto confirmamos os detalhes.</p>
+      <div class="center">
+        <div id="statusPill" class="status-pill warning">Processando</div>
+        <h1 id="titleText">Status da Reserva</h1>
+        <p id="messageLine1" class="lead">Estamos processando sua reserva.</p>
+        <p id="messageLine2" class="lead">Aguarde enquanto confirmamos os detalhes.</p>
+      </div>
 
-    <div id="reservationBox" class="reservation-box">
-      Carregando reserva...
+      <div id="reservationBox" class="reservation-box">
+        <h2>Resumo</h2>
+        <div class="detail-row">
+          <span class="detail-label">Reserva</span>
+          <span id="reservationIdText" class="detail-value">Carregando...</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Sessão de pagamento</span>
+          <span id="sessionIdText" class="detail-value">—</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Situação</span>
+          <span id="situationText" class="detail-value">Carregando...</span>
+        </div>
+      </div>
+
+      <div id="noticeBox" class="notice warning">
+        Aguarde enquanto validamos o retorno do pagamento.
+      </div>
+
+      <div class="actions">
+        <a id="retryLink" class="btn btn-dark hidden" href="#">Tentar pagamento novamente</a>
+        <a href="/acomodacoes.html" class="btn btn-light">Voltar para acomodações</a>
+        <a href="/index.html" class="btn btn-light">Ir para início</a>
+      </div>
+
+      <div id="statusText" class="status-text">Carregando...</div>
     </div>
-
-    <div class="actions">
-      <a id="retryLink" class="btn btn-dark hidden" href="#">
-        TENTAR PAGAMENTO NOVAMENTE
-      </a>
-
-      <a href="/acomodacoes.html" class="btn btn-light">
-        VOLTAR PARA ACOMODAÇÕES
-      </a>
-    </div>
-
-    <div id="statusText" class="status">Carregando...</div>
   </div>
 
   <script>
@@ -123,50 +343,72 @@
         return params.get(name) || "";
       }
 
+      function setPill(type, text) {
+        statusPill.className = "status-pill " + type;
+        statusPill.textContent = text;
+      }
+
+      function setNotice(type, text) {
+        noticeBox.className = "notice " + type;
+        noticeBox.textContent = text;
+      }
+
       var reservationId = getParam("reservation_id");
       var cancelled = getParam("cancelled");
       var sessionId = getParam("session_id");
 
+      var statusPill = document.getElementById("statusPill");
       var titleText = document.getElementById("titleText");
       var messageLine1 = document.getElementById("messageLine1");
       var messageLine2 = document.getElementById("messageLine2");
-      var reservationBox = document.getElementById("reservationBox");
+      var reservationIdText = document.getElementById("reservationIdText");
+      var sessionIdText = document.getElementById("sessionIdText");
+      var situationText = document.getElementById("situationText");
       var retryLink = document.getElementById("retryLink");
       var statusText = document.getElementById("statusText");
+      var noticeBox = document.getElementById("noticeBox");
+
+      reservationIdText.textContent = reservationId || "Não informado";
+      sessionIdText.textContent = sessionId || "Não informado";
 
       if (!reservationId) {
+        setPill("error", "Reserva não localizada");
         titleText.textContent = "Reserva não localizada";
         messageLine1.textContent = "Não foi possível localizar o código da reserva.";
         messageLine2.textContent = "Volte para as acomodações e tente novamente.";
-        reservationBox.textContent = "Nenhum reservation_id encontrado na URL.";
+        situationText.textContent = "URL sem reservation_id";
+        setNotice("error", "Esta página foi aberta sem um identificador de reserva válido.");
         statusText.textContent = "Página carregada sem reservation_id.";
         return;
       }
 
-      reservationBox.innerHTML = "<strong>Reserva:</strong> " + reservationId;
-
       if (cancelled === "1") {
+        setPill("warning", "Pagamento pendente");
         titleText.textContent = "Pagamento não concluído";
         messageLine1.textContent = "Sua reserva foi criada, mas o pagamento não foi finalizado.";
         messageLine2.textContent = "Você pode tentar novamente abaixo sem refazer a reserva.";
+        situationText.textContent = "Pagamento pendente";
+        setNotice("warning", "A reserva continua vinculada a este código. Para concluir, basta tentar o pagamento novamente." );
         retryLink.classList.remove("hidden");
         retryLink.href =
           SUPABASE_PROJECT_URL +
           "/functions/v1/checkoutstripe?reservation_id=" +
           encodeURIComponent(reservationId);
-        statusText.textContent = "Pagamento pendente.";
+        statusText.textContent = sessionId
+          ? "Retorno recebido com cancelamento do checkout."
+          : "Pagamento cancelado antes da conclusão.";
         return;
       }
 
+      setPill("success", "Pagamento enviado");
       titleText.textContent = "Pagamento concluído";
       messageLine1.textContent = "Seu pagamento foi enviado com sucesso.";
       messageLine2.textContent = "Sua reserva está sendo confirmada pelo sistema.";
-
-      if (sessionId) {
-        statusText.textContent = "Sessão Stripe recebida.";
-      } else {
-        statusText.textContent = "Reserva recebida.";
-      }
+      situationText.textContent = "Pagamento concluído";
+      setNotice("success", "Se você acabou de sair do checkout, este é o comportamento esperado. Sua reserva seguirá o fluxo normal de confirmação." );
+      statusText.textContent = sessionId
+        ? "Sessão Stripe recebida com sucesso."
+        : "Reserva recebida sem session_id na URL.";
     })();
   </script>
 </body>

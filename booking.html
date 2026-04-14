@@ -18,114 +18,314 @@
       font-style:normal;
       font-display:swap;
     }
+
     :root{
-      --ink:#1f2430; --muted:#6f6a62; --gold:#b8955f; --gold-deep:#9f7b45;
+      --ink:#1f2430;
+      --muted:#6f6a62;
+      --gold:#b8955f;
+      --gold-deep:#9f7b45;
       --shadow:0 20px 60px rgba(31,36,48,0.10);
       --soft:#f5efe5;
       --danger:#9a2f2f;
       --danger-bg:#fff3f3;
+      --success:#1f6b46;
+      --success-bg:#eefaf3;
+      --info:#5a5d66;
+      --info-bg:#f8f7f3;
     }
+
     *{box-sizing:border-box;margin:0;padding:0}
+
     body{
-      min-height:100vh;font-family:"Inter",sans-serif;color:var(--ink);
+      min-height:100vh;
+      font-family:"Inter",sans-serif;
+      color:var(--ink);
       background:
         radial-gradient(circle at top left, rgba(184,149,95,0.18), transparent 28%),
         radial-gradient(circle at bottom right, rgba(184,149,95,0.10), transparent 24%),
         linear-gradient(180deg, #f7f2e8 0%, #f2eadc 100%);
     }
+
     .top-header{
-      position:sticky;top:0;z-index:1000;padding:16px 22px;
-      background:rgba(246,241,230,0.72);border-bottom:1px solid rgba(31,36,48,0.08);
-      backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      position:sticky;
+      top:0;
+      z-index:1000;
+      padding:16px 22px;
+      background:rgba(246,241,230,0.72);
+      border-bottom:1px solid rgba(31,36,48,0.08);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
       box-shadow:0 12px 30px rgba(0,0,0,0.05);
     }
+
     .top-header-inner{
-      max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
     }
-    .brand{text-decoration:none;color:var(--ink);display:flex;flex-direction:column;line-height:1}
-    .brand-title{font-family:"Gyahegi","Cormorant Garamond",serif;font-size:36px;font-weight:400}
-    .brand-subtitle{margin-top:6px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
-    .header-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+
+    .brand{
+      text-decoration:none;
+      color:var(--ink);
+      display:flex;
+      flex-direction:column;
+      line-height:1;
+    }
+
+    .brand-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-size:36px;
+      font-weight:400;
+    }
+
+    .brand-subtitle{
+      margin-top:6px;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .header-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
     .header-link{
-      text-decoration:none;color:var(--ink);font-size:14px;font-weight:600;padding:10px 14px;border-radius:999px;
-      background:rgba(255,255,255,0.58);border:1px solid rgba(31,36,48,0.08);transition:.25s ease;
+      text-decoration:none;
+      color:var(--ink);
+      font-size:14px;
+      font-weight:600;
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(31,36,48,0.08);
+      transition:.25s ease;
     }
-    .header-link:hover{background:rgba(255,255,255,0.92);transform:translateY(-1px)}
-    .page-wrap{max-width:1200px;margin:0 auto;padding:46px 22px 76px}
+
+    .header-link:hover{
+      background:rgba(255,255,255,0.92);
+      transform:translateY(-1px);
+    }
+
+    .page-wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:46px 22px 76px;
+    }
+
     .hero{
-      position:relative;min-height:360px;border-radius:34px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:28px;
+      position:relative;
+      min-height:360px;
+      border-radius:34px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      margin-bottom:28px;
       background:
         linear-gradient(rgba(18,18,18,0.20), rgba(18,18,18,0.34)),
         url("pousada.png") center/cover no-repeat;
       border:1px solid rgba(255,255,255,0.35);
     }
+
     .hero-content{
-      position:relative;z-index:1;padding:54px 42px;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;color:#fff;
+      position:relative;
+      z-index:1;
+      padding:54px 42px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      min-height:360px;
+      color:#fff;
     }
-    .eyebrow{display:inline-block;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,0.88);margin-bottom:14px}
-    .hero-title{font-family:"Cormorant Garamond",serif;font-size:clamp(44px, 6vw, 70px);line-height:.95;font-weight:600;margin-bottom:14px;max-width:700px}
-    .hero-text{max-width:700px;font-size:16px;line-height:1.85;color:rgba(255,255,255,0.92)}
-    .booking-layout{display:grid;grid-template-columns:1.08fr .92fr;gap:24px;align-items:start}
+
+    .eyebrow{
+      display:inline-block;
+      font-size:12px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.88);
+      margin-bottom:14px;
+    }
+
+    .hero-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(44px, 6vw, 70px);
+      line-height:.95;
+      font-weight:600;
+      margin-bottom:14px;
+      max-width:700px;
+    }
+
+    .hero-text{
+      max-width:700px;
+      font-size:16px;
+      line-height:1.85;
+      color:rgba(255,255,255,0.92);
+    }
+
+    .booking-layout{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:24px;
+      align-items:start;
+    }
+
     .panel{
       background:linear-gradient(180deg, rgba(255,255,255,0.78), rgba(255,255,255,0.64));
-      border:1px solid rgba(255,255,255,0.58);border-radius:28px;box-shadow:var(--shadow);
-      padding:30px 26px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,0.58);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:30px 26px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
     }
-    .panel-title{font-family:"Cormorant Garamond",serif;font-size:38px;font-weight:600;margin-bottom:8px;line-height:1}
-    .panel-subtitle{color:var(--muted);font-size:15px;line-height:1.8;margin-bottom:24px}
-    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .field{display:flex;flex-direction:column;gap:8px}
+
+    .panel-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:38px;
+      font-weight:600;
+      margin-bottom:8px;
+      line-height:1;
+    }
+
+    .panel-subtitle{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+      margin-bottom:24px;
+    }
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
     .field.full{grid-column:1 / -1}
-    label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-    input,select,textarea{
-      width:100%;border:1px solid rgba(31,36,48,0.10);background:rgba(255,255,255,0.86);color:var(--ink);
-      border-radius:18px;padding:15px 16px;font:inherit;outline:none;
+
+    label{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
     }
+
+    input,select,textarea{
+      width:100%;
+      border:1px solid rgba(31,36,48,0.10);
+      background:rgba(255,255,255,0.86);
+      color:var(--ink);
+      border-radius:18px;
+      padding:15px 16px;
+      font:inherit;
+      outline:none;
+    }
+
+    input:focus, select:focus, textarea:focus{
+      border-color:rgba(184,149,95,0.65);
+      box-shadow:0 0 0 4px rgba(184,149,95,0.10);
+    }
+
     select:disabled{
       background:var(--soft);
       color:#4c4a45;
       cursor:not-allowed;
     }
-    textarea{min-height:130px;resize:vertical}
-    .btn{
-      appearance:none;border:none;cursor:pointer;transition:.25s ease;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;
-      border-radius:999px;padding:16px 22px;font-size:14px;font-weight:700;letter-spacing:.03em;
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
     }
+
+    .btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      transition:.25s ease;
+      font-family:inherit;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:999px;
+      padding:16px 22px;
+      font-size:14px;
+      font-weight:700;
+      letter-spacing:.03em;
+    }
+
     .btn-primary{
-      width:100%;color:#fff;background:linear-gradient(135deg, var(--gold), var(--gold-deep));
+      width:100%;
+      color:#fff;
+      background:linear-gradient(135deg, var(--gold), var(--gold-deep));
       box-shadow:0 14px 30px rgba(159,123,69,0.22);
     }
-    .btn-primary:hover{transform:translateY(-2px)}
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+    }
+
     .btn-primary:disabled{
       opacity:.65;
       cursor:not-allowed;
       transform:none;
     }
+
     .info-card{
-      border:1px solid rgba(31,36,48,0.08);background:rgba(255,255,255,0.62);border-radius:22px;padding:18px 18px 16px;margin-bottom:14px;
+      border:1px solid rgba(31,36,48,0.08);
+      background:rgba(255,255,255,0.62);
+      border-radius:22px;
+      padding:18px 18px 16px;
+      margin-bottom:14px;
     }
-    .info-card strong{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:8px}
-    .info-card span{display:block;font-size:15px;line-height:1.78;color:var(--ink)}
-    .locked-room-note{
-      margin-top:6px;
-      font-size:13px;
-      line-height:1.7;
-      color:var(--muted);
-      background:rgba(184,149,95,0.10);
-      border:1px solid rgba(184,149,95,0.16);
-      border-radius:16px;
-      padding:12px 14px;
+
+    .info-card strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--gold-deep);
+      margin-bottom:8px;
     }
+
+    .info-card span{
+      display:block;
+      font-size:15px;
+      line-height:1.78;
+      color:var(--ink);
+    }
+
+    .locked-room-note,
     .availability-note{
       margin-top:6px;
       font-size:13px;
       line-height:1.7;
       color:var(--muted);
-      background:rgba(255,255,255,0.62);
-      border:1px solid rgba(31,36,48,0.08);
       border-radius:16px;
       padding:12px 14px;
     }
+
+    .locked-room-note{
+      background:rgba(184,149,95,0.10);
+      border:1px solid rgba(184,149,95,0.16);
+    }
+
+    .availability-note{
+      background:rgba(255,255,255,0.62);
+      border:1px solid rgba(31,36,48,0.08);
+    }
+
     .status-box{
       margin-top:8px;
       font-size:13px;
@@ -134,6 +334,7 @@
       padding:12px 14px;
       display:none;
     }
+
     .status-box.show{display:block}
     .status-box.error{
       color:var(--danger);
@@ -141,10 +342,16 @@
       border:1px solid rgba(154,47,47,0.18);
     }
     .status-box.info{
-      color:var(--muted);
-      background:rgba(255,255,255,0.62);
+      color:var(--info);
+      background:var(--info-bg);
       border:1px solid rgba(31,36,48,0.08);
     }
+    .status-box.success{
+      color:var(--success);
+      background:var(--success-bg);
+      border:1px solid rgba(31,107,70,0.18);
+    }
+
     .summary-line{
       display:flex;
       justify-content:space-between;
@@ -153,16 +360,20 @@
       border-bottom:1px solid rgba(31,36,48,0.08);
       font-size:15px;
     }
+
     .summary-line:last-of-type{
       border-bottom:none;
     }
+
     .summary-label{
       color:var(--muted);
     }
+
     .summary-value{
       font-weight:600;
       text-align:right;
     }
+
     .summary-total{
       margin-top:14px;
       padding-top:16px;
@@ -173,7 +384,22 @@
       font-size:18px;
       font-weight:700;
     }
-    .footer{margin-top:42px;padding:28px 22px 42px;text-align:center;color:var(--muted);font-size:14px;line-height:1.9}
+
+    .help-text{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .footer{
+      margin-top:42px;
+      padding:28px 22px 42px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.9;
+    }
 
     .flatpickr-day.flatpickr-disabled,
     .flatpickr-day.flatpickr-disabled:hover{
@@ -185,15 +411,34 @@
     }
 
     @media (max-width: 920px){
-      .booking-layout,.form-grid{grid-template-columns:1fr}
-      .hero-content{padding:40px 24px;min-height:320px}
+      .booking-layout,
+      .form-grid{
+        grid-template-columns:1fr;
+      }
+      .hero-content{
+        padding:40px 24px;
+        min-height:320px;
+      }
     }
+
     @media (max-width: 640px){
-      .top-header-inner{flex-direction:column;align-items:flex-start}
-      .brand-title{font-size:30px}
-      .page-wrap{padding:34px 16px 54px}
-      .panel{padding:22px 18px;border-radius:22px}
-      .hero{border-radius:26px}
+      .top-header-inner{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      .brand-title{
+        font-size:30px;
+      }
+      .page-wrap{
+        padding:34px 16px 54px;
+      }
+      .panel{
+        padding:22px 18px;
+        border-radius:22px;
+      }
+      .hero{
+        border-radius:26px;
+      }
     }
   </style>
 </head>
@@ -245,7 +490,7 @@
               <label for="date_range">Período da hospedagem</label>
               <input type="text" id="date_range" placeholder="Selecione check-in e check-out" required readonly>
               <div class="availability-note">
-                Datas já reservadas ou bloqueadas aparecem indisponíveis no calendário.
+                Datas indisponíveis aparecem desabilitadas no calendário. Reservas temporárias em hold também ficam indisponíveis.
               </div>
               <div id="availabilityStatus" class="status-box info show">
                 Selecione uma suíte para carregar a disponibilidade.
@@ -260,6 +505,7 @@
             <div class="field full">
               <label for="special_requests">Pedidos especiais</label>
               <textarea id="special_requests" placeholder="Ex: decoração romântica, cama extra, horário previsto de chegada"></textarea>
+              <div class="help-text">Opcional. Você poderá alinhar detalhes adicionais depois da reserva.</div>
             </div>
 
             <div class="field full">
@@ -282,7 +528,7 @@
 
         <div class="info-card">
           <strong>2. Hold automático</strong>
-          <span>Se a reserva for criada, as noites selecionadas ficam temporariamente reservadas.</span>
+          <span>Se a reserva for criada, as noites selecionadas ficam temporariamente reservadas para você concluir o pagamento.</span>
         </div>
 
         <div class="info-card">
@@ -309,6 +555,10 @@
               <span class="summary-label">Noites</span>
               <span class="summary-value" id="summaryNights">—</span>
             </div>
+            <div class="summary-line">
+              <span class="summary-label">Hóspedes</span>
+              <span class="summary-value" id="summaryGuests">2</span>
+            </div>
             <div class="summary-total">
               <span>Total</span>
               <span id="summaryTotal">A definir</span>
@@ -325,177 +575,200 @@
   </footer>
 
   <script>
-    const { createClient } = supabase
+    const { createClient } = supabase;
 
-    const supabaseClient = createClient(
-      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
-    )
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
+    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
 
-    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-    const roomSelect = document.getElementById("room_id")
-    const lockedRoomNote = document.getElementById("lockedRoomNote")
-    const availabilityStatus = document.getElementById("availabilityStatus")
-    const submitBtn = document.getElementById("submitBtn")
-    const summaryRoom = document.getElementById("summaryRoom")
-    const summaryCheckIn = document.getElementById("summaryCheckIn")
-    const summaryCheckOut = document.getElementById("summaryCheckOut")
-    const summaryNights = document.getElementById("summaryNights")
-    const summaryTotal = document.getElementById("summaryTotal")
+    const bookingForm = document.getElementById("bookingForm");
+    const roomSelect = document.getElementById("room_id");
+    const lockedRoomNote = document.getElementById("lockedRoomNote");
+    const availabilityStatus = document.getElementById("availabilityStatus");
+    const submitBtn = document.getElementById("submitBtn");
+    const dateRangeInput = document.getElementById("date_range");
+    const guestsInput = document.getElementById("guests");
+    const specialRequestsInput = document.getElementById("special_requests");
 
-    let roomsMap = new Map()
-    let selectedCheckIn = ""
-    let selectedCheckOut = ""
-    let blockedDates = []
-    let datePicker = null
+    const summaryRoom = document.getElementById("summaryRoom");
+    const summaryCheckIn = document.getElementById("summaryCheckIn");
+    const summaryCheckOut = document.getElementById("summaryCheckOut");
+    const summaryNights = document.getElementById("summaryNights");
+    const summaryGuests = document.getElementById("summaryGuests");
+    const summaryTotal = document.getElementById("summaryTotal");
+
+    let roomsMap = new Map();
+    let selectedCheckIn = "";
+    let selectedCheckOut = "";
+    let unavailableDates = [];
+    let datePicker = null;
+    let availabilityLoadedForRoomId = null;
 
     function getLockedRoomIdFromUrl() {
-      const params = new URLSearchParams(window.location.search)
-      const value = params.get("room_id")
-      if (!value) return null
+      const params = new URLSearchParams(window.location.search);
+      const value = params.get("room_id");
+      if (!value) return null;
 
-      const parsed = Number(value)
-      return Number.isFinite(parsed) && parsed > 0 ? parsed : null
+      const parsed = Number(value);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
     }
 
     function formatDateDisplay(dateStr) {
-      if (!dateStr) return "—"
-      const [year, month, day] = dateStr.split("-")
-      return `${day}/${month}/${year}`
+      if (!dateStr) return "—";
+      const [year, month, day] = dateStr.split("-");
+      return `${day}/${month}/${year}`;
     }
 
     function formatDateLocal(date) {
-      const year = date.getFullYear()
-      const month = String(date.getMonth() + 1).padStart(2, "0")
-      const day = String(date.getDate()).padStart(2, "0")
-      return `${year}-${month}-${day}`
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
     }
 
     function countNights(checkIn, checkOut) {
-      if (!checkIn || !checkOut) return 0
-      const start = new Date(checkIn + "T00:00:00")
-      const end = new Date(checkOut + "T00:00:00")
-      return Math.round((end - start) / (1000 * 60 * 60 * 24))
+      if (!checkIn || !checkOut) return 0;
+      const start = new Date(checkIn + "T00:00:00");
+      const end = new Date(checkOut + "T00:00:00");
+      return Math.round((end - start) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      }).format(Number(value || 0));
     }
 
     function setAvailabilityMessage(type, text) {
-      availabilityStatus.className = `status-box show ${type}`
-      availabilityStatus.textContent = text
+      availabilityStatus.className = `status-box show ${type}`;
+      availabilityStatus.textContent = text;
+    }
+
+    function resetDates() {
+      selectedCheckIn = "";
+      selectedCheckOut = "";
+      dateRangeInput.value = "";
+      if (datePicker) {
+        datePicker.clear();
+      }
     }
 
     function updateSummary() {
-      const roomId = Number(roomSelect.value)
-      const selectedRoom = roomsMap.get(roomId)
+      const roomId = Number(roomSelect.value);
+      const selectedRoom = roomsMap.get(roomId);
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const guests = Number(guestsInput.value || 0);
 
-      summaryRoom.textContent = selectedRoom ? selectedRoom.name : "—"
-      summaryCheckIn.textContent = formatDateDisplay(selectedCheckIn)
-      summaryCheckOut.textContent = formatDateDisplay(selectedCheckOut)
-
-      const nights = countNights(selectedCheckIn, selectedCheckOut)
-      summaryNights.textContent = nights > 0 ? String(nights) : "—"
+      summaryRoom.textContent = selectedRoom ? selectedRoom.name : "—";
+      summaryCheckIn.textContent = formatDateDisplay(selectedCheckIn);
+      summaryCheckOut.textContent = formatDateDisplay(selectedCheckOut);
+      summaryNights.textContent = nights > 0 ? String(nights) : "—";
+      summaryGuests.textContent = guests > 0 ? String(guests) : "—";
 
       if (selectedRoom && selectedRoom.price_per_night && nights > 0) {
-        const total = Number(selectedRoom.price_per_night) * nights
-        summaryTotal.textContent = new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL"
-        }).format(total)
+        const total = Number(selectedRoom.price_per_night) * nights;
+        summaryTotal.textContent = formatCurrency(total);
       } else {
-        summaryTotal.textContent = "A definir"
+        summaryTotal.textContent = "A definir";
       }
     }
 
     function rebuildCalendar() {
       if (datePicker) {
-        datePicker.destroy()
+        datePicker.destroy();
       }
 
       datePicker = flatpickr("#date_range", {
         mode: "range",
         minDate: "today",
         dateFormat: "Y-m-d",
-        disable: blockedDates.slice(),
+        disable: unavailableDates.slice(),
         locale: {
           firstDayOfWeek: 0
         },
-        onChange: function(selectedDates) {
-          selectedCheckIn = ""
-          selectedCheckOut = ""
+        onChange(selectedDates) {
+          selectedCheckIn = "";
+          selectedCheckOut = "";
 
           if (selectedDates.length >= 2) {
-            const checkIn = formatDateLocal(selectedDates[0])
-            const checkOut = formatDateLocal(selectedDates[1])
+            const checkIn = formatDateLocal(selectedDates[0]);
+            const checkOut = formatDateLocal(selectedDates[1]);
 
             if (checkOut > checkIn) {
-              selectedCheckIn = checkIn
-              selectedCheckOut = checkOut
+              selectedCheckIn = checkIn;
+              selectedCheckOut = checkOut;
+              setAvailabilityMessage("success", "Período selecionado. Revise o resumo e confirme sua solicitação.");
+            } else {
+              setAvailabilityMessage("error", "O check-out precisa ser depois do check-in.");
             }
+          } else if (selectedDates.length === 1) {
+            setAvailabilityMessage("info", "Agora selecione a data de check-out.");
           }
 
-          updateSummary()
+          updateSummary();
         }
-      })
+      });
     }
 
-    async function loadBlockedDates(roomId) {
-      selectedCheckIn = ""
-      selectedCheckOut = ""
-      blockedDates = []
-      document.getElementById("date_range").value = ""
+    async function loadUnavailableDates(roomId) {
+      resetDates();
+      unavailableDates = [];
+      availabilityLoadedForRoomId = null;
 
       if (!roomId) {
-        rebuildCalendar()
-        setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.")
-        updateSummary()
-        return
+        rebuildCalendar();
+        setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.");
+        updateSummary();
+        return;
       }
 
-      setAvailabilityMessage("info", "Carregando datas indisponíveis...")
+      setAvailabilityMessage("info", "Carregando datas indisponíveis...");
+      updateSummary();
 
-      const today = new Date()
-      const start = formatDateLocal(today)
-      const future = new Date()
-      future.setMonth(future.getMonth() + 12)
-      const end = formatDateLocal(future)
+      const today = new Date();
+      const start = formatDateLocal(today);
+      const future = new Date();
+      future.setMonth(future.getMonth() + 12);
+      const end = formatDateLocal(future);
 
-      const roomIdNumber = Number(roomId)
+      const roomIdNumber = Number(roomId);
 
       const { data, error } = await supabaseClient
         .from("room_availability")
-        .select("room_id, date, status, reservation_id, created_at")
+        .select("room_id, date, status, reservation_id, source, created_at")
         .eq("room_id", roomIdNumber)
         .gte("date", start)
         .lte("date", end)
-        .in("status", ["booked", "blocked"])
-        .order("date", { ascending: true })
+        .neq("status", "open")
+        .order("date", { ascending: true });
 
       if (error) {
-        console.error(error)
-        rebuildCalendar()
-        setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.")
-        updateSummary()
-        return
+        console.error(error);
+        rebuildCalendar();
+        setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.");
+        updateSummary();
+        return;
       }
 
-      console.log("Loading availability for room_id:", roomIdNumber)
-      console.log("Availability rows returned:", data)
+      unavailableDates = [...new Set((data || []).map(row => row.date))];
+      availabilityLoadedForRoomId = roomIdNumber;
 
-      blockedDates = [...new Set((data || []).map(row => row.date))]
+      rebuildCalendar();
 
-      rebuildCalendar()
-
-      if (blockedDates.length > 0) {
-        setAvailabilityMessage("info", "Datas indisponíveis carregadas no calendário.")
+      if (unavailableDates.length > 0) {
+        setAvailabilityMessage("info", "Disponibilidade carregada. Escolha check-in e check-out no calendário.");
       } else {
-        setAvailabilityMessage("info", "Nenhuma indisponibilidade encontrada para esta suíte.")
+        setAvailabilityMessage("success", "Esta suíte não possui indisponibilidades carregadas para os próximos meses.");
       }
 
-      updateSummary()
+      updateSummary();
     }
 
     async function loadRooms() {
-      const lockedRoomId = getLockedRoomIdFromUrl()
+      const lockedRoomId = getLockedRoomIdFromUrl();
 
       if (lockedRoomId) {
         const { data: room, error } = await supabaseClient
@@ -503,98 +776,145 @@
           .select("id, name, price_per_night")
           .eq("id", lockedRoomId)
           .eq("active", true)
-          .single()
+          .single();
 
         if (error || !room) {
-          alert("A suíte selecionada não foi encontrada.")
-          window.location.href = "acomodacoes.html"
-          return
+          alert("A suíte selecionada não foi encontrada.");
+          window.location.href = "acomodacoes.html";
+          return;
         }
 
-        roomsMap = new Map()
-        roomsMap.set(Number(room.id), room)
+        roomsMap = new Map();
+        roomsMap.set(Number(room.id), room);
 
-        roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`
-        roomSelect.value = String(room.id)
-        roomSelect.disabled = true
-        lockedRoomNote.style.display = "block"
+        roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`;
+        roomSelect.value = String(room.id);
+        roomSelect.disabled = true;
+        lockedRoomNote.style.display = "block";
 
-        updateSummary()
-        await loadBlockedDates(room.id)
-        return
+        updateSummary();
+        await loadUnavailableDates(room.id);
+        return;
       }
 
       const { data, error } = await supabaseClient
         .from("rooms")
         .select("id, name, price_per_night")
         .eq("active", true)
-        .order("id", { ascending: true })
+        .order("id", { ascending: true });
 
       if (error) {
-        alert(error.message)
-        return
+        alert(error.message);
+        return;
       }
 
-      roomsMap = new Map()
-      ;(data || []).forEach(room => roomsMap.set(Number(room.id), room))
+      roomsMap = new Map();
+      (data || []).forEach(room => roomsMap.set(Number(room.id), room));
 
       roomSelect.innerHTML =
         '<option value="">Selecione</option>' +
-        (data || []).map(room => `
-          <option value="${room.id}">${room.name}</option>
-        `).join("")
+        (data || []).map(room => `<option value="${room.id}">${room.name}</option>`).join("");
+
+      updateSummary();
+    }
+
+    function setSubmitLoading(isLoading, text = "Confirmar solicitação") {
+      submitBtn.disabled = isLoading;
+      submitBtn.textContent = isLoading ? "Processando..." : text;
+    }
+
+    function validateBookingForm() {
+      const roomId = Number(roomSelect.value);
+      const guests = Number(guestsInput.value);
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+
+      if (!roomId) {
+        setAvailabilityMessage("error", "Selecione uma suíte para continuar.");
+        return false;
+      }
+
+      if (availabilityLoadedForRoomId !== roomId) {
+        setAvailabilityMessage("error", "A disponibilidade da suíte ainda não foi carregada. Aguarde e tente novamente.");
+        return false;
+      }
+
+      if (!selectedCheckIn || !selectedCheckOut) {
+        setAvailabilityMessage("error", "Selecione check-in e check-out no calendário.");
+        return false;
+      }
+
+      if (selectedCheckOut <= selectedCheckIn) {
+        setAvailabilityMessage("error", "O check-out deve ser depois do check-in.");
+        return false;
+      }
+
+      if (nights <= 0) {
+        setAvailabilityMessage("error", "Selecione um período válido de hospedagem.");
+        return false;
+      }
+
+      if (!guests || guests < 1) {
+        setAvailabilityMessage("error", "Informe pelo menos 1 hóspede.");
+        return false;
+      }
+
+      return true;
     }
 
     roomSelect.addEventListener("change", async () => {
-      updateSummary()
-      await loadBlockedDates(roomSelect.value)
-    })
+      updateSummary();
+      await loadUnavailableDates(roomSelect.value);
+    });
 
-    document.getElementById("bookingForm").addEventListener("submit", async (e) => {
-      e.preventDefault()
+    guestsInput.addEventListener("input", updateSummary);
 
-      submitBtn.disabled = true
-      submitBtn.textContent = "Processando..."
+    bookingForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setSubmitLoading(true);
 
       try {
-        const room_id = Number(document.getElementById("room_id").value)
-        const guests = Number(document.getElementById("guests").value)
-        const special_requests = document.getElementById("special_requests").value
-        const room_name = document.getElementById("room_id").selectedOptions[0]?.textContent || ""
-
-        const check_in = selectedCheckIn
-        const check_out = selectedCheckOut
-
-        if (!room_id) {
-          alert("Selecione uma suíte.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          return
+        if (!validateBookingForm()) {
+          setSubmitLoading(false);
+          return;
         }
 
-        if (!check_in || !check_out) {
-          alert("Selecione check-in e check-out no calendário.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          return
-        }
+        const room_id = Number(roomSelect.value);
+        const guests = Number(guestsInput.value);
+        const special_requests = specialRequestsInput.value.trim();
+        const room_name = roomSelect.selectedOptions[0]?.textContent || "";
 
-        if (check_out <= check_in) {
-          alert("O check-out deve ser depois do check-in.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          return
-        }
+        const check_in = selectedCheckIn;
+        const check_out = selectedCheckOut;
 
-        const { data: userData, error: userError } = await supabaseClient.auth.getUser()
+        const { data: userData, error: userError } = await supabaseClient.auth.getUser();
 
         if (userError || !userData.user) {
-          alert("Faça login ou crie sua conta para concluir a reserva.")
-          window.location.href = "login.html"
-          return
+          setAvailabilityMessage("error", "Faça login ou crie sua conta para concluir a reserva.");
+          setSubmitLoading(false);
+
+          const returnTo = window.location.pathname + window.location.search;
+
+          setTimeout(() => {
+            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+          }, 1200);
+          return;
         }
 
-        const currentUser = userData.user
+        const currentUser = userData.user;
+
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+
+        if (!accessToken) {
+          setAvailabilityMessage("error", "Sua sessão expirou. Faça login novamente.");
+          setSubmitLoading(false);
+
+          const returnTo = window.location.pathname + window.location.search;
+          setTimeout(() => {
+            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
+          }, 1200);
+          return;
+        }
 
         const { data: reservationId, error: bookingError } = await supabaseClient.rpc("create_booking_and_hold_dates", {
           p_user_id: currentUser.id,
@@ -604,37 +924,61 @@
           p_guests: guests,
           p_room_type: room_name,
           p_special_requests: special_requests || null
-        })
+        });
 
         if (bookingError) {
-          alert(bookingError.message)
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          await loadBlockedDates(room_id)
-          return
+          console.error(bookingError);
+          setAvailabilityMessage("error", bookingError.message || "Não foi possível criar a reserva.");
+          setSubmitLoading(false);
+          await loadUnavailableDates(room_id);
+          return;
         }
 
         if (!reservationId) {
-          alert("A reserva foi criada, mas não retornou ID.")
-          submitBtn.disabled = false
-          submitBtn.textContent = "Confirmar solicitação"
-          return
+          setAvailabilityMessage("error", "A reserva foi criada, mas não retornou um identificador válido.");
+          setSubmitLoading(false);
+          return;
         }
 
-        window.location.href = `${CHECKOUTSTRIPE_URL}?reservation_id=${encodeURIComponent(reservationId)}`
-      } catch (err) {
-        console.error(err)
-        alert("Erro inesperado ao processar a reserva.")
-        submitBtn.disabled = false
-        submitBtn.textContent = "Confirmar solicitação"
-      }
-    })
+        setAvailabilityMessage("success", "Reserva criada. Redirecionando para o pagamento...");
 
-    ;(async function init() {
-      rebuildCalendar()
-      await loadRooms()
-      updateSummary()
-    })()
+        const checkoutResponse = await fetch(CHECKOUTSTRIPE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "apikey": SUPABASE_PUBLISHABLE_KEY
+          },
+          body: JSON.stringify({
+            reservation_id: reservationId
+          })
+        });
+
+        const checkoutData = await checkoutResponse.json().catch(() => null);
+
+        if (!checkoutResponse.ok || !checkoutData?.checkout_url) {
+          console.error("checkoutstripe error:", checkoutData);
+          setAvailabilityMessage(
+            "error",
+            checkoutData?.error || "Não foi possível iniciar o pagamento."
+          );
+          setSubmitLoading(false);
+          return;
+        }
+
+        window.location.href = checkoutData.checkout_url;
+      } catch (err) {
+        console.error(err);
+        setAvailabilityMessage("error", "Erro inesperado ao processar a reserva.");
+        setSubmitLoading(false);
+      }
+    });
+
+    (async function init() {
+      rebuildCalendar();
+      await loadRooms();
+      updateSummary();
+    })();
   </script>
 </body>
 </html>

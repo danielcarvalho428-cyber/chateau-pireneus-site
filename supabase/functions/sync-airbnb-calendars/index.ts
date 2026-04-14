@@ -7,25 +7,17 @@ type Room = {
   airbnb_ical_url: string | null;
 };
 
+type AvailabilityStatus = "open" | "blocked" | "booked" | "held";
+type AvailabilitySource = "manual" | "website" | "airbnb";
+
 type AvailabilityRow = {
   room_id: number;
   date: string;
-  status: "open" | "blocked" | "booked";
+  status: AvailabilityStatus;
   reservation_id: string | null;
+  source: AvailabilitySource;
+  source_updated_at: string | null;
   created_at: string | null;
-};
-
-type SyncResult = {
-  room_id: number;
-  room_name: string | null;
-  fetched: boolean;
-  events_found: number;
-  blocked_dates_found: number;
-  inserted: number;
-  updated_to_blocked: number;
-  skipped_booked: number;
-  already_blocked: number;
-  errors: string[];
 };
 
 const corsHeaders = {
@@ -148,6 +140,7 @@ function extractBlockedDatesFromIcs(icsText: string): {
         for (const d of dates) blockedDateSet.add(d);
         eventCount += 1;
       }
+
       inEvent = false;
       currentStart = null;
       currentEnd = null;
@@ -173,6 +166,14 @@ function extractBlockedDatesFromIcs(icsText: string): {
   };
 }
 
+function chunkArray<T>(arr: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    chunks.push(arr.slice(i, i + size));
+  }
+  return chunks;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
@@ -192,185 +193,301 @@ serve(async (req) => {
       );
     }
 
-    const supabase = createClient(supabaseUrl, serviceRoleKey);
+    const url = new URL(req.url);
 
-    const { data: rooms, error: roomsError } = await supabase
-      .from("rooms")
-      .select("id, name, airbnb_ical_url")
-      .not("airbnb_ical_url", "is", null);
+    let roomId: number | null = null;
+    let daysAhead = 365;
 
-    if (roomsError) {
+    const roomIdFromQuery = url.searchParams.get("room_id");
+    const daysAheadFromQuery = url.searchParams.get("days_ahead");
+
+    if (daysAheadFromQuery) {
+      const parsed = Number(daysAheadFromQuery);
+      if (!Number.isNaN(parsed) && parsed > 0) {
+        daysAhead = Math.min(parsed, 730);
+      }
+    }
+
+    if (roomIdFromQuery) {
+      const parsed = Number(roomIdFromQuery);
+      if (!Number.isNaN(parsed)) {
+        roomId = parsed;
+      }
+    }
+
+    if (req.method === "POST" && roomId === null) {
+      try {
+        const body = await req.json().catch(() => null);
+        if (body?.room_id != null) {
+          const parsed = Number(body.room_id);
+          if (!Number.isNaN(parsed)) {
+            roomId = parsed;
+          }
+        }
+        if (body?.days_ahead != null) {
+          const parsed = Number(body.days_ahead);
+          if (!Number.isNaN(parsed) && parsed > 0) {
+            daysAhead = Math.min(parsed, 730);
+          }
+        }
+      } catch {
+      }
+    }
+
+    if (roomId === null) {
       return jsonResponse(
         {
-          error: "Failed to load rooms with Airbnb iCal URLs.",
-          details: roomsError.message,
+          error:
+            "Manual mode requires room_id. Example: ?room_id=1&days_ahead=365",
+        },
+        400,
+      );
+    }
+
+    const supabase = createClient(supabaseUrl, serviceRoleKey);
+
+    const { data: room, error: roomError } = await supabase
+      .from("rooms")
+      .select("id, name, airbnb_ical_url")
+      .eq("id", roomId)
+      .single();
+
+    if (roomError || !room) {
+      return jsonResponse(
+        {
+          error: `Room ${roomId} not found.`,
+          details: roomError?.message ?? null,
+        },
+        404,
+      );
+    }
+
+    const typedRoom = room as Room;
+
+    if (!typedRoom.airbnb_ical_url) {
+      return jsonResponse(
+        {
+          error: `Room ${roomId} has no airbnb_ical_url configured.`,
+        },
+        400,
+      );
+    }
+
+    const response = await fetch(typedRoom.airbnb_ical_url, {
+      method: "GET",
+      headers: {
+        "User-Agent": "supabase-edge-function-airbnb-sync",
+      },
+      signal: AbortSignal.timeout(15000),
+    });
+
+    if (!response.ok) {
+      return jsonResponse(
+        {
+          error: "Failed to fetch Airbnb iCal.",
+          status: response.status,
+          statusText: response.statusText,
+        },
+        502,
+      );
+    }
+
+    const icsText = await response.text();
+    const { allDates, eventCount } = extractBlockedDatesFromIcs(icsText);
+
+    const today = new Date();
+    const todayDate = toDateOnlyUTC(
+      new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate())),
+    );
+    const endDate = toDateOnlyUTC(
+      addDaysUTC(new Date(`${todayDate}T00:00:00.000Z`), daysAhead),
+    );
+
+    const filteredDates = allDates.filter((d) => d >= todayDate && d <= endDate);
+    const filteredDateSet = new Set(filteredDates);
+    const nowIso = new Date().toISOString();
+
+    const { data: existingRows, error: existingError } = await supabase
+      .from("room_availability")
+      .select(
+        "room_id, date, status, reservation_id, source, source_updated_at, created_at",
+      )
+      .eq("room_id", typedRoom.id)
+      .gte("date", todayDate)
+      .lte("date", endDate);
+
+    if (existingError) {
+      return jsonResponse(
+        {
+          error: "Failed to load existing room availability.",
+          details: existingError.message,
         },
         500,
       );
     }
 
-    const roomList = (rooms ?? []) as Room[];
-
-    if (roomList.length === 0) {
-      return jsonResponse({
-        success: true,
-        message: "No rooms found with airbnb_ical_url configured.",
-        results: [],
-      });
+    const existingMap = new Map<string, AvailabilityRow>();
+    for (const row of (existingRows ?? []) as AvailabilityRow[]) {
+      existingMap.set(row.date, row);
     }
 
-    const results: SyncResult[] = [];
+    const rowsToInsert: Array<{
+      room_id: number;
+      date: string;
+      status: "blocked";
+      source: "airbnb";
+      source_updated_at: string;
+    }> = [];
 
-    for (const room of roomList) {
-      const result: SyncResult = {
-        room_id: room.id,
-        room_name: room.name,
-        fetched: false,
-        events_found: 0,
-        blocked_dates_found: 0,
-        inserted: 0,
-        updated_to_blocked: 0,
-        skipped_booked: 0,
-        already_blocked: 0,
-        errors: [],
-      };
+    const datesToBlock: string[] = [];
+    const datesToTouchAirbnb: string[] = [];
+    const datesToRelease: string[] = [];
 
-      try {
-        if (!room.airbnb_ical_url) {
-          result.errors.push("Room has no airbnb_ical_url.");
-          results.push(result);
-          continue;
-        }
+    let skippedBooked = 0;
+    let skippedHeld = 0;
+    let alreadyBlockedManual = 0;
+    let alreadyBlockedAirbnb = 0;
 
-        const response = await fetch(room.airbnb_ical_url, {
-          method: "GET",
-          headers: {
-            "User-Agent": "supabase-edge-function-airbnb-sync",
-          },
+    for (const date of filteredDates) {
+      const existing = existingMap.get(date);
+
+      if (!existing) {
+        rowsToInsert.push({
+          room_id: typedRoom.id,
+          date,
+          status: "blocked",
+          source: "airbnb",
+          source_updated_at: nowIso,
         });
+        continue;
+      }
 
-        if (!response.ok) {
-          result.errors.push(
-            `Failed to fetch iCal. HTTP ${response.status} ${response.statusText}`,
-          );
-          results.push(result);
-          continue;
+      if (existing.status === "booked") {
+        skippedBooked += 1;
+        continue;
+      }
+
+      if (existing.status === "held") {
+        skippedHeld += 1;
+        continue;
+      }
+
+      if (existing.status === "blocked") {
+        if (existing.source === "airbnb") {
+          datesToTouchAirbnb.push(date);
+          alreadyBlockedAirbnb += 1;
+        } else {
+          alreadyBlockedManual += 1;
         }
+        continue;
+      }
 
-        const icsText = await response.text();
-        result.fetched = true;
+      if (existing.status === "open") {
+        datesToBlock.push(date);
+      }
+    }
 
-        const { allDates, eventCount } = extractBlockedDatesFromIcs(icsText);
-        result.events_found = eventCount;
-        result.blocked_dates_found = allDates.length;
+    for (const [date, existing] of existingMap.entries()) {
+      if (!filteredDateSet.has(date) && existing.source === "airbnb" && existing.status === "blocked") {
+        datesToRelease.push(date);
+      }
+    }
 
-        if (allDates.length === 0) {
-          results.push(result);
-          continue;
-        }
+    let inserted = 0;
+    let updatedToBlocked = 0;
+    let touchedAirbnb = 0;
+    let releasedToOpen = 0;
+    const errors: string[] = [];
 
-        const minDate = allDates[0];
-        const maxDate = allDates[allDates.length - 1];
+    const insertChunks = chunkArray(rowsToInsert, 200);
+    for (const chunk of insertChunks) {
+      const { error } = await supabase.from("room_availability").insert(chunk);
+      if (error) {
+        errors.push(`Insert failed: ${error.message}`);
+      } else {
+        inserted += chunk.length;
+      }
+    }
 
-        const { data: existingRows, error: existingError } = await supabase
-          .from("room_availability")
-          .select("room_id, date, status, reservation_id, created_at")
-          .eq("room_id", room.id)
-          .gte("date", minDate)
-          .lte("date", maxDate);
+    const blockChunks = chunkArray(datesToBlock, 200);
+    for (const chunk of blockChunks) {
+      const { error } = await supabase
+        .from("room_availability")
+        .update({
+          status: "blocked",
+          source: "airbnb",
+          source_updated_at: nowIso,
+        })
+        .eq("room_id", typedRoom.id)
+        .in("date", chunk)
+        .eq("status", "open");
 
-        if (existingError) {
-          result.errors.push(
-            `Failed to load existing availability: ${existingError.message}`,
-          );
-          results.push(result);
-          continue;
-        }
+      if (error) {
+        errors.push(`Block update failed: ${error.message}`);
+      } else {
+        updatedToBlocked += chunk.length;
+      }
+    }
 
-        const existingMap = new Map<string, AvailabilityRow>();
+    const touchChunks = chunkArray(datesToTouchAirbnb, 200);
+    for (const chunk of touchChunks) {
+      const { error } = await supabase
+        .from("room_availability")
+        .update({
+          source_updated_at: nowIso,
+        })
+        .eq("room_id", typedRoom.id)
+        .in("date", chunk)
+        .eq("status", "blocked")
+        .eq("source", "airbnb");
 
-        for (const row of (existingRows ?? []) as AvailabilityRow[]) {
-          existingMap.set(row.date, row);
-        }
+      if (error) {
+        errors.push(`Airbnb touch failed: ${error.message}`);
+      } else {
+        touchedAirbnb += chunk.length;
+      }
+    }
 
-        const rowsToInsert: Array<{
-          room_id: number;
-          date: string;
-          status: "blocked";
-        }> = [];
+    const releaseChunks = chunkArray(datesToRelease, 200);
+    for (const chunk of releaseChunks) {
+      const { error } = await supabase
+        .from("room_availability")
+        .update({
+          status: "open",
+          source: "manual",
+          source_updated_at: nowIso,
+        })
+        .eq("room_id", typedRoom.id)
+        .in("date", chunk)
+        .eq("status", "blocked")
+        .eq("source", "airbnb");
 
-        const rowsToUpdateToBlocked: string[] = [];
-
-        for (const date of allDates) {
-          const existing = existingMap.get(date);
-
-          if (!existing) {
-            rowsToInsert.push({
-              room_id: room.id,
-              date,
-              status: "blocked",
-            });
-            continue;
-          }
-
-          if (existing.status === "booked") {
-            result.skipped_booked += 1;
-            continue;
-          }
-
-          if (existing.status === "blocked") {
-            result.already_blocked += 1;
-            continue;
-          }
-
-          if (existing.status === "open") {
-            rowsToUpdateToBlocked.push(date);
-            continue;
-          }
-        }
-
-        if (rowsToInsert.length > 0) {
-          const { error: insertError } = await supabase
-            .from("room_availability")
-            .insert(rowsToInsert);
-
-          if (insertError) {
-            result.errors.push(
-              `Insert blocked rows failed: ${insertError.message}`,
-            );
-          } else {
-            result.inserted = rowsToInsert.length;
-          }
-        }
-
-        for (const date of rowsToUpdateToBlocked) {
-          const { error: updateError } = await supabase
-            .from("room_availability")
-            .update({ status: "blocked" })
-            .eq("room_id", room.id)
-            .eq("date", date)
-            .neq("status", "booked");
-
-          if (updateError) {
-            result.errors.push(
-              `Failed updating ${date} to blocked: ${updateError.message}`,
-            );
-          } else {
-            result.updated_to_blocked += 1;
-          }
-        }
-
-        results.push(result);
-      } catch (err) {
-        result.errors.push(err instanceof Error ? err.message : String(err));
-        results.push(result);
+      if (error) {
+        errors.push(`Release failed: ${error.message}`);
+      } else {
+        releasedToOpen += chunk.length;
       }
     }
 
     return jsonResponse({
-      success: true,
-      message: "Manual Airbnb calendar sync finished.",
-      results,
+      success: errors.length === 0,
+      room_id: typedRoom.id,
+      room_name: typedRoom.name,
+      days_ahead: daysAhead,
+      range_start: todayDate,
+      range_end: endDate,
+      events_found: eventCount,
+      blocked_dates_found: filteredDates.length,
+      inserted,
+      updated_to_blocked: updatedToBlocked,
+      touched_airbnb: touchedAirbnb,
+      released_to_open: releasedToOpen,
+      skipped_booked: skippedBooked,
+      skipped_held: skippedHeld,
+      already_blocked_manual: alreadyBlockedManual,
+      already_blocked_airbnb: alreadyBlockedAirbnb,
+      errors,
+      message: "Manual Airbnb room sync finished.",
     });
   } catch (err) {
     return jsonResponse(

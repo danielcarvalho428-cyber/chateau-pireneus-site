@@ -516,13 +516,18 @@
   <script>
     const { createClient } = supabase
 
-    const supabaseClient = createClient(
-      "https://pjxurbtvmzdlpnexfqpd.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
-    )
+    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
+
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 
     let allReservations = []
     let profileMap = {}
+
+    function redirectToLogin() {
+      const returnTo = window.location.pathname + window.location.search
+      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
+    }
 
     function formatDate(dateString) {
       if (!dateString) return "-"
@@ -598,7 +603,7 @@
       const { data: userData, error: userError } = await supabaseClient.auth.getUser()
 
       if (userError || !userData.user) {
-        window.location.href = "login.html"
+        redirectToLogin()
         return null
       }
 
@@ -607,7 +612,14 @@
         .select("id")
         .eq("id", userData.user.id)
 
-      if (adminError || !adminRows || adminRows.length === 0) {
+      if (adminError) {
+        console.error(adminError)
+        alert("Não foi possível validar o acesso administrativo.")
+        window.location.href = "dashboard.html"
+        return null
+      }
+
+      if (!adminRows || adminRows.length === 0) {
         alert("Acesso restrito ao administrador.")
         window.location.href = "dashboard.html"
         return null

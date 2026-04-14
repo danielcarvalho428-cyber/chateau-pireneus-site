@@ -59,7 +59,7 @@
       --infoBg:rgba(81,109,143,.12);
       --warn:#8f6c3c;
       --warnBg:rgba(184,149,95,.16);
-      --max:1180px;
+      --max:1180px
     }
 
     body{
@@ -77,7 +77,7 @@
       src:url("Gyahegi.otf") format("opentype");
       font-weight:400;
       font-style:normal;
-      font-display:swap;
+      font-display:swap
     }
 
     .hidden{display:none!important}
@@ -92,13 +92,13 @@
       transition:.25s;
       background:rgba(0,0,0,.12);
       border-bottom:1px solid rgba(255,255,255,.10);
-      backdrop-filter:blur(10px);
+      backdrop-filter:blur(10px)
     }
 
     .top-header.solid{
       background:rgba(246,241,230,.92);
       border-bottom:1px solid rgba(29,53,87,.12);
-      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      box-shadow:0 12px 30px rgba(0,0,0,.08)
     }
 
     .top-header-inner{
@@ -107,7 +107,7 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:16px;
+      gap:16px
     }
 
     .brand{
@@ -115,7 +115,7 @@
       flex-direction:column;
       gap:2px;
       color:#fff;
-      transition:color .25s;
+      transition:color .25s
     }
 
     .top-header.solid .brand{color:var(--navy)}
@@ -126,7 +126,7 @@
       letter-spacing:1.4px;
       text-transform:uppercase;
       font-size:12px;
-      opacity:.92;
+      opacity:.92
     }
 
     .brand .line2{
@@ -135,14 +135,14 @@
       font-weight:400;
       letter-spacing:2.2px;
       text-transform:uppercase;
-      line-height:1.14;
+      line-height:1.14
     }
 
     .header-actions{
       display:flex;
       align-items:center;
       gap:12px;
-      flex-wrap:wrap;
+      flex-wrap:wrap
     }
 
     .instagram-btn{
@@ -157,30 +157,28 @@
       border:1px solid rgba(255,255,255,.12);
       backdrop-filter:blur(6px);
       transition:.22s;
-      box-shadow:0 12px 26px rgba(0,0,0,.16);
+      box-shadow:0 12px 26px rgba(0,0,0,.16)
     }
 
     .instagram-btn:hover{
       transform:translateY(-1px);
-      background:rgba(0,0,0,.28);
+      background:rgba(0,0,0,.28)
     }
 
     .instagram-btn svg{
       width:18px;
       height:18px;
-      display:block;
+      display:block
     }
 
     .top-header.solid .instagram-btn{
       color:var(--navy);
       background:rgba(29,53,87,.08);
       border:1px solid rgba(29,53,87,.08);
-      box-shadow:none;
+      box-shadow:none
     }
 
-    .top-header.solid .instagram-btn:hover{
-      background:rgba(29,53,87,.12);
-    }
+    .top-header.solid .instagram-btn:hover{background:rgba(29,53,87,.12)}
 
     .account-btn,
     .reserve-btn,
@@ -200,19 +198,19 @@
       min-height:40px;
       display:inline-flex;
       align-items:center;
-      justify-content:center;
+      justify-content:center
     }
 
     .reserve-btn{
       background:rgba(216,199,161,.92);
       color:#fff;
-      box-shadow:0 18px 40px rgba(0,0,0,.20);
+      box-shadow:0 18px 40px rgba(0,0,0,.20)
     }
 
     .reserve-btn:hover{
       background:rgba(203,181,140,.98);
       transform:translateY(-1px);
-      box-shadow:0 22px 52px rgba(0,0,0,.24);
+      box-shadow:0 22px 52px rgba(0,0,0,.24)
     }
 
     .account-btn,
@@ -221,14 +219,14 @@
       background:rgba(255,255,255,.12);
       color:#fff;
       box-shadow:0 18px 40px rgba(0,0,0,.16);
-      backdrop-filter:blur(6px);
+      backdrop-filter:blur(6px)
     }
 
     .account-btn:hover,
     .logout-btn-public:hover,
     .ghost-btn:hover{
       background:rgba(255,255,255,.18);
-      transform:translateY(-1px);
+      transform:translateY(-1px)
     }
 
     .top-header.solid .account-btn,
@@ -237,13 +235,13 @@
       color:var(--navy);
       background:rgba(29,53,87,.08);
       border:1px solid rgba(29,53,87,.08);
-      box-shadow:none;
+      box-shadow:none
     }
 
     .top-header.solid .account-btn:hover,
     .top-header.solid .logout-btn-public:hover,
     .top-header.solid .ghost-btn:hover{
-      background:rgba(29,53,87,.12);
+      background:rgba(29,53,87,.12)
     }
 
     .menu-button{
@@ -257,22 +255,20 @@
       background:rgba(0,0,0,.20);
       backdrop-filter:blur(6px);
       border:0;
-      transition:.22s;
+      transition:.22s
     }
 
     .top-header.solid .menu-button{
       color:var(--navy);
-      background:rgba(29,53,87,.08);
+      background:rgba(29,53,87,.08)
     }
 
     .menu-button:hover{
       transform:translateY(-1px);
-      background:rgba(0,0,0,.28);
+      background:rgba(0,0,0,.28)
     }
 
-    .top-header.solid .menu-button:hover{
-      background:rgba(29,53,87,.12);
-    }
+    .top-header.solid .menu-button:hover{background:rgba(29,53,87,.12)}
 
     .backdrop{
       position:fixed;
@@ -281,12 +277,12 @@
       opacity:0;
       pointer-events:none;
       transition:.25s;
-      z-index:11000;
+      z-index:11000
     }
 
     .backdrop.open{
       opacity:1;
-      pointer-events:auto;
+      pointer-events:auto
     }
 
     .side-menu{
@@ -301,7 +297,7 @@
       transform:translateX(-100%);
       transition:.3s ease;
       z-index:11500;
-      overflow-y:auto;
+      overflow-y:auto
     }
 
     .side-menu.open{transform:translateX(0)}
@@ -319,7 +315,7 @@
       font-family:inherit;
       cursor:pointer;
       text-align:left;
-      width:100%;
+      width:100%
     }
 
     .side-menu a:hover,
@@ -328,7 +324,7 @@
     .side-menu hr{
       margin:28px 0;
       border:none;
-      border-top:1px solid rgba(29,53,87,.12);
+      border-top:1px solid rgba(29,53,87,.12)
     }
 
     .hero{
@@ -341,14 +337,14 @@
       align-items:center;
       justify-content:center;
       overflow:hidden;
-      padding:136px 22px 88px;
+      padding:136px 22px 88px
     }
 
     .hero::after{
       content:"";
       position:absolute;
       inset:0;
-      background:linear-gradient(to bottom,rgba(0,0,0,.54),rgba(0,0,0,.34) 40%,rgba(0,0,0,.56));
+      background:linear-gradient(to bottom,rgba(0,0,0,.54),rgba(0,0,0,.34) 40%,rgba(0,0,0,.56))
     }
 
     .hero::before{
@@ -357,7 +353,7 @@
       inset:-2px;
       pointer-events:none;
       background:radial-gradient(900px 420px at 50% 32%,rgba(216,199,161,.10),transparent 60%);
-      opacity:.95;
+      opacity:.95
     }
 
     .hero-shell{
@@ -369,7 +365,7 @@
       display:grid;
       grid-template-columns:1.03fr .97fr;
       gap:32px;
-      align-items:center;
+      align-items:center
     }
 
     .hero-copy{
@@ -377,7 +373,7 @@
       text-align:left;
       opacity:0;
       transform:translateY(18px);
-      animation:heroIn 1.2s ease forwards;
+      animation:heroIn 1.2s ease forwards
     }
 
     .hero-kicker{
@@ -387,7 +383,7 @@
       text-transform:uppercase;
       font-size:14px;
       margin-bottom:12px;
-      opacity:.95;
+      opacity:.95
     }
 
     .hero-title{
@@ -397,26 +393,26 @@
       font-size:clamp(34px,5.3vw,56px);
       letter-spacing:1.8px;
       text-transform:uppercase;
-      line-height:1.28;
-      text-shadow:0 12px 40px rgba(0,0,0,.55);
+      line-height:1.38;
+      text-shadow:0 12px 40px rgba(0,0,0,.55)
     }
 
     .hero-text{
-      margin:18px 0 0;
+      margin:22px 0 0;
       max-width:640px;
       font-family:"Cormorant Garamond",serif;
       font-weight:500;
       font-size:20px;
-      line-height:1.78;
+      line-height:1.82;
       text-shadow:0 10px 28px rgba(0,0,0,.45);
-      opacity:.98;
+      opacity:.98
     }
 
     .hero-links{
-      margin-top:20px;
+      margin-top:24px;
       display:flex;
       gap:10px;
-      flex-wrap:wrap;
+      flex-wrap:wrap
     }
 
     .hero-card{
@@ -433,13 +429,13 @@
       transform:translateY(18px);
       animation:heroIn 1.2s ease forwards .12s;
       animation-fill-mode:forwards;
-      text-align:left;
+      text-align:left
     }
 
     @keyframes heroIn{
       to{
         opacity:1;
-        transform:translateY(0);
+        transform:translateY(0)
       }
     }
 
@@ -450,7 +446,7 @@
       font-size:18px;
       color:rgba(29,53,87,.76);
       letter-spacing:.4px;
-      margin-bottom:8px;
+      margin-bottom:8px
     }
 
     .card-title{
@@ -461,34 +457,34 @@
       letter-spacing:1.2px;
       text-transform:uppercase;
       color:var(--navy);
-      line-height:1.32;
+      line-height:1.42
     }
 
     .card-subtitle{
-      margin:12px 0 0;
+      margin:14px 0 0;
       color:var(--muted);
       line-height:1.85;
-      font-size:15px;
+      font-size:15px
     }
 
     .orn{
       width:150px;
       height:1px;
       background:linear-gradient(to right,rgba(216,199,161,0),rgba(216,199,161,1),rgba(216,199,161,0));
-      margin:14px 0 0;
+      margin:16px 0 0
     }
 
     .hero-benefits{
-      margin-top:18px;
+      margin-top:20px;
       display:grid;
-      gap:10px;
+      gap:10px
     }
 
     .hero-benefit{
       background:rgba(255,255,255,.58);
       border:1px solid rgba(29,53,87,.08);
       border-radius:18px;
-      padding:14px 15px;
+      padding:14px 15px
     }
 
     .hero-benefit strong{
@@ -498,7 +494,7 @@
       letter-spacing:1.2px;
       text-transform:uppercase;
       color:rgba(29,53,87,.60);
-      margin-bottom:7px;
+      margin-bottom:8px
     }
 
     .hero-benefit span{
@@ -506,7 +502,7 @@
       color:var(--ink);
       font-size:15px;
       font-weight:600;
-      line-height:1.65;
+      line-height:1.65
     }
 
     .section{
@@ -515,20 +511,20 @@
         radial-gradient(900px 280px at 8% 18%,rgba(216,199,161,.08),transparent 58%),
         radial-gradient(720px 240px at 92% 82%,rgba(29,53,87,.05),transparent 62%),
         linear-gradient(to bottom,#fbfaf7 0%,#f8f6f1 100%);
-      border-top:1px solid rgba(29,53,87,.08);
+      border-top:1px solid rgba(29,53,87,.08)
     }
 
     .wrap{
       max-width:var(--max);
       margin:0 auto;
-      padding:0 22px;
+      padding:0 22px
     }
 
     .booking-layout{
       display:grid;
       grid-template-columns:1.04fr .96fr;
       gap:24px;
-      align-items:start;
+      align-items:start
     }
 
     .panel{
@@ -536,7 +532,7 @@
       border:1px solid rgba(29,53,87,.10);
       border-radius:24px;
       box-shadow:var(--shadowSoft);
-      padding:26px 24px;
+      padding:26px 24px
     }
 
     .panel-title{
@@ -547,28 +543,28 @@
       letter-spacing:1.2px;
       text-transform:uppercase;
       color:var(--navy);
-      line-height:1.28;
+      line-height:1.42
     }
 
     .panel-subtitle{
-      margin:10px 0 0;
+      margin:14px 0 0;
       color:var(--muted);
       font-size:15px;
       line-height:1.85;
-      max-width:820px;
+      max-width:820px
     }
 
     .form-grid{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:16px;
-      margin-top:22px;
+      margin-top:24px
     }
 
     .field{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:8px
     }
 
     .field.full{grid-column:1 / -1}
@@ -579,7 +575,7 @@
       font-weight:900;
       letter-spacing:1.2px;
       text-transform:uppercase;
-      color:rgba(29,53,87,.60);
+      color:rgba(29,53,87,.60)
     }
 
     input,select,textarea{
@@ -591,23 +587,20 @@
       padding:13px 14px;
       font:inherit;
       outline:none;
-      transition:border-color .2s ease,box-shadow .2s ease;
+      transition:border-color .2s ease,box-shadow .2s ease
     }
 
-    input:focus,select:focus,textarea:focus{
+    input:focus,
+    select:focus,
+    textarea:focus{
       border-color:rgba(184,149,95,.80);
-      box-shadow:0 0 0 4px rgba(216,199,161,.18);
+      box-shadow:0 0 0 4px rgba(216,199,161,.18)
     }
 
     select:disabled{
       background:#f1ede3;
       color:#5d5850;
-      cursor:not-allowed;
-    }
-
-    textarea{
-      min-height:120px;
-      resize:vertical;
+      cursor:not-allowed
     }
 
     .note-box,
@@ -615,25 +608,25 @@
       font-size:13px;
       line-height:1.78;
       border-radius:16px;
-      padding:12px 14px;
+      padding:12px 14px
     }
 
     .note-box{
       background:rgba(255,255,255,.62);
       border:1px solid rgba(29,53,87,.08);
-      color:var(--muted);
+      color:var(--muted)
     }
 
     .note-box.gold{
       background:rgba(184,149,95,.10);
       border-color:rgba(184,149,95,.16);
-      color:#7d6542;
+      color:#7d6542
     }
 
     .status-box{
       display:none;
       margin-top:2px;
-      border:1px solid transparent;
+      border:1px solid transparent
     }
 
     .status-box.show{display:block}
@@ -660,18 +653,18 @@
       width:100%;
       color:#fff;
       background:linear-gradient(135deg,rgba(216,199,161,.96),rgba(203,181,140,.98));
-      box-shadow:0 18px 34px rgba(0,0,0,.12);
+      box-shadow:0 18px 34px rgba(0,0,0,.12)
     }
 
     .submit-btn:hover{
       transform:translateY(-1px);
-      box-shadow:0 22px 40px rgba(0,0,0,.16);
+      box-shadow:0 22px 40px rgba(0,0,0,.16)
     }
 
     .submit-btn:disabled{
       opacity:.75;
       cursor:not-allowed;
-      transform:none;
+      transform:none
     }
 
     .info-card{
@@ -679,7 +672,7 @@
       background:rgba(255,255,255,.70);
       border-radius:20px;
       padding:18px;
-      margin-top:14px;
+      margin-top:14px
     }
 
     .info-card:first-of-type{margin-top:22px}
@@ -690,7 +683,7 @@
       letter-spacing:.14em;
       text-transform:uppercase;
       color:var(--muted);
-      margin-bottom:8px;
+      margin-bottom:8px
     }
 
     .info-card span,
@@ -699,7 +692,7 @@
       font-size:15px;
       line-height:1.82;
       color:var(--ink);
-      margin:0;
+      margin:0
     }
 
     .summary-line{
@@ -708,18 +701,17 @@
       gap:14px;
       padding:10px 0;
       border-bottom:1px solid rgba(29,53,87,.08);
-      font-size:15px;
+      font-size:15px
     }
 
     .summary-line:last-of-type{border-bottom:none}
-
     .summary-label{color:var(--muted)}
     .summary-value{font-weight:600;text-align:right}
 
     .breakdown-list{
       margin-top:8px;
       display:grid;
-      gap:8px;
+      gap:8px
     }
 
     .breakdown-row{
@@ -729,7 +721,7 @@
       font-size:14px;
       color:var(--ink);
       padding:8px 0;
-      border-bottom:1px dashed rgba(29,53,87,.10);
+      border-bottom:1px dashed rgba(29,53,87,.10)
     }
 
     .breakdown-row:last-child{border-bottom:none}
@@ -743,14 +735,14 @@
       gap:14px;
       font-size:18px;
       font-weight:700;
-      color:var(--navy);
+      color:var(--navy)
     }
 
     .help-text{
       margin-top:2px;
       font-size:12px;
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.72
     }
 
     .flatpickr-day{
@@ -763,7 +755,7 @@
       padding-top:5px;
       padding-bottom:16px;
       overflow:hidden;
-      line-height:1.05;
+      line-height:1.05
     }
 
     .flatpickr-day span{pointer-events:none}
@@ -781,7 +773,7 @@
       text-align:center;
       white-space:nowrap;
       font-weight:700;
-      letter-spacing:-.1px;
+      letter-spacing:-.1px
     }
 
     .calendar-day-min{
@@ -797,7 +789,7 @@
       text-align:center;
       white-space:nowrap;
       font-weight:600;
-      letter-spacing:-.1px;
+      letter-spacing:-.1px
     }
 
     .flatpickr-day.flatpickr-disabled,
@@ -806,12 +798,12 @@
       color:#a69781;
       text-decoration:line-through;
       cursor:not-allowed;
-      border-color:#eadfce;
+      border-color:#eadfce
     }
 
     .flatpickr-day.flatpickr-disabled .calendar-day-price,
     .flatpickr-day.flatpickr-disabled .calendar-day-min{
-      color:#a69781;
+      color:#a69781
     }
 
     footer{
@@ -820,7 +812,7 @@
       max-height:160px;
       overflow:hidden;
       margin-top:0;
-      background:#032c52;
+      background:#032c52
     }
 
     .footer-bg{
@@ -829,7 +821,7 @@
       width:100%;
       height:100%;
       object-fit:cover;
-      display:block;
+      display:block
     }
 
     .footer-overlay{
@@ -839,7 +831,7 @@
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      padding:18px 34px;
+      padding:18px 34px
     }
 
     .footer-contact{
@@ -851,7 +843,7 @@
       font-size:20px;
       line-height:1.22;
       color:#fff;
-      text-align:left;
+      text-align:left
     }
 
     .footer-contact a{color:inherit}
@@ -861,11 +853,11 @@
       .hero-shell,
       .booking-layout,
       .form-grid{
-        grid-template-columns:1fr;
+        grid-template-columns:1fr
       }
 
       .hero{
-        min-height:76vh;
+        min-height:76vh
       }
 
       .hero-copy{text-align:center}
@@ -874,20 +866,20 @@
 
       footer{
         min-height:200px;
-        max-height:none;
+        max-height:none
       }
 
       .footer-overlay{
         height:200px;
         align-items:flex-end;
         justify-content:center;
-        padding:18px 18px 20px;
+        padding:18px 18px 20px
       }
 
       .footer-contact{
         width:100%;
         font-size:18px;
-        gap:10px;
+        gap:10px
       }
     }
 
@@ -899,51 +891,50 @@
 
       .hero{
         min-height:68vh;
-        padding:118px 16px 74px;
+        padding:118px 16px 74px
       }
 
       .hero-title{
         font-size:34px;
-        line-height:1.32;
-        letter-spacing:1.2px;
+        line-height:1.38;
+        letter-spacing:1.2px
       }
 
       .hero-text{
         font-size:18px;
-        line-height:1.72;
+        line-height:1.75
       }
 
       .card-title,
       .panel-title{
         font-size:28px;
-        line-height:1.32;
-        letter-spacing:1px;
+        line-height:1.38;
+        letter-spacing:1px
       }
 
       .hero-card,
       .panel{
         padding:22px 18px 20px;
-        border-radius:22px;
+        border-radius:22px
       }
 
       .section{padding:54px 0}
       .wrap{padding:0 16px}
-
       .footer-contact{font-size:17px}
 
       .flatpickr-day{
         min-height:50px;
-        padding-bottom:14px;
+        padding-bottom:14px
       }
 
       .calendar-day-price{
         font-size:7px;
-        bottom:8px;
+        bottom:8px
       }
 
       .calendar-day-min{
         font-size:6px;
-        bottom:2px;
+        bottom:2px
       }
     }
   </style>
@@ -1043,8 +1034,8 @@
           </div>
 
           <div class="hero-benefit">
-            <strong>Regras claras</strong>
-            <span>Se houver mínimo de noites para o período escolhido, você verá o aviso antes de concluir.</span>
+            <strong>Horários</strong>
+            <span>Check-in das 12h às 19h. Check-out até 12h.</span>
           </div>
         </div>
       </div>
@@ -1075,13 +1066,13 @@
 
               <div class="field">
                 <label for="guests">Número de hóspedes</label>
-                <input type="number" id="guests" min="1" value="2" required>
+                <input type="number" id="guests" min="1" max="2" value="2" required>
+                <div class="help-text">Máximo de 2 hóspedes por suíte.</div>
               </div>
 
-              <div class="field full">
-                <label for="special_requests">Pedidos especiais</label>
-                <textarea id="special_requests" placeholder="Ex: decoração romântica, cama extra, horário previsto de chegada"></textarea>
-                <div class="help-text">Opcional. Você poderá alinhar detalhes adicionais depois da reserva.</div>
+              <div class="field">
+                <label>Horários</label>
+                <div class="note-box">Check-in das 12h às 19h. Check-out até 12h.</div>
               </div>
 
               <div class="field full">
@@ -1142,8 +1133,8 @@
           </div>
 
           <div class="info-card">
-            <strong>Mínimo de noites</strong>
-            <p>Se o período escolhido incluir uma regra especial, você verá o aviso antes de tentar concluir a reserva.</p>
+            <strong>Horários da hospedagem</strong>
+            <p>Check-in das 12h às 19h. Check-out até 12h.</p>
           </div>
         </div>
       </div>
@@ -1178,7 +1169,6 @@
     const submitBtn = document.getElementById("submitBtn");
     const dateRangeInput = document.getElementById("date_range");
     const guestsInput = document.getElementById("guests");
-    const specialRequestsInput = document.getElementById("special_requests");
 
     const summaryRoom = document.getElementById("summaryRoom");
     const summaryCheckIn = document.getElementById("summaryCheckIn");
@@ -1683,6 +1673,11 @@
         return false;
       }
 
+      if (guests > 2) {
+        setAvailabilityMessage("error", "O máximo permitido é de 2 hóspedes por suíte.");
+        return false;
+      }
+
       if (!currentQuote || Number(currentQuote.total || 0) <= 0) {
         setAvailabilityMessage("error", "Não foi possível calcular o valor da reserva. Revise as datas selecionadas.");
         return false;
@@ -1702,7 +1697,23 @@
       await loadUnavailableDates(roomSelect.value);
     });
 
-    guestsInput.addEventListener("input", updateSummary);
+    guestsInput.addEventListener("input", function() {
+      let currentValue = Number(guestsInput.value || 0);
+
+      if (currentValue > 2) {
+        currentValue = 2;
+      }
+
+      if (currentValue < 1 && guestsInput.value !== "") {
+        currentValue = 1;
+      }
+
+      if (currentValue > 0) {
+        guestsInput.value = String(currentValue);
+      }
+
+      updateSummary();
+    });
 
     bookingForm.addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -1716,7 +1727,6 @@
 
         const room_id = Number(roomSelect.value);
         const guests = Number(guestsInput.value);
-        const special_requests = specialRequestsInput.value.trim();
         const room_name = roomSelect.selectedOptions[0]?.textContent || "";
         const check_in = selectedCheckIn;
         const check_out = selectedCheckOut;
@@ -1754,7 +1764,7 @@
           p_check_out: check_out,
           p_guests: guests,
           p_room_type: room_name,
-          p_special_requests: special_requests || null
+          p_special_requests: null
         });
 
         if (bookingError) {

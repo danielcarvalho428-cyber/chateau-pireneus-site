@@ -180,6 +180,8 @@
       text-decoration:none;
       color:#fff;
       transition:color 0.25s ease;
+      min-width:0;
+      flex:1 1 auto;
     }
 
     .top-header.solid .brand{
@@ -209,6 +211,7 @@
       align-items:center;
       gap:12px;
       flex-wrap:wrap;
+      flex-shrink:0;
     }
 
     .instagram-btn{
@@ -225,6 +228,7 @@
       backdrop-filter:blur(6px);
       transition:0.22s ease;
       box-shadow:0 12px 26px rgba(0,0,0,0.16);
+      flex-shrink:0;
     }
 
     .instagram-btn:hover{
@@ -263,6 +267,7 @@
       white-space:nowrap;
       font-family:inherit;
       cursor:pointer;
+      flex-shrink:0;
     }
 
     .reserve-btn{
@@ -320,6 +325,7 @@
       backdrop-filter:blur(6px);
       border:0;
       transition:0.22s ease;
+      flex-shrink:0;
     }
 
     .top-header.solid .menu-button{
@@ -470,6 +476,7 @@
       text-transform:uppercase;
       line-height:1.24;
       text-shadow:0 12px 40px rgba(0,0,0,0.55);
+      text-wrap:balance;
     }
 
     .hero-slogan{
@@ -520,6 +527,7 @@
       color:var(--navy);
       line-height:1.58;
       max-width:660px;
+      text-wrap:balance;
     }
 
     .intro .orn{
@@ -590,6 +598,7 @@
       color:#fff;
       line-height:1.34;
       letter-spacing:0.3px;
+      text-wrap:balance;
     }
 
     .highlight-card p{
@@ -647,6 +656,7 @@
       font-weight:700;
       line-height:1.32;
       letter-spacing:0.3px;
+      text-wrap:balance;
     }
 
     .cta-box p{
@@ -686,6 +696,9 @@
       color:rgba(255,255,255,0.78);
       font-size:14px;
       line-height:1.8;
+      max-width:680px;
+      margin-left:auto;
+      margin-right:auto;
     }
 
     .cta-soft a{
@@ -760,8 +773,16 @@
         grid-template-columns:1fr;
       }
 
+      .intro-grid{
+        gap:30px;
+      }
+
       .intro-image img{
         min-height:260px;
+      }
+
+      .gallery-grid{
+        gap:16px;
       }
 
       .gallery-grid img{
@@ -791,60 +812,83 @@
       }
     }
 
-    @media (max-width:640px){
+    @media (max-width:768px){
       .top-header{
-        padding:12px 16px;
+        padding:12px 14px;
       }
 
       .top-header-inner{
-        gap:12px;
+        gap:10px;
+      }
+
+      .brand .line1{
+        font-size:11px;
       }
 
       .brand .line2{
         font-size:16px;
+        letter-spacing:1.8px;
       }
 
       .header-actions{
         gap:8px;
       }
 
+      .instagram-btn{
+        width:38px;
+        height:38px;
+      }
+
+      .menu-button{
+        font-size:26px;
+        padding:9px 11px;
+      }
+
+      .reserve-btn,
+      .account-btn,
+      .logout-btn-public{
+        font-size:10px;
+        padding:9px 12px;
+        letter-spacing:1.2px;
+      }
+
       .hero{
-        min-height:62vh;
-        padding:116px 18px 70px;
+        min-height:60vh;
+        padding:124px 18px 74px;
+      }
+
+      .hero-title{
+        font-size:38px;
+        line-height:1.28;
+        letter-spacing:1.2px;
       }
 
       .hero-slogan{
         font-size:18px;
-      }
-
-      .hero-title{
-        font-size:34px;
-        line-height:1.3;
-        letter-spacing:1.2px;
+        line-height:1.7;
       }
 
       .section{
-        padding:68px 0;
+        padding:70px 0;
       }
 
-      .intro{
-        padding:46px 0 58px;
+      .wrap{
+        padding:0 18px;
       }
 
       .section-title{
-        font-size:26px;
-        line-height:1.38;
-        letter-spacing:0.8px;
+        font-size:27px;
+        line-height:1.42;
+        letter-spacing:0.9px;
       }
 
       .section-text{
         font-size:14.5px;
-        line-height:1.85;
+        line-height:1.82;
       }
 
       .highlight-card h3{
-        font-size:22px;
-        line-height:1.36;
+        font-size:23px;
       }
 
       .highlight-card p{
@@ -853,28 +897,177 @@
 
       .gallery-note{
         font-size:14.5px;
+        line-height:1.8;
+      }
+
+      .cta-box{
+        padding:24px 20px;
       }
 
       .cta-box h3{
-        font-size:28px;
+        font-size:30px;
         line-height:1.34;
       }
 
       .cta-box p{
         font-size:14.5px;
       }
+    }
+
+    @media (max-width:560px){
+      .top-header{
+        padding:10px 12px;
+      }
+
+      .top-header-inner{
+        gap:8px;
+      }
+
+      .brand .line1{
+        font-size:10px;
+        letter-spacing:1.1px;
+      }
+
+      .brand .line2{
+        font-size:15px;
+        letter-spacing:1.4px;
+      }
+
+      .header-actions{
+        gap:6px;
+      }
+
+      .account-btn,
+      .logout-btn-public{
+        display:none !important;
+      }
+
+      .instagram-btn{
+        width:36px;
+        height:36px;
+      }
+
+      .instagram-btn svg{
+        width:16px;
+        height:16px;
+      }
+
+      .menu-button{
+        font-size:24px;
+        padding:8px 10px;
+      }
+
+      .reserve-btn{
+        font-size:10px;
+        padding:9px 12px;
+        letter-spacing:1.05px;
+      }
+
+      .hero{
+        min-height:56vh;
+        padding:108px 14px 60px;
+      }
+
+      .hero-kicker{
+        font-size:12px;
+        letter-spacing:1.6px;
+      }
+
+      .hero-title{
+        font-size:30px;
+        line-height:1.3;
+        letter-spacing:1px;
+      }
+
+      .hero-slogan{
+        font-size:17px;
+        line-height:1.66;
+      }
+
+      .section{
+        padding:52px 0;
+      }
+
+      .wrap{
+        padding:0 16px;
+      }
+
+      .intro-grid{
+        gap:22px;
+      }
+
+      .section-title{
+        font-size:24px;
+        line-height:1.36;
+        letter-spacing:0.7px;
+      }
+
+      .section-text{
+        font-size:14px;
+        line-height:1.78;
+      }
 
       .highlight-card,
       .cta-box{
-        padding:22px 18px;
+        padding:20px 16px;
+      }
+
+      .highlight-card h3{
+        font-size:21px;
+        line-height:1.34;
+      }
+
+      .highlight-card p{
+        font-size:13.8px;
+        line-height:1.76;
+      }
+
+      .gallery-grid{
+        gap:12px;
+        margin-top:22px;
+      }
+
+      .gallery-grid img{
+        height:210px;
+      }
+
+      .gallery-note{
+        font-size:14px;
+        line-height:1.76;
+      }
+
+      .cta-box h3{
+        font-size:26px;
+        line-height:1.32;
+      }
+
+      .cta-box p{
+        font-size:14px;
+        line-height:1.78;
+      }
+
+      .cta-btn{
+        width:100%;
       }
 
       .cta-soft{
-        font-size:13.5px;
+        font-size:13px;
+        line-height:1.72;
+      }
+
+      footer{
+        min-height:230px;
+      }
+
+      .footer-overlay{
+        height:230px;
+        padding:18px 16px 22px;
       }
 
       .footer-contact{
-        font-size:17px;
+        font-size:16px;
+        line-height:1.24;
+        gap:9px;
       }
     }
   </style>

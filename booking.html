@@ -115,7 +115,9 @@
       flex-direction:column;
       gap:2px;
       color:#fff;
-      transition:color .25s
+      transition:color .25s;
+      min-width:0;
+      flex:1 1 auto
     }
 
     .top-header.solid .brand{color:var(--navy)}
@@ -142,7 +144,8 @@
       display:flex;
       align-items:center;
       gap:12px;
-      flex-wrap:wrap
+      flex-wrap:wrap;
+      flex-shrink:0
     }
 
     .instagram-btn{
@@ -157,7 +160,8 @@
       border:1px solid rgba(255,255,255,.12);
       backdrop-filter:blur(6px);
       transition:.22s;
-      box-shadow:0 12px 26px rgba(0,0,0,.16)
+      box-shadow:0 12px 26px rgba(0,0,0,.16);
+      flex-shrink:0
     }
 
     .instagram-btn:hover{
@@ -255,7 +259,8 @@
       background:rgba(0,0,0,.20);
       backdrop-filter:blur(6px);
       border:0;
-      transition:.22s
+      transition:.22s;
+      flex-shrink:0
     }
 
     .top-header.solid .menu-button{
@@ -395,7 +400,8 @@
       word-spacing:6px;
       text-transform:uppercase;
       line-height:1.42;
-      text-shadow:0 12px 40px rgba(0,0,0,.55)
+      text-shadow:0 12px 40px rgba(0,0,0,.55);
+      text-wrap:balance
     }
 
     .hero-text{
@@ -866,6 +872,10 @@
         min-height:76vh
       }
 
+      .hero-shell{
+        gap:22px
+      }
+
       .hero-copy{text-align:center}
       .hero-text{margin-left:auto;margin-right:auto}
       .hero-links{justify-content:center}
@@ -890,32 +900,82 @@
     }
 
     @media (max-width:640px){
-      .top-header{padding:12px 16px}
-      .top-header-inner{gap:12px}
-      .brand .line2{font-size:16px}
-      .header-actions{gap:8px}
+      .top-header{
+        padding:12px 14px
+      }
+
+      .top-header-inner{
+        gap:10px
+      }
+
+      .brand .line1{
+        font-size:11px
+      }
+
+      .brand .line2{
+        font-size:16px;
+        letter-spacing:1.7px
+      }
+
+      .header-actions{
+        gap:8px
+      }
+
+      #headerLoggedOutLinks,
+      #headerLoggedInLinks{
+        display:none !important
+      }
+
+      .instagram-btn{
+        width:38px;
+        height:38px
+      }
+
+      .menu-button{
+        font-size:26px;
+        padding:9px 11px
+      }
+
+      .reserve-btn{
+        font-size:10px;
+        padding:9px 12px;
+        letter-spacing:1.2px
+      }
 
       .hero{
         min-height:68vh;
-        padding:118px 16px 74px
+        padding:116px 16px 70px
       }
 
       .hero-title{
         font-size:30px;
-        line-height:1.46;
+        line-height:1.42;
         letter-spacing:1px;
-        word-spacing:5px
+        word-spacing:4px
       }
 
       .hero-text{
         font-size:18px;
-        line-height:1.75
+        line-height:1.72
+      }
+
+      .hero-links{
+        flex-direction:column;
+        align-items:stretch;
+        width:100%;
+        max-width:360px;
+        margin-left:auto;
+        margin-right:auto
+      }
+
+      .ghost-btn{
+        width:100%
       }
 
       .card-title{
         font-size:23px;
-        line-height:1.42;
-        letter-spacing:.5px;
+        line-height:1.38;
+        letter-spacing:.45px;
         word-spacing:0;
         max-width:100%;
         text-wrap:balance
@@ -923,13 +983,15 @@
 
       .panel-title{
         font-size:24px;
-        line-height:1.34;
-        letter-spacing:.8px
+        line-height:1.32;
+        letter-spacing:.8px;
+        white-space:normal;
+        word-spacing:3px
       }
 
-      .panel-title{
-        white-space:normal;
-        word-spacing:4px
+      .panel-subtitle{
+        font-size:14.5px;
+        line-height:1.8
       }
 
       .hero-card,
@@ -938,9 +1000,27 @@
         border-radius:22px
       }
 
-      .section{padding:54px 0}
-      .wrap{padding:0 16px}
-      .footer-contact{font-size:17px}
+      .section{
+        padding:52px 0
+      }
+
+      .wrap{
+        padding:0 16px
+      }
+
+      .info-card{
+        padding:16px
+      }
+
+      .summary-line,
+      .breakdown-row,
+      .summary-total{
+        gap:10px
+      }
+
+      .footer-contact{
+        font-size:17px
+      }
 
       .flatpickr-day{
         min-height:50px;
@@ -954,6 +1034,208 @@
 
       .calendar-day-min{
         font-size:6px;
+        bottom:2px
+      }
+    }
+
+    @media (max-width:560px){
+      .top-header{
+        padding:10px 12px
+      }
+
+      .top-header-inner{
+        gap:8px
+      }
+
+      .brand .line1{
+        font-size:10px;
+        letter-spacing:1.1px
+      }
+
+      .brand .line2{
+        font-size:15px;
+        letter-spacing:1.3px
+      }
+
+      .header-actions{
+        gap:6px
+      }
+
+      .instagram-btn{
+        width:36px;
+        height:36px
+      }
+
+      .instagram-btn svg{
+        width:16px;
+        height:16px
+      }
+
+      .menu-button{
+        font-size:24px;
+        padding:8px 10px
+      }
+
+      .reserve-btn{
+        min-height:38px;
+        padding:8px 11px;
+        font-size:9.5px;
+        letter-spacing:1px
+      }
+
+      .hero{
+        min-height:62vh;
+        padding:106px 14px 58px
+      }
+
+      .hero-kicker{
+        font-size:12px;
+        letter-spacing:1.6px
+      }
+
+      .hero-title{
+        font-size:27px;
+        line-height:1.38;
+        letter-spacing:.9px;
+        word-spacing:3px
+      }
+
+      .hero-text{
+        font-size:17px;
+        line-height:1.68;
+        margin-top:18px
+      }
+
+      .hero-shell{
+        gap:18px
+      }
+
+      .hero-card,
+      .panel{
+        padding:18px 15px 18px;
+        border-radius:20px
+      }
+
+      .card-eyebrow{
+        font-size:17px
+      }
+
+      .card-title{
+        font-size:21px;
+        line-height:1.34
+      }
+
+      .card-subtitle{
+        font-size:14px;
+        line-height:1.76
+      }
+
+      .hero-benefit{
+        padding:12px 12px
+      }
+
+      .hero-benefit span{
+        font-size:14px;
+        line-height:1.6
+      }
+
+      .section{
+        padding:46px 0
+      }
+
+      .wrap{
+        padding:0 14px
+      }
+
+      .panel-title{
+        font-size:22px;
+        line-height:1.3;
+        word-spacing:2px
+      }
+
+      .panel-subtitle{
+        font-size:14px;
+        line-height:1.76
+      }
+
+      .form-grid{
+        gap:14px;
+        margin-top:20px
+      }
+
+      input,
+      select{
+        padding:12px 13px
+      }
+
+      .note-box,
+      .status-box{
+        font-size:12.5px;
+        line-height:1.72;
+        padding:11px 12px
+      }
+
+      .help-text{
+        font-size:11.5px;
+        line-height:1.68
+      }
+
+      .info-card{
+        padding:14px
+      }
+
+      .summary-line,
+      .breakdown-row,
+      .summary-total{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:4px
+      }
+
+      .summary-value{
+        text-align:left
+      }
+
+      .summary-total{
+        font-size:17px
+      }
+
+      footer{
+        min-height:225px;
+        max-height:none
+      }
+
+      .footer-overlay{
+        height:225px;
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 16px 22px
+      }
+
+      .footer-contact{
+        font-size:16px;
+        line-height:1.24;
+        gap:9px
+      }
+
+      .side-menu{
+        width:258px;
+        padding:88px 22px 24px
+      }
+
+      .flatpickr-day{
+        min-height:48px;
+        padding-top:4px;
+        padding-bottom:13px
+      }
+
+      .calendar-day-price{
+        font-size:6.5px;
+        bottom:7px
+      }
+
+      .calendar-day-min{
+        font-size:5.8px;
         bottom:2px
       }
     }

@@ -1105,12 +1105,12 @@
           <p class="ideal-for" id="idealForText">Carregando…</p>
 
           <div class="reservation-note" id="reservationNote">
-            Ao clicar em reservar, esta suíte já seguirá pré-selecionada na página de reserva para tornar o processo mais rápido.
+            Ao clicar em reservar, esta suíte já seguirá pré-selecionada na página de reserva para tornar o processo mais rápido. Se preferir tirar dúvidas antes, fale conosco no WhatsApp.
           </div>
 
           <div class="cta">
             <a class="btn primary" id="reserveBtn" href="booking.html?room_id=1">Reservar esta suíte</a>
-            <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar no WhatsApp</a>
+            <a id="waBtn" class="btn outline" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Tirar dúvidas no WhatsApp</a>
           </div>
         </div>
       </aside>
@@ -1128,8 +1128,8 @@
       </div>
 
       <div class="trust-card">
-        <strong>Contato fácil</strong>
-        <p>Se quiser confirmar detalhes antes de reservar, o atendimento via WhatsApp fica disponível para agilizar sua decisão.</p>
+        <strong>Atendimento rápido</strong>
+        <p>Se quiser confirmar disponibilidade, valores ou detalhes da hospedagem antes de reservar, o WhatsApp fica como um caminho simples e direto.</p>
       </div>
     </div>
   </section>
@@ -1171,6 +1171,7 @@
           detailHighlight: "Varanda",
           detailHighlightText: "Um detalhe especial para relaxar com mais calma ao longo da estadia.",
           heroChips: ["2 hóspedes", "Varanda privativa", "Reserva direta"],
+          whatsappMessage: "Olá! Tenho interesse na Suíte do Divino. Pode me enviar disponibilidade, valores e confirmar como funciona a reserva para 2 hóspedes?",
           miniBenefits: [
             { title: "Atmosfera acolhedora", text: "Uma suíte pensada para quem quer desacelerar e aproveitar a estadia com mais conforto." },
             { title: "Praticidade no essencial", text: "Ar-condicionado, frigobar, Wi-Fi e banheiro privativo para uma experiência completa." },
@@ -1215,6 +1216,7 @@
           detailHighlight: "Aconchego",
           detailHighlightText: "A proposta da suíte é unir simplicidade, charme e bem-estar na medida certa.",
           heroChips: ["2 hóspedes", "Smart TV", "Reserva rápida"],
+          whatsappMessage: "Olá! Tenho interesse na Suíte das Cavalhadas. Pode me enviar disponibilidade, valores e confirmar os detalhes da hospedagem para 2 hóspedes?",
           miniBenefits: [
             { title: "Estadia confortável", text: "Um quarto agradável para relaxar com privacidade e praticidade durante a viagem." },
             { title: "Boa estrutura", text: "Itens essenciais para um dia a dia mais fácil, com conforto para descansar melhor." },
@@ -1259,6 +1261,7 @@
           detailHighlight: "Privacidade",
           detailHighlightText: "Um ambiente ideal para descansar com tranquilidade depois de aproveitar a cidade.",
           heroChips: ["2 hóspedes", "Wi-Fi e ar", "Varanda com rede"],
+          whatsappMessage: "Olá! Tenho interesse na Suíte do Rosário. Pode me enviar disponibilidade, valores e confirmar as informações da hospedagem para 2 hóspedes?",
           miniBenefits: [
             { title: "Clima acolhedor", text: "Uma suíte pensada para receber bem e tornar a estadia mais confortável." },
             { title: "Estrutura funcional", text: "Tudo o que você precisa para viver dias leves com mais praticidade." },
@@ -1303,6 +1306,7 @@
           detailHighlight: "Conforto",
           detailHighlightText: "Um espaço equilibrado entre praticidade, descanso e clima especial.",
           heroChips: ["2 hóspedes", "Experiência romântica", "Reserva direta"],
+          whatsappMessage: "Olá! Tenho interesse na Suíte Aurora. Pode me enviar disponibilidade, valores e confirmar os detalhes da reserva para 2 hóspedes?",
           miniBenefits: [
             { title: "Momentos especiais", text: "Uma suíte pensada para casais que querem viver a viagem com mais charme." },
             { title: "Descanso com conforto", text: "Itens essenciais para tornar a estadia mais agradável do check-in ao check-out." },
@@ -1347,6 +1351,7 @@
           detailHighlight: "Essencial bem pensado",
           detailHighlightText: "Conforto, privacidade e praticidade em uma proposta mais leve e acolhedora.",
           heroChips: ["2 hóspedes", "Ambiente tranquilo", "Varanda com rede"],
+          whatsappMessage: "Olá! Tenho interesse na Suíte do Bonfim. Pode me enviar disponibilidade, valores e confirmar os detalhes da hospedagem para 2 hóspedes?",
           miniBenefits: [
             { title: "Estadia mais serena", text: "Uma proposta ideal para quem valoriza descanso e um ritmo mais calmo durante a viagem." },
             { title: "Conforto no essencial", text: "Tudo o que importa para uma hospedagem agradável, acolhedora e prática." },
@@ -1535,7 +1540,7 @@
       document.getElementById("capacityLine").textContent = room.capacity;
 
       const waBtn = document.getElementById("waBtn");
-      const msg = encodeURIComponent(`Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`);
+      const msg = encodeURIComponent(room.whatsappMessage || `Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`);
       waBtn.href = `https://wa.me/5562998167654?text=${msg}`;
 
       const heroImg = document.getElementById("heroImg");

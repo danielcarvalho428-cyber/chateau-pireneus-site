@@ -964,8 +964,8 @@
 
     footer{
       position:relative;
-      min-height:132px;
-      max-height:132px;
+      min-height:136px;
+      max-height:136px;
       overflow:hidden;
       margin-top:0;
       background:#032c52;
@@ -973,13 +973,12 @@
 
     .footer-bg{
       position:absolute;
-      left:50%;
-      bottom:0;
-      transform:translateX(-50%);
-      width:100%;
-      height:88%;
-      object-fit:contain;
-      object-position:center bottom;
+      top:50%;
+      left:29%;
+      transform:translate(-50%, -50%);
+      width:360px;
+      max-width:44vw;
+      height:auto;
       display:block;
       opacity:0.98;
       pointer-events:none;
@@ -988,15 +987,15 @@
     .footer-overlay{
       position:relative;
       z-index:2;
-      min-height:132px;
+      min-height:136px;
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      padding:12px 28px;
+      padding:14px 32px 14px 24px;
     }
 
     .footer-contact{
-      width:min(360px, 100%);
+      width:min(395px, 100%);
       display:flex;
       flex-direction:column;
       gap:6px;
@@ -1095,25 +1094,25 @@
       }
 
       footer{
-        min-height:156px;
+        min-height:152px;
         max-height:none;
       }
 
       .footer-bg{
-        height:84%;
+        left:24%;
+        width:280px;
+        max-width:42vw;
       }
 
       .footer-overlay{
-        min-height:156px;
-        align-items:flex-end;
-        justify-content:center;
-        padding:14px 18px 16px;
+        min-height:152px;
+        padding:14px 18px;
       }
 
       .footer-contact{
-        width:100%;
+        width:min(330px, 54%);
         font-size:16.5px;
-        gap:8px;
+        gap:7px;
       }
     }
 
@@ -1267,21 +1266,29 @@
       }
 
       footer{
-        min-height:148px;
+        min-height:170px;
       }
 
       .footer-bg{
-        height:82%;
+        top:34px;
+        left:50%;
+        transform:translateX(-50%);
+        width:205px;
+        max-width:none;
       }
 
       .footer-overlay{
-        min-height:148px;
-        padding:12px 16px 14px;
+        min-height:170px;
+        justify-content:center;
+        align-items:flex-end;
+        padding:76px 16px 14px;
       }
 
       .footer-contact{
+        width:100%;
         font-size:16px;
         line-height:1.16;
+        text-align:center;
       }
     }
   </style>
@@ -1475,318 +1482,4 @@
 
           <div class="suite-card">
             <div class="card">
-              <div class="img-wrap"><img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas"></div>
-              <div class="card-body">
-                <div>
-                  <h3>Suíte das Cavalhadas</h3>
-                  <small>Ambiente acolhedor com varanda privativa e rede.</small>
-                </div>
-                <a href="suite.html?room=cavalhadas" class="room-button">Conhecer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="suite-card">
-            <div class="card">
-              <div class="img-wrap"><img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário"></div>
-              <div class="card-body">
-                <div>
-                  <h3>Suíte do Rosário</h3>
-                  <small>Para relaxar e curtir o charme de Pirenópolis.</small>
-                </div>
-                <a href="suite.html?room=rosario" class="room-button">Conhecer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="suite-card">
-            <div class="card">
-              <div class="img-wrap"><img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora"></div>
-              <div class="card-body">
-                <div>
-                  <h3>Suíte Aurora</h3>
-                  <small>Uma experiência romântica com conforto e tranquilidade.</small>
-                </div>
-                <a href="suite.html?room=aurora" class="room-button">Conhecer</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="suite-card">
-            <div class="card">
-              <div class="img-wrap"><img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim"></div>
-              <div class="card-body">
-                <div>
-                  <h3>Suíte do Bonfim</h3>
-                  <small>Essencial e aconchegante — perfeita para descansar.</small>
-                </div>
-                <a href="suite.html?room=bonfim" class="room-button">Conhecer</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section piri reveal" id="piri">
-    <div class="wrap">
-      <div class="piri-top">
-        <span class="piri-kicker">Descubra Pirenópolis</span>
-        <h2 class="piri-title">CONHEÇA PIRI</h2>
-        <p class="piri-sub">
-          Entre ruas históricas, paisagens naturais e experiências gastronômicas cheias de charme, Pirenópolis convida você a viver dias mais leves, autênticos e memoráveis.
-        </p>
-        <div class="orn"></div>
-      </div>
-
-      <div class="piri-grid">
-        <article class="piri-card">
-          <div class="piri-image"></div>
-          <div class="piri-body">
-            <b>Centro histórico</b>
-            <p>
-              Ruas de pedra, arquitetura colonial e o charme atemporal do coração de Pirenópolis para passeios tranquilos e cheios de atmosfera.
-            </p>
-          </div>
-        </article>
-
-        <article class="piri-card">
-          <div class="piri-image"></div>
-          <div class="piri-body">
-            <b>Cachoeiras & natureza</b>
-            <p>
-              Refúgios naturais ideais para desacelerar, respirar fundo e aproveitar a beleza de Piri com calma e conexão.
-            </p>
-          </div>
-        </article>
-
-        <article class="piri-card">
-          <div class="piri-image"></div>
-          <div class="piri-body">
-            <b>Gastronomia</b>
-            <p>
-              Cafés, sabores regionais e experiências especiais que transformam cada saída em mais um momento marcante da viagem.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <div class="piri-cta-wrap">
-        <a href="https://maps.google.com/?q=Piren%C3%B3polis+GO" target="_blank" class="piri-cta">EXPLORAR PIRENÓPOLIS</a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
-
-    <div class="footer-overlay">
-      <div class="footer-contact">
-        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
-        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
-        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
-      </div>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const { createClient } = supabase
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-
-    const topHeader = document.getElementById("topHeader")
-    const accountActionBtn = document.getElementById("accountActionBtn")
-    const logoutBtnHeader = document.getElementById("logoutBtnHeader")
-    const sideAuthLinks = document.getElementById("sideAuthLinks")
-
-    function onScrollHeader(){
-      const y = window.scrollY || document.documentElement.scrollTop
-      topHeader.classList.toggle("solid", y > 40)
-    }
-    window.addEventListener("scroll", onScrollHeader)
-    onScrollHeader()
-
-    function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu")
-      const backdrop = document.getElementById("backdrop")
-      const isOpen = menu.classList.contains("open")
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
-
-      if(open){
-        menu.classList.add("open")
-        backdrop.classList.add("open")
-      }else{
-        menu.classList.remove("open")
-        backdrop.classList.remove("open")
-      }
-    }
-
-    const track = document.getElementById("carouselTrack")
-    const total = track.children.length
-    let index = 0
-    let autoSlideTimer = null
-
-    function isMobileCarousel(){
-      return window.innerWidth <= 980
-    }
-
-    function getVisibleSlides(){
-      return isMobileCarousel() ? 1 : 3
-    }
-
-    function getMaxIndex(){
-      return Math.max(0, total - getVisibleSlides())
-    }
-
-    function getTranslatePercent(){
-      return 100 / getVisibleSlides()
-    }
-
-    function applySlide(withTransition = true){
-      if(isMobileCarousel()){
-        track.style.transition = "none"
-        track.style.transform = "none"
-        return
-      }
-
-      track.style.transition = withTransition ? "transform 0.5s ease" : "none"
-      track.style.transform = "translateX(-" + (index * getTranslatePercent()) + "%)"
-    }
-
-    function syncCarouselMode(){
-      if(isMobileCarousel()){
-        index = 0
-        track.style.transition = "none"
-        track.style.transform = "none"
-        return
-      }
-
-      track.scrollLeft = 0
-      const maxIndex = getMaxIndex()
-      if(index > maxIndex) index = maxIndex
-      applySlide(false)
-    }
-
-    function startAutoSlide(){
-      clearInterval(autoSlideTimer)
-
-      if(isMobileCarousel()) return
-      if(total <= getVisibleSlides()) return
-
-      autoSlideTimer = setInterval(()=>{
-        index++
-        const maxIndex = getMaxIndex()
-        if(index > maxIndex) index = 0
-        applySlide()
-      }, 5500)
-    }
-
-    function moveSlide(dir){
-      if(isMobileCarousel()){
-        const firstCard = track.querySelector(".suite-card")
-        if(!firstCard) return
-
-        const cardWidth = firstCard.getBoundingClientRect().width
-        track.scrollBy({
-          left: dir * cardWidth,
-          behavior: "smooth"
-        })
-        return
-      }
-
-      const maxIndex = getMaxIndex()
-      index += dir
-      if(index < 0) index = maxIndex
-      if(index > maxIndex) index = 0
-      applySlide()
-    }
-
-    window.moveSlide = moveSlide
-
-    window.addEventListener("resize", ()=>{
-      syncCarouselMode()
-      startAutoSlide()
-    })
-
-    syncCarouselMode()
-    startAutoSlide()
-
-    const ambienteSliders = document.querySelectorAll(".ambiente-slider")
-
-    ambienteSliders.forEach((slider)=>{
-      const slides = slider.querySelectorAll(".gallery-slide")
-      const dots = slider.querySelectorAll(".gallery-dot")
-      let current = 0
-
-      function showSlide(i){
-        slides.forEach((slide, index)=>{
-          slide.classList.toggle("active", index === i)
-        })
-        dots.forEach((dot, index)=>{
-          dot.classList.toggle("active", index === i)
-        })
-        current = i
-      }
-
-      dots.forEach((dot, index)=>{
-        dot.addEventListener("click", ()=>{
-          showSlide(index)
-        })
-      })
-
-      setInterval(()=>{
-        let next = current + 1
-        if(next >= slides.length) next = 0
-        showSlide(next)
-      }, 4200)
-    })
-
-    const observer = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{
-        if(e.isIntersecting) e.target.classList.add("show")
-      })
-    }, { threshold: 0.14 })
-    document.querySelectorAll(".reveal").forEach(el=>observer.observe(el))
-
-    async function logout() {
-      await supabaseClient.auth.signOut()
-      window.location.href = "index.html"
-    }
-
-    logoutBtnHeader.addEventListener("click", logout)
-
-    async function applySessionAwareUI() {
-      try {
-        const { data, error } = await supabaseClient.auth.getUser()
-
-        if (error || !data.user) {
-          accountActionBtn.textContent = "ENTRAR"
-          accountActionBtn.href = "login.html"
-          logoutBtnHeader.classList.add("hidden")
-          sideAuthLinks.innerHTML = `<a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>`
-          return
-        }
-
-        accountActionBtn.textContent = "MINHA ÁREA"
-        accountActionBtn.href = "dashboard.html"
-        logoutBtnHeader.classList.remove("hidden")
-        sideAuthLinks.innerHTML = `
-          <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
-          <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
-        `
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    window.logout = logout
-    applySessionAwareUI()
-  </script>
-</body>
-</html>
+              <div class="

@@ -126,6 +126,8 @@
       gap:2px;
       color:var(--blue);
       text-decoration:none;
+      min-width:0;
+      flex:1 1 auto;
     }
 
     .brand .line1{
@@ -150,6 +152,7 @@
       display:flex;
       align-items:center;
       gap:12px;
+      flex-shrink:0;
     }
 
     .header-auth{
@@ -176,6 +179,7 @@
       color:var(--blue);
       font-family:inherit;
       text-decoration:none;
+      white-space:nowrap;
     }
 
     .auth-btn:hover{
@@ -209,6 +213,7 @@
       border:1px solid rgba(29,53,87,0.08);
       backdrop-filter:blur(6px);
       transition:0.22s ease;
+      flex-shrink:0;
     }
 
     .instagram-btn:hover{
@@ -234,6 +239,7 @@
       backdrop-filter:blur(6px);
       border:0;
       transition:0.22s ease;
+      flex-shrink:0;
     }
 
     .menu-button:hover{
@@ -351,6 +357,7 @@
       text-transform:uppercase;
       line-height:1.24;
       text-shadow:0 12px 40px rgba(0,0,0,0.45);
+      text-wrap:balance;
     }
 
     .hero-lead{
@@ -536,8 +543,9 @@
       font-family:"Cormorant Garamond", serif;
       font-size:28px;
       font-weight:700;
-      line-height:1.08;
+      line-height:1.12;
       color:var(--blue);
+      text-wrap:balance;
     }
 
     .gallery-info-text{
@@ -598,6 +606,7 @@
       font-weight:700;
       color:var(--blue);
       line-height:1.15;
+      text-wrap:balance;
     }
 
     .detail-text{
@@ -630,6 +639,7 @@
       letter-spacing:0.8px;
       color:var(--blue);
       line-height:1.18;
+      text-wrap:balance;
     }
 
     .gold-rule{
@@ -843,7 +853,11 @@
 
     @media (max-width: 768px){
       .top-header{
-        padding:12px 16px;
+        padding:12px 14px;
+      }
+
+      .top-header-inner{
+        gap:10px;
       }
 
       .brand .line1{
@@ -855,17 +869,11 @@
       }
 
       .header-actions{
-        gap:10px;
+        gap:8px;
       }
 
       .header-auth{
-        gap:6px;
-      }
-
-      .auth-btn{
-        padding:9px 10px;
-        min-height:38px;
-        font-size:10px;
+        display:none;
       }
 
       .instagram-btn{
@@ -879,22 +887,98 @@
       }
 
       .hero{
-        min-height:62vh;
-        padding:126px 18px 82px;
+        min-height:60vh;
+        padding:124px 18px 76px;
       }
 
       .hero-title-page{
         font-size:38px;
-        line-height:1.26;
-        letter-spacing:1.3px;
+        line-height:1.28;
+        letter-spacing:1.2px;
       }
 
       .hero-lead{
-        font-size:19px;
+        font-size:18px;
+        line-height:1.68;
+      }
+
+      .hero-highlights{
+        gap:8px;
+        margin-top:20px;
+      }
+
+      .hero-chip{
+        font-size:10px;
+        padding:9px 12px;
+      }
+
+      .hero-cta{
+        gap:8px;
+        max-width:440px;
+        margin:20px auto 0;
+      }
+
+      .hero-btn{
+        width:100%;
       }
 
       .main-shell{
-        padding:32px 0 64px;
+        padding:34px 0 66px;
+      }
+
+      .wrap{
+        gap:20px;
+        padding:0 18px;
+      }
+
+      .gallery-card,
+      .info-card,
+      .detail-card,
+      .trust-card{
+        border-radius:22px;
+      }
+
+      .gallery-info{
+        padding:18px 18px 18px;
+      }
+
+      .gallery-info-title{
+        font-size:25px;
+      }
+
+      .gallery-info-text{
+        font-size:14.4px;
+        line-height:1.76;
+      }
+
+      .img-arrow{
+        width:42px;
+        height:42px;
+        font-size:20px;
+      }
+
+      .img-arrow.left{ left:10px; }
+      .img-arrow.right{ right:10px; }
+
+      .detail-grid{
+        gap:12px;
+      }
+
+      .detail-card{
+        padding:15px 14px;
+      }
+
+      .detail-value{
+        font-size:22px;
+      }
+
+      .detail-text{
+        font-size:13.8px;
+        line-height:1.64;
+      }
+
+      .info-card{
+        padding:20px 18px;
       }
 
       .room-title{
@@ -902,51 +986,27 @@
       }
 
       .subtitle{
-        font-size:14.8px;
+        font-size:14.6px;
+        line-height:1.82;
       }
 
-      .gallery-info-title{
-        font-size:26px;
-      }
-    }
-
-    @media (max-width: 560px){
-      .header-auth{
-        display:none;
+      .mini-benefit{
+        padding:13px 13px 12px;
       }
 
-      .hero{
-        padding:118px 16px 72px;
+      .mini-benefit span{
+        font-size:13.8px;
+        line-height:1.68;
       }
 
-      .hero-title-page{
-        font-size:34px;
+      .reservation-note{
+        font-size:12.8px;
+        line-height:1.72;
       }
 
-      .hero-lead{
-        font-size:18px;
-        line-height:1.66;
-      }
-
-      .wrap{
-        padding:0 16px;
-      }
-
-      .info-card{
-        padding:20px 16px;
-      }
-
-      .room-title{
-        font-size:28px;
-      }
-
-      .subtitle{
-        font-size:14.5px;
-        line-height:1.85;
-      }
-
-      ul li{
-        font-size:14px;
+      .cta{
+        flex-direction:column;
+        gap:8px;
       }
 
       .btn{
@@ -954,12 +1014,243 @@
         flex:1 1 100%;
       }
 
-      .hero-cta{
+      .trust-grid{
+        gap:12px;
+        padding:0 18px;
+      }
+
+      .trust-card{
+        padding:16px 16px 14px;
+      }
+
+      .trust-card p{
+        font-size:14px;
+        line-height:1.74;
+      }
+    }
+
+    @media (max-width: 560px){
+      .top-header{
+        padding:10px 12px;
+      }
+
+      .top-header-inner{
         gap:8px;
       }
 
+      .brand .line1{
+        font-size:10px;
+        letter-spacing:1.1px;
+      }
+
+      .brand .line2{
+        font-size:15px;
+        letter-spacing:1.4px;
+      }
+
+      .header-actions{
+        gap:6px;
+      }
+
+      .instagram-btn{
+        width:36px;
+        height:36px;
+      }
+
+      .instagram-btn svg{
+        width:16px;
+        height:16px;
+      }
+
+      .menu-button{
+        font-size:24px;
+        padding:8px 10px;
+      }
+
+      .hero{
+        min-height:56vh;
+        padding:110px 14px 62px;
+      }
+
+      .hero-kicker{
+        font-size:12px;
+        letter-spacing:1.6px;
+      }
+
+      .hero-title-page{
+        font-size:31px;
+        line-height:1.3;
+        letter-spacing:1px;
+      }
+
+      .hero-lead{
+        font-size:17px;
+        line-height:1.64;
+      }
+
+      .hero-highlights{
+        gap:7px;
+        margin-top:18px;
+      }
+
+      .hero-chip{
+        font-size:9.5px;
+        letter-spacing:0.8px;
+        padding:8px 10px;
+        min-height:34px;
+      }
+
+      .hero-cta{
+        margin-top:18px;
+      }
+
       .hero-btn{
-        width:100%;
+        min-height:44px;
+        font-size:10px;
+        letter-spacing:1.05px;
+      }
+
+      .main-shell{
+        padding:28px 0 56px;
+      }
+
+      .wrap{
+        padding:0 16px;
+        gap:18px;
+      }
+
+      .gallery-card,
+      .info-card,
+      .detail-card,
+      .trust-card{
+        border-radius:20px;
+      }
+
+      .gallery-info{
+        padding:16px 15px 16px;
+      }
+
+      .gallery-info-title{
+        font-size:23px;
+        line-height:1.16;
+      }
+
+      .gallery-info-text{
+        font-size:14px;
+        line-height:1.72;
+      }
+
+      .dots{
+        margin-top:14px;
+        gap:8px;
+      }
+
+      .img-arrow{
+        width:38px;
+        height:38px;
+        font-size:18px;
+      }
+
+      .img-arrow.left{ left:8px; }
+      .img-arrow.right{ right:8px; }
+
+      .detail-card{
+        padding:14px 13px;
+      }
+
+      .detail-label{
+        font-size:9px;
+      }
+
+      .detail-value{
+        font-size:20px;
+      }
+
+      .detail-text{
+        font-size:13.2px;
+        line-height:1.6;
+      }
+
+      .info-card{
+        padding:18px 15px;
+      }
+
+      .room-subtitle{
+        font-size:11px;
+      }
+
+      .room-title{
+        font-size:27px;
+        line-height:1.2;
+      }
+
+      .gold-rule{
+        width:140px;
+        margin:14px 0 16px;
+      }
+
+      .subtitle{
+        font-size:14px;
+        line-height:1.78;
+      }
+
+      .mini-benefits{
+        gap:8px;
+        margin:0 0 18px;
+      }
+
+      .mini-benefit{
+        padding:12px 12px 11px;
+      }
+
+      .mini-benefit strong{
+        font-size:9px;
+      }
+
+      .mini-benefit span{
+        font-size:13.4px;
+        line-height:1.64;
+      }
+
+      ul li{
+        font-size:13.8px;
+        line-height:1.68;
+      }
+
+      .capacity{
+        font-size:14px;
+        line-height:1.65;
+      }
+
+      .ideal-for{
+        font-size:13.8px;
+        line-height:1.72;
+      }
+
+      .reservation-note{
+        padding:12px;
+        font-size:12.4px;
+        line-height:1.68;
+        border-radius:16px;
+      }
+
+      .btn{
+        min-height:42px;
+        font-size:10px;
+        letter-spacing:1px;
+      }
+
+      .trust-grid{
+        padding:0 16px;
+      }
+
+      .trust-card{
+        padding:15px 14px 13px;
+      }
+
+      .trust-card p{
+        font-size:13.8px;
+        line-height:1.7;
       }
     }
   </style>

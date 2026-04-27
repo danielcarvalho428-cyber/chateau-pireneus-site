@@ -1,0 +1,565 @@
+/* ============================================================
+   Shared Styles — Chateau Pireneus
+   Loaded by all pages. Contains: reset, variables, fonts,
+   header/nav, side-menu, footer, and responsive breakpoints
+   for those shared components.
+   Page-specific CSS remains in each page's <style> block.
+   ============================================================ */
+
+/* ---- Reset ---- */
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+
+/* ---- Design tokens ---- */
+:root{
+  --navy:#1d3557;
+  --navy2:#142a45;
+  --gold:#d8c7a1;
+  --gold2:#cbb58c;
+
+  --bg:#f7f6f2;
+  --ivory:#fbfaf7;
+  --beigeSoft:#f3ecdf;
+  --beigeWash:#f6f1e6;
+
+  --ink:rgba(18,28,44,0.92);
+  --muted:rgba(18,28,44,0.72);
+  --line:rgba(29,53,87,0.14);
+
+  --shadow:0 26px 70px rgba(0,0,0,0.16);
+  --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
+
+  --radius:20px;
+  --max:1180px;
+
+  /* Aliases for pages that used --blue/--beige naming */
+  --blue:var(--navy);
+  --blue2:var(--navy2);
+  --beige:var(--gold);
+  --beige-dark:var(--gold2);
+
+  /* Status colours (used by booking, dashboard) */
+  --success:#2f7a4b;
+  --successBg:rgba(47,122,75,0.12);
+  --danger:#8e3535;
+  --dangerBg:rgba(181,74,74,0.12);
+  --info:#355474;
+  --infoBg:rgba(81,109,143,0.12);
+  --warn:#8f6c3c;
+  --warnBg:rgba(184,149,95,0.16);
+}
+
+/* ---- Custom font ---- */
+@font-face{
+  font-family:"Gyahegi";
+  src:url("Gyahegi.otf") format("opentype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+
+/* ---- Base elements ---- */
+a{ text-decoration:none; color:inherit; }
+img{ max-width:100%; display:block; }
+
+/* ---- Utilities ---- */
+.hidden{ display:none !important; }
+
+.reveal{
+  opacity:0;
+  transform:translateY(18px);
+  transition:0.95s ease;
+}
+.reveal.show{ opacity:1; transform:translateY(0); }
+
+.orn{
+  width:170px;
+  height:1px;
+  background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+  margin:18px 0 0;
+}
+
+@keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+
+/* ============================================================
+   HEADER
+   Two variants:
+   - Default (transparent): starts transparent, becomes .solid
+     on scroll. Used by: index, pousada, login, register,
+     policies, dashboard.
+   - .presolid: always shows the solid beige background.
+     Used by: suite, acomodacoes, booking.
+   ============================================================ */
+
+.top-header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:12000;
+  padding:14px 22px;
+  transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  background:rgba(0,0,0,0.12);
+  border-bottom:1px solid rgba(255,255,255,0.10);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
+
+.top-header.solid{
+  background:rgba(246,241,230,0.92);
+  border-bottom:1px solid rgba(29,53,87,0.12);
+  box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+.top-header.presolid{
+  background:rgba(246,241,230,0.72);
+  border-bottom:1px solid rgba(29,53,87,0.10);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  box-shadow:0 12px 30px rgba(0,0,0,0.06);
+}
+
+.top-header-inner{
+  max-width:var(--max);
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+/* Brand / logo */
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  text-decoration:none;
+  color:#fff;
+  transition:color 0.25s ease;
+  min-width:0;
+  flex:1 1 auto;
+}
+
+.top-header.solid .brand,
+.top-header.presolid .brand{ color:var(--navy); }
+
+.brand .line1{
+  font-family:"Cormorant Garamond", serif;
+  font-weight:600;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  font-size:12px;
+  opacity:0.92;
+}
+
+.brand .line2{
+  font-family:"Gyahegi","Cormorant Garamond", serif;
+  font-weight:400;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-size:18px;
+  line-height:1.14;
+}
+
+/* Header actions row */
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  flex-shrink:0;
+}
+
+.header-auth{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+/* Instagram icon button */
+.instagram-btn{
+  width:40px;
+  height:40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  text-decoration:none;
+  color:#fff;
+  background:rgba(0,0,0,0.20);
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(6px);
+  transition:0.22s ease;
+  box-shadow:0 12px 26px rgba(0,0,0,0.16);
+  flex-shrink:0;
+}
+.instagram-btn:hover,
+.instagram-btn:focus-visible{
+  transform:translateY(-1px);
+  background:rgba(0,0,0,0.28);
+  outline:none;
+}
+.instagram-btn svg{
+  width:18px;
+  height:18px;
+  display:block;
+}
+
+.top-header.solid .instagram-btn,
+.top-header.presolid .instagram-btn{
+  color:var(--navy);
+  background:rgba(29,53,87,0.08);
+  border:1px solid rgba(29,53,87,0.08);
+  box-shadow:none;
+}
+.top-header.solid .instagram-btn:hover,
+.top-header.solid .instagram-btn:focus-visible,
+.top-header.presolid .instagram-btn:hover,
+.top-header.presolid .instagram-btn:focus-visible{ background:rgba(29,53,87,0.12); }
+
+/* Nav buttons — shared base */
+.reserve-btn,
+.account-btn,
+.logout-btn-public,
+.ghost-btn{
+  text-decoration:none;
+  font-weight:900;
+  letter-spacing:1.6px;
+  font-size:11px;
+  padding:10px 16px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.14);
+  transition:0.22s ease;
+  white-space:nowrap;
+  font-family:inherit;
+  cursor:pointer;
+  min-height:40px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.reserve-btn{
+  background:rgba(216,199,161,0.92);
+  color:#fff;
+  box-shadow:0 18px 40px rgba(0,0,0,0.20);
+}
+.reserve-btn:hover,
+.reserve-btn:focus-visible{
+  background:rgba(203,181,140,0.98);
+  transform:translateY(-1px);
+  box-shadow:0 22px 52px rgba(0,0,0,0.24);
+  outline:none;
+}
+
+.account-btn,
+.logout-btn-public,
+.ghost-btn{
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  box-shadow:0 18px 40px rgba(0,0,0,0.16);
+  backdrop-filter:blur(6px);
+}
+.account-btn:hover,
+.account-btn:focus-visible,
+.logout-btn-public:hover,
+.logout-btn-public:focus-visible,
+.ghost-btn:hover,
+.ghost-btn:focus-visible{
+  background:rgba(255,255,255,0.18);
+  transform:translateY(-1px);
+  outline:none;
+}
+
+.top-header.solid .account-btn,
+.top-header.solid .logout-btn-public,
+.top-header.solid .ghost-btn{
+  color:var(--navy);
+  background:rgba(29,53,87,0.08);
+  border:1px solid rgba(29,53,87,0.08);
+  box-shadow:none;
+}
+.top-header.solid .account-btn:hover,
+.top-header.solid .account-btn:focus-visible,
+.top-header.solid .logout-btn-public:hover,
+.top-header.solid .logout-btn-public:focus-visible,
+.top-header.solid .ghost-btn:hover,
+.top-header.solid .ghost-btn:focus-visible{
+  background:rgba(29,53,87,0.12);
+}
+
+/* Auth buttons — outlined style (suite, acomodacoes) */
+.auth-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:0.22s ease;
+  cursor:pointer;
+  border:2px solid var(--gold2);
+  background:transparent;
+  color:var(--navy);
+  font-family:inherit;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.auth-btn:hover,
+.auth-btn:focus-visible{
+  transform:translateY(-1px);
+  background:var(--gold);
+  border-color:var(--gold);
+  color:#fff;
+  box-shadow:0 0 18px rgba(216,199,161,0.45);
+  outline:none;
+}
+.auth-btn.solid{
+  background:var(--gold2);
+  color:#fff;
+}
+.auth-btn.solid:hover,
+.auth-btn.solid:focus-visible{
+  background:var(--gold);
+  border-color:var(--gold);
+}
+
+/* Hamburger menu button */
+.menu-button{
+  font-size:28px;
+  line-height:1;
+  color:#fff;
+  cursor:pointer;
+  user-select:none;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(0,0,0,0.20);
+  backdrop-filter:blur(6px);
+  border:0;
+  transition:0.22s ease;
+  flex-shrink:0;
+}
+.top-header.solid .menu-button,
+.top-header.presolid .menu-button{
+  color:var(--navy);
+  background:rgba(29,53,87,0.08);
+}
+.menu-button:hover,
+.menu-button:focus-visible{
+  transform:translateY(-1px);
+  background:rgba(0,0,0,0.28);
+  outline:none;
+}
+.top-header.solid .menu-button:hover,
+.top-header.solid .menu-button:focus-visible,
+.top-header.presolid .menu-button:hover,
+.top-header.presolid .menu-button:focus-visible{ background:rgba(29,53,87,0.12); }
+
+/* ============================================================
+   BACKDROP + SIDE MENU
+   ============================================================ */
+
+.backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.38);
+  opacity:0;
+  pointer-events:none;
+  transition:0.25s;
+  z-index:12300;
+}
+.backdrop.open{ opacity:1; pointer-events:auto; }
+
+.side-menu{
+  position:fixed;
+  top:0;
+  left:0;
+  width:270px;
+  height:100vh;
+  background:#fff;
+  padding:96px 26px 28px;
+  box-shadow:12px 0 50px rgba(0,0,0,0.22);
+  transform:translateX(-100%);
+  transition:0.3s ease;
+  z-index:12500;
+  overflow-y:auto;
+}
+.side-menu.open{ transform:translateX(0); }
+
+.side-menu a,
+.side-menu button{
+  display:block;
+  margin:0 0 16px;
+  text-decoration:none;
+  color:var(--navy);
+  font-size:15px;
+  letter-spacing:0.2px;
+  background:none;
+  border:none;
+  padding:0;
+  font-family:inherit;
+  cursor:pointer;
+  text-align:left;
+  width:100%;
+}
+.side-menu a:hover,
+.side-menu a:focus-visible,
+.side-menu button:hover,
+.side-menu button:focus-visible{
+  text-decoration:underline;
+  outline:none;
+}
+
+.side-menu hr{
+  margin:28px 0;
+  border:none;
+  border-top:1px solid rgba(29,53,87,0.12);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+footer{
+  position:relative;
+  min-height:132px;
+  max-height:132px;
+  overflow:hidden;
+  margin-top:0;
+  background:#032c52;
+}
+
+.footer-bg{
+  position:absolute;
+  top:50%;
+  left:35%;
+  transform:translate(-50%, -50%);
+  width:430px;
+  max-width:48vw;
+  height:auto;
+  display:block;
+  opacity:0.98;
+  pointer-events:none;
+}
+
+.footer-overlay{
+  position:relative;
+  z-index:2;
+  min-height:132px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:14px 40px 14px 24px;
+}
+
+.footer-contact{
+  width:min(400px, 100%);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-family:"Cormorant Garamond", serif;
+  font-size:18px;
+  line-height:1.14;
+  color:#fff;
+  text-align:left;
+}
+.footer-contact a{
+  color:inherit;
+  text-decoration:none;
+}
+.footer-contact a:hover,
+.footer-contact a:focus-visible{
+  text-decoration:underline;
+  outline:none;
+}
+
+/* ============================================================
+   RESPONSIVE — shared components only
+   ============================================================ */
+
+@media (max-width:980px){
+  footer{
+    min-height:148px;
+    max-height:none;
+  }
+  .footer-bg{
+    left:28%;
+    width:330px;
+    max-width:44vw;
+  }
+  .footer-overlay{
+    min-height:148px;
+    padding:14px 20px;
+  }
+  .footer-contact{
+    width:min(340px, 54%);
+    font-size:16.5px;
+    gap:7px;
+  }
+}
+
+@media (max-width:640px){
+  .top-header{ padding:12px 14px; }
+  .top-header-inner{ gap:10px; }
+
+  .brand .line1{
+    font-size:10px;
+    letter-spacing:1.1px;
+  }
+  .brand .line2{
+    font-size:15px;
+    line-height:1.14;
+    letter-spacing:1.4px;
+  }
+
+  .header-actions{ gap:8px; }
+
+  .instagram-btn{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+  }
+  .instagram-btn svg{
+    width:16px;
+    height:16px;
+  }
+
+  .account-btn,
+  .reserve-btn,
+  .logout-btn-public,
+  .ghost-btn{
+    padding:9px 12px;
+    font-size:10px;
+    letter-spacing:1.2px;
+  }
+
+  .menu-button{
+    font-size:24px;
+    padding:8px 10px;
+  }
+
+  footer{ min-height:170px; }
+  .footer-bg{
+    top:36px;
+    left:50%;
+    transform:translateX(-50%);
+    width:220px;
+    max-width:none;
+  }
+  .footer-overlay{
+    min-height:170px;
+    justify-content:center;
+    align-items:flex-end;
+    padding:80px 16px 14px;
+  }
+  .footer-contact{
+    width:100%;
+    font-size:16px;
+    line-height:1.16;
+    text-align:center;
+  }
+}

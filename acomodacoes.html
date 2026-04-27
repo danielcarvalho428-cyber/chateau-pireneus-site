@@ -90,24 +90,14 @@
   </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
-
     :root{
-      --navy:#1d3557;
-      --navy2:#142a45;
-      --gold:#d8c7a1;
-      --gold2:#cbb58c;
-      --bg:#f7f6f2;
-      --line:rgba(29,53,87,0.12);
       --text:rgba(18,28,44,0.92);
-      --muted:rgba(18,28,44,0.72);
+      --radius:22px;
       --shadow:0 24px 60px rgba(0,0,0,0.12);
       --shadowSoft:0 14px 34px rgba(0,0,0,0.08);
-      --radius:22px;
-      --max:1180px;
     }
 
     body{
@@ -116,222 +106,6 @@
       background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
       color:var(--navy);
       overflow-x:hidden;
-    }
-
-    @font-face{
-      font-family:"Gyahegi";
-      src:url("Gyahegi.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-
-    a{ text-decoration:none; color:inherit; }
-
-    .top-header{
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:12000;
-      padding:14px 22px;
-      background:rgba(246,241,230,0.72);
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      backdrop-filter:blur(12px);
-      -webkit-backdrop-filter:blur(12px);
-      box-shadow:0 12px 30px rgba(0,0,0,0.06);
-    }
-
-    .top-header-inner{
-      max-width:var(--max);
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      color:var(--navy);
-    }
-
-    .brand .line1{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:600;
-      letter-spacing:1.4px;
-      text-transform:uppercase;
-      font-size:12px;
-      opacity:0.9;
-    }
-
-    .brand .line2{
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      font-size:18px;
-      line-height:1;
-    }
-
-    .header-actions{
-      display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .header-auth{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .auth-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:40px;
-      padding:10px 14px;
-      border-radius:12px;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      transition:0.22s ease;
-      cursor:pointer;
-      border:2px solid var(--gold2);
-      background:transparent;
-      color:var(--navy);
-      font-family:inherit;
-    }
-
-    .auth-btn:hover{
-      transform:translateY(-1px);
-      background:var(--gold);
-      border-color:var(--gold);
-      color:#fff;
-      box-shadow:0 0 18px rgba(216,199,161,0.45);
-    }
-
-    .auth-btn.solid{
-      background:var(--gold2);
-      color:#fff;
-    }
-
-    .auth-btn.solid:hover{
-      background:var(--gold);
-      border-color:var(--gold);
-    }
-
-    .instagram-btn{
-      width:40px;
-      height:40px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:12px;
-      text-decoration:none;
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
-      border:1px solid rgba(29,53,87,0.08);
-      backdrop-filter:blur(6px);
-      transition:0.22s ease;
-      flex-shrink:0;
-    }
-
-    .instagram-btn:hover{
-      transform:translateY(-1px);
-      background:rgba(29,53,87,0.12);
-    }
-
-    .instagram-btn svg{
-      width:18px;
-      height:18px;
-      display:block;
-    }
-
-    .menu-button{
-      font-size:28px;
-      line-height:1;
-      color:var(--navy);
-      cursor:pointer;
-      user-select:none;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(29,53,87,0.08);
-      backdrop-filter:blur(6px);
-      border:0;
-      transition:0.22s ease;
-      flex-shrink:0;
-    }
-
-    .menu-button:hover{
-      transform:translateY(-1px);
-      background:rgba(29,53,87,0.12);
-    }
-
-    .backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.38);
-      opacity:0;
-      pointer-events:none;
-      transition:0.25s;
-      z-index:11000;
-    }
-
-    .backdrop.open{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    .side-menu{
-      position:fixed;
-      top:0;
-      left:0;
-      width:270px;
-      height:100vh;
-      background:#fff;
-      padding:96px 26px 28px;
-      box-shadow:12px 0 50px rgba(0,0,0,0.22);
-      transform:translateX(-100%);
-      transition:0.3s ease;
-      z-index:11500;
-      overflow-y:auto;
-    }
-
-    .side-menu.open{
-      transform:translateX(0);
-    }
-
-    .side-menu a,
-    .side-menu button{
-      display:block;
-      margin:0 0 16px;
-      text-decoration:none;
-      color:var(--navy);
-      font-size:15px;
-      letter-spacing:0.2px;
-      background:none;
-      border:none;
-      padding:0;
-      font-family:inherit;
-      cursor:pointer;
-      text-align:left;
-      width:100%;
-    }
-
-    .side-menu a:hover,
-    .side-menu button:hover{
-      text-decoration:underline;
-    }
-
-    .side-menu hr{
-      margin:28px 0;
-      border:none;
-      border-top:1px solid rgba(29,53,87,0.12);
     }
 
     .hero{
@@ -1188,7 +962,7 @@
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
   </nav>
 
-  <header class="top-header">
+  <header class="top-header presolid">
     <div class="top-header-inner">
       <a class="brand" href="index.html" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
@@ -1273,7 +1047,7 @@
         <article class="card">
           <div class="card-image">
             <span class="card-badge">Suíte 01</span>
-            <img src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+            <img loading="lazy" src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
           </div>
           <div class="card-body">
             <h3>Suíte do Divino</h3>
@@ -1299,7 +1073,7 @@
         <article class="card">
           <div class="card-image">
             <span class="card-badge">Suíte 02</span>
-            <img src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+            <img loading="lazy" src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
           </div>
           <div class="card-body">
             <h3>Suíte das Cavalhadas</h3>
@@ -1325,7 +1099,7 @@
         <article class="card">
           <div class="card-image">
             <span class="card-badge">Suíte 03</span>
-            <img src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+            <img loading="lazy" src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
           </div>
           <div class="card-body">
             <h3>Suíte do Rosário</h3>
@@ -1351,7 +1125,7 @@
         <article class="card master">
           <div class="card-image">
             <span class="card-badge">Em breve</span>
-            <img src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
+            <img loading="lazy" src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
           </div>
           <div class="card-body">
             <h3>Suíte dos Pireneus (Master)</h3>
@@ -1375,7 +1149,7 @@
         <article class="card">
           <div class="card-image">
             <span class="card-badge">Suíte 05</span>
-            <img src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+            <img loading="lazy" src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
           </div>
           <div class="card-body">
             <h3>Suíte Aurora</h3>
@@ -1401,7 +1175,7 @@
         <article class="card">
           <div class="card-image">
             <span class="card-badge">Suíte 06</span>
-            <img src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+            <img loading="lazy" src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
           </div>
           <div class="card-body">
             <h3>Suíte do Bonfim</h3>
@@ -1433,7 +1207,7 @@
   </section>
 
   <footer>
-    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
     <div class="footer-overlay">
       <div class="footer-contact">

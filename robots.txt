@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /admin-availability.html
+Disallow: /dashboard.html
+Disallow: /booking.html
+Disallow: /booking-success.html
+Disallow: /booking-cancel.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /signup.html
 
 Sitemap: https://chateaupireneus.com.br/sitemap.xml

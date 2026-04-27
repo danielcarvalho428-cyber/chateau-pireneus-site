@@ -61,265 +61,15 @@
   </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 
   <style>
-    *{ box-sizing:border-box; }
-    html{ scroll-behavior:smooth; }
-
-    :root{
-      --navy:#1d3557;
-      --navy2:#142a45;
-      --gold:#d8c7a1;
-      --gold2:#cbb58c;
-
-      --bg:#f7f6f2;
-      --ivory:#fbfaf7;
-      --beigeSoft:#f3ecdf;
-      --beigeWash:#f6f1e6;
-
-      --ink:rgba(18,28,44,0.92);
-      --muted:rgba(18,28,44,0.72);
-      --line:rgba(29,53,87,0.14);
-
-      --shadow:0 26px 70px rgba(0,0,0,0.16);
-      --shadowSoft:0 14px 34px rgba(0,0,0,0.10);
-
-      --radius:20px;
-      --max:1180px;
-    }
-
     body{
       margin:0;
       font-family:Georgia, serif;
       background:var(--bg);
       color:var(--navy);
       overflow-x:hidden;
-    }
-
-    @font-face{
-      font-family:"Gyahegi";
-      src:url("Gyahegi.otf") format("opentype");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-
-    .top-header{
-      position:fixed;
-      top:0;
-      left:0;
-      right:0;
-      z-index:12000;
-      padding:14px 22px;
-      transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-      background:rgba(0,0,0,0.12);
-      border-bottom:1px solid rgba(255,255,255,0.10);
-      backdrop-filter:blur(10px);
-    }
-    .top-header.solid{
-      background:rgba(246,241,230,0.92);
-      border-bottom:1px solid rgba(29,53,87,0.12);
-      box-shadow:0 12px 30px rgba(0,0,0,0.08);
-    }
-    .top-header-inner{
-      max-width:var(--max);
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-    }
-
-    .brand{
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-      text-decoration:none;
-      color:#fff;
-      transition:color 0.25s ease;
-    }
-    .top-header.solid .brand{ color:var(--navy); }
-
-    .brand .line1{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:600;
-      letter-spacing:1.4px;
-      text-transform:uppercase;
-      font-size:12px;
-      opacity:0.92;
-    }
-    .brand .line2{
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      font-size:18px;
-      line-height:1;
-    }
-
-    .header-actions{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .instagram-btn{
-      width:40px;
-      height:40px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:12px;
-      text-decoration:none;
-      color:#fff;
-      background:rgba(0,0,0,0.20);
-      border:1px solid rgba(255,255,255,0.12);
-      backdrop-filter:blur(6px);
-      transition:0.22s ease;
-      box-shadow:0 12px 26px rgba(0,0,0,0.16);
-    }
-    .instagram-btn:hover{
-      transform:translateY(-1px);
-      background:rgba(0,0,0,0.28);
-    }
-    .instagram-btn svg{
-      width:18px;
-      height:18px;
-      display:block;
-    }
-
-    .top-header.solid .instagram-btn{
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
-      border:1px solid rgba(29,53,87,0.08);
-      box-shadow:none;
-    }
-    .top-header.solid .instagram-btn:hover{
-      background:rgba(29,53,87,0.12);
-    }
-
-    .reserve-btn,
-    .account-btn,
-    .logout-btn-public{
-      text-decoration:none;
-      font-weight:900;
-      letter-spacing:1.6px;
-      font-size:11px;
-      padding:10px 16px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.14);
-      transition:0.22s ease;
-      white-space:nowrap;
-      font-family:inherit;
-      cursor:pointer;
-    }
-
-    .reserve-btn{
-      background:rgba(216,199,161,0.92);
-      color:#fff;
-      box-shadow:0 18px 40px rgba(0,0,0,0.20);
-    }
-    .reserve-btn:hover{
-      background:rgba(203,181,140,0.98);
-      transform:translateY(-1px);
-      box-shadow:0 22px 52px rgba(0,0,0,0.24);
-    }
-
-    .account-btn,
-    .logout-btn-public{
-      background:rgba(255,255,255,0.12);
-      color:#fff;
-      box-shadow:0 18px 40px rgba(0,0,0,0.16);
-      backdrop-filter:blur(6px);
-    }
-    .account-btn:hover,
-    .logout-btn-public:hover{
-      background:rgba(255,255,255,0.18);
-      transform:translateY(-1px);
-    }
-
-    .top-header.solid .account-btn,
-    .top-header.solid .logout-btn-public{
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
-      border:1px solid rgba(29,53,87,0.08);
-      box-shadow:none;
-    }
-    .top-header.solid .account-btn:hover,
-    .top-header.solid .logout-btn-public:hover{
-      background:rgba(29,53,87,0.12);
-    }
-
-    .hidden{ display:none !important; }
-
-    .menu-button{
-      font-size:28px;
-      line-height:1;
-      color:#fff;
-      cursor:pointer;
-      user-select:none;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(0,0,0,0.20);
-      backdrop-filter:blur(6px);
-      border:0;
-      transition:0.22s ease;
-    }
-    .top-header.solid .menu-button{
-      color:var(--navy);
-      background:rgba(29,53,87,0.08);
-    }
-    .menu-button:hover{ transform:translateY(-1px); background:rgba(0,0,0,0.28); }
-    .top-header.solid .menu-button:hover{ background:rgba(29,53,87,0.12); }
-
-    .backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,0.38);
-      opacity:0;
-      pointer-events:none;
-      transition:0.25s;
-      z-index:11000;
-    }
-    .backdrop.open{ opacity:1; pointer-events:auto; }
-
-    .side-menu{
-      position:fixed;
-      top:0; left:0;
-      width:270px;
-      height:100vh;
-      background:#fff;
-      padding:96px 26px 28px;
-      box-shadow:12px 0 50px rgba(0,0,0,0.22);
-      transform:translateX(-100%);
-      transition:0.3s ease;
-      z-index:11500;
-      overflow-y:auto;
-    }
-    .side-menu.open{ transform:translateX(0); }
-    .side-menu a,
-    .side-menu button{
-      display:block;
-      margin:0 0 16px;
-      text-decoration:none;
-      color:var(--navy);
-      font-size:15px;
-      letter-spacing:0.2px;
-      background:none;
-      border:none;
-      padding:0;
-      font-family:inherit;
-      cursor:pointer;
-      text-align:left;
-      width:100%;
-    }
-    .side-menu a:hover,
-    .side-menu button:hover{ text-decoration:underline; }
-    .side-menu hr{
-      margin:28px 0;
-      border:none;
-      border-top:1px solid rgba(29,53,87,0.12);
     }
 
     .hero{
@@ -922,7 +672,7 @@
     <div class="wrap">
       <div class="intro-head">
         <div class="intro-logo" aria-hidden="true">
-          <img src="Chateau - 4.png.png" alt="Chateau Pireneus">
+          <img loading="lazy" src="Chateau - 4.png.png" alt="Chateau Pireneus">
         </div>
 
         <div>
@@ -1051,7 +801,7 @@
   </section>
 
   <footer>
-    <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
 
     <div class="footer-overlay">
       <div class="footer-contact">
@@ -1062,7 +812,7 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const { createClient } = supabase
 

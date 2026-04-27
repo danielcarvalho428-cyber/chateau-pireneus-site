@@ -1,56 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Criar Conta</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=/login.html" />
+  <title>Criar Conta | Chateau Pireneus</title>
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://chateaupireneus.com.br/login.html" />
 </head>
-
 <body>
-
-<h2>Criar Conta</h2>
-
-<form id="signup-form">
-
-<input type="email" id="email" placeholder="Email" required>
-<br><br>
-
-<input type="password" id="password" placeholder="Senha" required>
-<br><br>
-
-<button type="submit">Criar Conta</button>
-
-</form>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-<script>
-
-const supabase = supabase.createClient(
-"https://pjxurbtvmzdlpnexfqpd.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeHVyYnR2bXpkbHBuZXhmcXBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzQwNTQsImV4cCI6MjA4ODI1MDA1NH0.wE7E41NWa59-b9U0qs9_KlRH2SDTaOORX8VcTfVqV0A"
-)
-
-document.getElementById("signup-form").addEventListener("submit", async (e) => {
-
-e.preventDefault()
-
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
-
-const { data, error } = await supabase.auth.signUp({
-email: email,
-password: password
-})
-
-if(error){
-alert(error.message)
-}else{
-alert("Conta criada com sucesso!")
-}
-
-})
-
-</script>
-
+  <p>Redirecionando... <a href="/login.html">Clique aqui</a> se não for redirecionado automaticamente.</p>
 </body>
 </html>

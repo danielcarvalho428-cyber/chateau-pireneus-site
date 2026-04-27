@@ -27,6 +27,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "error404": "/404.html"
+  "trailingSlash": false
 }

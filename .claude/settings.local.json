@@ -3,7 +3,10 @@
     "allow": [
       "Bash(xargs ls *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(python3 _patch_suite.py)",
+      "Bash(python3 _patch_booking.py)",
+      "Bash(git push *)"
     ]
   }
 }

@@ -32,8 +32,6 @@
   <meta name="twitter:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
 
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
 
@@ -473,67 +471,6 @@
       line-height:1.72
     }
 
-    .flatpickr-day{
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      min-height:54px;
-      padding-top:5px;
-      padding-bottom:16px;
-      overflow:hidden;
-      line-height:1.05
-    }
-
-    .flatpickr-day span{pointer-events:none}
-
-    .calendar-day-price{
-      position:absolute;
-      left:50%;
-      bottom:9px;
-      transform:translateX(-50%);
-      display:block;
-      max-width:100%;
-      font-size:8px;
-      line-height:1;
-      color:#7c6340;
-      text-align:center;
-      white-space:nowrap;
-      font-weight:700;
-      letter-spacing:-.1px
-    }
-
-    .calendar-day-min{
-      position:absolute;
-      left:50%;
-      bottom:2px;
-      transform:translateX(-50%);
-      display:block;
-      max-width:100%;
-      font-size:7px;
-      line-height:1;
-      color:#9a7642;
-      text-align:center;
-      white-space:nowrap;
-      font-weight:600;
-      letter-spacing:-.1px
-    }
-
-    .flatpickr-day.flatpickr-disabled,
-    .flatpickr-day.flatpickr-disabled:hover{
-      background:#eadfce;
-      color:#a69781;
-      text-decoration:line-through;
-      cursor:not-allowed;
-      border-color:#eadfce
-    }
-
-    .flatpickr-day.flatpickr-disabled .calendar-day-price,
-    .flatpickr-day.flatpickr-disabled .calendar-day-min{
-      color:#a69781
-    }
-
     footer{
       position:relative;
       min-height:160px;
@@ -738,20 +675,6 @@
         font-size:17px
       }
 
-      .flatpickr-day{
-        min-height:50px;
-        padding-bottom:14px
-      }
-
-      .calendar-day-price{
-        font-size:7px;
-        bottom:8px
-      }
-
-      .calendar-day-min{
-        font-size:6px;
-        bottom:2px
-      }
     }
 
     @media (max-width:560px){
@@ -939,21 +862,120 @@
         padding:88px 22px 24px
       }
 
-      .flatpickr-day{
-        min-height:48px;
-        padding-top:4px;
-        padding-bottom:13px
-      }
+    }
 
-      .calendar-day-price{
-        font-size:6.5px;
-        bottom:7px
-      }
-
-      .calendar-day-min{
-        font-size:5.8px;
-        bottom:2px
-      }
+    .picker-head{
+      text-align:center;
+      margin-bottom:48px;
+    }
+    .picker-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:clamp(28px,4vw,42px);
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.24;
+    }
+    .picker-sub{
+      margin:14px auto 0;
+      max-width:620px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.82;
+    }
+    .suite-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:24px;
+    }
+    .suite-card{
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(29,53,87,.10);
+      border-radius:24px;
+      box-shadow:var(--shadowSoft);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+    .suite-card-img{
+      position:relative;
+      aspect-ratio:4/3;
+      overflow:hidden;
+    }
+    .suite-card-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform 0.4s ease;
+    }
+    .suite-card:hover .suite-card-img img{
+      transform:scale(1.04);
+    }
+    .suite-badge{
+      position:absolute;
+      top:14px;
+      left:14px;
+      background:rgba(29,53,87,.82);
+      color:#fff;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      padding:6px 10px;
+      border-radius:999px;
+      backdrop-filter:blur(6px);
+    }
+    .suite-card-body{
+      padding:22px 20px 20px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+    }
+    .suite-card-name{
+      margin:0 0 10px;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:22px;
+      letter-spacing:0.8px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.2;
+    }
+    .suite-card-desc{
+      margin:0 0 20px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.78;
+      flex:1;
+    }
+    .suite-reserve-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:13px 18px;
+      border-radius:14px;
+      background:linear-gradient(135deg,rgba(216,199,161,.96),rgba(203,181,140,.98));
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:0.22s ease;
+      box-shadow:0 14px 28px rgba(0,0,0,.10);
+    }
+    .suite-reserve-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 18px 36px rgba(0,0,0,.14);
+    }
+    @media (max-width:980px){
+      .suite-grid{grid-template-columns:repeat(2, 1fr);}
+    }
+    @media (max-width:560px){
+      .suite-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -1021,9 +1043,9 @@
     <div class="hero-shell">
       <div class="hero-copy">
         <div class="hero-kicker">Reserve sua estadia</div>
-        <h1 class="hero-title">VIVA O CHARME DO CHATEAU PIRENEUS EM CADA NOITE</h1>
+        <h1 class="hero-title">ESCOLHA SUA SUÍTE E RESERVE</h1>
         <p class="hero-text">
-          Se você veio de uma acomodação específica, a suíte já ficará selecionada automaticamente. Os valores acompanham datas especiais, fins de semana e regras de mínimo de noites.
+          Selecione a suíte ideal para a sua estadia. Na página de cada acomodação, você encontra disponibilidade, valores e o formulário de reserva direto.
         </p>
 
         <div class="hero-links">
@@ -1062,99 +1084,74 @@
 
   <section class="section">
     <div class="wrap">
-      <div class="booking-layout">
-        <div class="panel">
-          <h2 class="panel-title">DADOS DA RESERVA</h2>
-          <p class="panel-subtitle">Preencha os dados abaixo para concluir sua solicitação.</p>
+      <div class="picker-head reveal" id="pickerHead">
+        <h2 class="picker-title">ESCOLHA SUA SUÍTE</h2>
+        <p class="picker-sub">Selecione a acomodação e reserve diretamente na página da suíte, com disponibilidade e valores em tempo real.</p>
+        <div class="orn" style="margin:18px auto 0;"></div>
+      </div>
 
-          <form id="bookingForm">
-            <div class="form-grid">
-              <div class="field full">
-                <label for="room_id">Escolha a suíte</label>
-                <select id="room_id" required></select>
-                <div id="lockedRoomNote" class="note-box gold hidden">Esta reserva está vinculada à suíte que você escolheu anteriormente.</div>
-              </div>
+      <div class="suite-grid">
 
-              <div class="field full">
-                <label for="date_range">Período da hospedagem</label>
-                <input type="text" id="date_range" placeholder="Selecione check-in e check-out" required readonly>
-                <div class="note-box">Datas indisponíveis ficam bloqueadas. O calendário também mostra o valor da diária e, quando existir, o mínimo de noites.</div>
-                <div id="availabilityStatus" class="status-box info show">Selecione uma suíte para carregar a disponibilidade.</div>
-              </div>
-
-              <div class="field">
-                <label for="guests">Número de hóspedes</label>
-                <input type="number" id="guests" min="1" max="2" value="2" required>
-                <div class="help-text">Máximo de 2 hóspedes por suíte.</div>
-              </div>
-
-              <div class="field">
-                <label>Horários</label>
-                <div class="note-box">Check-in das 12h às 19h. Check-out até 12h.</div>
-              </div>
-
-              <div class="field full">
-                <button type="submit" class="submit-btn" id="submitBtn">CONFIRMAR SOLICITAÇÃO</button>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div class="panel">
-          <h2 class="panel-title">RESUMO ATUAL</h2>
-          <p class="panel-subtitle">Confira as noites, o valor final e as regras que serão aplicadas à sua reserva.</p>
-
-          <div class="info-card">
-            <span>
-              <div class="summary-line">
-                <span class="summary-label">Suíte</span>
-                <span class="summary-value" id="summaryRoom">—</span>
-              </div>
-              <div class="summary-line">
-                <span class="summary-label">Check-in</span>
-                <span class="summary-value" id="summaryCheckIn">—</span>
-              </div>
-              <div class="summary-line">
-                <span class="summary-label">Check-out</span>
-                <span class="summary-value" id="summaryCheckOut">—</span>
-              </div>
-              <div class="summary-line">
-                <span class="summary-label">Noites</span>
-                <span class="summary-value" id="summaryNights">—</span>
-              </div>
-              <div class="summary-line">
-                <span class="summary-label">Hóspedes</span>
-                <span class="summary-value" id="summaryGuests">2</span>
-              </div>
-              <div class="summary-line">
-                <span class="summary-label">Mínimo exigido</span>
-                <span class="summary-value" id="summaryMinNights">—</span>
-              </div>
-
-              <div id="summaryBreakdown" class="breakdown-list"></div>
-
-              <div class="summary-total">
-                <span>Total</span>
-                <span id="summaryTotal">A definir</span>
-              </div>
-            </span>
+        <article class="suite-card reveal">
+          <div class="suite-card-img">
+            <img loading="lazy" src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+            <span class="suite-badge">Suíte 01</span>
           </div>
-
-          <div class="info-card">
-            <strong>Como funciona</strong>
-            <p>O sistema valida disponibilidade, cria um hold temporário e depois te leva direto para o Stripe Checkout.</p>
+          <div class="suite-card-body">
+            <h3 class="suite-card-name">Suíte do Divino</h3>
+            <p class="suite-card-desc">Uma suíte acolhedora com varanda privativa, cama queen e ar-condicionado — ideal para uma estadia tranquila a dois.</p>
+            <a href="suite.html?room=divino#reservaSection" class="suite-reserve-btn">Reservar esta suíte</a>
           </div>
+        </article>
 
-          <div class="info-card">
-            <strong>Preços dinâmicos</strong>
-            <p>Finais de semana, feriados e datas especiais podem ter valores diferentes por noite, calculados automaticamente.</p>
+        <article class="suite-card reveal">
+          <div class="suite-card-img">
+            <img loading="lazy" src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+            <span class="suite-badge">Suíte 02</span>
           </div>
+          <div class="suite-card-body">
+            <h3 class="suite-card-name">Suíte das Cavalhadas</h3>
+            <p class="suite-card-desc">Conforto e praticidade para quem quer descansar bem e aproveitar Pirenópolis com leveza.</p>
+            <a href="suite.html?room=cavalhadas#reservaSection" class="suite-reserve-btn">Reservar esta suíte</a>
+          </div>
+        </article>
 
-          <div class="info-card">
-            <strong>Horários da hospedagem</strong>
-            <p>Check-in das 12h às 19h. Check-out até 12h.</p>
+        <article class="suite-card reveal">
+          <div class="suite-card-img">
+            <img loading="lazy" src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+            <span class="suite-badge">Suíte 03</span>
           </div>
-        </div>
+          <div class="suite-card-body">
+            <h3 class="suite-card-name">Suíte do Rosário</h3>
+            <p class="suite-card-desc">Ambiente charmoso e reservado com varanda com rede — perfeito para desacelerar em casal.</p>
+            <a href="suite.html?room=rosario#reservaSection" class="suite-reserve-btn">Reservar esta suíte</a>
+          </div>
+        </article>
+
+        <article class="suite-card reveal">
+          <div class="suite-card-img">
+            <img loading="lazy" src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+            <span class="suite-badge">Suíte 04</span>
+          </div>
+          <div class="suite-card-body">
+            <h3 class="suite-card-name">Suíte Aurora</h3>
+            <p class="suite-card-desc">Uma experiência mais intimista e romântica para quem quer transformar a hospedagem em parte especial da viagem.</p>
+            <a href="suite.html?room=aurora#reservaSection" class="suite-reserve-btn">Reservar esta suíte</a>
+          </div>
+        </article>
+
+        <article class="suite-card reveal">
+          <div class="suite-card-img">
+            <img loading="lazy" src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+            <span class="suite-badge">Suíte 05</span>
+          </div>
+          <div class="suite-card-body">
+            <h3 class="suite-card-name">Suíte do Bonfim</h3>
+            <p class="suite-card-desc">Ambiente sereno com varanda e rede — ideal para quem busca descanso contemplativo em Pirenópolis.</p>
+            <a href="suite.html?room=bonfim#reservaSection" class="suite-reserve-btn">Reservar esta suíte</a>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
@@ -1175,45 +1172,13 @@
 
     const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
-    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
-
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
     const topHeader = document.getElementById("topHeader");
-    const bookingForm = document.getElementById("bookingForm");
-    const roomSelect = document.getElementById("room_id");
-    const lockedRoomNote = document.getElementById("lockedRoomNote");
-    const availabilityStatus = document.getElementById("availabilityStatus");
-    const submitBtn = document.getElementById("submitBtn");
-    const dateRangeInput = document.getElementById("date_range");
-    const guestsInput = document.getElementById("guests");
-
-    const summaryRoom = document.getElementById("summaryRoom");
-    const summaryCheckIn = document.getElementById("summaryCheckIn");
-    const summaryCheckOut = document.getElementById("summaryCheckOut");
-    const summaryNights = document.getElementById("summaryNights");
-    const summaryGuests = document.getElementById("summaryGuests");
-    const summaryMinNights = document.getElementById("summaryMinNights");
-    const summaryBreakdown = document.getElementById("summaryBreakdown");
-    const summaryTotal = document.getElementById("summaryTotal");
-
-    let roomsMap = new Map();
-    let selectedCheckIn = "";
-    let selectedCheckOut = "";
-    let unavailableDates = [];
-    let calendarPricesMap = {};
-    let datePicker = null;
-    let availabilityLoadedForRoomId = null;
-    let currentQuote = null;
-    let currentUser = null;
-    let currentIsAdmin = false;
-    let currentMinStayViolated = false;
 
     function onScrollHeader() {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      topHeader.classList.toggle("solid", y > 40);
+      topHeader.classList.toggle("solid", (window.scrollY || document.documentElement.scrollTop) > 40);
     }
-
     window.addEventListener("scroll", onScrollHeader);
     onScrollHeader();
 
@@ -1222,31 +1187,8 @@
       const backdrop = document.getElementById("backdrop");
       const isOpen = menu.classList.contains("open");
       const open = forceOpen === true || (forceOpen === undefined && !isOpen);
-
-      if (open) {
-        menu.classList.add("open");
-        backdrop.classList.add("open");
-      } else {
-        menu.classList.remove("open");
-        backdrop.classList.remove("open");
-      }
-    }
-
-    async function isAdminUser(userId) {
-      if (!userId) return false;
-
-      const { data, error } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", userId)
-        .maybeSingle();
-
-      if (error) {
-        console.error(error);
-        return false;
-      }
-
-      return !!data;
+      menu.classList.toggle("open", open);
+      backdrop.classList.toggle("open", open);
     }
 
     async function applySessionHeader() {
@@ -1266,576 +1208,40 @@
       const returnTo = window.location.pathname + window.location.search;
 
       if (error || !data.user) {
-        currentUser = null;
-        currentIsAdmin = false;
         headerLoggedOutLinks.classList.remove("hidden");
         headerLoggedInLinks.classList.add("hidden");
         sideLoggedOutLinks.classList.remove("hidden");
         sideLoggedInLinks.classList.add("hidden");
-        registerHeaderBtn.href = `register.html?return_to=${encodeURIComponent(returnTo)}`;
-        sideLoginLink.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
-        sideRegisterLink.href = `register.html?return_to=${encodeURIComponent(returnTo)}`;
+        if (registerHeaderBtn) registerHeaderBtn.href = "register.html?return_to=" + encodeURIComponent(returnTo);
+        if (sideLoginLink) sideLoginLink.href = "login.html?return_to=" + encodeURIComponent(returnTo);
+        if (sideRegisterLink) sideRegisterLink.href = "register.html?return_to=" + encodeURIComponent(returnTo);
         return;
       }
 
-      currentUser = data.user;
-      currentIsAdmin = await isAdminUser(currentUser.id);
+      const { data: adminData } = await supabaseClient.from("admins").select("id").eq("id", data.user.id).maybeSingle();
+      const isAdmin = !!adminData;
+      const areaHref = isAdmin ? "admin.html" : "dashboard.html";
+      const areaLabel = isAdmin ? "ADMIN" : "MINHA ÁREA";
 
-      const areaHref = currentIsAdmin ? "admin.html" : "dashboard.html";
-      const areaLabel = currentIsAdmin ? "ADMIN" : "MINHA ÁREA";
-
-      headerDashboardBtn.href = areaHref;
-      sideDashboardLink.href = areaHref;
-      headerDashboardBtn.textContent = areaLabel;
-      sideDashboardLink.textContent = currentIsAdmin ? "Painel admin" : "Minha área";
+      if (headerDashboardBtn) { headerDashboardBtn.href = areaHref; headerDashboardBtn.textContent = areaLabel; }
+      if (sideDashboardLink) { sideDashboardLink.href = areaHref; sideDashboardLink.textContent = isAdmin ? "Painel admin" : "Minha área"; }
 
       headerLoggedOutLinks.classList.add("hidden");
       headerLoggedInLinks.classList.remove("hidden");
       sideLoggedOutLinks.classList.add("hidden");
       sideLoggedInLinks.classList.remove("hidden");
 
-      headerLogoutBtn.onclick = logout;
-      sideLogoutBtn.onclick = async function() {
-        toggleMenu(false);
-        await logout();
-      };
+      async function logout() { await supabaseClient.auth.signOut(); window.location.href = "login.html"; }
+      if (headerLogoutBtn) headerLogoutBtn.onclick = logout;
+      if (sideLogoutBtn) sideLogoutBtn.onclick = async function() { toggleMenu(false); await logout(); };
     }
 
-    async function logout() {
-      await supabaseClient.auth.signOut();
-      window.location.href = "login.html";
-    }
-
-    function getLockedRoomIdFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const value = params.get("room_id");
-      if (!value) return null;
-      const parsed = Number(value);
-      return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
-    }
-
-    function formatDateDisplay(dateStr) {
-      if (!dateStr) return "—";
-      const [year, month, day] = dateStr.split("-");
-      return `${day}/${month}/${year}`;
-    }
-
-    function formatDateLocal(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-
-    function countNights(checkIn, checkOut) {
-      if (!checkIn || !checkOut) return 0;
-      const start = new Date(checkIn + "T00:00:00");
-      const end = new Date(checkOut + "T00:00:00");
-      return Math.round((end - start) / (1000 * 60 * 60 * 24));
-    }
-
-    function formatCurrency(value) {
-      return new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-      }).format(Number(value || 0));
-    }
-
-    function setAvailabilityMessage(type, text) {
-      availabilityStatus.className = `status-box show ${type}`;
-      availabilityStatus.textContent = text;
-    }
-
-    function resetDates() {
-      selectedCheckIn = "";
-      selectedCheckOut = "";
-      currentQuote = null;
-      currentMinStayViolated = false;
-      dateRangeInput.value = "";
-      if (datePicker) datePicker.clear();
-    }
-
-    function clearQuoteDisplay() {
-      currentQuote = null;
-      currentMinStayViolated = false;
-      summaryBreakdown.innerHTML = "";
-      summaryTotal.textContent = "A definir";
-      summaryMinNights.textContent = "—";
-      updateSubmitState();
-    }
-
-    function updateSubmitState() {
-      const hasValidQuote = !!currentQuote && !currentMinStayViolated;
-      submitBtn.disabled = !hasValidQuote;
-    }
-
-    function renderQuoteBreakdown() {
-      if (!currentQuote || !Array.isArray(currentQuote.nightly_prices) || currentQuote.nightly_prices.length === 0) {
-        summaryBreakdown.innerHTML = "";
-        summaryTotal.textContent = "A definir";
-        summaryMinNights.textContent = "—";
-        updateSubmitState();
-        return;
-      }
-
-      summaryBreakdown.innerHTML = currentQuote.nightly_prices.map(item => {
-        const dateLabel = new Date(item.date + "T00:00:00").toLocaleDateString("pt-BR");
-        const minLabel = item.min_nights ? ` • mín ${item.min_nights} noite${item.min_nights > 1 ? "s" : ""}` : "";
-        return `
-          <div class="breakdown-row">
-            <span>${dateLabel}${minLabel}</span>
-            <span>${formatCurrency(item.price)}</span>
-          </div>
-        `;
-      }).join("");
-
-      const totalText = formatCurrency(currentQuote.total || 0);
-      summaryTotal.textContent = totalText;
-
-      const requiredMin = Number(currentQuote.required_min_nights || 1);
-      summaryMinNights.textContent = `${requiredMin} noite${requiredMin > 1 ? "s" : ""}`;
-
-      updateSubmitState();
-    }
-
-    function updateSummary() {
-      const roomId = Number(roomSelect.value);
-      const selectedRoom = roomsMap.get(roomId);
-      const nights = countNights(selectedCheckIn, selectedCheckOut);
-      const guests = Number(guestsInput.value || 0);
-
-      summaryRoom.textContent = selectedRoom ? selectedRoom.name : "—";
-      summaryCheckIn.textContent = formatDateDisplay(selectedCheckIn);
-      summaryCheckOut.textContent = formatDateDisplay(selectedCheckOut);
-      summaryNights.textContent = nights > 0 ? String(nights) : "—";
-      summaryGuests.textContent = guests > 0 ? String(guests) : "—";
-
-      renderQuoteBreakdown();
-    }
-
-    async function fetchQuote(roomName, checkIn, checkOut) {
-      const { data, error } = await supabaseClient.rpc("get_room_price_breakdown", {
-        p_room_type: roomName,
-        p_check_in: checkIn,
-        p_check_out: checkOut
-      });
-
-      if (error) throw error;
-      return data;
-    }
-
-    async function loadCalendarPrices(roomName, startDate, endDate) {
-      const { data, error } = await supabaseClient.rpc("get_room_calendar_prices", {
-        p_room_type: roomName,
-        p_start_date: startDate,
-        p_end_date: endDate
-      });
-
-      if (error) {
-        console.error(error);
-        calendarPricesMap = {};
-        return;
-      }
-
-      calendarPricesMap = {};
-      (data || []).forEach(item => {
-        calendarPricesMap[item.rate_date] = {
-          price: item.effective_price,
-          min_nights: item.min_nights
-        };
-      });
-    }
-
-    async function refreshQuote() {
-      const roomId = Number(roomSelect.value);
-      const selectedRoom = roomsMap.get(roomId);
-
-      if (!selectedRoom || !selectedCheckIn || !selectedCheckOut) {
-        clearQuoteDisplay();
-        updateSummary();
-        return;
-      }
-
-      try {
-        const quote = await fetchQuote(selectedRoom.name, selectedCheckIn, selectedCheckOut);
-        currentQuote = quote;
-        currentMinStayViolated = false;
-
-        const nights = countNights(selectedCheckIn, selectedCheckOut);
-        const requiredMin = Number(quote.required_min_nights || 1);
-
-        if (nights < requiredMin) {
-          currentMinStayViolated = true;
-          setAvailabilityMessage("warn", `Este período exige mínimo de ${requiredMin} noite${requiredMin > 1 ? "s" : ""}. Você selecionou ${nights}.`);
-        }
-      } catch (error) {
-        console.error(error);
-        currentQuote = null;
-        currentMinStayViolated = false;
-        setAvailabilityMessage("error", error.message || "Não foi possível calcular o valor da hospedagem.");
-      }
-
-      updateSummary();
-    }
-
-    function injectDayPrice(dayElem, dateStr) {
-      const info = calendarPricesMap[dateStr];
-      if (!info) return;
-
-      const existingPrice = dayElem.querySelector(".calendar-day-price");
-      const existingMin = dayElem.querySelector(".calendar-day-min");
-      if (existingPrice) existingPrice.remove();
-      if (existingMin) existingMin.remove();
-
-      const price = document.createElement("span");
-      price.className = "calendar-day-price";
-      price.textContent = formatCurrency(info.price).replace(",00", "");
-      dayElem.appendChild(price);
-
-      if (info.min_nights && Number(info.min_nights) > 1) {
-        const min = document.createElement("span");
-        min.className = "calendar-day-min";
-        min.textContent = `mín ${info.min_nights}n`;
-        dayElem.appendChild(min);
-      }
-    }
-
-    function rebuildCalendar() {
-      if (datePicker) datePicker.destroy();
-
-      datePicker = flatpickr("#date_range", {
-        mode: "range",
-        minDate: "today",
-        dateFormat: "Y-m-d",
-        disable: unavailableDates.slice(),
-        locale: { firstDayOfWeek: 0 },
-        onDayCreate: function(_, __, ___, dayElem) {
-          const dateStr = formatDateLocal(dayElem.dateObj);
-          injectDayPrice(dayElem, dateStr);
-        },
-        onChange: async function(selectedDates) {
-          selectedCheckIn = "";
-          selectedCheckOut = "";
-          currentQuote = null;
-          currentMinStayViolated = false;
-
-          if (selectedDates.length >= 2) {
-            const checkIn = formatDateLocal(selectedDates[0]);
-            const checkOut = formatDateLocal(selectedDates[1]);
-
-            if (checkOut > checkIn) {
-              selectedCheckIn = checkIn;
-              selectedCheckOut = checkOut;
-              setAvailabilityMessage("info", "Calculando valores e regras da hospedagem...");
-              await refreshQuote();
-
-              if (!currentMinStayViolated && currentQuote) {
-                setAvailabilityMessage("success", "Período selecionado. Revise o resumo e confirme sua solicitação.");
-              }
-            } else {
-              setAvailabilityMessage("error", "O check-out precisa ser depois do check-in.");
-            }
-          } else if (selectedDates.length === 1) {
-            clearQuoteDisplay();
-            updateSummary();
-            setAvailabilityMessage("info", "Agora selecione a data de check-out.");
-          } else {
-            clearQuoteDisplay();
-            updateSummary();
-          }
-        }
-      });
-    }
-
-    async function loadUnavailableDates(roomId) {
-      resetDates();
-      unavailableDates = [];
-      availabilityLoadedForRoomId = null;
-      calendarPricesMap = {};
-      clearQuoteDisplay();
-
-      if (!roomId) {
-        rebuildCalendar();
-        setAvailabilityMessage("info", "Selecione uma suíte para carregar a disponibilidade.");
-        updateSummary();
-        return;
-      }
-
-      setAvailabilityMessage("info", "Carregando datas e valores...");
-      updateSummary();
-
-      const today = new Date();
-      const start = formatDateLocal(today);
-      const future = new Date();
-      future.setMonth(future.getMonth() + 12);
-      const end = formatDateLocal(future);
-
-      const roomIdNumber = Number(roomId);
-      const roomName = roomsMap.get(roomIdNumber)?.name || "";
-
-      const { data, error } = await supabaseClient
-        .from("room_availability")
-        .select("room_id, date, status, reservation_id")
-        .eq("room_id", roomIdNumber)
-        .gte("date", start)
-        .lte("date", end)
-        .neq("status", "open")
-        .order("date", { ascending: true });
-
-      if (error) {
-        console.error(error);
-        rebuildCalendar();
-        setAvailabilityMessage("error", "Erro ao carregar a disponibilidade desta suíte.");
-        updateSummary();
-        return;
-      }
-
-      await loadCalendarPrices(roomName, start, end);
-
-      unavailableDates = [...new Set((data || []).map(row => row.date))];
-      availabilityLoadedForRoomId = roomIdNumber;
-      rebuildCalendar();
-
-      if (unavailableDates.length > 0) {
-        setAvailabilityMessage("info", "Disponibilidade carregada. Escolha check-in e check-out no calendário.");
-      } else {
-        setAvailabilityMessage("success", "Esta suíte não possui indisponibilidades carregadas para os próximos meses.");
-      }
-
-      updateSummary();
-    }
-
-    async function loadRooms() {
-      const lockedRoomId = getLockedRoomIdFromUrl();
-
-      if (lockedRoomId) {
-        const { data: room, error } = await supabaseClient
-          .from("rooms")
-          .select("id, name")
-          .eq("id", lockedRoomId)
-          .eq("active", true)
-          .single();
-
-        if (error || !room) {
-          alert("A suíte selecionada não foi encontrada.");
-          window.location.href = "acomodacoes.html";
-          return;
-        }
-
-        roomsMap = new Map();
-        roomsMap.set(Number(room.id), room);
-        roomSelect.innerHTML = `<option value="${room.id}">${room.name}</option>`;
-        roomSelect.value = String(room.id);
-        roomSelect.disabled = true;
-        lockedRoomNote.classList.remove("hidden");
-
-        updateSummary();
-        await loadUnavailableDates(room.id);
-        return;
-      }
-
-      const { data, error } = await supabaseClient
-        .from("rooms")
-        .select("id, name")
-        .eq("active", true)
-        .order("id", { ascending: true });
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      roomsMap = new Map();
-      (data || []).forEach(room => roomsMap.set(Number(room.id), room));
-      roomSelect.innerHTML = '<option value="">Selecione</option>' + (data || []).map(room => `<option value="${room.id}">${room.name}</option>`).join("");
-      updateSummary();
-    }
-
-    function setSubmitLoading(isLoading, text = "CONFIRMAR SOLICITAÇÃO") {
-      submitBtn.disabled = isLoading || currentMinStayViolated || !currentQuote;
-      submitBtn.textContent = isLoading ? "PROCESSANDO..." : text;
-    }
-
-    function validateBookingForm() {
-      const roomId = Number(roomSelect.value);
-      const guests = Number(guestsInput.value);
-      const nights = countNights(selectedCheckIn, selectedCheckOut);
-
-      if (!roomId) {
-        setAvailabilityMessage("error", "Selecione uma suíte para continuar.");
-        return false;
-      }
-
-      if (availabilityLoadedForRoomId !== roomId) {
-        setAvailabilityMessage("error", "A disponibilidade da suíte ainda não foi carregada. Aguarde e tente novamente.");
-        return false;
-      }
-
-      if (!selectedCheckIn || !selectedCheckOut) {
-        setAvailabilityMessage("error", "Selecione check-in e check-out no calendário.");
-        return false;
-      }
-
-      if (selectedCheckOut <= selectedCheckIn) {
-        setAvailabilityMessage("error", "O check-out deve ser depois do check-in.");
-        return false;
-      }
-
-      if (nights <= 0) {
-        setAvailabilityMessage("error", "Selecione um período válido de hospedagem.");
-        return false;
-      }
-
-      if (!guests || guests < 1) {
-        setAvailabilityMessage("error", "Informe pelo menos 1 hóspede.");
-        return false;
-      }
-
-      if (guests > 2) {
-        setAvailabilityMessage("error", "O máximo permitido é de 2 hóspedes por suíte.");
-        return false;
-      }
-
-      if (!currentQuote || Number(currentQuote.total || 0) <= 0) {
-        setAvailabilityMessage("error", "Não foi possível calcular o valor da reserva. Revise as datas selecionadas.");
-        return false;
-      }
-
-      const requiredMin = Number(currentQuote.required_min_nights || 1);
-      if (nights < requiredMin) {
-        setAvailabilityMessage("warn", `Este período exige mínimo de ${requiredMin} noite${requiredMin > 1 ? "s" : ""}. Você selecionou ${nights}.`);
-        return false;
-      }
-
-      return true;
-    }
-
-    roomSelect.addEventListener("change", async function() {
-      updateSummary();
-      await loadUnavailableDates(roomSelect.value);
-    });
-
-    guestsInput.addEventListener("input", function() {
-      let currentValue = Number(guestsInput.value || 0);
-
-      if (currentValue > 2) {
-        currentValue = 2;
-      }
-
-      if (currentValue < 1 && guestsInput.value !== "") {
-        currentValue = 1;
-      }
-
-      if (currentValue > 0) {
-        guestsInput.value = String(currentValue);
-      }
-
-      updateSummary();
-    });
-
-    bookingForm.addEventListener("submit", async function(e) {
-      e.preventDefault();
-      setSubmitLoading(true);
-
-      try {
-        if (!validateBookingForm()) {
-          setSubmitLoading(false);
-          return;
-        }
-
-        const room_id = Number(roomSelect.value);
-        const guests = Number(guestsInput.value);
-        const room_name = roomSelect.selectedOptions[0]?.textContent || "";
-        const check_in = selectedCheckIn;
-        const check_out = selectedCheckOut;
-
-        const { data: userData, error: userError } = await supabaseClient.auth.getUser();
-
-        if (userError || !userData.user) {
-          setAvailabilityMessage("error", "Faça login ou crie sua conta para concluir a reserva.");
-          setSubmitLoading(false);
-          const returnTo = window.location.pathname + window.location.search;
-          setTimeout(function() {
-            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
-          }, 1200);
-          return;
-        }
-
-        const currentSessionUser = userData.user;
-        const { data: sessionData } = await supabaseClient.auth.getSession();
-        const accessToken = sessionData?.session?.access_token;
-
-        if (!accessToken) {
-          setAvailabilityMessage("error", "Sua sessão expirou. Faça login novamente.");
-          setSubmitLoading(false);
-          const returnTo = window.location.pathname + window.location.search;
-          setTimeout(function() {
-            window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
-          }, 1200);
-          return;
-        }
-
-        const { data: reservationId, error: bookingError } = await supabaseClient.rpc("create_booking_and_hold_dates", {
-          p_user_id: currentSessionUser.id,
-          p_room_id: room_id,
-          p_check_in: check_in,
-          p_check_out: check_out,
-          p_guests: guests,
-          p_room_type: room_name,
-          p_special_requests: null
-        });
-
-        if (bookingError) {
-          console.error(bookingError);
-          setAvailabilityMessage("error", bookingError.message || "Não foi possível criar a reserva.");
-          setSubmitLoading(false);
-          await loadUnavailableDates(room_id);
-          return;
-        }
-
-        if (!reservationId) {
-          setAvailabilityMessage("error", "A reserva foi criada, mas não retornou um identificador válido.");
-          setSubmitLoading(false);
-          return;
-        }
-
-        setAvailabilityMessage("success", "Reserva criada. Redirecionando para o pagamento...");
-
-        const checkoutResponse = await fetch(CHECKOUTSTRIPE_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${accessToken}`,
-            "apikey": SUPABASE_PUBLISHABLE_KEY
-          },
-          body: JSON.stringify({ reservation_id: reservationId })
-        });
-
-        const checkoutData = await checkoutResponse.json().catch(() => null);
-
-        if (!checkoutResponse.ok || !checkoutData?.checkout_url) {
-          console.error("checkoutstripe error:", checkoutData);
-          setAvailabilityMessage("error", checkoutData?.error || "Não foi possível iniciar o pagamento.");
-          setSubmitLoading(false);
-          return;
-        }
-
-        window.location.href = checkoutData.checkout_url;
-      } catch (err) {
-        console.error(err);
-        setAvailabilityMessage("error", "Erro inesperado ao processar a reserva.");
-        setSubmitLoading(false);
-      }
-    });
-
-    (async function init() {
-      await applySessionHeader();
-      rebuildCalendar();
-      await loadRooms();
-      updateSummary();
-      updateSubmitState();
-    })();
-
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add("show"); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(function(el) { observer.observe(el); });
+
+    applySessionHeader();
     window.toggleMenu = toggleMenu;
   </script>
 </body>

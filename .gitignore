@@ -1,5 +1,2 @@
 .vercel
 .env*.local
-node_modules
-supabase/.temp
-.claude

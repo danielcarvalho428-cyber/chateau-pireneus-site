@@ -890,6 +890,120 @@
       align-items:center;
     }
 
+    /* ---- Tabs ---- */
+    .tab-nav{
+      display:flex;
+      gap:6px;
+      background:rgba(29,53,87,0.05);
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:5px;
+      margin-bottom:22px;
+    }
+    .tab-btn{
+      flex:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      padding:12px 18px;
+      border:none;
+      border-radius:14px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:0.2s ease;
+      background:transparent;
+      color:rgba(29,53,87,0.55);
+      font-family:inherit;
+    }
+    .tab-btn.active{
+      background:#fff;
+      color:var(--navy);
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    }
+    .tab-btn:hover:not(.active){ color:var(--navy); background:rgba(255,255,255,0.55); }
+    .tab-count{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:22px;
+      height:22px;
+      padding:0 6px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:900;
+      background:rgba(216,199,161,0.28);
+      color:var(--navy);
+    }
+    .tab-count.urgent{ background:rgba(181,74,74,0.14); color:var(--danger-text); }
+    .tab-panel{ display:none; }
+    .tab-panel.active{ display:block; }
+
+    /* ---- Summary card icons ---- */
+    .summary-card{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .summary-icon{
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .summary-icon svg{ width:18px; height:18px; display:block; }
+    .icon-total{ background:rgba(29,53,87,0.08); color:var(--navy); }
+    .icon-pending{ background:rgba(184,149,95,0.14); color:var(--warn-text); }
+    .icon-confirmed{ background:rgba(47,122,75,0.12); color:var(--ok-text); }
+    .icon-cancelled{ background:rgba(181,74,74,0.10); color:var(--danger-text); }
+    .icon-revenue{ background:rgba(216,199,161,0.22); color:#7c6340; }
+
+    /* ---- Toast notifications ---- */
+    .toast-container{
+      position:fixed;
+      bottom:28px;
+      right:28px;
+      z-index:99999;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      pointer-events:none;
+    }
+    .toast{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px 18px;
+      border-radius:18px;
+      font-size:13px;
+      line-height:1.6;
+      max-width:340px;
+      box-shadow:0 16px 40px rgba(0,0,0,0.16);
+      pointer-events:auto;
+      animation:toastIn 0.3s ease forwards;
+      border:1px solid transparent;
+    }
+    .toast.toast-success{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.18); }
+    .toast.toast-error{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.18); }
+    .toast.toast-info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.18); }
+    .toast.toast-warn{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.20); }
+    .toast-icon{ font-size:16px; flex-shrink:0; line-height:1.4; }
+    .toast-msg{ flex:1; font-weight:500; }
+    @keyframes toastIn{
+      from{ opacity:0; transform:translateY(12px) scale(0.97); }
+      to{ opacity:1; transform:none; }
+    }
+
+    /* ---- Reservation grid 3-col ---- */
+    .reservation-grid{ grid-template-columns:1fr 1fr 1fr; }
+    @media (max-width:640px){ .reservation-grid{ grid-template-columns:1fr 1fr; } }
+
     footer{
       position:relative;
       min-height:160px;
@@ -943,7 +1057,7 @@
       .hero-copy{ text-align:center; }
       .hero-text{ margin-left:auto; margin-right:auto; }
       .hero-links{ justify-content:center; }
-      .summary-grid{ grid-template-columns:1fr 1fr; }
+      .summary-grid{ grid-template-columns:1fr 1fr !important; }
       .calendar-grid{ gap:6px; }
       .calendar-cell{ min-height:102px; }
     }
@@ -1032,13 +1146,42 @@
 
   <section class="section">
     <div class="wrap">
-      <div class="summary-grid">
-        <div class="summary-card"><span class="summary-label">Total</span><span class="summary-value" id="total-count">0</span></div>
-        <div class="summary-card"><span class="summary-label">Holds / Pendentes</span><span class="summary-value" id="pending-count">0</span></div>
-        <div class="summary-card"><span class="summary-label">Confirmadas / Pagas</span><span class="summary-value" id="confirmed-count">0</span></div>
-        <div class="summary-card"><span class="summary-label">Canceladas / Expiradas</span><span class="summary-value" id="cancelled-count">0</span></div>
+      <div class="summary-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))">
+        <div class="summary-card">
+          <div class="summary-icon icon-total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/></svg></div>
+          <span class="summary-label">Total de reservas</span><span class="summary-value" id="total-count">0</span>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon icon-pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <span class="summary-label">Holds / Pendentes</span><span class="summary-value" id="pending-count">0</span>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon icon-confirmed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg></div>
+          <span class="summary-label">Confirmadas / Pagas</span><span class="summary-value" id="confirmed-count">0</span>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon icon-cancelled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div>
+          <span class="summary-label">Canceladas / Expiradas</span><span class="summary-value" id="cancelled-count">0</span>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon icon-revenue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <span class="summary-label">Receita confirmada</span><span class="summary-value" id="revenue-total" style="font-size:22px">—</span>
+        </div>
       </div>
 
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="pricing" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11M15 9v11"/></svg>
+          CALENDÁRIO DE PREÇOS
+        </button>
+        <button class="tab-btn" data-tab="reservations" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+          RESERVAS
+          <span class="tab-count" id="tabPendingBadge"></span>
+        </button>
+      </div>
+
+      <div class="tab-panel active" id="tab-pricing">
       <div class="panel" id="pricing-section">
         <div class="panel-head">
           <div>
@@ -1195,7 +1338,9 @@
           </div>
         </div>
       </div>
+      </div><!-- /tab-panel pricing -->
 
+      <div class="tab-panel" id="tab-reservations">
       <div class="panel" id="reservations-section">
         <div class="panel-head">
           <div>
@@ -1279,7 +1424,11 @@
         </div>
       </div>
     </div>
+      </div><!-- /tab-panel reservations -->
+    </div>
   </section>
+
+  <div class="toast-container" id="toastContainer"></div>
 
   <footer>
     <img class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus" />
@@ -1297,6 +1446,32 @@
     const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+    // ---- Toast notifications ----
+    function showToast(msg, type = "info", duration = 4200) {
+      const container = document.getElementById("toastContainer");
+      const icons = { success:"✓", error:"✕", info:"ℹ", warn:"⚠" };
+      const toast = document.createElement("div");
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `<span class="toast-icon">${icons[type] || "ℹ"}</span><span class="toast-msg">${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = "0.3s ease";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(8px)";
+        setTimeout(() => toast.remove(), 320);
+      }, duration);
+    }
+
+    // ---- Tab navigation ----
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+      });
+    });
 
     const topHeader = document.getElementById("topHeader");
 
@@ -1549,7 +1724,7 @@
 
       if (adminError) {
         console.error(adminError);
-        alert("Não foi possível validar o acesso administrativo.");
+        showToast("Não foi possível validar o acesso administrativo.", "error");
         return false;
       }
 
@@ -1577,7 +1752,7 @@
 
       if (error) {
         console.error(error);
-        alert(error.message);
+        showToast(error.message, "error");
         return;
       }
 
@@ -1897,7 +2072,7 @@
 
       if (reservationError) {
         console.error(reservationError);
-        alert(reservationError.message);
+        showToast(reservationError.message, "error");
         return;
       }
 
@@ -1907,7 +2082,7 @@
 
       if (profileError) {
         console.error(profileError);
-        alert(profileError.message);
+        showToast(profileError.message, "error");
         return;
       }
 
@@ -1946,6 +2121,10 @@
                ["failed","expired"].includes(payment);
       }).length;
 
+      const revenue = allReservations
+        .filter(r => ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) || normalizeStatus(r.status) === "confirmed")
+        .reduce((sum, r) => sum + (parseFloat(r.total_amount) || 0), 0);
+
       document.getElementById("total-count").textContent = total;
       document.getElementById("pending-count").textContent = pending;
       document.getElementById("confirmed-count").textContent = confirmed;
@@ -1953,6 +2132,17 @@
       document.getElementById("heroTotalReservations").textContent = total;
       document.getElementById("heroPendingReservations").textContent = pending;
       document.getElementById("heroConfirmedReservations").textContent = confirmed;
+      document.getElementById("revenue-total").textContent = revenue > 0
+        ? "R$ " + revenue.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+        : "R$ 0";
+
+      const badge = document.getElementById("tabPendingBadge");
+      if (pending > 0) {
+        badge.textContent = pending;
+        badge.className = "tab-count urgent";
+      } else {
+        badge.textContent = "";
+      }
     }
 
     function setQuickFilter(value) {
@@ -2157,12 +2347,14 @@
 
       if (error) {
         console.error(error);
-        alert(error.message || "Não foi possível salvar o status.");
+        showToast(error.message || "Não foi possível salvar o status.", "error");
         button.disabled = false;
         button.textContent = originalText;
         return;
       }
 
+      const labels = { confirmed:"Reserva confirmada", cancelled:"Reserva cancelada", expired:"Reserva expirada" };
+      showToast(labels[nextStatus] || "Status atualizado", nextStatus === "confirmed" ? "success" : "warn");
       await loadReservations();
     }
 

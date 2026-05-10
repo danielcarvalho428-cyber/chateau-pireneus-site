@@ -13,3 +13,6 @@ enabled = true
 
 [functions.send-booking-email]
 enabled = true
+
+[functions.send-checkin-reminder]
+enabled = true

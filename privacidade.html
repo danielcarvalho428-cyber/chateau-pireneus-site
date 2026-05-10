@@ -1,0 +1,701 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Política de Privacidade | Chateau Pireneus</title>
+  <meta name="description" content="Saiba como o Chateau Pireneus coleta, usa e protege seus dados pessoais, em conformidade com a LGPD (Lei 13.709/2018) e a legislação turística brasileira." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://chateaupireneus.com.br/privacidade.html" />
+
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Política de Privacidade | Chateau Pireneus" />
+  <meta property="og:description" content="Saiba como o Chateau Pireneus coleta, usa e protege seus dados pessoais, em conformidade com a LGPD." />
+  <meta property="og:url" content="https://chateaupireneus.com.br/privacidade.html" />
+  <meta property="og:site_name" content="Chateau Pireneus" />
+  <meta property="og:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
+
+  <link rel="icon" type="image/png" href="chateau-logo.png" />
+  <link rel="shortcut icon" href="chateau-logo.png" />
+  <link rel="apple-touch-icon" href="chateau-logo.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    .hero{
+      min-height:62vh;
+      position:relative;
+      background-image:url("hero.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      overflow:hidden;
+      padding:120px 20px 80px;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to bottom,rgba(0,0,0,0.56),rgba(0,0,0,0.36) 40%,rgba(0,0,0,0.58));
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%,rgba(216,199,161,0.10),transparent 60%);
+      opacity:0.95;
+    }
+    .hero-content{
+      position:relative;
+      z-index:3;
+      color:#fff;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+      max-width:860px;
+    }
+    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
+    .hero-kicker{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:.95;
+    }
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:clamp(32px,5vw,52px);
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      line-height:1.24;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+    .hero-slogan{
+      margin:16px auto 0;
+      max-width:720px;
+      font-family:"Cormorant Garamond",serif;
+      font-weight:500;
+      font-size:19px;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:.98;
+      line-height:1.75;
+    }
+
+    .wrap{ max-width:var(--max); margin:0 auto; padding:0 22px; }
+
+    .orn{
+      width:150px; height:1px;
+      background:linear-gradient(to right,rgba(216,199,161,0),rgba(216,199,161,1),rgba(216,199,161,0));
+      margin:14px 0 0;
+    }
+
+    /* ── Intro strip ── */
+    .intro{
+      background:linear-gradient(to bottom,#fbfaf7 0%,#f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding:52px 0 64px;
+    }
+    .intro-label{
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:10px;
+    }
+    .intro-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:34px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      margin:0;
+      line-height:1.15;
+    }
+    .intro-body{
+      margin-top:20px;
+      color:rgba(22,37,58,.82);
+      line-height:1.9;
+      font-size:15px;
+      max-width:820px;
+    }
+    .intro-body p{ margin:0 0 12px; }
+    .intro-body p:last-child{ margin-bottom:0; }
+
+    /* ── Section ── */
+    .priv-section{
+      padding:64px 0;
+    }
+    .priv-section + .priv-section{
+      border-top:1px solid rgba(29,53,87,0.07);
+    }
+    .priv-section.dark{
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+      color:#fff;
+    }
+    .priv-section.dark .section-title{ color:#fff; }
+    .priv-section.dark .section-sub{ color:rgba(255,255,255,.82); }
+    .priv-section.dark .priv-card{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.13); }
+    .priv-section.dark .priv-card h3{ color:#e8dfc8; }
+    .priv-section.dark .priv-card p,
+    .priv-section.dark .priv-card li{ color:rgba(255,255,255,.85); }
+    .priv-section.dark .tag{ background:rgba(255,255,255,.14); color:#e8dfc8; }
+
+    .section-eyebrow{
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:2.5px;
+      text-transform:uppercase;
+      color:var(--gold);
+      margin-bottom:10px;
+    }
+    .section-title{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:28px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      margin:0;
+      line-height:1.2;
+    }
+    .section-sub{
+      margin:12px 0 28px;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:15px;
+      max-width:760px;
+    }
+
+    .priv-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+    .priv-grid.three{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+
+    .priv-card{
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(29,53,87,.09);
+      border-radius:20px;
+      padding:24px 22px;
+      box-shadow:0 2px 18px rgba(29,53,87,.05);
+    }
+    .priv-card h3{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:700;
+      font-size:19px;
+      color:var(--navy);
+      margin:0 0 10px;
+      line-height:1.25;
+    }
+    .priv-card p,.priv-card li{
+      color:rgba(22,37,58,.76);
+      font-size:14.5px;
+      line-height:1.85;
+      margin:0;
+    }
+    .priv-card ul{
+      padding-left:18px;
+      margin:8px 0 0;
+    }
+    .priv-card li{ margin-bottom:5px; }
+    .priv-card li:last-child{ margin-bottom:0; }
+
+    .tag{
+      display:inline-block;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      background:rgba(29,53,87,.07);
+      color:var(--navy);
+      border-radius:20px;
+      padding:3px 10px;
+      margin-bottom:10px;
+    }
+
+    .rights-list{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px;
+      margin-top:4px;
+    }
+    .right-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .right-icon{
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:rgba(216,199,161,.22);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      font-size:16px;
+    }
+    .right-text strong{
+      display:block;
+      font-size:13.5px;
+      color:var(--navy);
+      margin-bottom:2px;
+    }
+    .right-text span{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .contact-box{
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(29,53,87,.10);
+      border-radius:20px;
+      padding:28px 26px;
+      max-width:560px;
+    }
+    .contact-box h3{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:700;
+      font-size:20px;
+      color:var(--navy);
+      margin:0 0 14px;
+    }
+    .contact-box p{ color:rgba(22,37,58,.78); font-size:14.5px; line-height:1.85; margin:0 0 8px; }
+    .contact-box a{ color:var(--navy); font-weight:600; }
+
+    .update-note{
+      background:rgba(216,199,161,.15);
+      border:1px solid rgba(216,199,161,.4);
+      border-radius:14px;
+      padding:16px 20px;
+      font-size:14px;
+      color:rgba(22,37,58,.78);
+      line-height:1.75;
+      margin-top:24px;
+      max-width:760px;
+    }
+
+    @media(max-width:900px){
+      .priv-grid,.priv-grid.three{ grid-template-columns:1fr; }
+      .rights-list{ grid-template-columns:1fr; }
+      .intro-title{ font-size:26px; }
+      .section-title{ font-size:24px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+    <hr>
+    <div id="sideAuthLinks">
+      <a href="login.html" onclick="toggleMenu(false)">Login / Criar Conta</a>
+    </div>
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+        <a id="accountActionBtn" class="account-btn" href="login.html">ENTRAR</a>
+        <button id="logoutBtnHeader" class="logout-btn-public hidden" type="button">SAIR</button>
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <div class="hero-content">
+      <div class="hero-kicker">LGPD • Lei 13.709/2018</div>
+      <h1 class="hero-title">POLÍTICA DE PRIVACIDADE</h1>
+      <p class="hero-slogan">Transparência total sobre como coletamos, usamos e protegemos seus dados pessoais.</p>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro">
+    <div class="wrap">
+      <div class="intro-label">Quem somos</div>
+      <h2 class="intro-title">CHATEAU PIRENEUS</h2>
+      <div class="orn"></div>
+      <div class="intro-body">
+        <p>
+          Esta Política de Privacidade descreve como a <strong>Pousada Chateau Pireneus</strong>, localizada na Rua Tupinambás, Quadra 09, Lote 16, Setor Meia Ponte, Pirenópolis – GO, coleta, utiliza, armazena e protege os dados pessoais de seus hóspedes e visitantes do site.
+        </p>
+        <p>
+          Estamos comprometidos com a conformidade à <strong>Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018)</strong>, ao <strong>Código de Defesa do Consumidor (CDC)</strong> e à legislação turística brasileira, incluindo a <strong>Lei 11.771/2008</strong> e a <strong>Portaria MTur 41/2025</strong> (FNRH Digital).
+        </p>
+        <p>
+          <strong>Última atualização:</strong> 10 de maio de 2026. &nbsp;|&nbsp; Para dúvidas: <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1. Dados coletados -->
+  <section class="priv-section">
+    <div class="wrap">
+      <div class="section-eyebrow">1. Dados Coletados</div>
+      <h2 class="section-title">QUAIS DADOS COLETAMOS</h2>
+      <p class="section-sub">Coletamos apenas os dados necessários para prestar o serviço de hospedagem e cumprir as obrigações legais.</p>
+
+      <div class="priv-grid">
+        <div class="priv-card">
+          <span class="tag">Ficha de Hóspede (FNRH)</span>
+          <h3>Dados de Registro Obrigatório</h3>
+          <p>Exigidos pela Lei 11.771/2008 e Portaria MTur 41/2025 para todas as pousadas brasileiras:</p>
+          <ul>
+            <li>Nome completo</li>
+            <li>Data de nascimento</li>
+            <li>CPF (brasileiros) ou passaporte (estrangeiros)</li>
+            <li>Nacionalidade</li>
+            <li>Endereço de origem (logradouro, cidade, estado, CEP)</li>
+            <li>Datas de check-in e check-out</li>
+            <li>Número de hóspedes e tipo de acomodação</li>
+            <li>Motivo da viagem</li>
+          </ul>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Reserva Online</span>
+          <h3>Dados de Cadastro e Reserva</h3>
+          <p>Coletados quando você cria conta ou faz reserva no site:</p>
+          <ul>
+            <li>Nome completo e e-mail</li>
+            <li>Senha (armazenada com hash — nunca em texto puro)</li>
+            <li>Telefone (opcional)</li>
+            <li>CPF ou CNPJ (para emissão de nota fiscal)</li>
+            <li>Datas e suíte escolhidas</li>
+            <li>Valor total da reserva</li>
+          </ul>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Pagamento</span>
+          <h3>Dados de Pagamento</h3>
+          <p>Os pagamentos são processados pelo <strong>Stripe</strong>, plataforma certificada PCI-DSS. <strong>Não armazenamos</strong> dados de cartão de crédito em nossos servidores. Guardamos apenas o identificador da transação e o status do pagamento.</p>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Site</span>
+          <h3>Dados de Navegação (Cookies)</h3>
+          <p>Este site utiliza apenas <strong>cookies essenciais</strong> para manter sua sessão de login ativa. Não utilizamos cookies de rastreamento, analytics de terceiros, pixels de marketing ou qualquer ferramenta de perfilamento comportamental.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Finalidade e base legal -->
+  <section class="priv-section" style="background:linear-gradient(to bottom,#f8f6f1,#f3efe7);">
+    <div class="wrap">
+      <div class="section-eyebrow">2. Finalidade e Base Legal</div>
+      <h2 class="section-title">POR QUE USAMOS SEUS DADOS</h2>
+      <p class="section-sub">Cada dado que coletamos tem uma finalidade específica e uma base legal prevista na LGPD (Art. 7º).</p>
+
+      <div class="priv-grid">
+        <div class="priv-card">
+          <span class="tag">Obrigação legal</span>
+          <h3>Registro de Hóspedes (FNRH)</h3>
+          <p>Seus dados de identificação, endereço e motivo da viagem são enviados ao <strong>Sistema Nacional de Registro de Hóspedes (SNRHos)</strong> do Ministério do Turismo, conforme exigência da Lei 11.771/2008 e Portaria MTur 41/2025. Esta coleta é obrigatória por lei e independe de consentimento.</p>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Execução de contrato</span>
+          <h3>Gestão da Reserva e Hospedagem</h3>
+          <p>Utilizamos seu nome, e-mail, datas e dados de pagamento para criar, confirmar e gerir sua reserva, processar o pagamento, emitir nota fiscal e comunicar informações essenciais da estadia (confirmação, check-in, check-out).</p>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Obrigação legal</span>
+          <h3>Nota Fiscal (NFS-e)</h3>
+          <p>O CPF ou CNPJ é utilizado para emissão da Nota Fiscal de Serviço Eletrônica (NFS-e), conforme exigência da legislação tributária brasileira. Os dados são transmitidos à prefeitura via provedor NFE.io e retidos pelo prazo legal de 5 anos.</p>
+        </div>
+
+        <div class="priv-card">
+          <span class="tag">Consentimento</span>
+          <h3>Comunicações de Marketing</h3>
+          <p>Somente com sua autorização expressa (opt-in, nunca pré-marcado), enviamos novidades, promoções e informações sobre a pousada. Você pode cancelar a qualquer momento respondendo ao e-mail ou nos contatando diretamente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Retenção -->
+  <section class="priv-section dark">
+    <div class="wrap">
+      <div class="section-eyebrow" style="color:var(--gold)">3. Retenção de Dados</div>
+      <h2 class="section-title">POR QUANTO TEMPO GUARDAMOS</h2>
+      <p class="section-sub">Mantemos seus dados apenas pelo tempo necessário para a finalidade declarada ou pelo prazo mínimo exigido por lei.</p>
+
+      <div class="priv-grid three">
+        <div class="priv-card">
+          <span class="tag">5 anos</span>
+          <h3>Dados da FNRH</h3>
+          <p>Nome, CPF, data de nascimento, endereço, datas de estadia e motivo da viagem são retidos por <strong>5 anos mínimos</strong>, conforme Lei 11.771/2008.</p>
+        </div>
+        <div class="priv-card">
+          <span class="tag">5 anos</span>
+          <h3>Nota Fiscal</h3>
+          <p>Registros fiscais (NFS-e) são mantidos por <strong>5 anos</strong> conforme exigência do Código Tributário Nacional (CTN, Art. 173).</p>
+        </div>
+        <div class="priv-card">
+          <span class="tag">Enquanto necessário</span>
+          <h3>Conta e Reservas</h3>
+          <p>Dados da sua conta (e-mail, senha, histórico de reservas) são mantidos enquanto sua conta estiver ativa. Após exclusão, são apagados em até 30 dias, salvo obrigações legais.</p>
+        </div>
+        <div class="priv-card">
+          <span class="tag">Sessão / 1 ano</span>
+          <h3>Cookies de Sessão</h3>
+          <p>Cookies essenciais de autenticação expiram ao fechar o navegador ou em até 1 ano, conforme configuração do provedor de autenticação (Supabase).</p>
+        </div>
+        <div class="priv-card">
+          <span class="tag">Até revogação</span>
+          <h3>Marketing</h3>
+          <p>Dados usados para marketing são mantidos enquanto você não revogar o consentimento. A revogação é imediata e sem custo.</p>
+        </div>
+        <div class="priv-card">
+          <span class="tag">Imediato</span>
+          <h3>Dados Desnecessários</h3>
+          <p>Quaisquer dados que percamos a finalidade de tratar são eliminados imediatamente, conforme Art. 16 da LGPD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Compartilhamento -->
+  <section class="priv-section">
+    <div class="wrap">
+      <div class="section-eyebrow">4. Compartilhamento</div>
+      <h2 class="section-title">COM QUEM COMPARTILHAMOS</h2>
+      <p class="section-sub">Não vendemos, alugamos ou cedemos seus dados a terceiros para fins comerciais. O compartilhamento ocorre apenas nos casos abaixo.</p>
+
+      <div class="priv-grid">
+        <div class="priv-card">
+          <h3>Ministério do Turismo (SNRHos)</h3>
+          <p>Dados da Ficha Nacional de Registro de Hóspedes são transmitidos ao sistema federal SNRHos por obrigação legal. A transmissão é criptografada e gerida diretamente pelo Governo Federal.</p>
+        </div>
+        <div class="priv-card">
+          <h3>Stripe — Pagamentos</h3>
+          <p>Os dados de pagamento são processados pelo Stripe, Inc., certificado PCI-DSS nível 1. O Stripe recebe o identificador da reserva e o valor. Nós não vemos nem armazenamos dados de cartão.</p>
+        </div>
+        <div class="priv-card">
+          <h3>NFE.io — Nota Fiscal</h3>
+          <p>Nome, CPF/CNPJ e valor da reserva são transmitidos à NFE.io para emissão da NFS-e junto à prefeitura de Pirenópolis. A NFE.io opera em conformidade com a LGPD.</p>
+        </div>
+        <div class="priv-card">
+          <h3>Supabase — Infraestrutura</h3>
+          <p>Os dados do site são armazenados na plataforma Supabase (PostgreSQL), com servidores no Brasil (região South America – São Paulo). A Supabase assina termos de confidencialidade e opera sob criptografia em repouso e em trânsito.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Seus Direitos -->
+  <section class="priv-section" style="background:linear-gradient(to bottom,#f8f6f1,#f3efe7);">
+    <div class="wrap">
+      <div class="section-eyebrow">5. Seus Direitos (LGPD Art. 18)</div>
+      <h2 class="section-title">VOCÊ TEM CONTROLE</h2>
+      <p class="section-sub">Como titular de dados, você possui os seguintes direitos, que podem ser exercidos gratuitamente a qualquer momento:</p>
+
+      <div class="rights-list">
+        <div class="right-item">
+          <div class="right-icon">📋</div>
+          <div class="right-text">
+            <strong>Acesso</strong>
+            <span>Saber quais dados temos sobre você e como os utilizamos.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">✏️</div>
+          <div class="right-text">
+            <strong>Correção</strong>
+            <span>Corrigir dados incompletos, inexatos ou desatualizados.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">🗑️</div>
+          <div class="right-text">
+            <strong>Eliminação</strong>
+            <span>Solicitar a exclusão de dados tratados com base em consentimento (exceto dados de retenção legal obrigatória).</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">📦</div>
+          <div class="right-text">
+            <strong>Portabilidade</strong>
+            <span>Receber seus dados em formato estruturado para transferir a outro fornecedor.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">🚫</div>
+          <div class="right-text">
+            <strong>Revogação de Consentimento</strong>
+            <span>Cancelar autorização de marketing a qualquer momento, sem custo ou penalidade.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">❓</div>
+          <div class="right-text">
+            <strong>Informação sobre Compartilhamento</strong>
+            <span>Saber com quais entidades públicas ou privadas seus dados são compartilhados.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">⚖️</div>
+          <div class="right-text">
+            <strong>Oposição ao Tratamento</strong>
+            <span>Opor-se a tratamentos realizados sem consentimento quando não houver justificativa legal adequada.</span>
+          </div>
+        </div>
+        <div class="right-item">
+          <div class="right-icon">🔍</div>
+          <div class="right-text">
+            <strong>Revisão de Decisões Automatizadas</strong>
+            <span>Solicitar revisão humana de decisões tomadas exclusivamente por sistemas automatizados que afetem seus interesses.</span>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top:28px;font-size:14.5px;color:var(--muted);line-height:1.85;">
+        Para exercer qualquer desses direitos, entre em contato pelo e-mail <a href="mailto:chateaupireneus@gmail.com" style="color:var(--navy);font-weight:600;">chateaupireneus@gmail.com</a> ou pelo WhatsApp <a href="https://wa.me/5562998167654" style="color:var(--navy);font-weight:600;">(62) 99816-7654</a>. Responderemos em até <strong>15 dias úteis</strong>, conforme prazo estabelecido pela ANPD.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. Segurança e Cookies -->
+  <section class="priv-section">
+    <div class="wrap">
+      <div class="section-eyebrow">6. Segurança e Cookies</div>
+      <h2 class="section-title">COMO PROTEGEMOS SEUS DADOS</h2>
+      <p class="section-sub">Adotamos medidas técnicas e administrativas para proteger seus dados contra acessos não autorizados, perdas ou vazamentos.</p>
+
+      <div class="priv-grid">
+        <div class="priv-card">
+          <h3>Medidas de Segurança</h3>
+          <ul>
+            <li>Comunicação criptografada via <strong>HTTPS/TLS</strong> em todo o site</li>
+            <li>Banco de dados com <strong>criptografia em repouso</strong> (AES-256)</li>
+            <li>Senhas armazenadas como <strong>hash bcrypt</strong> — nunca em texto legível</li>
+            <li>Controle de acesso por perfil — apenas administradores veem dados completos</li>
+            <li>Autenticação com tokens de sessão de curta duração</li>
+          </ul>
+        </div>
+
+        <div class="priv-card">
+          <h3>Cookies Utilizados</h3>
+          <p>Este site usa <strong>somente cookies essenciais</strong>:</p>
+          <ul>
+            <li><strong>sb-auth-token</strong> — mantém sua sessão de login ativa (Supabase Auth). Essencial para funcionamento da área do hóspede. Duração: sessão ou até 1 ano.</li>
+            <li><strong>cookie_consent</strong> — registra que você já viu o aviso de cookies. Duração: 1 ano.</li>
+          </ul>
+          <p style="margin-top:10px;">Não usamos Google Analytics, Meta Pixel, Hotjar ou qualquer ferramenta de rastreamento de terceiros.</p>
+        </div>
+      </div>
+
+      <div class="update-note">
+        <strong>Incidente de Segurança:</strong> Em caso de violação de dados que possa acarretar risco ou dano relevante aos titulares, comunicaremos os afetados e a ANPD no prazo de 72 horas da ciência do incidente, conforme Art. 48 da LGPD.
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Contato -->
+  <section class="priv-section dark">
+    <div class="wrap">
+      <div class="section-eyebrow" style="color:var(--gold)">7. Contato</div>
+      <h2 class="section-title">FALE CONOSCO</h2>
+      <p class="section-sub">Para exercer seus direitos, tirar dúvidas ou fazer reclamações sobre o tratamento dos seus dados:</p>
+
+      <div class="contact-box">
+        <h3>Pousada Chateau Pireneus</h3>
+        <p><strong>Encarregado pelo tratamento de dados (DPO):</strong><br>Responsável pelo Chateau Pireneus</p>
+        <p><strong>E-mail:</strong> <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a></p>
+        <p><strong>WhatsApp:</strong> <a href="https://wa.me/5562998167654">(62) 99816-7654</a></p>
+        <p><strong>Endereço:</strong> Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis – GO</p>
+        <p style="margin-top:12px;font-size:13px;color:rgba(22,37,58,.6);">
+          Se não ficar satisfeito com nossa resposta, você pode recorrer à <strong>ANPD (Autoridade Nacional de Proteção de Dados)</strong> em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener" style="color:var(--navy);">gov.br/anpd</a>.
+        </p>
+      </div>
+
+      <div class="update-note" style="margin-top:32px;">
+        <strong>Alterações nesta política:</strong> Reservamo-nos o direito de atualizar esta Política de Privacidade a qualquer momento. Alterações relevantes serão comunicadas por e-mail aos cadastrados ou mediante aviso destacado no site. Recomendamos revisitar periodicamente esta página. A data de última atualização está indicada no topo deste documento.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+        <div style="margin-top:10px;font-size:13px;opacity:.75;">
+          <a href="policies.html" style="color:inherit;margin-right:16px;">Políticas da Pousada</a>
+          <a href="privacidade.html" style="color:inherit;">Política de Privacidade</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const supabaseClient = window.supabaseClient
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const open = forceOpen === true || (forceOpen === undefined && !menu.classList.contains("open"))
+      menu.classList.toggle("open", open)
+      if(backdrop) backdrop.classList.toggle("open", open)
+    }
+    window.toggleMenu = toggleMenu
+  </script>
+  <script src="cookie-consent.js"></script>
+</body>
+</html>

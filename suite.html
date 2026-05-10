@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -1327,6 +1327,7 @@
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
   </nav>
 
   <header class="top-header presolid">
@@ -1455,6 +1456,31 @@
                 <div class="b-note-box">Check-in das 12h às 19h.<br>Check-out até 12h.</div>
               </div>
 
+              <!-- FNRH fields — shown only when missing from profile -->
+              <div class="b-field full" id="bFnrhBlock" style="display:none">
+                <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(29,53,87,0.09);">
+                  Dados obrigatórios para o Registro de Hóspedes (FNRH — Lei 11.771/2008)
+                </div>
+
+                <div id="bDobWrap" style="display:none;margin-bottom:12px;">
+                  <label for="b_dob" style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Data de nascimento</label>
+                  <input type="date" id="b_dob" style="width:100%;box-sizing:border-box;" autocomplete="bday" />
+                </div>
+
+                <div id="bNationalityWrap" style="display:none;margin-bottom:12px;">
+                  <label for="b_nationality" style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Nacionalidade</label>
+                  <input type="text" id="b_nationality" placeholder="Brasileira" value="Brasileira" style="width:100%;box-sizing:border-box;" autocomplete="off" />
+                </div>
+
+                <div id="bAddressWrap" style="display:none;margin-bottom:12px;">
+                  <label style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Cidade e estado de origem</label>
+                  <div style="display:grid;grid-template-columns:1fr 80px;gap:8px;">
+                    <input type="text" id="b_address_city" placeholder="Cidade" autocomplete="address-level2" style="width:100%;box-sizing:border-box;" />
+                    <input type="text" id="b_address_state" placeholder="UF" maxlength="2" autocomplete="address-level1" style="width:100%;box-sizing:border-box;text-transform:uppercase;" />
+                  </div>
+                </div>
+              </div>
+
               <div class="b-field full" id="bCpfField" style="display:none">
                 <label for="b_cpf_cnpj">CPF ou CNPJ <span style="font-weight:400;font-size:12px;opacity:.7">(necessário para nota fiscal)</span></label>
                 <input type="text" id="b_cpf_cnpj" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" autocomplete="off" />
@@ -1462,7 +1488,21 @@
               </div>
 
               <div class="b-field full">
+                <label for="b_purpose">Motivo da viagem</label>
+                <select id="b_purpose">
+                  <option value="Turismo">Turismo / Lazer</option>
+                  <option value="Negócios">Negócios</option>
+                  <option value="Eventos">Eventos</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+
+              <div class="b-field full">
                 <button type="submit" class="b-submit-btn" id="bSubmitBtn" disabled>CONFIRMAR SOLICITAÇÃO</button>
+                <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0;text-align:center;">
+                  Ao reservar, você concorda com nossa <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a>.
+                  Seus dados são coletados nos termos da LGPD e da Lei 11.771/2008.
+                </p>
               </div>
             </div>
           </form>
@@ -1998,8 +2038,12 @@
     const bAvailabilityStatus = document.getElementById("bAvailabilityStatus");
     const bSubmitBtn = document.getElementById("bSubmitBtn");
     const bGuestsInput = document.getElementById("b_guests");
-    const bCpfField = document.getElementById("bCpfField");
-    const bCpfInput = document.getElementById("b_cpf_cnpj");
+    const bFnrhBlock  = document.getElementById("bFnrhBlock");
+    const bDobWrap    = document.getElementById("bDobWrap");
+    const bNatWrap    = document.getElementById("bNationalityWrap");
+    const bAddrWrap   = document.getElementById("bAddressWrap");
+    const bCpfField   = document.getElementById("bCpfField");
+    const bCpfInput   = document.getElementById("b_cpf_cnpj");
     const bSummaryRoom = document.getElementById("bSummaryRoom");
     const bSummaryCheckIn = document.getElementById("bSummaryCheckIn");
     const bSummaryCheckOut = document.getElementById("bSummaryCheckOut");
@@ -2285,17 +2329,26 @@
         return;
       }
 
-      // Check if guest has CPF/CNPJ — show field if missing
+      // Load profile — show FNRH fields for anything missing
       const { data: profileData } = await sb
         .from("profiles")
-        .select("cpf_cnpj")
+        .select("cpf_cnpj, date_of_birth, nationality, address_city, address_state")
         .eq("id", userData.user.id)
         .single();
 
-      const hasCpf = profileData?.cpf_cnpj && profileData.cpf_cnpj.replace(/\D/g,"").length >= 11;
-      if (!hasCpf && bCpfField) bCpfField.style.display = "block";
+      const hasCpf  = profileData?.cpf_cnpj && profileData.cpf_cnpj.replace(/\D/g,"").length >= 11;
+      const hasDob  = !!profileData?.date_of_birth;
+      const hasNat  = !!profileData?.nationality;
+      const hasAddr = !!(profileData?.address_city && profileData?.address_state);
 
-      // If CPF field is visible, validate and save before proceeding
+      let fnrhVisible = false;
+      if (!hasCpf)  { if(bCpfField)  bCpfField.style.display  = "block"; fnrhVisible = true; }
+      if (!hasDob)  { if(bDobWrap)   bDobWrap.style.display    = "block"; fnrhVisible = true; }
+      if (!hasNat)  { if(bNatWrap)   bNatWrap.style.display    = "block"; fnrhVisible = true; }
+      if (!hasAddr) { if(bAddrWrap)  bAddrWrap.style.display   = "block"; fnrhVisible = true; }
+      if (fnrhVisible && bFnrhBlock) bFnrhBlock.style.display = "block";
+
+      // Validate and save CPF/CNPJ if shown
       if (bCpfField && bCpfField.style.display !== "none") {
         const cpfVal = bCpfInput ? bCpfInput.value.trim() : "";
         if (cpfVal) {
@@ -2306,8 +2359,19 @@
             bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
             return;
           }
-          await sb.from("profiles").update({ cpf_cnpj: cpfVal }).eq("id", userData.user.id);
         }
+      }
+
+      // Collect and save all new FNRH profile data
+      const profileUpdate = {};
+      if (!hasCpf && bCpfInput?.value.trim())                           profileUpdate.cpf_cnpj       = bCpfInput.value.trim();
+      if (!hasDob  && document.getElementById("b_dob")?.value)          profileUpdate.date_of_birth  = document.getElementById("b_dob").value;
+      if (!hasNat  && document.getElementById("b_nationality")?.value)  profileUpdate.nationality    = document.getElementById("b_nationality").value;
+      if (!hasAddr && document.getElementById("b_address_city")?.value) profileUpdate.address_city   = document.getElementById("b_address_city").value;
+      if (!hasAddr && document.getElementById("b_address_state")?.value)profileUpdate.address_state  = document.getElementById("b_address_state").value.toUpperCase();
+
+      if (Object.keys(profileUpdate).length) {
+        await sb.from("profiles").update(profileUpdate).eq("id", userData.user.id);
       }
 
       const { data: sessionData } = await sb.auth.getSession();
@@ -2334,6 +2398,14 @@
         bSubmitBtn.disabled = false;
         bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
         return;
+      }
+
+      // Save purpose of visit (FNRH requirement) to the reservation
+      const purposeSelect = document.getElementById("b_purpose");
+      if (purposeSelect && reservationId) {
+        await sb.from("reservations")
+          .update({ purpose_of_visit: purposeSelect.value })
+          .eq("id", reservationId);
       }
 
       setStatus("success", "Reserva criada. Redirecionando para pagamento...");
@@ -2366,5 +2438,6 @@
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
     <span class="fab-label">Fale conosco</span>
   </a>
+  <script src="cookie-consent.js"></script>
 </body>
 </html>

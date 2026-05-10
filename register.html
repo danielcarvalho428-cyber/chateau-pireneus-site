@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -527,6 +527,7 @@
     <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
     <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
   </nav>
 
   <header class="top-header" id="topHeader">
@@ -596,8 +597,38 @@
           </div>
 
           <div class="field">
-            <label for="cpfCnpj">CPF ou CNPJ <span style="font-weight:400;color:var(--muted);font-size:12px">(opcional — para nota fiscal)</span></label>
+            <label for="cpfCnpj">CPF ou CNPJ <span style="font-weight:400;color:var(--muted);font-size:12px">(para nota fiscal)</span></label>
             <input type="text" id="cpfCnpj" autocomplete="off" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" />
+          </div>
+
+          <div class="field">
+            <label for="dateOfBirth">Data de nascimento <span style="font-weight:400;color:var(--muted);font-size:12px">(obrigatório por lei para hóspedes)</span></label>
+            <input type="date" id="dateOfBirth" autocomplete="bday" />
+          </div>
+
+          <div class="field">
+            <label for="nationality">Nacionalidade</label>
+            <input type="text" id="nationality" autocomplete="off" placeholder="Brasileira" value="Brasileira" />
+          </div>
+
+          <div class="field">
+            <label for="addressCity">Cidade de origem</label>
+            <input type="text" id="addressCity" autocomplete="address-level2" placeholder="Ex: Brasília" />
+          </div>
+
+          <div class="field">
+            <label for="addressState">Estado <span style="font-weight:400;color:var(--muted);font-size:12px">(sigla)</span></label>
+            <input type="text" id="addressState" autocomplete="address-level1" maxlength="2" placeholder="Ex: DF" style="text-transform:uppercase" />
+          </div>
+
+          <div class="field" style="padding:14px 0 6px;border-top:1px solid rgba(29,53,87,0.09);margin-top:4px">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-weight:400;">
+              <input type="checkbox" id="marketingConsent" style="margin-top:3px;flex-shrink:0;accent-color:var(--navy);width:16px;height:16px;" />
+              <span style="font-size:13.5px;line-height:1.65;color:var(--muted);">
+                Quero receber novidades, promoções e informações sobre a pousada por e-mail.
+                <em style="display:block;font-style:normal;font-size:12px;margin-top:3px;opacity:.75;">Você pode cancelar a qualquer momento.</em>
+              </span>
+            </label>
           </div>
 
           <div class="helper-row">
@@ -606,6 +637,14 @@
           </div>
 
           <button type="submit" id="submitBtn" class="submit-btn">CRIAR CONTA</button>
+
+          <p style="font-size:12px;color:var(--muted);line-height:1.65;margin:14px 0 0;text-align:center;">
+            Ao criar conta, você concorda com nossas
+            <a href="policies.html" style="color:var(--navy);">Políticas da Pousada</a> e
+            <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a>.
+            Os dados obrigatórios (nome, CPF, data de nascimento, endereço) são coletados nos termos
+            da Lei 11.771/2008 (FNRH) e da LGPD.
+          </p>
         </form>
 
         <div id="statusBox" class="status-box info">
@@ -782,12 +821,19 @@
       }
 
       if (data.session) {
-        // Save CPF/CNPJ to profile if provided
-        if (cpfCnpjValue && data.user) {
-          await supabaseClient
-            .from("profiles")
-            .update({ cpf_cnpj: cpfCnpjValue })
-            .eq("id", data.user.id)
+        // Save all profile fields collected at registration
+        if (data.user) {
+          const profileUpdate = {}
+          if (cpfCnpjValue)                                      profileUpdate.cpf_cnpj          = cpfCnpjValue
+          if (document.getElementById("dateOfBirth").value)     profileUpdate.date_of_birth      = document.getElementById("dateOfBirth").value
+          if (document.getElementById("nationality").value)     profileUpdate.nationality         = document.getElementById("nationality").value
+          if (document.getElementById("addressCity").value)     profileUpdate.address_city        = document.getElementById("addressCity").value
+          if (document.getElementById("addressState").value)    profileUpdate.address_state       = document.getElementById("addressState").value.toUpperCase()
+          profileUpdate.marketing_consent = document.getElementById("marketingConsent").checked
+
+          if (Object.keys(profileUpdate).length) {
+            await supabaseClient.from("profiles").update(profileUpdate).eq("id", data.user.id)
+          }
         }
 
         setStatus("success", "Conta criada com sucesso. Redirecionando...")
@@ -822,5 +868,6 @@
 
     window.toggleMenu = toggleMenu
   </script>
+  <script src="cookie-consent.js"></script>
 </body>
 </html>

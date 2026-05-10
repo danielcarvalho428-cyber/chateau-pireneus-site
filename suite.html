@@ -64,6 +64,8 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
   <style>
@@ -86,7 +88,7 @@
       min-height:72vh;
       background:
         linear-gradient(to bottom, rgba(0,0,0,0.52), rgba(0,0,0,0.34), rgba(0,0,0,0.56)),
-        url("hero.jpg.webp") center/cover no-repeat;
+        url("hero.webp") center/cover no-repeat;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -1376,7 +1378,7 @@
       <section aria-label="Galeria da suíte" id="suiteDetails">
         <div class="gallery-card">
           <div class="carousel-box">
-            <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte">
+            <img id="heroImg" class="hero-img" src="public/suites/divino/divino1.jpeg" alt="Foto da suíte" fetchpriority="high" decoding="async">
             <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
             <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
           </div>
@@ -1894,7 +1896,7 @@
 
       const waBtn = document.getElementById("waBtn");
       const msg = encodeURIComponent(room.whatsappMessage || `Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`);
-      waBtn.href = `https://wa.me/5562998167654?text=${msg}`;
+      waBtn.href = `https://wa.me/${window.WA_NUMBER}?text=${msg}`;
 
       const heroImg = document.getElementById("heroImg");
       const dotsWrap = document.getElementById("dots");
@@ -1910,10 +1912,19 @@
         )).join("");
       }
 
+      function preloadAdjacentPhotos(idx){
+        const n = room.photos.length;
+        [1, -1].forEach(offset => {
+          const link = new Image();
+          link.src = room.photos[(idx + offset + n) % n];
+        });
+      }
+
       function setActive(idx){
         i = idx;
         heroImg.src = room.photos[i];
         heroImg.alt = `Foto da ${room.name} (${i + 1}/${room.photos.length})`;
+        preloadAdjacentPhotos(i);
 
         Array.from(dotsWrap.querySelectorAll(".dot")).forEach((d, di) => {
           d.classList.toggle("active", di === i);
@@ -1939,6 +1950,12 @@
       setActive(0);
       restartTimer();
 
+      const carouselBox = document.querySelector(".carousel-box");
+      if(carouselBox){
+        carouselBox.addEventListener("mouseenter", ()=> { if(timer) clearInterval(timer); });
+        carouselBox.addEventListener("mouseleave", restartTimer);
+      }
+
       nextBtn.addEventListener("click", () => { next(); restartTimer(); });
       prevBtn.addEventListener("click", () => { prev(); restartTimer(); });
 
@@ -1958,83 +1975,6 @@
     })();
   </script>
 
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const headerLoginBtn = document.getElementById("headerLoginBtn");
-    const headerDashboardBtn = document.getElementById("headerDashboardBtn");
-    const headerLogoutBtn = document.getElementById("headerLogoutBtn");
-
-    const sideLoggedOut = document.getElementById("sideLoggedOut");
-    const sideLoggedIn = document.getElementById("sideLoggedIn");
-    const sideLoginLink = document.getElementById("sideLoginLink");
-    const sideLogoutBtn = document.getElementById("sideLogoutBtn");
-
-    function getCurrentReturnTo() {
-      return `${window.location.pathname}${window.location.search}${window.location.hash}`;
-    }
-
-    function getLoginHref() {
-      return `login.html?return_to=${encodeURIComponent(getCurrentReturnTo())}`;
-    }
-
-    function renderAuth(session) {
-      const isLoggedIn = !!session?.user;
-
-      if (headerLoginBtn) {
-        headerLoginBtn.style.display = isLoggedIn ? "none" : "inline-flex";
-        headerLoginBtn.href = getLoginHref();
-      }
-
-      if (headerDashboardBtn) {
-        headerDashboardBtn.style.display = isLoggedIn ? "inline-flex" : "none";
-      }
-
-      if (headerLogoutBtn) {
-        headerLogoutBtn.style.display = isLoggedIn ? "inline-flex" : "none";
-      }
-
-      if (sideLoggedOut) {
-        sideLoggedOut.style.display = isLoggedIn ? "none" : "block";
-      }
-
-      if (sideLoggedIn) {
-        sideLoggedIn.style.display = isLoggedIn ? "block" : "none";
-      }
-
-      if (sideLoginLink) {
-        sideLoginLink.href = getLoginHref();
-      }
-    }
-
-    async function logoutUser() {
-      try {
-        await supabase.auth.signOut();
-      } catch (error) {
-        console.error("Erro ao sair:", error);
-      } finally {
-        window.location.href = "index.html";
-      }
-    }
-
-    headerLogoutBtn?.addEventListener("click", logoutUser);
-    sideLogoutBtn?.addEventListener("click", async () => {
-      toggleMenu(false);
-      await logoutUser();
-    });
-
-    const { data: { session } } = await supabase.auth.getSession();
-    renderAuth(session);
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      renderAuth(session);
-    });
-  </script>
 
   <script defer>
   (function waitForDeps() {
@@ -2043,11 +1983,8 @@
       return;
     }
 
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
-    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
-    const { createClient } = supabase;
-    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const sb = window.supabaseClient;
+    const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe";
 
     const roomId = window._suiteRoomId;
     const roomName = window._suiteRoomName;
@@ -2354,7 +2291,7 @@
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer " + accessToken,
-          "apikey": SUPABASE_KEY
+          "apikey": window.SUPABASE_KEY
         },
         body: JSON.stringify({ reservation_id: reservationId })
       });

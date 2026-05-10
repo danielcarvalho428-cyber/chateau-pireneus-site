@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pagamento não concluído | Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="supabase-config.js"></script>
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: "Inter", sans-serif;
       background: #f7f4ef;
       color: #222;
       min-height: 100vh;
@@ -113,8 +117,6 @@
   </div>
 
   <script>
-    var SUPABASE_PROJECT_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
-
     var reservationBox = document.getElementById("reservationBox");
     var retryLink = document.getElementById("retryLink");
     var statusText = document.getElementById("statusText");
@@ -134,8 +136,8 @@
     } else {
       reservationBox.innerHTML = "<strong>Reserva:</strong> " + reservationId;
       retryLink.href =
-        SUPABASE_PROJECT_URL +
-        "/functions/v1/checkoutstripe?reservation_id=" +
+        window.FUNCTIONS_URL +
+        "/checkoutstripe?reservation_id=" +
         encodeURIComponent(reservationId);
       statusText.textContent = "Página carregada com sucesso.";
     }

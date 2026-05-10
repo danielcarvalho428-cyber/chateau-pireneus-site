@@ -36,13 +36,13 @@
   <link rel="shortcut icon" href="chateau-logo.png" />
   <link rel="apple-touch-icon" href="chateau-logo.png" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
   <style>
     body{
       margin:0;
-      font-family:Georgia, serif;
+      font-family:"Inter",sans-serif;
       background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
       color:var(--navy);
       overflow-x:hidden;
@@ -51,7 +51,7 @@
     .hero{
       min-height:92vh;
       position:relative;
-      background-image:url("hero.jpg.webp");
+      background-image:url("hero.webp");
       background-size:cover;
       background-position:center;
       display:flex;
@@ -606,7 +606,7 @@
   </section>
 
   <footer>
-    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
 
     <div class="footer-overlay">
       <div class="footer-contact">
@@ -618,13 +618,10 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script>
-    const { createClient } = supabase
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+    const supabaseClient = window.supabaseClient
 
     const topHeader = document.getElementById("topHeader")
     const statusBox = document.getElementById("statusBox")

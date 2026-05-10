@@ -31,7 +31,7 @@
     .hero{
       min-height:92vh;
       position:relative;
-      background-image:url("hero.jpg.webp");
+      background-image:url("hero.webp");
       background-size:cover;
       background-position:center;
       display:flex;
@@ -951,7 +951,7 @@
   </section>
 
   <footer>
-    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
 
     <div class="footer-overlay">
       <div class="footer-contact">
@@ -963,14 +963,11 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script>
-    const { createClient } = supabase
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-    const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe"
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+    const supabaseClient = window.supabaseClient
+    const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe"
 
     let currentUser = null
     let allReservations = []
@@ -1305,7 +1302,7 @@
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${accessToken}`,
-            "apikey": SUPABASE_PUBLISHABLE_KEY
+            "apikey": window.SUPABASE_KEY
           },
           body: JSON.stringify({
             reservation_id: reservationId

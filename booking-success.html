@@ -6,6 +6,8 @@
   <title>Status da Reserva | Chateau Pireneus</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -390,12 +392,8 @@
 
   <script>
     (function () {
-      const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
-      const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
-      const CHECKOUTSTRIPE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co/functions/v1/checkoutstripe";
-
-      const { createClient } = supabase;
-      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+      const supabaseClient = window.supabaseClient;
+      const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe";
 
       function getParam(name) {
         const params = new URLSearchParams(window.location.search);
@@ -669,7 +667,7 @@
             headers: {
               "Content-Type": "application/json",
               "Authorization": `Bearer ${accessToken}`,
-              "apikey": SUPABASE_PUBLISHABLE_KEY
+              "apikey": window.SUPABASE_KEY
             },
             body: JSON.stringify({
               reservation_id: reservationId

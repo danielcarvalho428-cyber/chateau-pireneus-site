@@ -32,6 +32,8 @@
   <meta name="twitter:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
 
@@ -49,7 +51,7 @@
     .hero{
       min-height:88vh;
       position:relative;
-      background-image:url("hero.jpg.webp");
+      background-image:url("hero.webp");
       background-size:cover;
       background-position:center;
       display:flex;
@@ -1157,7 +1159,7 @@
   </section>
 
   <footer>
-    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
     <div class="footer-overlay">
       <div class="footer-contact">
         <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
@@ -1168,11 +1170,7 @@
   </footer>
 
   <script>
-    const { createClient } = supabase;
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ";
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const supabaseClient = window.supabaseClient;
 
     const topHeader = document.getElementById("topHeader");
 

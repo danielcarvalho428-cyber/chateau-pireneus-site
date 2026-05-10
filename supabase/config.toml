@@ -1,0 +1,9 @@
+[project]
+id = "pjxurbtvmzdlpnexfqpd"
+
+[functions.sync-airbnb-calendars]
+# Runs every 6 hours — syncs all rooms that have an Airbnb iCal URL
+cron = "0 */6 * * *"
+
+[functions.stripewebhook]
+# No cron — triggered by Stripe webhook events only

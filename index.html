@@ -41,7 +41,7 @@
       "description": "Hospedagem exclusiva em Pirenópolis com charme, conforto e uma experiência acolhedora no Chateau Pireneus.",
       "image": [
         "https://chateaupireneus.com.br/chateau-logo.png",
-        "https://chateaupireneus.com.br/hero.jpg.webp"
+        "https://chateaupireneus.com.br/hero.webp"
       ],
       "telephone": "+55 62 99816-7654",
       "email": "chateaupireneus@gmail.com",
@@ -58,7 +58,7 @@
     }
   </script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
   <style>
@@ -66,7 +66,7 @@
 
     body{
       margin:0;
-      font-family:Georgia, serif;
+      font-family:"Inter",sans-serif;
       background:var(--bg);
       color:var(--navy);
       overflow-x:hidden;
@@ -75,7 +75,7 @@
     .hero{
       height:100vh;
       position:relative;
-      background-image:url("hero.jpg.webp");
+      background-image:url("hero.webp");
       background-size:cover;
       background-position:center;
       display:flex;
@@ -1113,7 +1113,7 @@
       <div class="welcome-shell">
         <div class="welcome-head">
           <div class="welcome-logo" aria-hidden="true">
-            <img loading="lazy" src="Chateau - 4.png.png" alt="Chateau Pireneus">
+            <img loading="lazy" src="chateau-4.png" alt="Chateau Pireneus">
           </div>
 
           <div class="welcome-heading">
@@ -1338,7 +1338,7 @@
   </section>
 
   <footer>
-    <img loading="lazy" class="footer-bg" src="footer png.png" alt="Footer Chateau Pireneus">
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
 
     <div class="footer-overlay">
       <div class="footer-contact">
@@ -1357,13 +1357,10 @@
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <script>
-    const { createClient } = supabase
-
-    const SUPABASE_URL = "https://pjxurbtvmzdlpnexfqpd.supabase.co"
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_P4NaItGPbofham7Uvz-3OQ_B-MkJVBZ"
-
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+    const supabaseClient = window.supabaseClient
 
     const topHeader = document.getElementById("topHeader")
     const accountActionBtn = document.getElementById("accountActionBtn")
@@ -1482,12 +1479,19 @@
     syncCarouselMode()
     startAutoSlide()
 
+    const carouselEl = document.querySelector(".carousel")
+    if(carouselEl){
+      carouselEl.addEventListener("mouseenter", ()=> clearInterval(autoSlideTimer))
+      carouselEl.addEventListener("mouseleave", startAutoSlide)
+    }
+
     const ambienteSliders = document.querySelectorAll(".ambiente-slider")
 
     ambienteSliders.forEach((slider)=>{
       const slides = slider.querySelectorAll(".gallery-slide")
       const dots = slider.querySelectorAll(".gallery-dot")
       let current = 0
+      let sliderTimer = null
 
       function showSlide(i){
         slides.forEach((slide, index)=>{
@@ -1499,17 +1503,25 @@
         current = i
       }
 
+      function startSlider(){
+        clearInterval(sliderTimer)
+        sliderTimer = setInterval(()=>{
+          let next = current + 1
+          if(next >= slides.length) next = 0
+          showSlide(next)
+        }, 4200)
+      }
+
       dots.forEach((dot, index)=>{
         dot.addEventListener("click", ()=>{
           showSlide(index)
         })
       })
 
-      setInterval(()=>{
-        let next = current + 1
-        if(next >= slides.length) next = 0
-        showSlide(next)
-      }, 4200)
+      slider.addEventListener("mouseenter", ()=> clearInterval(sliderTimer))
+      slider.addEventListener("mouseleave", startSlider)
+
+      startSlider()
     })
 
 

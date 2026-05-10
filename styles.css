@@ -426,30 +426,22 @@ img{ max-width:100%; display:block; }
 
 footer{
   position:relative;
-  min-height:132px;
-  max-height:132px;
-  overflow:hidden;
   margin-top:0;
   background:#032c52;
 }
 
 .footer-bg{
-  position:absolute;
-  top:50%;
-  left:35%;
-  transform:translate(-50%, -50%);
-  width:430px;
-  max-width:48vw;
-  height:auto;
   display:block;
-  opacity:0.98;
-  pointer-events:none;
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  object-position:left center;
 }
 
 .footer-overlay{
-  position:relative;
+  position:absolute;
+  inset:0;
   z-index:2;
-  min-height:132px;
   display:flex;
   align-items:center;
   justify-content:flex-end;
@@ -482,17 +474,7 @@ footer{
    ============================================================ */
 
 @media (max-width:980px){
-  footer{
-    min-height:148px;
-    max-height:none;
-  }
-  .footer-bg{
-    left:28%;
-    width:330px;
-    max-width:44vw;
-  }
   .footer-overlay{
-    min-height:148px;
     padding:14px 20px;
   }
   .footer-contact{
@@ -542,19 +524,13 @@ footer{
     padding:8px 10px;
   }
 
-  footer{ min-height:170px; }
   .footer-bg{
-    top:36px;
-    left:50%;
-    transform:translateX(-50%);
-    width:220px;
-    max-width:none;
+    height:120px;
   }
   .footer-overlay{
-    min-height:170px;
     justify-content:center;
     align-items:flex-end;
-    padding:80px 16px 14px;
+    padding:16px;
   }
   .footer-contact{
     width:100%;

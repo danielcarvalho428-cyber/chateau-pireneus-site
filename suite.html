@@ -1544,6 +1544,29 @@
               <span>Total</span>
               <span id="bSummaryTotal">A definir</span>
             </div>
+            <div id="bPromoDiscountRow" class="b-summary-line" style="display:none;color:#2a7a4b;font-weight:600;">
+              <span>Desconto (<span id="bPromoCodeLabel"></span>)</span>
+              <span id="bPromoDiscountValue"></span>
+            </div>
+            <div id="bPromoFinalRow" class="b-summary-total" style="display:none;border-top:2px solid #2a7a4b;color:#2a7a4b;">
+              <span>Total com desconto</span>
+              <span id="bPromoFinalTotal"></span>
+            </div>
+          </div>
+
+          <div class="b-info-card" style="padding:0;">
+            <div style="padding:16px 18px 12px;">
+              <strong style="font-size:13px;display:block;margin-bottom:10px;">Código promocional</strong>
+              <div style="display:flex;gap:8px;">
+                <input id="bPromoInput" type="text" placeholder="Ex: CHATEAU10" autocomplete="off" autocapitalize="characters"
+                  style="flex:1;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;outline:none;text-transform:uppercase;" />
+                <button id="bPromoBtn" type="button"
+                  style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;white-space:nowrap;">
+                  Aplicar
+                </button>
+              </div>
+              <p id="bPromoMsg" style="margin:8px 0 0;font-size:12.5px;min-height:18px;"></p>
+            </div>
           </div>
 
           <div class="b-info-card">
@@ -2081,8 +2104,72 @@
     let datePicker = null;
     let currentQuote = null;
     let currentMinStayViolated = false;
+    let appliedPromo = null; // { code, promo_id, discount_amount, final_amount }
 
     if(bSummaryRoom) bSummaryRoom.textContent = roomName || "—";
+
+    // Promo code UI
+    const bPromoInput        = document.getElementById("bPromoInput");
+    const bPromoBtn          = document.getElementById("bPromoBtn");
+    const bPromoMsg          = document.getElementById("bPromoMsg");
+    const bPromoDiscountRow  = document.getElementById("bPromoDiscountRow");
+    const bPromoFinalRow     = document.getElementById("bPromoFinalRow");
+    const bPromoCodeLabel    = document.getElementById("bPromoCodeLabel");
+    const bPromoDiscountVal  = document.getElementById("bPromoDiscountValue");
+    const bPromoFinalTotal   = document.getElementById("bPromoFinalTotal");
+
+    function clearPromo() {
+      appliedPromo = null;
+      bPromoDiscountRow.style.display = "none";
+      bPromoFinalRow.style.display = "none";
+      bPromoMsg.style.color = "";
+      bPromoMsg.textContent = "";
+    }
+
+    bPromoInput.addEventListener("input", function() {
+      if (appliedPromo) clearPromo();
+    });
+
+    bPromoBtn.addEventListener("click", async function() {
+      const code = bPromoInput.value.trim().toUpperCase();
+      if (!code) return;
+      if (!currentQuote || !currentQuote.total_price) {
+        bPromoMsg.style.color = "#c0392b";
+        bPromoMsg.textContent = "Selecione as datas primeiro.";
+        return;
+      }
+      bPromoBtn.disabled = true;
+      bPromoBtn.textContent = "...";
+      bPromoMsg.style.color = "";
+      bPromoMsg.textContent = "";
+
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const res = await fetch(window.FUNCTIONS_URL + "/validate-promo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "apikey": window.SUPABASE_KEY },
+        body: JSON.stringify({ code, total_amount: currentQuote.total_price, nights })
+      });
+      const data = await res.json().catch(() => null);
+
+      bPromoBtn.disabled = false;
+      bPromoBtn.textContent = "Aplicar";
+
+      if (!data || !data.valid) {
+        bPromoMsg.style.color = "#c0392b";
+        bPromoMsg.textContent = data?.error || "Código inválido.";
+        clearPromo();
+        return;
+      }
+
+      appliedPromo = data;
+      bPromoCodeLabel.textContent = data.code;
+      bPromoDiscountVal.textContent = "− " + formatCurrency(data.discount_amount);
+      bPromoFinalTotal.textContent = formatCurrency(data.final_amount);
+      bPromoDiscountRow.style.display = "";
+      bPromoFinalRow.style.display = "";
+      bPromoMsg.style.color = "#2a7a4b";
+      bPromoMsg.textContent = "Código aplicado! " + (data.description || "");
+    });
 
     // CPF/CNPJ mask
     if(bCpfInput) {
@@ -2231,6 +2318,7 @@
             if (co > ci) {
               selectedCheckIn = ci;
               selectedCheckOut = co;
+              clearPromo();
               setStatus("info", "Calculando valores...");
               await refreshQuote();
               if (!currentMinStayViolated && currentQuote) {
@@ -2430,6 +2518,9 @@
 
       setStatus("success", "Reserva criada. Redirecionando para pagamento...");
 
+      const checkoutBody = { reservation_id: reservationId };
+      if (appliedPromo?.code) checkoutBody.promo_code = appliedPromo.code;
+
       const checkoutRes = await fetch(CHECKOUTSTRIPE_URL, {
         method: "POST",
         headers: {
@@ -2437,7 +2528,7 @@
           "Authorization": "Bearer " + accessToken,
           "apikey": window.SUPABASE_KEY
         },
-        body: JSON.stringify({ reservation_id: reservationId })
+        body: JSON.stringify(checkoutBody)
       });
 
       const checkoutData = await checkoutRes.json().catch(function() { return null; });

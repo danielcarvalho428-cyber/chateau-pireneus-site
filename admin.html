@@ -1221,6 +1221,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           RELATÓRIOS
         </button>
+        <button class="tab-btn" data-tab="promos" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          PROMOS
+        </button>
       </div>
 
       <div class="tab-panel active" id="tab-pricing">
@@ -1508,6 +1512,72 @@
           </div>
         </div>
       </div><!-- /tab-panel relatorios -->
+
+      <div class="tab-panel" id="tab-promos">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <span class="panel-kicker">Descontos e cupons</span>
+              <h2 class="panel-title">CÓDIGOS PROMOCIONAIS</h2>
+              <p class="panel-subtitle">Crie e gerencie cupons de desconto para hóspedes.</p>
+            </div>
+          </div>
+
+          <!-- Create form -->
+          <div style="background:rgba(29,53,87,0.04);border-radius:12px;padding:24px 28px;margin-bottom:32px;">
+            <h3 style="margin:0 0 18px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--navy);">Novo código</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Código *</label>
+                <input id="promoCode" type="text" placeholder="CHATEAU10" autocapitalize="characters"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;text-transform:uppercase;" />
+              </div>
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Tipo *</label>
+                <select id="promoType" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
+                  <option value="percentage">Porcentagem (%)</option>
+                  <option value="fixed">Valor fixo (R$)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Valor *</label>
+                <input id="promoValue" type="number" min="0.01" step="0.01" placeholder="10"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
+              </div>
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Válido até</label>
+                <input id="promoValidUntil" type="date"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
+              </div>
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Máx. usos</label>
+                <input id="promoMaxUses" type="number" min="1" step="1" placeholder="Ilimitado"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
+              </div>
+              <div>
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Mín. noites</label>
+                <input id="promoMinNights" type="number" min="1" step="1" placeholder="Sem mínimo"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
+              </div>
+              <div style="grid-column:1/-1;">
+                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Descrição (aparece no e-mail do hóspede)</label>
+                <input id="promoDesc" type="text" placeholder="Ex: Desconto de boas-vindas"
+                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:16px;">
+              <button id="promoCreateBtn" type="button" class="quick-action-btn" style="background:var(--navy);color:#d8c7a1;padding:11px 28px;">Criar código</button>
+              <span id="promoCreateMsg" style="font-size:13px;"></span>
+            </div>
+          </div>
+
+          <!-- List -->
+          <h3 style="margin:0 0 14px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--navy);opacity:.7;">Códigos ativos</h3>
+          <div id="promoList" style="display:flex;flex-direction:column;gap:10px;">
+            <div style="color:#888;font-size:14px;">Carregando...</div>
+          </div>
+        </div>
+      </div><!-- /tab-panel promos -->
     </div>
   </section>
 
@@ -2669,6 +2739,105 @@
         }
       });
     }
+
+    // ── Promo codes management ───────────────────────────────────────────────
+
+    async function loadPromos() {
+      const list = document.getElementById("promoList");
+      const { data, error } = await supabaseClient
+        .from("promo_codes")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error || !data) {
+        list.innerHTML = '<div style="color:#c0392b;font-size:14px;">Erro ao carregar códigos.</div>';
+        return;
+      }
+      if (data.length === 0) {
+        list.innerHTML = '<div style="color:#888;font-size:14px;">Nenhum código cadastrado.</div>';
+        return;
+      }
+
+      const fmt = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+
+      list.innerHTML = data.map(p => {
+        const discStr = p.discount_type === "percentage"
+          ? `${p.discount_value}% de desconto`
+          : `${fmt(p.discount_value)} de desconto`;
+        const expiry = p.valid_until ? ` · até ${p.valid_until.split("-").reverse().join("/")}` : "";
+        const uses = p.max_uses ? ` · ${p.uses_count}/${p.max_uses} usos` : ` · ${p.uses_count} usos`;
+        const activeColor = p.active ? "#2a7a4b" : "#888";
+        return `
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;
+            background:rgba(29,53,87,.04);border-radius:10px;padding:14px 18px;">
+            <div>
+              <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${p.code}</span>
+              <span style="margin-left:12px;font-size:13px;color:#555;">${discStr}${expiry}${uses}</span>
+              ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${p.description}</span>` : ""}
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span style="font-size:12px;font-weight:600;color:${activeColor};">${p.active ? "ATIVO" : "INATIVO"}</span>
+              <button type="button" onclick="togglePromo('${p.id}', ${p.active})"
+                style="background:${p.active ? "#e74c3c" : "#2a7a4b"};color:#fff;border:none;border-radius:6px;
+                  padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">
+                ${p.active ? "Desativar" : "Ativar"}
+              </button>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    async function togglePromo(id, currentActive) {
+      await supabaseClient.from("promo_codes").update({ active: !currentActive }).eq("id", id);
+      await loadPromos();
+    }
+    window.togglePromo = togglePromo;
+
+    document.getElementById("promoCreateBtn").addEventListener("click", async function() {
+      const code  = document.getElementById("promoCode").value.trim().toUpperCase();
+      const type  = document.getElementById("promoType").value;
+      const value = parseFloat(document.getElementById("promoValue").value);
+      const desc  = document.getElementById("promoDesc").value.trim() || null;
+      const until = document.getElementById("promoValidUntil").value || null;
+      const maxU  = parseInt(document.getElementById("promoMaxUses").value) || null;
+      const minN  = parseInt(document.getElementById("promoMinNights").value) || null;
+      const msg   = document.getElementById("promoCreateMsg");
+
+      if (!code || !type || isNaN(value) || value <= 0) {
+        msg.style.color = "#c0392b";
+        msg.textContent = "Preencha código, tipo e valor.";
+        return;
+      }
+      if (type === "percentage" && value > 100) {
+        msg.style.color = "#c0392b";
+        msg.textContent = "Porcentagem não pode ultrapassar 100%.";
+        return;
+      }
+
+      this.disabled = true;
+      const { error } = await supabaseClient.from("promo_codes").insert({
+        code, discount_type: type, discount_value: value,
+        description: desc, valid_until: until, max_uses: maxU, min_nights: minN
+      });
+      this.disabled = false;
+
+      if (error) {
+        msg.style.color = "#c0392b";
+        msg.textContent = error.message.includes("unique") ? "Código já existe." : error.message;
+        return;
+      }
+
+      msg.style.color = "#2a7a4b";
+      msg.textContent = `Código ${code} criado!`;
+      ["promoCode","promoValue","promoDesc","promoValidUntil","promoMaxUses","promoMinNights"]
+        .forEach(id => { document.getElementById(id).value = ""; });
+      await loadPromos();
+    });
+
+    // Load promos when tab is switched to
+    document.querySelector('[data-tab="promos"]').addEventListener("click", loadPromos);
+
+    // ── Init ─────────────────────────────────────────────────────────────────
 
     async function init() {
       const ok = await requireAdmin();

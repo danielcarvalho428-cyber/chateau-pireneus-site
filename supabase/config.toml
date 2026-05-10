@@ -16,3 +16,9 @@ enabled = true
 
 [functions.send-checkin-reminder]
 enabled = true
+
+[functions.validate-promo]
+enabled = true
+
+[functions.checkoutstripe]
+enabled = true

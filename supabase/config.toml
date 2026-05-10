@@ -7,3 +7,6 @@ cron = "0 */6 * * *"
 
 [functions.stripewebhook]
 # No cron — triggered by Stripe webhook events only
+
+[functions.emit-nfse]
+# No cron — called by stripewebhook after payment and by admin panel for manual re-emit

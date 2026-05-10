@@ -595,6 +595,11 @@
             <input type="password" id="confirmPassword" autocomplete="new-password" required />
           </div>
 
+          <div class="field">
+            <label for="cpfCnpj">CPF ou CNPJ <span style="font-weight:400;color:var(--muted);font-size:12px">(opcional — para nota fiscal)</span></label>
+            <input type="text" id="cpfCnpj" autocomplete="off" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" />
+          </div>
+
           <div class="helper-row">
             <span class="helper-text">Use uma senha com pelo menos 6 caracteres.</span>
             <a href="login.html" id="loginInlineLink" class="helper-link">Já tenho conta</a>
@@ -637,6 +642,24 @@
     const statusBox = document.getElementById("statusBox")
     const registerForm = document.getElementById("registerForm")
     const submitBtn = document.getElementById("submitBtn")
+    const cpfCnpjInput = document.getElementById("cpfCnpj")
+
+    // CPF/CNPJ live mask
+    cpfCnpjInput.addEventListener("input", () => {
+      let v = cpfCnpjInput.value.replace(/\D/g, "")
+      if (v.length <= 11) {
+        v = v.replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      } else {
+        v = v.slice(0, 14)
+             .replace(/(\d{2})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1/$2")
+             .replace(/(\d{4})(\d{1,2})$/, "$1-$2")
+      }
+      cpfCnpjInput.value = v
+    })
     const loginHeaderBtn = document.getElementById("loginHeaderBtn")
     const loginInlineLink = document.getElementById("loginInlineLink")
     const sideLoginLink = document.getElementById("sideLoginLink")
@@ -712,10 +735,20 @@
       const email = document.getElementById("email").value.trim()
       const password = document.getElementById("password").value
       const confirmPassword = document.getElementById("confirmPassword").value
+      const cpfCnpjValue = cpfCnpjInput.value.trim()
 
       if (!fullName || !email || !password || !confirmPassword) {
         setStatus("error", "Preencha todos os campos para continuar.")
         return
+      }
+
+      // Validate CPF/CNPJ format if provided
+      if (cpfCnpjValue) {
+        const digits = cpfCnpjValue.replace(/\D/g, "")
+        if (digits.length !== 11 && digits.length !== 14) {
+          setStatus("error", "CPF deve ter 11 dígitos e CNPJ 14 dígitos.")
+          return
+        }
       }
 
       if (password.length < 6) {
@@ -749,6 +782,14 @@
       }
 
       if (data.session) {
+        // Save CPF/CNPJ to profile if provided
+        if (cpfCnpjValue && data.user) {
+          await supabaseClient
+            .from("profiles")
+            .update({ cpf_cnpj: cpfCnpjValue })
+            .eq("id", data.user.id)
+        }
+
         setStatus("success", "Conta criada com sucesso. Redirecionando...")
         const returnTo = sanitizeReturnTo(getReturnTo())
 

@@ -1455,6 +1455,12 @@
                 <div class="b-note-box">Check-in das 12h às 19h.<br>Check-out até 12h.</div>
               </div>
 
+              <div class="b-field full" id="bCpfField" style="display:none">
+                <label for="b_cpf_cnpj">CPF ou CNPJ <span style="font-weight:400;font-size:12px;opacity:.7">(necessário para nota fiscal)</span></label>
+                <input type="text" id="b_cpf_cnpj" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" autocomplete="off" />
+                <div class="b-help-text">Informe seu CPF (pessoa física) ou CNPJ (empresa).</div>
+              </div>
+
               <div class="b-field full">
                 <button type="submit" class="b-submit-btn" id="bSubmitBtn" disabled>CONFIRMAR SOLICITAÇÃO</button>
               </div>
@@ -1992,6 +1998,8 @@
     const bAvailabilityStatus = document.getElementById("bAvailabilityStatus");
     const bSubmitBtn = document.getElementById("bSubmitBtn");
     const bGuestsInput = document.getElementById("b_guests");
+    const bCpfField = document.getElementById("bCpfField");
+    const bCpfInput = document.getElementById("b_cpf_cnpj");
     const bSummaryRoom = document.getElementById("bSummaryRoom");
     const bSummaryCheckIn = document.getElementById("bSummaryCheckIn");
     const bSummaryCheckOut = document.getElementById("bSummaryCheckOut");
@@ -2011,6 +2019,25 @@
     let currentMinStayViolated = false;
 
     if(bSummaryRoom) bSummaryRoom.textContent = roomName || "—";
+
+    // CPF/CNPJ mask
+    if(bCpfInput) {
+      bCpfInput.addEventListener("input", function() {
+        var v = bCpfInput.value.replace(/\D/g, "");
+        if (v.length <= 11) {
+          v = v.replace(/(\d{3})(\d)/, "$1.$2")
+               .replace(/(\d{3})(\d)/, "$1.$2")
+               .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        } else {
+          v = v.slice(0,14)
+               .replace(/(\d{2})(\d)/, "$1.$2")
+               .replace(/(\d{3})(\d)/, "$1.$2")
+               .replace(/(\d{3})(\d)/, "$1/$2")
+               .replace(/(\d{4})(\d{1,2})$/, "$1-$2");
+        }
+        bCpfInput.value = v;
+      });
+    }
 
     function setStatus(type, text) {
       bAvailabilityStatus.className = "b-status-box show " + type;
@@ -2256,6 +2283,31 @@
         bSubmitBtn.disabled = false;
         bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
         return;
+      }
+
+      // Check if guest has CPF/CNPJ — show field if missing
+      const { data: profileData } = await sb
+        .from("profiles")
+        .select("cpf_cnpj")
+        .eq("id", userData.user.id)
+        .single();
+
+      const hasCpf = profileData?.cpf_cnpj && profileData.cpf_cnpj.replace(/\D/g,"").length >= 11;
+      if (!hasCpf && bCpfField) bCpfField.style.display = "block";
+
+      // If CPF field is visible, validate and save before proceeding
+      if (bCpfField && bCpfField.style.display !== "none") {
+        const cpfVal = bCpfInput ? bCpfInput.value.trim() : "";
+        if (cpfVal) {
+          const digits = cpfVal.replace(/\D/g, "");
+          if (digits.length !== 11 && digits.length !== 14) {
+            setStatus("error", "CPF deve ter 11 dígitos e CNPJ 14 dígitos.");
+            bSubmitBtn.disabled = false;
+            bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
+            return;
+          }
+          await sb.from("profiles").update({ cpf_cnpj: cpfVal }).eq("id", userData.user.id);
+        }
       }
 
       const { data: sessionData } = await sb.auth.getSession();

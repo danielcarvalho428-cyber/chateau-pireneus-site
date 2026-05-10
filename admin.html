@@ -393,6 +393,40 @@
       cursor:not-allowed;
     }
 
+    .quick-action-btn.action-nf{
+      background:rgba(81,109,143,0.10);
+      color:#355474;
+      border:1px solid rgba(81,109,143,0.20);
+    }
+
+    .nf-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      font-size:11px;
+      font-weight:600;
+      letter-spacing:.6px;
+      padding:3px 9px;
+      border-radius:20px;
+      text-transform:uppercase;
+    }
+
+    .nf-badge.emitted  { background:var(--ok-bg);     color:var(--ok-text);     }
+    .nf-badge.processing{ background:var(--info-bg);   color:var(--info-text);   }
+    .nf-badge.pending  { background:var(--warn-bg);    color:var(--warn-text);   }
+    .nf-badge.failed   { background:var(--danger-bg);  color:var(--danger-text); }
+    .nf-badge.none     { background:rgba(0,0,0,0.05);  color:#888;               }
+
+    .nf-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:8px;
+      padding-top:8px;
+      border-top:1px solid rgba(29,53,87,0.07);
+      flex-wrap:wrap;
+    }
+
     .pricing-layout{
       display:grid;
       grid-template-columns:1.45fr 0.95fr;
@@ -1512,6 +1546,7 @@
     let rooms = [];
     let allReservations = [];
     let profilesMap = {};
+    let nfMap = {};
     let activeQuickFilter = "all";
 
     let pricingViewDate = new Date();
@@ -2077,7 +2112,7 @@
 
       const { data: profiles, error: profileError } = await supabaseClient
         .from("profiles")
-        .select("id, full_name, phone, email");
+        .select("id, full_name, phone, email, cpf_cnpj");
 
       if (profileError) {
         console.error(profileError);
@@ -2089,6 +2124,13 @@
       (profiles || []).forEach(profile => {
         profilesMap[profile.id] = profile;
       });
+
+      const { data: nfRows } = await supabaseClient
+        .from("notas_fiscais")
+        .select("reservation_id, status, pdf_url, error_msg, emitted_at, provider_id");
+
+      nfMap = {};
+      (nfRows || []).forEach(nf => { nfMap[nf.reservation_id] = nf; });
 
       allReservations = reservations || [];
       updateSummaryCards();
@@ -2269,6 +2311,12 @@
       reservationsList.innerHTML = reservations.map(reservation => {
         const profile = profilesMap[reservation.user_id] || {};
         const currentStatus = normalizeStatus(reservation.status);
+        const nf = nfMap[reservation.id] || null;
+
+        const nfBadgeClass = nf ? nf.status : "none";
+        const nfLabel = { emitted: "NF Emitida", processing: "NF Processando", pending: "NF Pendente", failed: "NF Falhou", none: "Sem NF" };
+        const nfBadgeText = nfLabel[nfBadgeClass] ?? "Sem NF";
+        const isPaid = normalizeStatus(reservation.payment_status) === "paid";
 
         return `
           <article class="reservation-card">
@@ -2279,6 +2327,7 @@
                 <div class="reservation-meta">
                   <span class="mini-chip">Reserva: ${reservation.id || '-'}</span>
                   <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
+                  ${profile.cpf_cnpj ? `<span class="mini-chip">CPF/CNPJ: ${profile.cpf_cnpj}</span>` : ''}
                 </div>
               </div>
 
@@ -2296,6 +2345,14 @@
               <div class="reservation-item"><strong>Valor total</strong><span>${formatCurrency(reservation.total_amount)}</span></div>
               <div class="reservation-item"><strong>Expira em</strong><span>${formatDateTime(reservation.expires_at)}</span></div>
               <div class="reservation-item"><strong>Meio de pagamento</strong><span>${reservation.payment_provider || '—'}</span></div>
+            </div>
+
+            <div class="nf-row">
+              <span class="nf-badge ${nfBadgeClass}">${nfBadgeText}</span>
+              ${nf?.emitted_at ? `<span style="font-size:12px;color:var(--muted)">Emitida em ${formatDateTime(nf.emitted_at)}</span>` : ''}
+              ${nf?.error_msg  ? `<span style="font-size:12px;color:var(--danger-text)">${nf.error_msg}</span>` : ''}
+              ${nf?.pdf_url   ? `<a href="${nf.pdf_url}" target="_blank" class="quick-action-btn action-nf" style="text-decoration:none;min-height:32px;font-size:11px;padding:0 12px;display:inline-flex;align-items:center;">PDF NF</a>` : ''}
+              ${isPaid ? `<button class="quick-action-btn action-nf emit-nf-btn" type="button" data-id="${reservation.id}">${nf ? 'RE-EMITIR NF' : 'EMITIR NF'}</button>` : ''}
             </div>
 
             <div class="reservation-actions">
@@ -2355,6 +2412,44 @@
       const labels = { confirmed:"Reserva confirmada", cancelled:"Reserva cancelada", expired:"Reserva expirada" };
       showToast(labels[nextStatus] || "Status atualizado", nextStatus === "confirmed" ? "success" : "warn");
       await loadReservations();
+    }
+
+    async function emitNF(reservationId, button) {
+      button.disabled = true;
+      const originalText = button.textContent;
+      button.textContent = "EMITINDO...";
+
+      try {
+        const { data: sessionData } = await supabaseClient.auth.getSession();
+        const token = sessionData?.session?.access_token;
+
+        const res = await fetch(window.FUNCTIONS_URL + "/emit-nfse", {
+          method: "POST",
+          headers: {
+            "Content-Type":  "application/json",
+            "Authorization": "Bearer " + token,
+            "apikey":        window.SUPABASE_KEY,
+          },
+          body: JSON.stringify({ reservation_id: reservationId }),
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+          showToast(data?.error || "Falha ao emitir nota fiscal.", "error");
+          button.disabled = false;
+          button.textContent = originalText;
+          return;
+        }
+
+        const statusMsg = data?.status === "emitted" ? "Nota fiscal emitida com sucesso." : "Nota fiscal em processamento na prefeitura.";
+        showToast(statusMsg, "success");
+        await loadReservations();
+      } catch (err) {
+        showToast(err.message || "Erro ao emitir nota fiscal.", "error");
+        button.disabled = false;
+        button.textContent = originalText;
+      }
     }
 
     function bindEvents() {
@@ -2417,6 +2512,12 @@
       });
 
       document.addEventListener("click", async (event) => {
+        const nfButton = event.target.closest(".emit-nf-btn");
+        if (nfButton) {
+          await emitNF(nfButton.getAttribute("data-id"), nfButton);
+          return;
+        }
+
         const actionButton = event.target.closest(".status-action-btn");
         if (actionButton) {
           await updateReservationStatus(

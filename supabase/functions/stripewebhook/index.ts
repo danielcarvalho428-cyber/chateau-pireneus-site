@@ -106,6 +106,20 @@ Deno.serve(async (request) => {
         }
 
         console.log("Reservation confirmed:", reservationId)
+
+        // Fire-and-forget NFS-e emission — do not block the webhook response
+        const emitUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/emit-nfse`
+        const svcKey  = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
+        fetch(emitUrl, {
+          method:  "POST",
+          headers: {
+            "Content-Type":  "application/json",
+            "Authorization": `Bearer ${svcKey}`,
+            "apikey":        svcKey,
+          },
+          body: JSON.stringify({ reservation_id: reservationId }),
+        }).catch(err => console.error("emit-nfse trigger failed:", err))
+
         break
       }
 

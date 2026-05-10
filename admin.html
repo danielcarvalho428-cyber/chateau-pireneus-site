@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <script src="supabase-config.js"></script>
   <script src="auth.js"></script>
 
@@ -1216,6 +1217,10 @@
           RESERVAS
           <span class="tab-count" id="tabPendingBadge"></span>
         </button>
+        <button class="tab-btn" data-tab="relatorios" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          RELATÓRIOS
+        </button>
       </div>
 
       <div class="tab-panel active" id="tab-pricing">
@@ -1462,6 +1467,47 @@
       </div>
     </div>
       </div><!-- /tab-panel reservations -->
+
+      <div class="tab-panel" id="tab-relatorios">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <span class="panel-kicker">Análise financeira</span>
+              <h2 class="panel-title">RELATÓRIOS</h2>
+              <p class="panel-subtitle">Receita mensal, desempenho por suíte e ocupação — calculados a partir das reservas confirmadas.</p>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;">
+            <div class="summary-card">
+              <span class="summary-label">Receita este mês</span>
+              <span class="summary-value" id="rep-month-revenue" style="font-size:20px">—</span>
+            </div>
+            <div class="summary-card">
+              <span class="summary-label">Ticket médio / reserva</span>
+              <span class="summary-value" id="rep-avg-ticket" style="font-size:20px">—</span>
+            </div>
+            <div class="summary-card">
+              <span class="summary-label">Reservas este mês</span>
+              <span class="summary-value" id="rep-month-count">—</span>
+            </div>
+          </div>
+
+          <div style="margin-bottom:40px;">
+            <h3 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);opacity:.6;margin:0 0 16px;">Receita mensal — últimos 6 meses</h3>
+            <div style="position:relative;height:260px;background:rgba(29,53,87,0.03);border-radius:12px;padding:16px;">
+              <canvas id="chartRevenue"></canvas>
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);opacity:.6;margin:0 0 16px;">Receita por suíte</h3>
+            <div style="position:relative;height:220px;background:rgba(29,53,87,0.03);border-radius:12px;padding:16px;">
+              <canvas id="chartRooms"></canvas>
+            </div>
+          </div>
+        </div>
+      </div><!-- /tab-panel relatorios -->
     </div>
   </section>
 
@@ -2140,6 +2186,7 @@
       allReservations = reservations || [];
       updateSummaryCards();
       renderReservations();
+      updateRelatorios();
     }
 
     function updateSummaryCards() {
@@ -2189,6 +2236,94 @@
       } else {
         badge.textContent = "";
       }
+    }
+
+    let chartRevenue = null;
+    let chartRooms = null;
+
+    function updateRelatorios() {
+      const paid = allReservations.filter(r =>
+        ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) ||
+        normalizeStatus(r.status) === "confirmed"
+      );
+
+      const fmt = v => "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+      // This month stats
+      const now = new Date();
+      const thisMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
+      const monthPaid = paid.filter(r => (r.created_at || "").startsWith(thisMonth));
+      const monthRevenue = monthPaid.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0);
+      const avgTicket = paid.length > 0 ? paid.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0) / paid.length : 0;
+
+      document.getElementById("rep-month-revenue").textContent = fmt(monthRevenue);
+      document.getElementById("rep-avg-ticket").textContent = fmt(avgTicket);
+      document.getElementById("rep-month-count").textContent = monthPaid.length;
+
+      // Last 6 months revenue
+      const months = [];
+      const monthRevenues = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+        const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
+        months.push(label);
+        monthRevenues.push(paid.filter(r => (r.created_at || "").startsWith(key))
+          .reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0));
+      }
+
+      // Revenue by room
+      const roomMap = {};
+      paid.forEach(r => {
+        const name = r.room_name || r.room_id || "Desconhecida";
+        roomMap[name] = (roomMap[name] || 0) + (parseFloat(r.total_amount) || 0);
+      });
+      const roomLabels = Object.keys(roomMap);
+      const roomValues = Object.values(roomMap);
+
+      const navy = "rgba(29,53,87,0.85)";
+      const gold = "rgba(216,199,161,0.85)";
+      const gridColor = "rgba(29,53,87,0.08)";
+      const fontColor = "#1d3557";
+
+      Chart.defaults.font.family = "'Inter', sans-serif";
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = fontColor;
+
+      if (chartRevenue) chartRevenue.destroy();
+      chartRevenue = new Chart(document.getElementById("chartRevenue"), {
+        type: "bar",
+        data: {
+          labels: months,
+          datasets: [{ label: "Receita (R$)", data: monthRevenues, backgroundColor: navy, borderRadius: 6, borderSkipped: false }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmt(ctx.raw) } } },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: gridColor }, ticks: { callback: v => "R$ " + (v/1000).toFixed(0) + "k" } }
+          }
+        }
+      });
+
+      if (chartRooms) chartRooms.destroy();
+      chartRooms = new Chart(document.getElementById("chartRooms"), {
+        type: "bar",
+        data: {
+          labels: roomLabels,
+          datasets: [{ label: "Receita (R$)", data: roomValues, backgroundColor: gold, borderRadius: 6, borderSkipped: false }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmt(ctx.raw) } } },
+          scales: {
+            x: { grid: { color: gridColor }, ticks: { callback: v => "R$ " + (v/1000).toFixed(0) + "k" } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
     }
 
     function setQuickFilter(value) {

@@ -1,4 +1,13 @@
 {
+  "scripts": {
+    "deploy:functions": "supabase functions deploy emit-nfse && supabase functions deploy stripewebhook && supabase functions deploy sync-airbnb-calendars",
+    "deploy:emit-nfse": "supabase functions deploy emit-nfse",
+    "deploy:stripewebhook": "supabase functions deploy stripewebhook",
+    "deploy:sync": "supabase functions deploy sync-airbnb-calendars",
+    "db:push": "supabase db push --linked",
+    "db:diff": "supabase db diff --linked",
+    "supabase:status": "supabase projects list"
+  },
   "devDependencies": {
     "supabase": "^2.87.2"
   }

@@ -1,12 +1,12 @@
-[project]
-id = "pjxurbtvmzdlpnexfqpd"
+[api]
+enabled = true
+port = 54321
 
 [functions.sync-airbnb-calendars]
-# Runs every 6 hours — syncs all rooms that have an Airbnb iCal URL
-cron = "0 */6 * * *"
+enabled = true
 
 [functions.stripewebhook]
-# No cron — triggered by Stripe webhook events only
+enabled = true
 
 [functions.emit-nfse]
-# No cron — called by stripewebhook after payment and by admin panel for manual re-emit
+enabled = true

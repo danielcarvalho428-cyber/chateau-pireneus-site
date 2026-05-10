@@ -21,8 +21,10 @@
   />
   <meta property="og:url" content="https://chateaupireneus.com.br/suite.html" />
   <meta property="og:site_name" content="Chateau Pireneus" />
-  <meta property="og:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
-  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image" content="https://chateaupireneus.com.br/hero-piri.jpeg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1290" />
+  <meta property="og:image:height" content="1055" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Suíte | Chateau Pireneus" />
@@ -30,7 +32,7 @@
     name="twitter:description"
     content="Conheça as suítes do Chateau Pireneus e encontre a acomodação ideal para sua experiência em Pirenópolis."
   />
-  <meta name="twitter:image" content="https://chateaupireneus.com.br/chateau-logo.png" />
+  <meta name="twitter:image" content="https://chateaupireneus.com.br/hero-piri.jpeg" />
 
   <link rel="icon" type="image/png" href="chateau-logo.png" />
   <link rel="shortcut icon" href="chateau-logo.png" />
@@ -1905,6 +1907,24 @@
         };
 
         script.textContent = JSON.stringify(structuredData, null, 2);
+
+        // BreadcrumbList
+        let breadcrumb = document.getElementById("suiteBreadcrumbData");
+        if (!breadcrumb) {
+          breadcrumb = document.createElement("script");
+          breadcrumb.type = "application/ld+json";
+          breadcrumb.id = "suiteBreadcrumbData";
+          document.head.appendChild(breadcrumb);
+        }
+        breadcrumb.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://chateaupireneus.com.br/" },
+            { "@type": "ListItem", "position": 2, "name": "Acomodações", "item": "https://chateaupireneus.com.br/acomodacoes.html" },
+            { "@type": "ListItem", "position": 3, "name": roomData.name, "item": canonicalUrl }
+          ]
+        });
       }
 
       if (!room){

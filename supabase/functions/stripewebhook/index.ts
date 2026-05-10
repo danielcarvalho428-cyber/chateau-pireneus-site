@@ -107,18 +107,24 @@ Deno.serve(async (request) => {
 
         console.log("Reservation confirmed:", reservationId)
 
-        // Fire-and-forget NFS-e emission — do not block the webhook response
-        const emitUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/emit-nfse`
-        const svcKey  = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
-        fetch(emitUrl, {
-          method:  "POST",
-          headers: {
-            "Content-Type":  "application/json",
-            "Authorization": `Bearer ${svcKey}`,
-            "apikey":        svcKey,
-          },
+        const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
+        const fnHeaders = {
+          "Content-Type":  "application/json",
+          "Authorization": `Bearer ${svcKey}`,
+          "apikey":        svcKey,
+        }
+
+        // Fire-and-forget NFS-e emission
+        fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/emit-nfse`, {
+          method: "POST", headers: fnHeaders,
           body: JSON.stringify({ reservation_id: reservationId }),
         }).catch(err => console.error("emit-nfse trigger failed:", err))
+
+        // Fire-and-forget booking confirmation email
+        fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-booking-email`, {
+          method: "POST", headers: fnHeaders,
+          body: JSON.stringify({ reservation_id: reservationId }),
+        }).catch(err => console.error("send-booking-email trigger failed:", err))
 
         break
       }

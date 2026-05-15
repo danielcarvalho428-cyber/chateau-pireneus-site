@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Ficha de Hóspede | Chateau Pireneus</title>
+  <meta name="description" content="Preencha a Ficha Nacional de Registro de Hóspedes (FNRH) do Chateau Pireneus. Exigida pela Lei 11.771/2008, o preenchimento online facilita seu check-in." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="canonical" href="https://chateaupireneus.com.br/ficha.html" />
+
+  <link rel="icon" type="image/png" href="chateau-logo.png" />
+  <link rel="shortcut icon" href="chateau-logo.png" />
+  <link rel="apple-touch-icon" href="chateau-logo.png" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    body{
+      margin:0;
+      font-family:"Inter",sans-serif;
+      background:linear-gradient(to bottom, #fbfaf7 0%, #f5f1e9 100%);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
+
+    .hero{
+      position:relative;
+      background-image:url("hero.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      overflow:hidden;
+      padding:130px 22px 90px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.55),
+        rgba(0,0,0,0.36) 40%,
+        rgba(0,0,0,0.58)
+      );
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
+    }
+
+    .hero-shell{
+      position:relative;
+      z-index:3;
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr 540px;
+      gap:34px;
+      align-items:flex-start;
+    }
+
+    .hero-copy{
+      color:#fff;
+      text-align:left;
+      padding-top:20px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+    }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:0.95;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(30px, 4.8vw, 50px);
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      line-height:1.32;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .hero-text{
+      margin:18px 0 0;
+      max-width:560px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:19px;
+      line-height:1.78;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+    }
+
+    .fnrh-list{
+      margin:20px 0 0;
+      padding:0;
+      list-style:none;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .fnrh-list li{
+      font-family:"Cormorant Garamond", serif;
+      font-size:18px;
+      line-height:1.6;
+      color:rgba(255,255,255,0.92);
+      padding-left:20px;
+      position:relative;
+    }
+
+    .fnrh-list li::before{
+      content:"—";
+      position:absolute;
+      left:0;
+      color:rgba(216,199,161,0.88);
+    }
+
+    .register-card{
+      position:relative;
+      z-index:3;
+      background:linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.64));
+      border:1px solid rgba(255,255,255,0.30);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:30px 26px 26px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards 0.12s;
+      animation-fill-mode:forwards;
+      text-align:left;
+    }
+
+    @keyframes heroIn{
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .card-eyebrow{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.76);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
+    }
+
+    .card-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:28px;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.32;
+    }
+
+    .card-subtitle{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.85;
+      font-size:14px;
+    }
+
+    .orn{
+      width:150px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:14px 0 0;
+    }
+
+    /* Loading state */
+    .loading-state{
+      margin-top:22px;
+      padding:18px;
+      background:rgba(29,53,87,0.05);
+      border-radius:16px;
+      color:var(--muted);
+      font-size:14px;
+      text-align:center;
+    }
+
+    /* Form */
+    .form{
+      margin-top:22px;
+      display:grid;
+      gap:12px;
+    }
+
+    .section-label{
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.50);
+      padding:10px 0 0;
+      border-top:1px solid rgba(29,53,87,0.08);
+      margin-top:2px;
+    }
+
+    .section-label:first-child{
+      border-top:none;
+      padding-top:0;
+    }
+
+    .field{
+      display:grid;
+      gap:7px;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.72);
+    }
+
+    .field input,
+    .field select{
+      width:100%;
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.88);
+      color:var(--ink);
+      border-radius:14px;
+      padding:13px 14px;
+      font:inherit;
+      font-size:15px;
+      outline:none;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing:border-box;
+    }
+
+    .field input:focus,
+    .field select:focus{
+      border-color:rgba(184,149,95,0.80);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.18);
+    }
+
+    .field input[readonly]{
+      background:rgba(29,53,87,0.04);
+      color:rgba(29,53,87,0.55);
+      cursor:default;
+    }
+
+    .field select{
+      appearance:none;
+      -webkit-appearance:none;
+      background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231d3557' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
+      background-repeat:no-repeat;
+      background-position:right 13px center;
+      background-size:16px;
+      padding-right:36px;
+    }
+
+    .field-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .cep-group{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+    }
+
+    .cep-group .field{
+      flex:1;
+    }
+
+    .cep-btn{
+      height:46px;
+      padding:0 16px;
+      border:none;
+      border-radius:14px;
+      background:rgba(29,53,87,0.08);
+      color:var(--navy);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      cursor:pointer;
+      white-space:nowrap;
+      flex-shrink:0;
+      transition:0.2s ease;
+      font-family:inherit;
+    }
+
+    .cep-btn:hover{
+      background:rgba(29,53,87,0.14);
+      transform:translateY(-1px);
+    }
+
+    .cep-btn:disabled{
+      opacity:0.60;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .cep-status{
+      font-size:13px;
+      line-height:1.65;
+      padding:9px 12px;
+      border-radius:12px;
+      border:1px solid transparent;
+    }
+
+    .cep-status.ok{
+      background:rgba(47,122,75,0.10);
+      color:#2f7a4b;
+      border-color:rgba(47,122,75,0.14);
+    }
+
+    .cep-status.error{
+      background:rgba(181,74,74,0.10);
+      color:#8e3535;
+      border-color:rgba(181,74,74,0.14);
+    }
+
+    .reservation-mini-card{
+      background:rgba(216,199,161,0.12);
+      border:1px solid rgba(216,199,161,0.32);
+      border-radius:14px;
+      padding:12px 14px;
+      margin-bottom:4px;
+    }
+
+    .reservation-mini-card strong{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-size:17px;
+      font-weight:700;
+      color:var(--navy);
+      margin-bottom:6px;
+    }
+
+    .reservation-mini-card span{
+      display:inline-block;
+      font-size:13px;
+      color:var(--muted);
+      margin-right:16px;
+      margin-bottom:2px;
+    }
+
+    .required-note{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.65;
+      margin:4px 0 2px;
+    }
+
+    .submit-btn{
+      margin-top:4px;
+      width:100%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:14px 18px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.6px;
+      cursor:pointer;
+      transition:0.22s ease;
+      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+      font-family:inherit;
+    }
+
+    .submit-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 22px 40px rgba(0,0,0,0.16);
+    }
+
+    .submit-btn:disabled{
+      opacity:0.75;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .status-box{
+      display:none;
+      margin-top:14px;
+      padding:14px;
+      border-radius:16px;
+      font-size:14px;
+      line-height:1.75;
+      border:1px solid transparent;
+    }
+
+    .status-box.show{ display:block; }
+
+    .status-box.error{
+      background:rgba(181,74,74,0.12);
+      color:#8e3535;
+      border-color:rgba(181,74,74,0.18);
+    }
+
+    .status-box.success{
+      background:rgba(47,122,75,0.12);
+      color:#2f7a4b;
+      border-color:rgba(47,122,75,0.18);
+    }
+
+    .status-box.info{
+      background:rgba(81,109,143,0.12);
+      color:#355474;
+      border-color:rgba(81,109,143,0.18);
+    }
+
+    .bottom-links{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid rgba(29,53,87,0.09);
+      display:grid;
+      gap:8px;
+    }
+
+    .bottom-links a{
+      font-size:14px;
+      color:var(--navy);
+      font-weight:700;
+    }
+
+    .bottom-links a:hover{
+      text-decoration:underline;
+    }
+
+    .legal-note{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.65;
+      margin:8px 0 0;
+      text-align:center;
+    }
+
+    footer{
+      position:relative;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      display:block;
+      width:100%;
+      height:200px;
+      object-fit:cover;
+      object-position:center center;
+    }
+
+    .footer-overlay{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:20px;
+      line-height:1.22;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:980px){
+      .hero-shell{
+        grid-template-columns:1fr;
+        gap:22px;
+      }
+
+      .hero-copy{
+        text-align:center;
+        padding-top:0;
+      }
+
+      .hero-text{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .fnrh-list{
+        align-items:center;
+      }
+
+      .footer-overlay{
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
+      }
+    }
+
+    @media (max-width:640px){
+      .hero{
+        padding:118px 16px 74px;
+      }
+
+      .hero-title{
+        font-size:28px;
+        line-height:1.34;
+        letter-spacing:1px;
+      }
+
+      .hero-text{
+        font-size:17px;
+      }
+
+      .register-card{
+        padding:22px 18px 20px;
+        border-radius:22px;
+      }
+
+      .field-row{
+        grid-template-columns:1fr;
+      }
+
+      .footer-contact{
+        font-size:17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+    <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+
+    <hr>
+
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <a href="dashboard.html" class="account-btn">MINHA ÁREA</a>
+        <a href="booking.html" class="reserve-btn">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero" aria-label="Ficha de hóspede">
+    <div class="hero-shell">
+      <div class="hero-copy">
+        <div class="hero-kicker">Obrigatório por lei</div>
+        <h1 class="hero-title">FICHA NACIONAL DE REGISTRO DE HÓSPEDE</h1>
+        <p class="hero-text">
+          A FNRH é exigida pela Lei nº 11.771/2008 para todos os meios de hospedagem no Brasil.
+          Preencher online leva menos de 2 minutos e agiliza seu check-in.
+        </p>
+
+        <ul class="fnrh-list">
+          <li>Dados armazenados com segurança nos termos da LGPD</li>
+          <li>Preenchimento reutilizado nas próximas estadias</li>
+          <li>Check-in mais rápido na sua chegada</li>
+          <li>Endereço preenchido automaticamente pelo CEP</li>
+        </ul>
+      </div>
+
+      <div class="register-card">
+        <span class="card-eyebrow">Registro obrigatório</span>
+        <h2 class="card-title">DADOS DO HÓSPEDE</h2>
+        <p class="card-subtitle">
+          Preencha os dados abaixo. Campos marcados com * são exigidos pela FNRH.
+          O endereço pode ser preenchido automaticamente digitando o CEP.
+        </p>
+        <div class="orn"></div>
+
+        <div id="loadingState" class="loading-state">Verificando sessão...</div>
+
+        <form id="fichaForm" class="form" style="display:none" novalidate>
+
+          <!-- Dados pessoais -->
+          <div class="section-label">Dados pessoais</div>
+
+          <div class="field">
+            <label for="fullName">Nome completo</label>
+            <input type="text" id="fullName" autocomplete="name" readonly />
+          </div>
+
+          <div class="field">
+            <label for="cpfCnpj">CPF / Passaporte</label>
+            <input type="text" id="cpfCnpj" autocomplete="off" inputmode="numeric" maxlength="18"
+              placeholder="000.000.000-00 ou passaporte" />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="dateOfBirth">Data de nascimento *</label>
+              <input type="date" id="dateOfBirth" autocomplete="bday" />
+            </div>
+            <div class="field">
+              <label for="sex">Sexo *</label>
+              <select id="sex">
+                <option value="">Selecione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Prefiro não informar">Prefiro não informar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="profession">Profissão *</label>
+              <input type="text" id="profession" placeholder="Ex: Engenheiro, Professor..." />
+            </div>
+            <div class="field">
+              <label for="nationality">Nacionalidade *</label>
+              <input type="text" id="nationality" placeholder="Brasileira" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="phone">Telefone / WhatsApp *</label>
+            <input type="tel" id="phone" autocomplete="tel" inputmode="numeric" maxlength="15"
+              placeholder="(00) 00000-0000" />
+          </div>
+
+          <!-- Endereço -->
+          <div class="section-label">Endereço de origem</div>
+
+          <div class="cep-group">
+            <div class="field">
+              <label for="addressZip">CEP *</label>
+              <input type="text" id="addressZip" inputmode="numeric" maxlength="9" placeholder="00000-000" />
+            </div>
+            <button type="button" id="lookupCepBtn" class="cep-btn">BUSCAR</button>
+          </div>
+
+          <div id="cepStatus" class="cep-status" style="display:none"></div>
+
+          <div class="field-row">
+            <div class="field" style="grid-column:1 / -1">
+              <label for="addressStreet">Logradouro *</label>
+              <input type="text" id="addressStreet" autocomplete="street-address"
+                placeholder="Rua, Avenida, Quadra..." />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="addressNumber">Número *</label>
+              <input type="text" id="addressNumber" placeholder="123 / S/N" />
+            </div>
+            <div class="field">
+              <label for="addressCity">Cidade *</label>
+              <input type="text" id="addressCity" autocomplete="address-level2" placeholder="Ex: Brasília" />
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="addressState">Estado *</label>
+              <input type="text" id="addressState" autocomplete="address-level1" maxlength="2"
+                placeholder="DF" style="text-transform:uppercase" />
+            </div>
+            <div class="field">
+              <label for="addressCountry">País</label>
+              <input type="text" id="addressCountry" autocomplete="country-name" placeholder="Brasil" />
+            </div>
+          </div>
+
+          <!-- Dados da estadia (only shown when ?booking_id is in URL) -->
+          <div id="visitSection" style="display:none">
+            <div class="section-label" style="border-top:1px solid rgba(29,53,87,0.08);padding-top:10px;margin-top:2px">
+              Dados da estadia
+            </div>
+            <div id="reservationInfo" class="reservation-mini-card" style="display:none"></div>
+            <div class="field">
+              <label for="purposeOfVisit">Motivo da viagem *</label>
+              <select id="purposeOfVisit">
+                <option value="">Selecione</option>
+                <option value="Turismo">Turismo</option>
+                <option value="Negócios">Negócios</option>
+                <option value="Eventos">Eventos</option>
+                <option value="Outros">Outros</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="required-note">
+            * Campos exigidos pela Ficha Nacional de Registro de Hóspedes (FNRH).
+          </p>
+
+          <button type="submit" id="submitBtn" class="submit-btn">SALVAR FICHA</button>
+
+          <p class="legal-note">
+            Dados coletados conforme a Lei nº 11.771/2008 (FNRH) e a LGPD.
+            Uso restrito à gestão de hospedagem no Chateau Pireneus.
+          </p>
+        </form>
+
+        <div id="statusBox" class="status-box"></div>
+
+        <div class="bottom-links">
+          <a href="dashboard.html">Voltar para minha área</a>
+          <a href="booking.html">Fazer nova reserva</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const supabaseClient = window.supabaseClient
+
+    const topHeader   = document.getElementById("topHeader")
+    const loadingState = document.getElementById("loadingState")
+    const fichaForm   = document.getElementById("fichaForm")
+    const submitBtn   = document.getElementById("submitBtn")
+    const statusBox   = document.getElementById("statusBox")
+    const lookupCepBtn = document.getElementById("lookupCepBtn")
+    const cepStatusEl = document.getElementById("cepStatus")
+    const visitSection = document.getElementById("visitSection")
+    const reservationInfoEl = document.getElementById("reservationInfo")
+
+    let currentUser = null
+    let bookingId   = null
+
+    function el(id){ return document.getElementById(id) }
+
+    function getBookingId(){
+      return new URLSearchParams(window.location.search).get("booking_id") || null
+    }
+
+    function setStatus(type, text){
+      statusBox.className = `status-box ${type} show`
+      statusBox.textContent = text
+    }
+
+    function clearStatus(){
+      statusBox.className = "status-box"
+      statusBox.textContent = ""
+    }
+
+    function setLoading(isLoading){
+      submitBtn.disabled = isLoading
+      submitBtn.textContent = isLoading ? "SALVANDO..." : "SALVAR FICHA"
+    }
+
+    function showCepStatus(type, text){
+      if (!text) { cepStatusEl.style.display = "none"; return }
+      cepStatusEl.className = `cep-status ${type}`
+      cepStatusEl.textContent = text
+      cepStatusEl.style.display = "block"
+    }
+
+    function formatDate(dateStr){
+      if (!dateStr) return "-"
+      const [y, m, d] = dateStr.split("-")
+      if (!y || !m || !d) return dateStr
+      return `${d}/${m}/${y}`
+    }
+
+    // ── Input masks ────────────────────────────────────────────────
+
+    el("cpfCnpj").addEventListener("input", () => {
+      let v = el("cpfCnpj").value.replace(/\D/g, "")
+      if (v.length <= 11) {
+        v = v.replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+      } else {
+        v = v.slice(0, 14)
+             .replace(/(\d{2})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1.$2")
+             .replace(/(\d{3})(\d)/, "$1/$2")
+             .replace(/(\d{4})(\d{1,2})$/, "$1-$2")
+      }
+      el("cpfCnpj").value = v
+    })
+
+    el("addressZip").addEventListener("input", () => {
+      let v = el("addressZip").value.replace(/\D/g, "").slice(0, 8)
+      if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5)
+      el("addressZip").value = v
+    })
+
+    el("phone").addEventListener("input", () => {
+      let v = el("phone").value.replace(/\D/g, "").slice(0, 11)
+      if (v.length > 10) {
+        v = "(" + v.slice(0,2) + ") " + v.slice(2,7) + "-" + v.slice(7)
+      } else if (v.length > 6) {
+        v = "(" + v.slice(0,2) + ") " + v.slice(2,6) + "-" + v.slice(6)
+      } else if (v.length > 2) {
+        v = "(" + v.slice(0,2) + ") " + v.slice(2)
+      }
+      el("phone").value = v
+    })
+
+    el("addressState").addEventListener("input", () => {
+      el("addressState").value = el("addressState").value.toUpperCase()
+    })
+
+    // ── ViaCEP lookup ──────────────────────────────────────────────
+
+    async function lookupCEP(){
+      const cep = el("addressZip").value.replace(/\D/g, "")
+      if (cep.length !== 8){
+        showCepStatus("error", "Digite um CEP com 8 dígitos para buscar.")
+        return
+      }
+
+      lookupCepBtn.disabled = true
+      lookupCepBtn.textContent = "..."
+      showCepStatus("", "")
+
+      try {
+        const res  = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        const data = await res.json()
+
+        if (data.erro){
+          showCepStatus("error", "CEP não encontrado. Preencha o endereço manualmente.")
+        } else {
+          if (data.logradouro) el("addressStreet").value = data.logradouro
+          if (data.localidade)  el("addressCity").value  = data.localidade
+          if (data.uf)          el("addressState").value = data.uf.toUpperCase()
+          el("addressCountry").value = "Brasil"
+          showCepStatus("ok", "Endereço encontrado. Confira e preencha o número.")
+          el("addressNumber").focus()
+        }
+      } catch {
+        showCepStatus("error", "Não foi possível consultar o CEP. Preencha o endereço manualmente.")
+      } finally {
+        lookupCepBtn.disabled = false
+        lookupCepBtn.textContent = "BUSCAR"
+      }
+    }
+
+    lookupCepBtn.addEventListener("click", lookupCEP)
+
+    el("addressZip").addEventListener("blur", () => {
+      if (el("addressZip").value.replace(/\D/g, "").length === 8) lookupCEP()
+    })
+
+    // ── Load profile data ──────────────────────────────────────────
+
+    async function loadProfile(){
+      const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("full_name, cpf_cnpj, date_of_birth, sex, profession, nationality, phone, address_street, address_number, address_city, address_state, address_zip, address_country")
+        .eq("id", currentUser.id)
+        .maybeSingle()
+
+      if (error) console.error("profile load error:", error)
+
+      if (profile){
+        el("fullName").value      = profile.full_name      || ""
+        el("cpfCnpj").value       = profile.cpf_cnpj       || ""
+        el("dateOfBirth").value   = profile.date_of_birth  || ""
+        el("sex").value           = profile.sex            || ""
+        el("profession").value    = profile.profession     || ""
+        el("nationality").value   = profile.nationality    || "Brasileira"
+        el("phone").value         = profile.phone          || ""
+        el("addressZip").value    = profile.address_zip    || ""
+        el("addressStreet").value = profile.address_street || ""
+        el("addressNumber").value = profile.address_number || ""
+        el("addressCity").value   = profile.address_city   || ""
+        el("addressState").value  = (profile.address_state || "").toUpperCase()
+        el("addressCountry").value = profile.address_country || "Brasil"
+      }
+    }
+
+    // ── Load reservation (if booking_id provided) ──────────────────
+
+    async function loadReservation(){
+      const { data: reservation, error } = await supabaseClient
+        .from("reservations")
+        .select("id, check_in, check_out, room_type, purpose_of_visit")
+        .eq("id", bookingId)
+        .eq("user_id", currentUser.id)
+        .maybeSingle()
+
+      if (error || !reservation) return
+
+      visitSection.style.display = "block"
+      el("purposeOfVisit").value = reservation.purpose_of_visit || ""
+
+      reservationInfoEl.style.display = "block"
+      reservationInfoEl.innerHTML = `
+        <strong>${reservation.room_type || "Hospedagem"}</strong>
+        <span>Check-in: ${formatDate(reservation.check_in)}</span>
+        <span>Check-out: ${formatDate(reservation.check_out)}</span>
+      `
+    }
+
+    // ── Form submit ────────────────────────────────────────────────
+
+    fichaForm.addEventListener("submit", async (event) => {
+      event.preventDefault()
+      clearStatus()
+
+      const required = [
+        { id: "dateOfBirth", label: "Data de nascimento" },
+        { id: "sex",         label: "Sexo" },
+        { id: "profession",  label: "Profissão" },
+        { id: "nationality", label: "Nacionalidade" },
+        { id: "phone",       label: "Telefone" },
+        { id: "addressZip",  label: "CEP" },
+        { id: "addressStreet", label: "Logradouro" },
+        { id: "addressNumber", label: "Número" },
+        { id: "addressCity",   label: "Cidade" },
+        { id: "addressState",  label: "Estado" },
+      ]
+
+      for (const f of required){
+        if (!el(f.id).value.trim()){
+          setStatus("error", `Preencha o campo "${f.label}" para continuar.`)
+          el(f.id).focus()
+          return
+        }
+      }
+
+      if (bookingId && visitSection.style.display !== "none" && !el("purposeOfVisit").value){
+        setStatus("error", 'Selecione o motivo da viagem para continuar.')
+        el("purposeOfVisit").focus()
+        return
+      }
+
+      setLoading(true)
+      setStatus("info", "Salvando sua ficha...")
+
+      const profileUpdate = {
+        cpf_cnpj:       el("cpfCnpj").value.trim()       || null,
+        date_of_birth:  el("dateOfBirth").value           || null,
+        sex:            el("sex").value                   || null,
+        profession:     el("profession").value.trim()     || null,
+        nationality:    el("nationality").value.trim()    || "Brasileira",
+        phone:          el("phone").value.trim()          || null,
+        address_zip:    el("addressZip").value.trim()     || null,
+        address_street: el("addressStreet").value.trim()  || null,
+        address_number: el("addressNumber").value.trim()  || null,
+        address_city:   el("addressCity").value.trim()    || null,
+        address_state:  el("addressState").value.trim().toUpperCase() || null,
+        address_country: el("addressCountry").value.trim() || "Brasil",
+      }
+
+      const { error: profileError } = await supabaseClient
+        .from("profiles")
+        .update(profileUpdate)
+        .eq("id", currentUser.id)
+
+      if (profileError){
+        setLoading(false)
+        setStatus("error", "Erro ao salvar seus dados: " + profileError.message)
+        return
+      }
+
+      if (bookingId && el("purposeOfVisit").value){
+        await supabaseClient
+          .from("reservations")
+          .update({ purpose_of_visit: el("purposeOfVisit").value })
+          .eq("id", bookingId)
+          .eq("user_id", currentUser.id)
+      }
+
+      setLoading(false)
+      setStatus("success", "Ficha salva! Enviando ao sistema do Ministério do Turismo...")
+      statusBox.scrollIntoView({ behavior: "smooth", block: "center" })
+
+      // Submit to e-FNRH (MTur) — non-blocking, best-effort
+      submitToFNRH(bookingId).then(ok => {
+        if (ok) {
+          setStatus("success", "Ficha registrada com sucesso na FNRH! Seu check-in será mais rápido.")
+        } else {
+          setStatus("success", "Dados salvos com sucesso. O envio ao sistema FNRH será reprocessado automaticamente.")
+        }
+      })
+    })
+
+    // ── e-FNRH submission ─────────────────────────────────────────
+
+    async function submitToFNRH(bookingId) {
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession()
+        if (!session) return false
+
+        const body = bookingId ? { booking_id: bookingId } : {}
+
+        const res = await fetch(
+          window.FUNCTIONS_URL + "/submit-fnrh",
+          {
+            method: "POST",
+            headers: {
+              "Authorization": "Bearer " + session.access_token,
+              "Content-Type":  "application/json",
+            },
+            body: JSON.stringify(body),
+          }
+        )
+
+        const data = await res.json()
+        if (!res.ok) {
+          console.warn("FNRH submission failed:", data)
+          return false
+        }
+
+        console.log("FNRH submitted:", data)
+        return true
+      } catch (err) {
+        console.warn("FNRH fetch error:", err)
+        return false
+      }
+    }
+
+    // ── Auth check + init ──────────────────────────────────────────
+
+    function redirectToLogin(){
+      window.location.href = `login.html?return_to=${encodeURIComponent(window.location.pathname + window.location.search)}`
+    }
+
+    function toggleMenu(forceOpen){
+      const menu = document.getElementById("sideMenu")
+      const backdrop = document.getElementById("backdrop")
+      const isOpen = menu.classList.contains("open")
+      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
+      menu.classList.toggle("open", open)
+      if (backdrop) backdrop.classList.toggle("open", open)
+    }
+
+    async function logout(){
+      try { await supabaseClient.auth.signOut() } catch(e){ console.error(e) }
+      window.location.href = "index.html"
+    }
+
+    function onScrollHeader(){
+      const y = window.scrollY || document.documentElement.scrollTop
+      topHeader.classList.toggle("solid", y > 40)
+    }
+
+    window.addEventListener("scroll", onScrollHeader)
+    onScrollHeader()
+    window.toggleMenu = toggleMenu
+    window.logout = logout
+
+    ;(async function init(){
+      const { data, error } = await supabaseClient.auth.getUser()
+
+      if (error || !data.user){
+        redirectToLogin()
+        return
+      }
+
+      currentUser = data.user
+      bookingId   = getBookingId()
+
+      await loadProfile()
+      if (bookingId) await loadReservation()
+
+      loadingState.style.display = "none"
+      fichaForm.style.display    = "grid"
+    })()
+  </script>
+  <script src="cookie-consent.js"></script>
+</body>
+</html>

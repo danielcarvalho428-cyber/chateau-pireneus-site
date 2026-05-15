@@ -571,6 +571,60 @@
       transform:none;
     }
 
+    .fnrh-banner{
+      display:none;
+      margin-top:18px;
+      padding:16px 18px;
+      background:rgba(216,199,161,0.18);
+      border:1px solid rgba(216,199,161,0.46);
+      border-radius:18px;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .fnrh-banner.show{
+      display:flex;
+    }
+
+    .fnrh-banner-text{
+      font-size:13.5px;
+      line-height:1.7;
+      color:var(--muted);
+      flex:1;
+      min-width:0;
+    }
+
+    .fnrh-banner-text strong{
+      display:block;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:3px;
+    }
+
+    .fnrh-banner-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 18px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      white-space:nowrap;
+      transition:0.22s ease;
+      flex-shrink:0;
+    }
+
+    .fnrh-banner-link:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 28px rgba(0,0,0,0.13);
+    }
+
     .empty-state{
       border:1px dashed rgba(29,53,87,0.18);
       border-radius:20px;
@@ -611,6 +665,9 @@
     .footer-bg{
       display:block;
       width:100%;
+      height:200px;
+      object-fit:cover;
+      object-position:center center;
     }
 
     .footer-overlay{
@@ -855,6 +912,15 @@
         <div class="hero-actions">
           <button class="secondary-btn-light" type="button" onclick="refreshDashboard()">Atualizar agora</button>
         </div>
+
+        <div id="fnrhBanner" class="fnrh-banner" role="alert">
+          <div class="fnrh-banner-text">
+            <strong>Complete sua ficha de hóspede</strong>
+            Exigida pela Lei 11.771/2008, a FNRH precisa ser preenchida antes do check-in.
+            Leva menos de 2 minutos e seus dados ficam salvos para as próximas estadias.
+          </div>
+          <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1088,6 +1154,11 @@
       return "badge-warn"
     }
 
+    function isFutureReservation(reservation) {
+      if (!reservation.check_in) return false
+      return reservation.check_in >= new Date().toISOString().split("T")[0]
+    }
+
     function isRetryEligible(reservation) {
       if (!reservation) return false
 
@@ -1177,7 +1248,7 @@
 
       const { data: profile, error: profileError } = await supabaseClient
         .from("profiles")
-        .select("full_name, phone")
+        .select("full_name, phone, date_of_birth, sex, profession, nationality, address_city")
         .eq("id", currentUser.id)
         .maybeSingle()
 
@@ -1188,6 +1259,11 @@
       document.getElementById("welcome").textContent = "BEM-VINDO, " + (((profile && profile.full_name) || "HÓSPEDE").toUpperCase())
       document.getElementById("user-email").textContent = currentUser.email || ""
       document.getElementById("user-phone").textContent = (profile && profile.phone) || "Não informado"
+
+      const fnrhComplete = profile && profile.date_of_birth && profile.sex && profile.profession && profile.nationality && profile.address_city
+      if (!fnrhComplete) {
+        document.getElementById("fnrhBanner").classList.add("show")
+      }
 
       return true
     }
@@ -1216,6 +1292,15 @@
       allReservations = data || []
       updateSummary()
       renderReservations()
+
+      const bannerLink = document.getElementById("fnrhBannerLink")
+      if (bannerLink) {
+        const upcoming = allReservations.find(r =>
+          isFutureReservation(r) &&
+          (normalizeStatus(r.status) === "confirmed" || normalizeStatus(r.booking_status) === "booked" || normalizeStatus(r.payment_status) === "paid")
+        )
+        if (upcoming) bannerLink.href = `ficha.html?booking_id=${upcoming.id}`
+      }
     }
 
     function getFilteredReservations() {
@@ -1403,11 +1488,18 @@
             </div>
           </div>
 
-          ${isRetryEligible(reservation) ? `
+          ${(isFutureReservation(reservation) || isRetryEligible(reservation)) ? `
             <div class="reservation-actions">
-              <button class="retry-btn retry-payment-btn" type="button" data-id="${reservation.id}">
-                Tentar pagamento novamente
-              </button>
+              ${isFutureReservation(reservation) ? `
+                <a class="cta-btn" href="ficha.html?booking_id=${reservation.id}" style="text-decoration:none">
+                  FICHA DE HÓSPEDE
+                </a>
+              ` : ""}
+              ${isRetryEligible(reservation) ? `
+                <button class="retry-btn retry-payment-btn" type="button" data-id="${reservation.id}">
+                  Tentar pagamento novamente
+                </button>
+              ` : ""}
             </div>
           ` : ""}
         </article>

@@ -6,7 +6,15 @@
       "Bash(git commit -m ' *)",
       "Bash(python3 _patch_suite.py)",
       "Bash(python3 _patch_booking.py)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "Bash(git commit -m 'fix: replace legacy routes with modern config to restore static file serving *)",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\Daniel\\\\Desktop\\\\backup\\\\chateau-pireneus-site\" -Recurse -Force | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"c:\\\\Users\\\\Daniel\\\\Desktop\\\\backup\\\\chateau-pireneus-site\\\\\", \"\"\\) } | Sort-Object)",
+      "Bash(npx supabase *)",
+      "WebSearch",
+      "PowerShell(cd \"c:\\\\Users\\\\Daniel\\\\Desktop\\\\backup\\\\chateau-pireneus-site\"; $files = @\\(\"index.html\",\"pousada.html\",\"acomodacoes.html\",\"suite.html\",\"admin.html\",\"dashboard.html\",\"booking.html\",\"login.html\",\"register.html\",\"policies.html\",\"privacidade.html\"\\); foreach \\($f in $files\\) { $content = Get-Content $f -Raw; if \\($content -match '`n'\\) { Write-Host \"CORRUPTED: $f\" } else { Write-Host \"OK: $f\" } })",
+      "Bash(dir \"c:\\\\Users\\\\Daniel\\\\Desktop\\\\backup\\\\chateau-pireneus-site\\\\*.js\" /b)",
+      "WebFetch(domain:www.gov.br)"
     ]
   }
 }

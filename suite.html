@@ -2133,7 +2133,7 @@
     bPromoBtn.addEventListener("click", async function() {
       const code = bPromoInput.value.trim().toUpperCase();
       if (!code) return;
-      if (!currentQuote || !currentQuote.total_price) {
+      if (!currentQuote || !currentQuote.total) {
         bPromoMsg.style.color = "#c0392b";
         bPromoMsg.textContent = "Selecione as datas primeiro.";
         return;
@@ -2147,7 +2147,7 @@
       const res = await fetch(window.FUNCTIONS_URL + "/validate-promo", {
         method: "POST",
         headers: { "Content-Type": "application/json", "apikey": window.SUPABASE_KEY },
-        body: JSON.stringify({ code, total_amount: currentQuote.total_price, nights })
+        body: JSON.stringify({ code, total_amount: currentQuote.total, nights })
       });
       const data = await res.json().catch(() => null);
 
@@ -2508,12 +2508,12 @@
         return;
       }
 
-      // Save purpose of visit (FNRH requirement) to the reservation
+      // Save correct total_amount and purpose_of_visit to the reservation
       const purposeSelect = document.getElementById("b_purpose");
-      if (purposeSelect && reservationId) {
-        await sb.from("reservations")
-          .update({ purpose_of_visit: purposeSelect.value })
-          .eq("id", reservationId);
+      if (reservationId) {
+        const reservationPatch = { total_amount: currentQuote.total };
+        if (purposeSelect) reservationPatch.purpose_of_visit = purposeSelect.value;
+        await sb.from("reservations").update(reservationPatch).eq("id", reservationId);
       }
 
       setStatus("success", "Reserva criada. Redirecionando para pagamento...");

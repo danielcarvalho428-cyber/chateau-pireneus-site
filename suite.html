@@ -2508,12 +2508,12 @@
         return;
       }
 
-      // Save correct total_amount and purpose_of_visit to the reservation
+      // Save purpose_of_visit (FNRH requirement) — total_amount is set by the RPC
       const purposeSelect = document.getElementById("b_purpose");
-      if (reservationId) {
-        const reservationPatch = { total_amount: currentQuote.total };
-        if (purposeSelect) reservationPatch.purpose_of_visit = purposeSelect.value;
-        await sb.from("reservations").update(reservationPatch).eq("id", reservationId);
+      if (purposeSelect && reservationId) {
+        await sb.from("reservations")
+          .update({ purpose_of_visit: purposeSelect.value })
+          .eq("id", reservationId);
       }
 
       setStatus("success", "Reserva criada. Redirecionando para pagamento...");

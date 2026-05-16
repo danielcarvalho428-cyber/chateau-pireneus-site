@@ -6,6 +6,7 @@
   <title>Admin | Chateau Pireneus</title>
   <meta name="robots" content="noindex, nofollow" />
 
+  <link rel="preload" as="image" href="hero.webp" fetchpriority="high">
   <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css">
@@ -2642,10 +2643,45 @@
                 EXPIRAR
               </button>
             </div>
+
+            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(29,53,87,.07);">
+              <label style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;">Notas internas (visíveis apenas para admin)</label>
+              <div style="display:flex;gap:8px;align-items:flex-start;">
+                <textarea
+                  class="admin-note-area"
+                  data-id="${reservation.id}"
+                  rows="2"
+                  placeholder="Pedidos especiais confirmados, acordos verbais, observações..."
+                  style="flex:1;padding:9px 12px;border:1.5px solid rgba(29,53,87,.14);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;background:rgba(255,255,255,.7);color:var(--navy);"
+                >${(reservation.admin_notes || '').replace(/</g,'&lt;')}</textarea>
+                <button type="button" class="save-note-btn quick-action-btn" data-id="${reservation.id}"
+                  style="padding:9px 16px;font-size:12px;white-space:nowrap;">
+                  SALVAR
+                </button>
+              </div>
+            </div>
           </article>
         `;
       }).join("");
     }
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".save-note-btn");
+      if (!btn) return;
+      const id   = btn.dataset.id;
+      const area = document.querySelector(`.admin-note-area[data-id="${id}"]`);
+      if (!area) return;
+      btn.disabled = true;
+      btn.textContent = "...";
+      const { error } = await supabaseClient
+        .from("reservations")
+        .update({ admin_notes: area.value.trim() || null })
+        .eq("id", id);
+      btn.disabled = false;
+      btn.textContent = error ? "ERRO" : "SALVO ✓";
+      setTimeout(() => { btn.textContent = "SALVAR"; }, 2000);
+      if (error) console.error("save note error:", error);
+    });
 
     async function updateReservationStatus(reservationId, nextStatus, button) {
       button.disabled = true;

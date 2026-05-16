@@ -15,3 +15,7 @@ alter table reservations
 alter table reservations
   add column if not exists addons        jsonb    default '[]',
   add column if not exists addons_amount numeric(10,2) default 0;
+
+-- Internal admin notes per reservation.
+alter table reservations
+  add column if not exists admin_notes text;

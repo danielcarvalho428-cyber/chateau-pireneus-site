@@ -1403,6 +1403,9 @@
           </div>
         </div>
 
+        <!-- Today's arrivals / departures widget -->
+        <div id="todayWidget" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;"></div>
+
         <div class="toolbar">
           <div class="field">
             <label for="searchInput">Buscar</label>
@@ -2252,6 +2255,42 @@
       updateSummaryCards();
       renderReservations();
       updateRelatorios();
+      renderTodayWidget();
+    }
+
+    function renderTodayWidget() {
+      const widget  = document.getElementById("todayWidget");
+      if (!widget) return;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const paid = r => ["paid","confirmed"].includes((r.payment_status||"").toLowerCase()) || (r.status||"").toLowerCase() === "confirmed";
+
+      const arrivals   = allReservations.filter(r => r.check_in  === todayStr && paid(r));
+      const departures = allReservations.filter(r => r.check_out === todayStr && paid(r));
+
+      function listHtml(items, emptyMsg) {
+        if (!items.length) return `<p style="font-size:13px;color:var(--muted);margin:0;">${emptyMsg}</p>`;
+        return items.map(r => {
+          const p = profilesMap[r.user_id] || {};
+          return `<div style="padding:8px 0;border-bottom:1px solid rgba(29,53,87,.07);">
+            <div style="font-size:13px;font-weight:600;color:var(--navy);">${p.full_name || "Hóspede"}</div>
+            <div style="font-size:12px;color:var(--muted);">${r.room_name || r.room_id || "—"} · ${p.phone || p.email || ""}</div>
+          </div>`;
+        }).join("");
+      }
+
+      widget.innerHTML = `
+        <div style="background:rgba(47,122,75,.07);border:1px solid rgba(47,122,75,.18);border-radius:12px;padding:16px 18px;">
+          <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#2f7a4b;font-weight:700;margin-bottom:10px;">
+            ↓ Check-ins hoje (${arrivals.length})
+          </div>
+          ${listHtml(arrivals, "Nenhum check-in hoje.")}
+        </div>
+        <div style="background:rgba(181,74,74,.07);border:1px solid rgba(181,74,74,.18);border-radius:12px;padding:16px 18px;">
+          <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#b54a4a;font-weight:700;margin-bottom:10px;">
+            ↑ Check-outs hoje (${departures.length})
+          </div>
+          ${listHtml(departures, "Nenhum check-out hoje.")}
+        </div>`;
     }
 
     function exportReservationsCSV() {

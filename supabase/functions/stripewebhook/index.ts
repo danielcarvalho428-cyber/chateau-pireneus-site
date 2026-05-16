@@ -135,11 +135,35 @@ Deno.serve(async (request) => {
           body: JSON.stringify({ reservation_id: reservationId }),
         }).catch(err => console.error("emit-nfse trigger failed:", err))
 
-        // Fire-and-forget booking confirmation email
+        // Fire-and-forget booking confirmation email to guest
         fetch(`${Deno.env.get("SUPABASE_URL")}/functions/v1/send-booking-email`, {
           method: "POST", headers: fnHeaders,
           body: JSON.stringify({ reservation_id: reservationId }),
         }).catch(err => console.error("send-booking-email trigger failed:", err))
+
+        // Fire-and-forget admin notification email
+        const adminEmail = Deno.env.get("ADMIN_EMAIL")
+        const resendKey  = Deno.env.get("RESEND_API_KEY")
+        if (adminEmail && resendKey) {
+          const res2 = session.metadata?.reservation_id ?? reservationId
+          fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${resendKey}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              from: Deno.env.get("EMAIL_FROM") ?? "reservas@chateaupireneus.com.br",
+              to: [adminEmail],
+              subject: `Nova reserva confirmada — ${res2}`,
+              html: `<p style="font-family:sans-serif;font-size:14px;">
+                Uma nova reserva foi confirmada via Stripe.<br><br>
+                <strong>ID:</strong> ${res2}<br>
+                <strong>Sessão:</strong> ${session.id}<br><br>
+                <a href="https://chateaupireneus.com.br/admin.html" style="background:#1d3557;color:#d8c7a1;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">
+                  Ver no painel admin
+                </a>
+              </p>`,
+            }),
+          }).catch(err => console.error("admin notification email failed:", err))
+        }
 
         break
       }

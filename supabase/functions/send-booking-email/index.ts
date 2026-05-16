@@ -56,7 +56,15 @@ Deno.serve(async (req) => {
   const amount   = formatBRL(parseFloat(res.total_amount ?? res.total_price ?? res.amount_brl ?? 0))
   const roomName = res.room_name ?? res.room_id ?? "Suíte"
 
-  const html = buildEmail({ guestName, checkIn, checkOut, nights, amount, roomName, reservationId: reservation_id })
+  // Fetch add-on labels if any were selected
+  const addonIds: string[] = Array.isArray(res.addons) ? res.addons : []
+  let addonRows: { label: string; price: number; per: string }[] = []
+  if (addonIds.length > 0) {
+    const { data } = await sb.from("addons").select("id, label, price, per").in("id", addonIds)
+    addonRows = data ?? []
+  }
+
+  const html = buildEmail({ guestName, checkIn, checkOut, nights, amount, roomName, reservationId: reservation_id, addons: addonRows, guests: res.guests ?? 1 })
 
   const resendRes = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -110,7 +118,22 @@ function buildEmail(p: {
   amount: string
   roomName: string
   reservationId: string
+  addons: { label: string; price: number; per: string }[]
+  guests: number
 }): string {
+  const addonSection = p.addons.length > 0 ? `
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(29,53,87,.08);">
+      <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 10px;">Extras selecionados</div>
+      ${p.addons.map(a => {
+        const price = a.per === "person_night"
+          ? formatBRL(a.price * p.guests * p.nights)
+          : formatBRL(a.price)
+        return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(29,53,87,.06);">
+          <span style="font-size:13px;color:#666;">${a.label}</span>
+          <span style="font-size:13px;color:#1d3557;font-weight:bold;">${price}</span>
+        </div>`
+      }).join("")}
+    </div>` : ""
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -185,6 +208,7 @@ function buildEmail(p: {
           <span class="detail-label">Nº da Reserva</span>
           <span class="detail-value" style="font-size:11px;opacity:.7;">${p.reservationId.slice(0, 8).toUpperCase()}</span>
         </div>
+        ${addonSection}
         <div class="total-row">
           <span class="total-label">Total pago</span>
           <span class="total-value">${p.amount}</span>
@@ -194,7 +218,7 @@ function buildEmail(p: {
       <div class="info-box">
         <p><strong>Check-in:</strong> a partir das 14h00</p>
         <p><strong>Check-out:</strong> até as 12h00</p>
-        <p><strong>Endereço:</strong> Rua do Lazer, s/n — Pirenópolis, GO</p>
+        <p><strong>Endereço:</strong> Rua Tupinambás, Quadra 09, Lote 16 — Pirenópolis, GO</p>
         <p><strong>WhatsApp:</strong> <a href="https://wa.me/5562998167654" style="color:#1d3557;">(62) 99816-7654</a></p>
       </div>
 

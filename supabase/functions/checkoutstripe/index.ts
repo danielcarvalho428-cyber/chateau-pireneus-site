@@ -13,7 +13,6 @@ interface Payload {
 
 const ADDONS: Record<string, { label: string; price: number; per: "flat" | "person_night" }> = {
   breakfast:     { label: "Café da manhã",           price: 45,  per: "person_night" },
-  late_checkout: { label: "Late checkout (até 15h)", price: 80,  per: "flat"         },
   welcome_kit:   { label: "Kit boas-vindas",         price: 150, per: "flat"         },
 }
 

@@ -519,22 +519,32 @@
       <div class="panel">
         <h2 class="panel-title">Alterar disponibilidade</h2>
         <p class="panel-subtitle">
-          Nesta primeira versão, você pode abrir ou bloquear uma data por vez para cada suíte.
+          Selecione uma suíte (ou todas), um período e aplique o status desejado.
         </p>
 
         <div class="field">
           <label for="room-select">Suíte</label>
-          <select id="room-select"></select>
+          <select id="room-select">
+            <option value="__all__">— Todas as suítes —</option>
+          </select>
         </div>
 
-        <div class="field">
-          <label for="date-input">Data</label>
-          <input type="date" id="date-input">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field">
+            <label for="date-from">De</label>
+            <input type="date" id="date-from">
+          </div>
+          <div class="field">
+            <label for="date-to">Até</label>
+            <input type="date" id="date-to">
+          </div>
         </div>
+
+        <p id="range-summary" style="font-size:12px;color:var(--muted);margin:4px 0 0;min-height:16px;"></p>
 
         <div class="action-row">
           <button id="open-btn" class="action-btn btn-open" type="button">Marcar como aberta</button>
-          <button id="block-btn" class="action-btn btn-block" type="button">Bloquear data</button>
+          <button id="block-btn" class="action-btn btn-block" type="button">Bloquear período</button>
           <button id="refresh-btn" class="action-btn btn-refresh" type="button">Atualizar calendário</button>
         </div>
       </div>
@@ -633,9 +643,9 @@
       rooms = data || []
 
       const select = document.getElementById("room-select")
-      select.innerHTML = rooms.map(room => `
-        <option value="${room.id}">${room.name}</option>
-      `).join("")
+      // Keep the "All suites" option, append individual rooms
+      select.innerHTML = '<option value="__all__">— Todas as suítes —</option>' +
+        rooms.map(room => `<option value="${room.id}">${room.name}</option>`).join("")
 
       if (rooms.length > 0) {
         await loadCalendar()
@@ -644,7 +654,11 @@
 
     async function loadCalendar() {
       const roomId = document.getElementById("room-select").value
-      if (!roomId) return
+      if (!roomId || roomId === "__all__") {
+        document.getElementById("calendar-subtitle").textContent = "Selecione uma suíte específica para ver o calendário de 30 dias."
+        document.getElementById("calendar-grid").innerHTML = ""
+        return
+      }
 
       const today = new Date()
       const endDate = new Date()
@@ -691,44 +705,68 @@
       `).join("")
     }
 
+    function enumerateDateRange(from, to) {
+      const dates = []
+      let cur = new Date(from + "T00:00:00Z")
+      const end = new Date(to   + "T00:00:00Z")
+      while (cur <= end) {
+        dates.push(cur.toISOString().slice(0, 10))
+        cur.setUTCDate(cur.getUTCDate() + 1)
+      }
+      return dates
+    }
+
     async function updateAvailabilityStatus(newStatus) {
-      const roomId = document.getElementById("room-select").value
-      const date = document.getElementById("date-input").value
+      const roomValue = document.getElementById("room-select").value
+      const dateFrom  = document.getElementById("date-from").value
+      const dateTo    = document.getElementById("date-to").value || dateFrom
 
-      if (!roomId || !date) {
-        alert("Selecione a suíte e a data.")
+      if (!roomValue || !dateFrom) {
+        alert("Selecione a suíte e pelo menos a data inicial.")
         return
       }
 
-      const { data: existing, error: existingError } = await supabaseClient
-        .from("room_availability")
-        .select("id, status")
-        .eq("room_id", roomId)
-        .eq("date", date)
-        .single()
+      const targetRooms = roomValue === "__all__" ? rooms.map(r => r.id) : [Number(roomValue)]
+      const dates = enumerateDateRange(dateFrom, dateTo)
 
-      if (existingError) {
-        alert(existingError.message)
-        return
+      if (dates.length > 180) {
+        if (!confirm(`Isso irá alterar ${dates.length} datas em ${targetRooms.length} suíte(s). Confirmar?`)) return
       }
 
-      if (existing.status === "booked") {
-        alert("Datas com status booked não devem ser alteradas manualmente.")
-        return
+      let updated = 0
+      let skipped = 0
+
+      for (const rid of targetRooms) {
+        const { data: existing, error: fetchErr } = await supabaseClient
+          .from("room_availability")
+          .select("id, date, status")
+          .eq("room_id", rid)
+          .in("date", dates)
+
+        if (fetchErr) { alert(fetchErr.message); return }
+
+        const existingMap = {}
+        ;(existing || []).forEach(r => { existingMap[r.date] = r })
+
+        for (const date of dates) {
+          const row = existingMap[date]
+          if (!row) { skipped++; continue }
+          if (row.status === "booked") { skipped++; continue }
+
+          const { error } = await supabaseClient
+            .from("room_availability")
+            .update({ status: newStatus, source: "manual" })
+            .eq("id", row.id)
+
+          if (error) { alert(error.message); return }
+          updated++
+        }
       }
 
-      const { error } = await supabaseClient
-        .from("room_availability")
-        .update({ status: newStatus })
-        .eq("id", existing.id)
-
-      if (error) {
-        alert(error.message)
-        return
-      }
-
-      alert(`Data atualizada para ${newStatus}.`)
+      const label = newStatus === "open" ? "aberta" : "bloqueada"
+      alert(`${updated} data(s) marcada(s) como ${label}.${skipped ? ` ${skipped} ignorada(s) (booked ou não encontrada).` : ""}`)
       await loadCalendar()
+      await loadMonthCalendar()
     }
 
     async function logout() {
@@ -736,8 +774,24 @@
       window.location.href = "login.html"
     }
 
-    document.getElementById("room-select").addEventListener("change", loadCalendar)
-    document.getElementById("refresh-btn").addEventListener("click", loadCalendar)
+    function updateRangeSummary() {
+      const from = document.getElementById("date-from").value
+      const to   = document.getElementById("date-to").value
+      const summary = document.getElementById("range-summary")
+      if (!from) { summary.textContent = ""; return }
+      const end = to && to >= from ? to : from
+      const count = enumerateDateRange(from, end).length
+      const roomValue = document.getElementById("room-select").value
+      const suites = roomValue === "__all__" ? rooms.length : 1
+      summary.textContent = count === 1
+        ? `1 data · ${suites} suíte(s)`
+        : `${count} datas · ${suites} suíte(s)`
+    }
+
+    document.getElementById("room-select").addEventListener("change", () => { loadCalendar(); updateRangeSummary() })
+    document.getElementById("date-from").addEventListener("change", updateRangeSummary)
+    document.getElementById("date-to").addEventListener("change", updateRangeSummary)
+    document.getElementById("refresh-btn").addEventListener("click", () => { loadCalendar(); loadMonthCalendar() })
     document.getElementById("open-btn").addEventListener("click", () => updateAvailabilityStatus("open"))
     document.getElementById("block-btn").addEventListener("click", () => updateAvailabilityStatus("blocked"))
     document.getElementById("logout-btn").addEventListener("click", logout)

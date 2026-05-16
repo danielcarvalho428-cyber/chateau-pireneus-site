@@ -381,6 +381,21 @@
         Aguarde enquanto validamos o retorno do pagamento.
       </div>
 
+      <div id="calendarActions" class="hidden" style="margin:12px 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+        <a id="googleCalBtn" href="#" target="_blank" rel="noopener"
+          class="btn btn-dark"
+          style="display:inline-flex;align-items:center;gap:7px;font-size:13px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v2M16 3v2"/></svg>
+          Adicionar ao Google Calendar
+        </a>
+        <button id="icsDownloadBtn" type="button"
+          class="btn btn-light"
+          style="display:inline-flex;align-items:center;gap:7px;font-size:13px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Baixar .ics (Apple / Outlook)
+        </button>
+      </div>
+
       <div class="actions">
         <button id="retryBtn" class="btn btn-dark hidden" type="button">Tentar pagamento novamente</button>
         <a id="dashboardLink" href="/dashboard.html" class="btn btn-light">Minha área</a>
@@ -506,6 +521,51 @@
         setNotice("success", "Tudo certo. Você também pode acompanhar os detalhes na sua área do cliente.");
         statusText.textContent =
           `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+        buildCalendarLinks(reservation);
+      }
+
+      function toCalDate(iso) {
+        return (iso || "").replace(/-/g, "");
+      }
+
+      function buildCalendarLinks(reservation) {
+        const checkIn  = reservation?.check_in;
+        const checkOut = reservation?.check_out;
+        const room     = reservation?.room_name || reservation?.room_type || reservation?.room_id || "Suíte";
+        if (!checkIn || !checkOut) return;
+
+        const title    = encodeURIComponent(`Estadia no Château Pireneus — ${room}`);
+        const details  = encodeURIComponent("Château Pireneus · Pousada de Charme\nCheck-in a partir das 14h · Check-out até as 12h\nWhatsApp: (62) 99816-7654");
+        const location = encodeURIComponent("Rua Tupinambás, Quadra 09, Lote 16, Pirenópolis - GO");
+        const dates    = `${toCalDate(checkIn)}/${toCalDate(checkOut)}`;
+
+        document.getElementById("googleCalBtn").href =
+          `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+
+        document.getElementById("icsDownloadBtn").onclick = function () {
+          const ics = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//Chateau Pireneus//Reserva//PT",
+            "BEGIN:VEVENT",
+            `DTSTART;VALUE=DATE:${toCalDate(checkIn)}`,
+            `DTEND;VALUE=DATE:${toCalDate(checkOut)}`,
+            `SUMMARY:Estadia no Château Pireneus — ${room}`,
+            `DESCRIPTION:Château Pireneus · Pousada de Charme\\nCheck-in a partir das 14h · Check-out até as 12h\\nWhatsApp: (62) 99816-7654`,
+            `LOCATION:Rua Tupinambás\\, Quadra 09\\, Lote 16\\, Pirenópolis - GO`,
+            "END:VEVENT",
+            "END:VCALENDAR"
+          ].join("\r\n");
+          const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+          const url  = URL.createObjectURL(blob);
+          const a    = document.createElement("a");
+          a.href = url; a.download = "reserva-chateau-pireneus.ics"; a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+        };
+
+        const calDiv = document.getElementById("calendarActions");
+        calDiv.classList.remove("hidden");
+        calDiv.style.display = "flex";
       }
 
       function renderProcessing(reservation) {

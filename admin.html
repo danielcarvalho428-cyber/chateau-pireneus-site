@@ -1631,7 +1631,14 @@
             <li>Copie o link <em>"Exportar calendário"</em> (formato <code>.ics</code>).</li>
             <li>Cole o link no campo da suíte correspondente acima e clique em <strong>Salvar</strong>.</li>
           </ol>
-          <p style="font-size:13px;color:#888;margin:12px 0 0;">A sincronização roda automaticamente a cada 4 horas. Para forçar agora, peça ao administrador do sistema para acionar a função <code>sync-airbnb-calendars</code> manualmente.</p>
+          <div style="margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <button type="button" id="forceSyncBtn"
+              style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
+              ↻ Forçar sincronização agora
+            </button>
+            <span id="forceSyncStatus" style="font-size:13px;"></span>
+          </div>
+          <p style="font-size:13px;color:#888;margin:12px 0 0;">A sincronização roda automaticamente a cada 4 horas. Use o botão acima para forçar uma atualização imediata.</p>
         </div>
       </div><!-- /tab-panel integracoes -->
     </div>
@@ -3186,7 +3193,48 @@
     }
     window.saveIcalUrl = saveIcalUrl;
 
-    document.querySelector('[data-tab="integracoes"]').addEventListener("click", loadIntegracoes);
+    document.querySelector('[data-tab="integracoes"]').addEventListener("click", () => {
+      loadIntegracoes();
+      // Wire up force-sync button once tab is visible
+      const syncBtn = document.getElementById("forceSyncBtn");
+      if (syncBtn && !syncBtn._wired) {
+        syncBtn._wired = true;
+        syncBtn.addEventListener("click", async () => {
+          const statusEl = document.getElementById("forceSyncStatus");
+          syncBtn.disabled = true;
+          statusEl.textContent = "Sincronizando…";
+          statusEl.style.color = "#888";
+          try {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            const res = await fetch(window.FUNCTIONS_URL + "/sync-airbnb-calendars", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + (session?.access_token ?? ""),
+              },
+              body: "{}",
+            });
+            const json = await res.json().catch(() => ({}));
+            if (res.ok) {
+              const parts = Object.entries(json.results || {}).map(([room, r]) =>
+                `${room}: ${r.success ? `${r.touched_airbnb ?? 0} datas atualizadas` : r.error}`
+              );
+              statusEl.textContent = parts.length ? parts.join(" · ") : "Concluído.";
+              statusEl.style.color = "#2a7a4b";
+            } else {
+              statusEl.textContent = "Erro: " + (json.error || res.status);
+              statusEl.style.color = "#c0392b";
+            }
+          } catch (e) {
+            statusEl.textContent = "Erro de rede: " + e.message;
+            statusEl.style.color = "#c0392b";
+          } finally {
+            syncBtn.disabled = false;
+            setTimeout(() => { statusEl.textContent = ""; }, 8000);
+          }
+        });
+      }
+    });
 
     // ---- Guest messaging modal ----
     function openMessageModal(reservationId, guestEmail, guestName) {

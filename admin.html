@@ -1223,6 +1223,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
           PROMOS
         </button>
+        <button class="tab-btn" data-tab="extras" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          EXTRAS
+        </button>
       </div>
 
       <div class="tab-panel active" id="tab-pricing">
@@ -1579,6 +1583,20 @@
           </div>
         </div>
       </div><!-- /tab-panel promos -->
+
+      <div class="tab-panel" id="tab-extras">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <span class="panel-kicker">Extras no checkout</span>
+              <h2 class="panel-title">EXTRAS OPCIONAIS</h2>
+              <p class="panel-subtitle">Ative, ajuste o preço e edite a descrição de cada extra oferecido no formulário de reserva.</p>
+            </div>
+          </div>
+          <div id="extrasList" style="display:flex;flex-direction:column;gap:16px;"></div>
+          <p id="extrasMsg" style="font-size:13px;margin-top:12px;"></p>
+        </div>
+      </div><!-- /tab-panel extras -->
     </div>
   </section>
 
@@ -2883,6 +2901,81 @@
 
     // Load promos when tab is switched to
     document.querySelector('[data-tab="promos"]').addEventListener("click", loadPromos);
+
+    // ---- Extras tab ----
+    async function loadExtras() {
+      const list = document.getElementById("extrasList");
+      const msg  = document.getElementById("extrasMsg");
+      list.innerHTML = '<p style="color:#888;font-size:14px;">Carregando...</p>';
+      msg.textContent = "";
+
+      const { data, error } = await supabaseClient
+        .from("addons")
+        .select("*")
+        .order("id");
+
+      if (error || !data) {
+        list.innerHTML = `<p style="color:#c0392b;font-size:14px;">Erro: ${error?.message}</p>`;
+        return;
+      }
+
+      list.innerHTML = data.map(a => `
+        <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+            <span style="font-weight:700;font-size:15px;color:var(--navy);flex:1;">${a.label}</span>
+            <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
+              <input type="checkbox" id="extra-active-${a.id}" ${a.active ? "checked" : ""}
+                style="width:16px;height:16px;accent-color:var(--navy);">
+              Ativo
+            </label>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">
+                Preço (R$) ${a.per === "person_night" ? "· por pessoa/noite" : "· valor fixo"}
+              </label>
+              <input id="extra-price-${a.id}" type="number" min="0" step="0.01" value="${a.price}"
+                style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
+            </div>
+            <div>
+              <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">Descrição (exibida no formulário de reserva)</label>
+              <input id="extra-desc-${a.id}" type="text" value="${a.description.replace(/"/g,'&quot;')}"
+                style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
+            </div>
+          </div>
+          <button type="button" onclick="saveExtra('${a.id}')"
+            style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
+            Salvar alterações
+          </button>
+        </div>
+      `).join("");
+    }
+
+    async function saveExtra(id) {
+      const active = document.getElementById(`extra-active-${id}`).checked;
+      const price  = parseFloat(document.getElementById(`extra-price-${id}`).value);
+      const desc   = document.getElementById(`extra-desc-${id}`).value.trim();
+      const msg    = document.getElementById("extrasMsg");
+
+      if (isNaN(price) || price < 0) { msg.textContent = "Preço inválido."; msg.style.color = "#c0392b"; return; }
+
+      const { error } = await supabaseClient
+        .from("addons")
+        .update({ active, price, description: desc, updated_at: new Date().toISOString() })
+        .eq("id", id);
+
+      if (error) {
+        msg.textContent = "Erro: " + error.message;
+        msg.style.color = "#c0392b";
+      } else {
+        msg.textContent = "Salvo com sucesso.";
+        msg.style.color = "#2a7a4b";
+        setTimeout(() => { msg.textContent = ""; }, 3000);
+      }
+    }
+    window.saveExtra = saveExtra;
+
+    document.querySelector('[data-tab="extras"]').addEventListener("click", loadExtras);
 
     // ── Init ─────────────────────────────────────────────────────────────────
 

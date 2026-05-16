@@ -11,10 +11,6 @@ interface Payload {
   add_ons?: string[]
 }
 
-const ADDONS: Record<string, { label: string; price: number; per: "flat" | "person_night" }> = {
-  breakfast:     { label: "Café da manhã",           price: 45,  per: "person_night" },
-  welcome_kit:   { label: "Kit boas-vindas",         price: 150, per: "flat"         },
-}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -125,27 +121,33 @@ Deno.serve(async (req) => {
     return json({ error: "Pagamento online indisponivel para reserva com valor zerado." }, 422)
   }
 
-  // Build validated add-on line items
+  // Build validated add-on line items from DB (prices/labels/active are authoritative from DB)
   const nights = countNights(res.check_in, res.check_out)
   const guests = Math.max(1, Math.min(Number(res.guests) || 1, 10))
   const addonLineItems: { quantity: number; price_data: { currency: string; unit_amount: number; product_data: { name: string } } }[] = []
   let addonTotal = 0
 
-  for (const id of (add_ons ?? [])) {
-    const addon = ADDONS[id]
-    if (!addon) continue
-    const unitAmount = addon.per === "person_night"
-      ? Math.round(addon.price * guests * nights * 100)
-      : Math.round(addon.price * 100)
-    addonLineItems.push({
-      quantity: 1,
-      price_data: {
-        currency: "brl",
-        unit_amount: unitAmount,
-        product_data: { name: addon.label },
-      },
-    })
-    addonTotal += unitAmount / 100
+  if (add_ons && add_ons.length > 0) {
+    const { data: addonRows } = await sb
+      .from("addons")
+      .select("id, label, price, per, active")
+      .in("id", add_ons)
+      .eq("active", true)
+
+    for (const addon of (addonRows ?? [])) {
+      const unitAmount = addon.per === "person_night"
+        ? Math.round(Number(addon.price) * guests * nights * 100)
+        : Math.round(Number(addon.price) * 100)
+      addonLineItems.push({
+        quantity: 1,
+        price_data: {
+          currency: "brl",
+          unit_amount: unitAmount,
+          product_data: { name: addon.label },
+        },
+      })
+      addonTotal += unitAmount / 100
+    }
   }
 
   const nowSecs = Math.floor(Date.now() / 1000)

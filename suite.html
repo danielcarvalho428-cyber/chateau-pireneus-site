@@ -1508,26 +1508,9 @@
                 </select>
               </div>
 
-              <div class="b-field full">
+              <div class="b-field full" id="addon-field" style="display:none;">
                 <label>Extras opcionais</label>
-                <div class="addon-list" id="addon-list">
-                  <label class="addon-item">
-                    <input type="checkbox" value="breakfast" id="addon-breakfast">
-                    <div class="addon-info">
-                      <span class="addon-name">Café da manhã</span>
-                      <span class="addon-desc">Servido às 9h · R$ 45 por pessoa/noite</span>
-                    </div>
-                    <span class="addon-price" id="price-breakfast">R$ —</span>
-                  </label>
-<label class="addon-item">
-                    <input type="checkbox" value="welcome_kit" id="addon-welcome_kit">
-                    <div class="addon-info">
-                      <span class="addon-name">Kit boas-vindas</span>
-                      <span class="addon-desc">Espumante + frutas na suíte na chegada</span>
-                    </div>
-                    <span class="addon-price">R$ 150</span>
-                  </label>
-                </div>
+                <div class="addon-list" id="addon-list"></div>
               </div>
 
               <div class="b-field full">
@@ -2088,19 +2071,55 @@
     const sb = window.supabaseClient;
     const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe";
 
-    // Add-on catalog — must match ADDONS in checkoutstripe/index.ts
-    const ADDONS = {
-      breakfast:     { price: 45, per: "person_night" },
-      late_checkout: { price: 80, per: "flat"         },
-      welcome_kit:   { price: 150, per: "flat"        },
-    };
+    // Add-on catalog loaded from DB
+    let ADDONS = {};
+
+    async function loadAddons() {
+      const { data } = await sb.from("addons").select("*").eq("active", true);
+      ADDONS = {};
+      (data || []).forEach(a => { ADDONS[a.id] = a; });
+      renderAddonList();
+    }
+
+    function renderAddonList() {
+      const list  = document.getElementById("addon-list");
+      const field = document.getElementById("addon-field");
+      if (!list || !field) return;
+      const activeAddons = Object.values(ADDONS);
+      if (activeAddons.length === 0) {
+        field.style.display = "none";
+        return;
+      }
+      field.style.display = "";
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const guests = parseInt(bGuestsInput.value) || 1;
+      list.innerHTML = activeAddons.map(a => {
+        const price = a.per === "person_night"
+          ? a.price * guests * Math.max(nights, 1)
+          : a.price;
+        return `
+          <label class="addon-item">
+            <input type="checkbox" value="${a.id}" id="addon-${a.id}">
+            <div class="addon-info">
+              <span class="addon-name">${a.label}</span>
+              <span class="addon-desc">${a.description}${a.per === "person_night" ? " · R$ " + a.price + "/pessoa/noite" : ""}</span>
+            </div>
+            <span class="addon-price" id="price-${a.id}">R$ ${price.toLocaleString("pt-BR")}</span>
+          </label>`;
+      }).join("");
+    }
 
     function updateAddonPrices() {
-      const nights  = countNights(selectedCheckIn, selectedCheckOut);
-      const guests  = parseInt(bGuestsInput.value) || 1;
-      const bfast   = ADDONS.breakfast.price * guests * nights;
-      const el      = document.getElementById("price-breakfast");
-      if (el) el.textContent = nights > 0 ? "R$ " + bfast : "R$ —";
+      const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const guests = parseInt(bGuestsInput.value) || 1;
+      Object.values(ADDONS).forEach(a => {
+        const el = document.getElementById("price-" + a.id);
+        if (!el) return;
+        const price = a.per === "person_night"
+          ? a.price * guests * Math.max(nights, 1)
+          : a.price;
+        el.textContent = "R$ " + price.toLocaleString("pt-BR");
+      });
     }
 
     function getSelectedAddons() {
@@ -2378,6 +2397,7 @@
       }
 
       setStatus("info", "Carregando datas e valores...");
+      loadAddons(); // non-blocking — renders extras when ready
 
       const today = new Date();
       const start = formatDateLocal(today);

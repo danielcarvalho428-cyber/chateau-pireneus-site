@@ -2064,7 +2064,7 @@
 
   <script defer>
   (function waitForDeps() {
-    if (typeof supabase === "undefined" || typeof flatpickr === "undefined") {
+    if (typeof supabase === "undefined" || typeof flatpickr === "undefined" || !window._suiteRoomId) {
       setTimeout(waitForDeps, 60);
       return;
     }

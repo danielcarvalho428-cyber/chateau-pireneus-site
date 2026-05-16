@@ -1198,6 +1198,14 @@
     .b-submit-btn:hover{transform:translateY(-1px);box-shadow:0 22px 40px rgba(0,0,0,.16);}
     .b-submit-btn:disabled{opacity:.75;cursor:not-allowed;transform:none;}
     .b-help-text{margin-top:2px;font-size:12px;color:var(--muted);line-height:1.72;}
+    .addon-list{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+    .addon-item{display:flex;align-items:center;gap:12px;background:rgba(29,53,87,.03);border:1px solid rgba(29,53,87,.08);border-radius:10px;padding:12px 14px;cursor:pointer;transition:.15s;}
+    .addon-item:hover{background:rgba(29,53,87,.06);}
+    .addon-item input[type="checkbox"]{width:16px;height:16px;flex-shrink:0;accent-color:var(--navy);}
+    .addon-info{flex:1;}
+    .addon-name{display:block;font-size:13px;font-weight:600;color:var(--navy);}
+    .addon-desc{display:block;font-size:11px;color:var(--muted);margin-top:2px;}
+    .addon-price{font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;}
     .b-info-card{
       border:1px solid rgba(29,53,87,.08);
       background:rgba(255,255,255,.70);
@@ -1498,6 +1506,36 @@
                   <option value="Eventos">Eventos</option>
                   <option value="Outros">Outros</option>
                 </select>
+              </div>
+
+              <div class="b-field full">
+                <label>Extras opcionais</label>
+                <div class="addon-list" id="addon-list">
+                  <label class="addon-item">
+                    <input type="checkbox" value="breakfast" id="addon-breakfast">
+                    <div class="addon-info">
+                      <span class="addon-name">Café da manhã</span>
+                      <span class="addon-desc">Servido às 9h · R$ 45 por pessoa/noite</span>
+                    </div>
+                    <span class="addon-price" id="price-breakfast">R$ —</span>
+                  </label>
+                  <label class="addon-item">
+                    <input type="checkbox" value="late_checkout" id="addon-late_checkout">
+                    <div class="addon-info">
+                      <span class="addon-name">Late checkout (até 15h)</span>
+                      <span class="addon-desc">Saída estendida · Sujeito a disponibilidade</span>
+                    </div>
+                    <span class="addon-price">R$ 80</span>
+                  </label>
+                  <label class="addon-item">
+                    <input type="checkbox" value="welcome_kit" id="addon-welcome_kit">
+                    <div class="addon-info">
+                      <span class="addon-name">Kit boas-vindas</span>
+                      <span class="addon-desc">Espumante + frutas na suíte na chegada</span>
+                    </div>
+                    <span class="addon-price">R$ 150</span>
+                  </label>
+                </div>
               </div>
 
               <div class="b-field full">
@@ -2058,6 +2096,26 @@
     const sb = window.supabaseClient;
     const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe";
 
+    // Add-on catalog — must match ADDONS in checkoutstripe/index.ts
+    const ADDONS = {
+      breakfast:     { price: 45, per: "person_night" },
+      late_checkout: { price: 80, per: "flat"         },
+      welcome_kit:   { price: 150, per: "flat"        },
+    };
+
+    function updateAddonPrices() {
+      const nights  = countNights(selectedCheckIn, selectedCheckOut);
+      const guests  = parseInt(bGuestsInput.value) || 1;
+      const bfast   = ADDONS.breakfast.price * guests * nights;
+      const el      = document.getElementById("price-breakfast");
+      if (el) el.textContent = nights > 0 ? "R$ " + bfast : "R$ —";
+    }
+
+    function getSelectedAddons() {
+      return Array.from(document.querySelectorAll("#addon-list input[type=checkbox]:checked"))
+                  .map(cb => cb.value);
+    }
+
     const roomId = window._suiteRoomId;
     const roomName = window._suiteRoomName;
 
@@ -2302,6 +2360,7 @@
               selectedCheckIn = ci;
               selectedCheckOut = co;
               clearPromo();
+              updateAddonPrices();
               setStatus("info", "Calculando valores...");
               await refreshQuote();
               if (!currentMinStayViolated && currentQuote) {
@@ -2374,6 +2433,7 @@
       if (v > 2) { v = 2; bGuestsInput.value = "2"; }
       if (v < 1 && bGuestsInput.value !== "") { v = 1; bGuestsInput.value = "1"; }
       updateSummary();
+      updateAddonPrices();
     });
 
     bookingForm.addEventListener("submit", async function(e) {
@@ -2505,6 +2565,8 @@
 
       const checkoutBody = { reservation_id: reservationId };
       if (appliedPromo?.code) checkoutBody.promo_code = appliedPromo.code;
+      const selectedAddons = getSelectedAddons();
+      if (selectedAddons.length > 0) checkoutBody.add_ons = selectedAddons;
 
       const checkoutRes = await fetch(CHECKOUTSTRIPE_URL, {
         method: "POST",

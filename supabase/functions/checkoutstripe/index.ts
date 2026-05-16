@@ -8,6 +8,13 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") as string, {
 interface Payload {
   reservation_id: string
   promo_code?: string
+  add_ons?: string[]
+}
+
+const ADDONS: Record<string, { label: string; price: number; per: "flat" | "person_night" }> = {
+  breakfast:     { label: "Café da manhã",           price: 45,  per: "person_night" },
+  late_checkout: { label: "Late checkout (até 15h)", price: 80,  per: "flat"         },
+  welcome_kit:   { label: "Kit boas-vindas",         price: 150, per: "flat"         },
 }
 
 Deno.serve(async (req) => {
@@ -25,7 +32,7 @@ Deno.serve(async (req) => {
     return json({ error: "Invalid JSON" }, 400)
   }
 
-  const { reservation_id, promo_code } = payload
+  const { reservation_id, promo_code, add_ons } = payload
   if (!reservation_id) return json({ error: "reservation_id required" }, 400)
 
   const authHeader = req.headers.get("Authorization") ?? ""
@@ -119,6 +126,29 @@ Deno.serve(async (req) => {
     return json({ error: "Pagamento online indisponivel para reserva com valor zerado." }, 422)
   }
 
+  // Build validated add-on line items
+  const nights = countNights(res.check_in, res.check_out)
+  const guests = Math.max(1, Math.min(Number(res.guests) || 1, 10))
+  const addonLineItems: { quantity: number; price_data: { currency: string; unit_amount: number; product_data: { name: string } } }[] = []
+  let addonTotal = 0
+
+  for (const id of (add_ons ?? [])) {
+    const addon = ADDONS[id]
+    if (!addon) continue
+    const unitAmount = addon.per === "person_night"
+      ? Math.round(addon.price * guests * nights * 100)
+      : Math.round(addon.price * 100)
+    addonLineItems.push({
+      quantity: 1,
+      price_data: {
+        currency: "brl",
+        unit_amount: unitAmount,
+        product_data: { name: addon.label },
+      },
+    })
+    addonTotal += unitAmount / 100
+  }
+
   const nowSecs = Math.floor(Date.now() / 1000)
   // Pix QR expiry: use remaining booking hold time (min 5 min, max 24 h), default 1 h
   const pixExpirySecs = res.expires_at
@@ -154,6 +184,7 @@ Deno.serve(async (req) => {
             },
           },
         },
+        ...addonLineItems,
       ],
       metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
       payment_intent_data: {
@@ -171,6 +202,8 @@ Deno.serve(async (req) => {
   const reservationUpdate: Record<string, unknown> = {
     stripe_checkout_session_id: session.id,
     discount_amount: discountAmount,
+    addons_amount: addonTotal,
+    addons: add_ons ?? [],
   }
   if (promoId) reservationUpdate.promo_code_id = promoId
   if (promoCodeUsed) reservationUpdate.promo_code = promoCodeUsed

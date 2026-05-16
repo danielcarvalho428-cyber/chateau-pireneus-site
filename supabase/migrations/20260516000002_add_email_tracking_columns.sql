@@ -10,3 +10,8 @@ alter table reservations
   add column if not exists refund_rule      text,
   add column if not exists refund_amount    numeric(10,2),
   add column if not exists stripe_refund_id text;
+
+-- Track optional add-ons selected at checkout.
+alter table reservations
+  add column if not exists addons        jsonb    default '[]',
+  add column if not exists addons_amount numeric(10,2) default 0;

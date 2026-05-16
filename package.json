@@ -1,14 +1,23 @@
 {
   "scripts": {
-    "deploy:functions": "supabase functions deploy emit-nfse && supabase functions deploy stripewebhook && supabase functions deploy sync-airbnb-calendars",
-    "deploy:emit-nfse": "supabase functions deploy emit-nfse",
-    "deploy:stripewebhook": "supabase functions deploy stripewebhook",
-    "deploy:sync": "supabase functions deploy sync-airbnb-calendars",
+    "deploy:functions": "supabase functions deploy checkoutstripe --use-api && supabase functions deploy stripewebhook --use-api --no-verify-jwt && supabase functions deploy validate-promo --use-api && supabase functions deploy send-booking-email --use-api && supabase functions deploy send-checkin-reminder --use-api && supabase functions deploy cancel-reservation --use-api && supabase functions deploy send-admin-message --use-api && supabase functions deploy send-abandoned-booking --use-api && supabase functions deploy send-review-request --use-api && supabase functions deploy submit-fnrh --use-api && supabase functions deploy emit-nfse --use-api && supabase functions deploy sync-airbnb-calendars --use-api",
+    "deploy:checkoutstripe": "supabase functions deploy checkoutstripe --use-api",
+    "deploy:emit-nfse": "supabase functions deploy emit-nfse --use-api",
+    "deploy:stripewebhook": "supabase functions deploy stripewebhook --use-api --no-verify-jwt",
+    "deploy:validate-promo": "supabase functions deploy validate-promo --use-api",
+    "deploy:send-booking-email": "supabase functions deploy send-booking-email --use-api",
+    "deploy:send-checkin-reminder": "supabase functions deploy send-checkin-reminder --use-api",
+    "deploy:cancel-reservation": "supabase functions deploy cancel-reservation --use-api",
+    "deploy:send-admin-message": "supabase functions deploy send-admin-message --use-api",
+    "deploy:send-abandoned-booking": "supabase functions deploy send-abandoned-booking --use-api",
+    "deploy:send-review-request": "supabase functions deploy send-review-request --use-api",
+    "deploy:submit-fnrh": "supabase functions deploy submit-fnrh --use-api",
+    "deploy:sync": "supabase functions deploy sync-airbnb-calendars --use-api",
     "db:push": "supabase db push --linked",
     "db:diff": "supabase db diff --linked",
     "supabase:status": "supabase projects list"
   },
   "devDependencies": {
-    "supabase": "^2.87.2"
+    "supabase": "^2.98.2"
   }
 }

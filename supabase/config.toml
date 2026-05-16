@@ -7,6 +7,7 @@ enabled = true
 
 [functions.stripewebhook]
 enabled = true
+verify_jwt = false
 
 [functions.emit-nfse]
 enabled = true
@@ -21,4 +22,19 @@ enabled = true
 enabled = true
 
 [functions.checkoutstripe]
+enabled = true
+
+[functions.submit-fnrh]
+enabled = true
+
+[functions.cancel-reservation]
+enabled = true
+
+[functions.send-admin-message]
+enabled = true
+
+[functions.send-abandoned-booking]
+enabled = true
+
+[functions.send-review-request]
 enabled = true

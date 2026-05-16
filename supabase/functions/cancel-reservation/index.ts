@@ -56,6 +56,12 @@ Deno.serve(async (req) => {
     return json({ error: "Reserva não encontrada." }, 404)
   }
 
+  const { data: profile } = await sb
+    .from("profiles")
+    .select("full_name, email")
+    .eq("id", user.id)
+    .maybeSingle()
+
   // Must be a paid/confirmed reservation to cancel with refund
   const paymentStatus = (res.payment_status || "").toLowerCase()
   const isPaid = ["paid", "confirmed"].includes(paymentStatus) ||
@@ -145,8 +151,8 @@ Deno.serve(async (req) => {
     .then(({ error: e }) => { if (e) console.error("release_booking_hold error:", e) })
 
   // Fire-and-forget cancellation confirmation email
-  const guestEmail: string = res.profiles?.email ?? ""
-  const guestName:  string = res.profiles?.full_name ?? "Hóspede"
+  const guestEmail: string = profile?.email ?? user.email ?? ""
+  const guestName:  string = profile?.full_name ?? "Hóspede"
   if (guestEmail) {
     const FROM_EMAIL    = Deno.env.get("EMAIL_FROM")    ?? "reservas@chateaupireneus.com.br"
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") as string

@@ -2442,11 +2442,10 @@
 
       const [availRes, priceRes] = await Promise.all([
         sb.from("room_availability")
-          .select("date")
+          .select("date,status")
           .eq("room_id", roomId)
           .gte("date", start)
           .lte("date", end)
-          .neq("status", "open")
           .order("date", { ascending: true }),
         sb.rpc("get_room_calendar_prices", {
           p_room_type: roomName,
@@ -2456,7 +2455,17 @@
       ]);
 
       if (availRes.error) console.error(availRes.error);
-      unavailableDates = [...new Set((availRes.data || []).map(function(r) { return r.date; }))];
+      const availabilityByDate = new Map((availRes.data || []).map(function(r) { return [r.date, r.status]; }));
+      const blockedDates = [];
+      const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endDate = new Date(future.getFullYear(), future.getMonth(), future.getDate());
+      while (cursor <= endDate) {
+        const dateStr = formatDateLocal(cursor);
+        const status = availabilityByDate.get(dateStr);
+        if (status !== "open") blockedDates.push(dateStr);
+        cursor.setDate(cursor.getDate() + 1);
+      }
+      unavailableDates = [...new Set(blockedDates)];
 
       calendarPricesMap = {};
       if (!priceRes.error) {

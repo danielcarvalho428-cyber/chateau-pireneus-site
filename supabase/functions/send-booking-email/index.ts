@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
   // Fetch reservation + profile
   const { data: res, error: resErr } = await sb
     .from("reservations")
-    .select("*, profiles!left(full_name, email)")
+    .select("*")
     .eq("id", reservation_id)
     .single()
 
@@ -42,8 +42,14 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({ error: "Reservation not found" }), { status: 404 })
   }
 
-  const guestName: string = res.profiles?.full_name ?? "Hóspede"
-  const guestEmail: string = res.profiles?.email ?? res.guest_email ?? ""
+  const { data: profile } = await sb
+    .from("profiles")
+    .select("full_name, email")
+    .eq("id", res.user_id)
+    .maybeSingle()
+
+  const guestName: string = profile?.full_name ?? "Hóspede"
+  const guestEmail: string = profile?.email ?? res.guest_email ?? ""
 
   if (!guestEmail) {
     console.error("No guest email for reservation:", reservation_id)
@@ -53,7 +59,10 @@ Deno.serve(async (req) => {
   const checkIn  = formatDate(res.check_in)
   const checkOut = formatDate(res.check_out)
   const nights   = daysBetween(res.check_in, res.check_out)
-  const amount   = formatBRL(parseFloat(res.total_amount ?? res.total_price ?? res.amount_brl ?? 0))
+  const baseAmount = parseFloat(res.total_amount ?? res.total_price ?? res.amount_brl ?? 0)
+  const addonsAmount = parseFloat(res.addons_amount ?? 0)
+  const discountAmount = parseFloat(res.discount_amount ?? 0)
+  const amount   = formatBRL(Math.max(baseAmount + addonsAmount - discountAmount, 0))
   const roomName = res.room_name ?? res.room_id ?? "Suíte"
 
   // Fetch add-on labels if any were selected

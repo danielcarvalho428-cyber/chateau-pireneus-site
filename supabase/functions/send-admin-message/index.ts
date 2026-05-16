@@ -31,18 +31,8 @@ Deno.serve(async (req) => {
   const { data: { user }, error: authErr } = await sbUser.auth.getUser(token)
   if (authErr || !user) return json({ error: "Unauthorized" }, 401)
 
-  const sb = createClient(
-    Deno.env.get("SUPABASE_URL") as string,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
-  )
-
-  const { data: profile } = await sb
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single()
-
-  if (profile?.role !== "admin") return json({ error: "Forbidden" }, 403)
+  const { data: isAdmin, error: adminErr } = await sbUser.rpc("is_current_user_admin")
+  if (adminErr || isAdmin !== true) return json({ error: "Forbidden" }, 403)
 
   let payload: Payload
   try {

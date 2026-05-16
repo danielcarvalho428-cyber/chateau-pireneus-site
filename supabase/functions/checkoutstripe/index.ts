@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
 
   const { data: res, error: resErr } = await sb
     .from("reservations")
-    .select("*, profiles!left(full_name, email)")
+    .select("*")
     .eq("id", reservation_id)
     .eq("user_id", user.id)
     .single()
@@ -152,9 +152,10 @@ Deno.serve(async (req) => {
   }
 
   const nowSecs = Math.floor(Date.now() / 1000)
-  // Pix QR expiry: use remaining booking hold time (min 5 min, max 24 h), default 1 h
+  // Pix QR expiry: use remaining booking hold time. Stripe requires a practical
+  // payment window, so do not let this drop below 10 minutes.
   const pixExpirySecs = res.expires_at
-    ? Math.max(Math.min(Math.floor((new Date(res.expires_at).getTime() - Date.now()) / 1000), 86400), 300)
+    ? Math.max(Math.min(Math.floor((new Date(res.expires_at).getTime() - Date.now()) / 1000), 86400), 600)
     : 3600
   // Session expiry: at least 30 min, or Pix expiry + 5 min buffer, capped at 24 h
   const sessionExpiresAt = Math.min(nowSecs + Math.max(1800, pixExpirySecs + 300), nowSecs + 86400)
@@ -173,7 +174,7 @@ Deno.serve(async (req) => {
         pix: { expires_after_seconds: pixExpirySecs },
       },
       client_reference_id: reservation_id,
-      customer_email: res.profiles?.email ?? undefined,
+      customer_email: user.email ?? undefined,
       line_items: [
         {
           quantity: 1,

@@ -2301,6 +2301,27 @@
       updateSubmitState();
     }
 
+    function buildFallbackQuote(checkIn, checkOut) {
+      const nights = countNights(checkIn, checkOut);
+      if (nights <= 0) return null;
+      const nightly_prices = [];
+      let total = 0;
+      let maxMinNights = 1;
+      let cur = new Date(checkIn + "T00:00:00Z");
+      for (let i = 0; i < nights; i++) {
+        const dateStr = cur.toISOString().slice(0, 10);
+        const info = calendarPricesMap[dateStr];
+        const price = info ? Number(info.price) : 0;
+        const minN  = info ? Number(info.min_nights || 1) : 1;
+        nightly_prices.push({ date: dateStr, price });
+        total += price;
+        if (minN > maxMinNights) maxMinNights = minN;
+        cur.setUTCDate(cur.getUTCDate() + 1);
+      }
+      if (total <= 0) return null;
+      return { total, nightly_prices, required_min_nights: maxMinNights };
+    }
+
     async function refreshQuote() {
       if (!roomName || !selectedCheckIn || !selectedCheckOut) {
         currentQuote = null;
@@ -2323,9 +2344,22 @@
           setStatus("warn", "Este período exige mínimo de " + reqMin + " noite" + (reqMin > 1 ? "s" : "") + ". Você selecionou " + nights + ".");
         }
       } catch(err) {
-        console.error(err);
-        currentQuote = null;
-        setStatus("error", err.message || "Não foi possível calcular o valor.");
+        console.error("get_room_price_breakdown error:", err);
+        // Fall back to calendar price map — already loaded during init
+        const fallback = buildFallbackQuote(selectedCheckIn, selectedCheckOut);
+        if (fallback) {
+          currentQuote = fallback;
+          currentMinStayViolated = false;
+          const nights = countNights(selectedCheckIn, selectedCheckOut);
+          const reqMin = fallback.required_min_nights;
+          if (nights < reqMin) {
+            currentMinStayViolated = true;
+            setStatus("warn", "Este período exige mínimo de " + reqMin + " noite" + (reqMin > 1 ? "s" : "") + ". Você selecionou " + nights + ".");
+          }
+        } else {
+          currentQuote = null;
+          setStatus("error", "Não foi possível calcular o valor para este período.");
+        }
       }
       updateSummary();
     }

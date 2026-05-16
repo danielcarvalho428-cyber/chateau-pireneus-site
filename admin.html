@@ -1495,7 +1495,7 @@
             </div>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:32px;">
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;">
             <div class="summary-card">
               <span class="summary-label">Receita este mês</span>
               <span class="summary-value" id="rep-month-revenue" style="font-size:20px">—</span>
@@ -1507,6 +1507,11 @@
             <div class="summary-card">
               <span class="summary-label">Reservas este mês</span>
               <span class="summary-value" id="rep-month-count">—</span>
+            </div>
+            <div class="summary-card">
+              <span class="summary-label">Ocupação este mês</span>
+              <span class="summary-value" id="rep-occupancy" style="font-size:20px">—</span>
+              <span id="rep-occupancy-sub" style="font-size:11px;color:var(--muted);margin-top:2px;display:block;"></span>
             </div>
           </div>
 
@@ -2487,6 +2492,24 @@
       document.getElementById("rep-avg-ticket").textContent = fmt(avgTicket);
       document.getElementById("rep-month-count").textContent = monthPaid.length;
 
+      // Occupancy rate = total nights booked this month / (days_in_month × total_rooms)
+      const totalRooms = rooms.length || 1;
+      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+      let nightsBooked = 0;
+      paid.forEach(r => {
+        if (!r.check_in || !r.check_out) return;
+        const cin  = new Date(r.check_in  + "T00:00:00Z");
+        const cout = new Date(r.check_out + "T00:00:00Z");
+        const monthStart = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+        const monthEnd   = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
+        const start = cin  < monthStart ? monthStart : cin;
+        const end   = cout > monthEnd   ? monthEnd   : cout;
+        if (end > start) nightsBooked += Math.round((end - start) / 86_400_000);
+      });
+      const occupancyPct = Math.min(100, Math.round((nightsBooked / (daysInMonth * totalRooms)) * 100));
+      document.getElementById("rep-occupancy").textContent = occupancyPct + "%";
+      document.getElementById("rep-occupancy-sub").textContent = `${nightsBooked} noites de ${daysInMonth * totalRooms} disponíveis`;
+
       // Last 6 months revenue
       const months = [];
       const monthRevenues = [];
@@ -2684,6 +2707,7 @@
         const nfLabel = { emitted: "NF Emitida", processing: "NF Processando", pending: "NF Pendente", failed: "NF Falhou", none: "Sem NF" };
         const nfBadgeText = nfLabel[nfBadgeClass] ?? "Sem NF";
         const isPaid = normalizeStatus(reservation.payment_status) === "paid";
+        const hasEmail = !!(profile.email || reservation.guest_email);
 
         return `
           <article class="reservation-card">
@@ -2720,6 +2744,7 @@
               ${nf?.error_msg  ? `<span style="font-size:12px;color:var(--danger-text)">${nf.error_msg}</span>` : ''}
               ${nf?.pdf_url   ? `<a href="${nf.pdf_url}" target="_blank" class="quick-action-btn action-nf" style="text-decoration:none;min-height:32px;font-size:11px;padding:0 12px;display:inline-flex;align-items:center;">PDF NF</a>` : ''}
               ${isPaid ? `<button class="quick-action-btn action-nf emit-nf-btn" type="button" data-id="${reservation.id}">${nf ? 'RE-EMITIR NF' : 'EMITIR NF'}</button>` : ''}
+              ${isPaid && hasEmail ? `<button class="quick-action-btn resend-email-btn" type="button" data-id="${reservation.id}" style="background:rgba(29,53,87,.08);color:var(--navy);border:none;" title="Reenviar email de confirmação ao hóspede">✉ REENVIAR CONFIRMAÇÃO</button>` : ''}
             </div>
 
             <div class="reservation-actions">
@@ -2783,6 +2808,29 @@
         `;
       }).join("");
     }
+
+    document.addEventListener("click", async (e) => {
+      const resendBtn = e.target.closest(".resend-email-btn");
+      if (resendBtn) {
+        const id = resendBtn.dataset.id;
+        resendBtn.disabled = true;
+        resendBtn.textContent = "Enviando…";
+        try {
+          const { data: { session } } = await supabaseClient.auth.getSession();
+          const res = await fetch(window.FUNCTIONS_URL + "/send-booking-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + (session?.access_token ?? "") },
+            body: JSON.stringify({ reservation_id: id }),
+          });
+          resendBtn.textContent = res.ok ? "✓ ENVIADO" : "ERRO";
+          setTimeout(() => { resendBtn.disabled = false; resendBtn.textContent = "✉ REENVIAR CONFIRMAÇÃO"; }, 3000);
+        } catch {
+          resendBtn.disabled = false;
+          resendBtn.textContent = "✉ REENVIAR CONFIRMAÇÃO";
+        }
+        return;
+      }
+    });
 
     document.addEventListener("click", async (e) => {
       const btn = e.target.closest(".save-note-btn");

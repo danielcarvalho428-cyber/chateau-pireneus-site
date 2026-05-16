@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
     const nights   = daysBetween(res.check_in, res.check_out)
     const roomName = res.room_name ?? res.room_id ?? "Suíte"
 
-    const html = buildReminderEmail({ guestName, checkIn, checkOut, nights, roomName })
+    const html = buildReminderEmail({ guestName, checkIn, checkOut, nights, roomName, reservationId: res.id })
 
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -100,6 +100,7 @@ function buildReminderEmail(p: {
   checkOut: string
   nights: number
   roomName: string
+  reservationId: string
 }): string {
   return `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -176,11 +177,16 @@ function buildReminderEmail(p: {
         <p>Em caso de dúvidas sobre como chegar ou qualquer outro detalhe, fique à vontade para nos chamar!</p>
       </div>
 
+      <div class="cta" style="margin-bottom:12px;">
+        <a href="${SITE_URL}/ficha.html?booking_id=${p.reservationId}" style="background:#1d3557;color:#d8c7a1;text-decoration:none;padding:14px 36px;border-radius:8px;font-size:14px;letter-spacing:.5px;display:inline-block;">Preencher ficha de hóspede</a>
+      </div>
+      <p style="font-size:12px;color:#999;text-align:center;margin:0 0 24px;">Preencha antes da chegada para agilizar seu check-in.</p>
+
       <div class="cta">
-        <a href="https://wa.me/5562998167654?text=Olá!+Farei+check-in+amanhã.+Poderia+me+passar+as+instruções+de+chegada%3F">Falar pelo WhatsApp</a>
+        <a href="https://wa.me/5562998167654?text=Olá!+Farei+check-in+amanhã.+Poderia+me+passar+as+instruções+de+chegada%3F" style="background:rgba(29,53,87,.1);color:#1d3557;text-decoration:none;padding:12px 28px;border-radius:8px;font-size:13px;letter-spacing:.5px;display:inline-block;border:1.5px solid rgba(29,53,87,.2);">Falar pelo WhatsApp</a>
       </div>
 
-      <p style="font-size:13px;color:#888;line-height:1.7;margin:0;">
+      <p style="font-size:13px;color:#888;line-height:1.7;margin:24px 0 0;">
         Mal podemos esperar para recebê-lo. Até amanhã!
       </p>
     </div>

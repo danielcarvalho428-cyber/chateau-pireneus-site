@@ -1228,6 +1228,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           EXTRAS
         </button>
+        <button class="tab-btn" data-tab="integracoes" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          INTEGRAÇÕES
+        </button>
       </div>
 
       <div class="tab-panel active" id="tab-pricing">
@@ -1601,10 +1605,70 @@
           <p id="extrasMsg" style="font-size:13px;margin-top:12px;"></p>
         </div>
       </div><!-- /tab-panel extras -->
+
+      <div class="tab-panel" id="tab-integracoes">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <span class="panel-kicker">Canais externos</span>
+              <h2 class="panel-title">INTEGRAÇÕES</h2>
+              <p class="panel-subtitle">Cole aqui a URL do calendário iCal exportado pelo Airbnb (ou Booking.com) de cada suíte. As datas reservadas nos canais externos serão bloqueadas automaticamente a cada 4 horas.</p>
+            </div>
+          </div>
+          <div id="integracoesList" style="display:flex;flex-direction:column;gap:20px;"></div>
+          <p id="integracoesMsg" style="font-size:13px;margin-top:12px;"></p>
+        </div>
+        <div class="panel" style="margin-top:24px;">
+          <div class="panel-head">
+            <div>
+              <span class="panel-kicker">Como obter a URL</span>
+              <h2 class="panel-title">AIRBNB — PASSO A PASSO</h2>
+            </div>
+          </div>
+          <ol style="font-size:14px;color:var(--ink);line-height:2;padding-left:20px;margin:0;">
+            <li>Acesse o Airbnb → <strong>Anúncios</strong> → selecione o quarto.</li>
+            <li>Vá em <strong>Disponibilidade → Sincronizar calendário</strong>.</li>
+            <li>Copie o link <em>"Exportar calendário"</em> (formato <code>.ics</code>).</li>
+            <li>Cole o link no campo da suíte correspondente acima e clique em <strong>Salvar</strong>.</li>
+          </ol>
+          <p style="font-size:13px;color:#888;margin:12px 0 0;">A sincronização roda automaticamente a cada 4 horas. Para forçar agora, peça ao administrador do sistema para acionar a função <code>sync-airbnb-calendars</code> manualmente.</p>
+        </div>
+      </div><!-- /tab-panel integracoes -->
     </div>
   </section>
 
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Guest message modal -->
+  <div id="guestMessageModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;">
+      <button onclick="closeMessageModal()" type="button" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">×</button>
+      <h3 style="margin:0 0 4px;font-size:17px;color:var(--navy);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.5px;">ENVIAR MENSAGEM AO HÓSPEDE</h3>
+      <p style="margin:0 0 18px;font-size:13px;color:#888;">Para: <strong id="msgModalName"></strong> (<span id="msgModalEmail"></span>)</p>
+      <input id="msgModalReservationId" type="hidden">
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;">Assunto</label>
+        <input id="msgModalSubject" type="text" placeholder="Ex.: Confirmação de chegada, informações adicionais…"
+          style="width:100%;box-sizing:border-box;padding:10px 13px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;">Mensagem</label>
+        <textarea id="msgModalBody" rows="6" placeholder="Escreva sua mensagem aqui…"
+          style="width:100%;box-sizing:border-box;padding:10px 13px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;"></textarea>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <button id="sendGuestMessageBtn" type="button"
+          style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:11px 28px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
+          Enviar e-mail
+        </button>
+        <button onclick="closeMessageModal()" type="button"
+          style="background:none;border:1.5px solid rgba(29,53,87,.2);color:var(--navy);border-radius:8px;padding:10px 20px;font-size:13px;cursor:pointer;">
+          Cancelar
+        </button>
+        <span id="msgModalStatus" style="font-size:13px;margin-left:4px;"></span>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus" />
@@ -2681,6 +2745,15 @@
               >
                 EXPIRAR
               </button>
+
+              ${profile.email ? `<button
+                class="quick-action-btn"
+                type="button"
+                onclick="openMessageModal('${reservation.id}', '${(profile.email || '').replace(/'/g,"\\'")}', '${(profile.full_name || 'Hóspede').replace(/'/g,"\\'")}' )"
+                style="background:rgba(29,53,87,.08);color:var(--navy);border:none;"
+                title="Enviar email para o hóspede">
+                ✉ MENSAGEM
+              </button>` : ''}
             </div>
 
             <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(29,53,87,.07);">
@@ -3051,6 +3124,122 @@
     window.saveExtra = saveExtra;
 
     document.querySelector('[data-tab="extras"]').addEventListener("click", loadExtras);
+
+    // ---- Integrações tab ----
+    async function loadIntegracoes() {
+      const list = document.getElementById("integracoesList");
+      const msg  = document.getElementById("integracoesMsg");
+      list.innerHTML = '<p style="color:#888;font-size:14px;">Carregando...</p>';
+      msg.textContent = "";
+
+      const { data, error } = await supabaseClient
+        .from("rooms")
+        .select("id, name, airbnb_ical_url")
+        .order("id", { ascending: true });
+
+      if (error || !data) {
+        list.innerHTML = `<p style="color:#c0392b;font-size:14px;">Erro: ${error?.message}</p>`;
+        return;
+      }
+
+      list.innerHTML = data.map(r => `
+        <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
+          <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:12px;">${r.name}</div>
+          <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">URL do calendário iCal (Airbnb / Booking.com)</label>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input id="ical-url-${r.id}" type="url" placeholder="https://www.airbnb.com.br/calendar/ical/…"
+              value="${r.airbnb_ical_url ? r.airbnb_ical_url.replace(/"/g,'&quot;') : ''}"
+              style="flex:1;min-width:260px;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:13px;font-family:inherit;">
+            <button type="button" onclick="saveIcalUrl('${r.id}')"
+              style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;white-space:nowrap;">
+              Salvar
+            </button>
+          </div>
+          <p id="ical-msg-${r.id}" style="font-size:12px;margin:6px 0 0;min-height:16px;"></p>
+        </div>
+      `).join("");
+    }
+
+    async function saveIcalUrl(roomId) {
+      const url = document.getElementById(`ical-url-${roomId}`).value.trim();
+      const msg = document.getElementById(`ical-msg-${roomId}`);
+
+      if (url && !url.startsWith("http")) {
+        msg.textContent = "URL inválida — deve começar com https://";
+        msg.style.color = "#c0392b";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("rooms")
+        .update({ airbnb_ical_url: url || null })
+        .eq("id", roomId);
+
+      if (error) {
+        msg.textContent = "Erro: " + error.message;
+        msg.style.color = "#c0392b";
+      } else {
+        msg.textContent = url ? "URL salva. Sincronização ativa." : "URL removida.";
+        msg.style.color = "#2a7a4b";
+        setTimeout(() => { msg.textContent = ""; }, 4000);
+      }
+    }
+    window.saveIcalUrl = saveIcalUrl;
+
+    document.querySelector('[data-tab="integracoes"]').addEventListener("click", loadIntegracoes);
+
+    // ---- Guest messaging modal ----
+    function openMessageModal(reservationId, guestEmail, guestName) {
+      document.getElementById("msgModalReservationId").value = reservationId;
+      document.getElementById("msgModalEmail").textContent   = guestEmail;
+      document.getElementById("msgModalName").textContent    = guestName;
+      document.getElementById("msgModalSubject").value = "";
+      document.getElementById("msgModalBody").value    = "";
+      document.getElementById("msgModalStatus").textContent  = "";
+      document.getElementById("guestMessageModal").style.display = "flex";
+      document.getElementById("msgModalSubject").focus();
+    }
+    window.openMessageModal = openMessageModal;
+
+    function closeMessageModal() {
+      document.getElementById("guestMessageModal").style.display = "none";
+    }
+    window.closeMessageModal = closeMessageModal;
+
+    document.getElementById("sendGuestMessageBtn").addEventListener("click", async () => {
+      const reservationId = document.getElementById("msgModalReservationId").value;
+      const email   = document.getElementById("msgModalEmail").textContent.trim();
+      const subject = document.getElementById("msgModalSubject").value.trim();
+      const body    = document.getElementById("msgModalBody").value.trim();
+      const status  = document.getElementById("msgModalStatus");
+
+      if (!subject || !body) { status.textContent = "Preencha assunto e mensagem."; status.style.color = "#c0392b"; return; }
+
+      status.textContent = "Enviando…";
+      status.style.color = "#888";
+
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      const res = await fetch(window.FUNCTIONS_URL + "/send-admin-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session?.access_token },
+        body: JSON.stringify({ reservation_id: reservationId, to_email: email, subject, body }),
+      });
+
+      if (res.ok) {
+        status.textContent = "Mensagem enviada com sucesso!";
+        status.style.color = "#2a7a4b";
+        setTimeout(closeMessageModal, 2000);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        status.textContent = "Erro: " + (err.error || res.status);
+        status.style.color = "#c0392b";
+      }
+    });
+
+    // Close modal on backdrop click
+    document.getElementById("guestMessageModal").addEventListener("click", function(e) {
+      if (e.target === this) closeMessageModal();
+    });
 
     // ── Init ─────────────────────────────────────────────────────────────────
 

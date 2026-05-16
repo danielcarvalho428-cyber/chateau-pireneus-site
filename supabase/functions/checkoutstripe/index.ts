@@ -49,12 +49,13 @@ Deno.serve(async (req) => {
 
   const { data: res, error: resErr } = await sb
     .from("reservations")
-    .select("*, profiles(full_name, email)")
+    .select("*, profiles!left(full_name, email)")
     .eq("id", reservation_id)
     .eq("user_id", user.id)
     .single()
 
   if (resErr || !res) {
+    console.error("Reservation lookup failed:", resErr?.message, "reservation_id:", reservation_id, "user_id:", user.id)
     return json({ error: "Reserva nao encontrada." }, 404)
   }
 

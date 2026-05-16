@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
 
   const { data: reservations, error } = await sb
     .from("reservations")
-    .select("*, profiles(full_name, email)")
+    .select("*, profiles!left(full_name, email)")
     .in("payment_status", ["pending", "held", "hold"])
     .lt("created_at", cutoff)
     .gt("expires_at", now)

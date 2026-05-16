@@ -33,7 +33,7 @@ Deno.serve(async (req) => {
   // Fetch reservation + profile
   const { data: res, error: resErr } = await sb
     .from("reservations")
-    .select("*, profiles(full_name, email)")
+    .select("*, profiles!left(full_name, email)")
     .eq("id", reservation_id)
     .single()
 

@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
 
   const { data: reservations, error } = await sb
     .from("reservations")
-    .select("*, profiles(full_name, email)")
+    .select("*, profiles!left(full_name, email)")
     .eq("check_in", tomorrowStr)
     .in("payment_status", ["paid", "confirmed"])
 

@@ -6,10 +6,12 @@
   <title>Disponibilidade | Admin | Chateau Pireneus</title>
   <meta name="robots" content="noindex, nofollow" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="auth.js"></script>
+  <link rel="stylesheet" href="styles.css">
 
   <style>
     @font-face{
@@ -362,6 +364,130 @@
         grid-template-columns:repeat(2, minmax(0, 1fr));
       }
     }
+
+    /* ---- Month-view occupancy calendar ---- */
+    .month-nav-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    .month-nav-controls{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .month-nav-btn{
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(31,36,48,0.14);
+      border-radius:10px;
+      padding:6px 14px;
+      cursor:pointer;
+      font-size:18px;
+      color:var(--ink);
+      line-height:1;
+      transition:background 0.15s;
+    }
+    .month-nav-btn:hover{ background:#fff; }
+    .month-nav-label{
+      font-weight:600;
+      font-size:15px;
+      color:var(--ink);
+      text-transform:capitalize;
+      min-width:140px;
+      text-align:center;
+    }
+    .month-grid{
+      display:grid;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:4px;
+    }
+    .month-weekday{
+      text-align:center;
+      font-size:10px;
+      font-weight:700;
+      color:var(--muted);
+      padding:4px 0 8px;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+    }
+    .month-cell{
+      background:rgba(255,255,255,0.62);
+      border:1px solid rgba(31,36,48,0.06);
+      border-radius:10px;
+      padding:6px 5px;
+      min-height:80px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      position:relative;
+    }
+    .month-cell.today{
+      border-color:var(--gold);
+      background:rgba(184,149,95,0.08);
+    }
+    .month-cell.past{
+      opacity:0.45;
+    }
+    .month-cell.empty{
+      background:transparent;
+      border-color:transparent;
+      min-height:0;
+    }
+    .month-cell-day{
+      font-size:12px;
+      font-weight:700;
+      color:var(--ink);
+      margin-bottom:3px;
+    }
+    .month-dots-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:3px;
+    }
+    .m-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      flex-shrink:0;
+      title:"";
+    }
+    .m-dot.open   { background:var(--open); }
+    .m-dot.blocked{ background:var(--blocked); }
+    .m-dot.booked { background:var(--booked); }
+    .m-dot.unknown{ background:#ccc; }
+    .month-occ-bar{
+      margin-top:auto;
+      font-size:9px;
+      color:var(--muted);
+      text-align:right;
+    }
+    .month-legend{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px 16px;
+      margin-top:16px;
+      padding-top:16px;
+      border-top:1px solid rgba(31,36,48,0.08);
+    }
+    .month-legend-item{
+      display:flex;
+      align-items:center;
+      gap:5px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .month-legend-dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+    }
+    @media(max-width:640px){
+      .month-cell{ min-height:60px; padding:4px 3px; }
+      .m-dot{ width:6px; height:6px; }
+    }
   </style>
 </head>
 <body>
@@ -435,6 +561,24 @@
 
       <div id="calendar-grid" class="calendar-grid"></div>
     </section>
+
+    <section class="panel">
+      <div class="month-nav-row">
+        <div>
+          <h2 class="panel-title">Visão mensal — todas as suítes</h2>
+          <p class="panel-subtitle">Ponto colorido por suíte: verde = aberta, azul = reservada, vermelho = bloqueada.</p>
+        </div>
+        <div class="month-nav-controls">
+          <button id="prev-month-btn" class="month-nav-btn" type="button">‹</button>
+          <span id="month-nav-label" class="month-nav-label">—</span>
+          <button id="next-month-btn" class="month-nav-btn" type="button">›</button>
+        </div>
+      </div>
+
+      <div id="month-calendar"></div>
+
+      <div id="month-room-legend" class="month-legend"></div>
+    </section>
   </main>
 
   <script>
@@ -462,12 +606,9 @@
         return null
       }
 
-      const { data: adminRows, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", userData.user.id)
+      const isAdmin = window.isCurrentUserAdmin ? await window.isCurrentUserAdmin() : false
 
-      if (adminError || !adminRows || adminRows.length === 0) {
+      if (!isAdmin) {
         alert("Acesso restrito ao administrador.")
         window.location.href = "dashboard.html"
         return null
@@ -601,10 +742,118 @@
     document.getElementById("block-btn").addEventListener("click", () => updateAvailabilityStatus("blocked"))
     document.getElementById("logout-btn").addEventListener("click", logout)
 
+    // ---- Month-view occupancy calendar ----
+    let currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+
+    const ROOM_COLORS = [
+      "#2f7a4b", "#516d8f", "#b8955f", "#7a4b8f", "#4b7a6e", "#8f4b4b"
+    ]
+
+    function monthYearLabel(d) {
+      return d.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })
+    }
+
+    function isoDate(year, month, day) {
+      return `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+    }
+
+    async function loadMonthCalendar() {
+      const year = currentMonthDate.getFullYear()
+      const month = currentMonthDate.getMonth()
+      const lastDay = new Date(year, month + 1, 0).getDate()
+      const startStr = isoDate(year, month, 1)
+      const endStr   = isoDate(year, month, lastDay)
+
+      document.getElementById("month-nav-label").textContent = monthYearLabel(currentMonthDate)
+
+      const { data, error } = await supabaseClient
+        .from("room_availability")
+        .select("room_id, date, status")
+        .gte("date", startStr)
+        .lte("date", endStr)
+
+      if (error) {
+        document.getElementById("month-calendar").innerHTML =
+          `<p style="color:var(--blocked)">Erro ao carregar: ${error.message}</p>`
+        return
+      }
+
+      // Map: date -> { room_id -> status }
+      const dateMap = {}
+      for (const row of (data || [])) {
+        if (!dateMap[row.date]) dateMap[row.date] = {}
+        dateMap[row.date][row.room_id] = row.status
+      }
+
+      const todayStr = new Date().toISOString().split("T")[0]
+      const firstDow = new Date(year, month, 1).getDay() // 0=Sun
+
+      const weekdays = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"]
+      let html = `<div class="month-grid">`
+      weekdays.forEach(d => { html += `<div class="month-weekday">${d}</div>` })
+
+      for (let i = 0; i < firstDow; i++) {
+        html += `<div class="month-cell empty"></div>`
+      }
+
+      for (let d = 1; d <= lastDay; d++) {
+        const dateStr = isoDate(year, month, d)
+        const isToday = dateStr === todayStr
+        const isPast  = dateStr < todayStr
+        const dayData = dateMap[dateStr] || {}
+
+        const bookedCount  = rooms.filter(r => dayData[r.id] === "booked").length
+        const blockedCount = rooms.filter(r => dayData[r.id] === "blocked").length
+
+        html += `<div class="month-cell${isToday ? " today" : ""}${isPast ? " past" : ""}">`
+        html += `<div class="month-cell-day">${d}</div>`
+        html += `<div class="month-dots-row">`
+        rooms.forEach((room, idx) => {
+          const status = dayData[room.id] || "open"
+          const color  = ROOM_COLORS[idx % ROOM_COLORS.length]
+          const dotColor = status === "open" ? color
+                         : status === "booked" ? "#516d8f"
+                         : "#b54a4a"
+          html += `<div class="m-dot ${status}" style="background:${dotColor}" title="${room.name}: ${status}"></div>`
+        })
+        html += `</div>`
+        if (bookedCount > 0 || blockedCount > 0) {
+          html += `<div class="month-occ-bar">`
+          if (bookedCount)  html += `<span>${bookedCount} res.</span>`
+          if (blockedCount) html += `<span style="color:var(--blocked)"> ${blockedCount} bloq.</span>`
+          html += `</div>`
+        }
+        html += `</div>`
+      }
+
+      html += `</div>`
+      document.getElementById("month-calendar").innerHTML = html
+
+      // Legend
+      const legend = document.getElementById("month-room-legend")
+      legend.innerHTML = rooms.map((room, idx) => {
+        const color = ROOM_COLORS[idx % ROOM_COLORS.length]
+        return `<div class="month-legend-item">
+          <div class="month-legend-dot" style="background:${color}"></div>
+          <span>${room.name}</span>
+        </div>`
+      }).join("")
+    }
+
+    document.getElementById("prev-month-btn").addEventListener("click", () => {
+      currentMonthDate.setMonth(currentMonthDate.getMonth() - 1)
+      loadMonthCalendar()
+    })
+    document.getElementById("next-month-btn").addEventListener("click", () => {
+      currentMonthDate.setMonth(currentMonthDate.getMonth() + 1)
+      loadMonthCalendar()
+    })
+
     async function init() {
       const user = await checkAdminAccess()
       if (!user) return
       await loadRooms()
+      await loadMonthCalendar()
     }
 
     init()

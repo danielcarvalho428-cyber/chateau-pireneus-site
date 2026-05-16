@@ -45,7 +45,6 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
   )
 
-  // Fetch reservation
   const { data: res, error: resErr } = await sb
     .from("reservations")
     .select("*, profiles(full_name, email)")
@@ -54,91 +53,148 @@ Deno.serve(async (req) => {
     .single()
 
   if (resErr || !res) {
-    return json({ error: "Reserva não encontrada." }, 404)
+    return json({ error: "Reserva nao encontrada." }, 404)
+  }
+
+  if (res.payment_status === "paid" || res.status === "confirmed" || res.booking_status === "booked") {
+    return json({ error: "Esta reserva ja esta paga ou confirmada." }, 409)
+  }
+
+  if (res.expires_at && new Date(res.expires_at).getTime() <= Date.now()) {
+    await sb.rpc("release_booking_hold", { p_reservation_id: reservation_id })
+    return json({ error: "O prazo desta reserva expirou. Escolha as datas novamente." }, 409)
   }
 
   const baseAmount: number = parseFloat(res.total_amount) || 0
   if (baseAmount <= 0) {
-    return json({ error: "Valor da reserva inválido." }, 422)
+    return json({ error: "Valor da reserva invalido." }, 422)
   }
 
-  // Validate and apply promo code if provided
   let discountAmount = 0
   let promoId: string | null = null
   let promoCodeUsed: string | null = null
 
   if (promo_code) {
     const code = promo_code.trim().toUpperCase()
-    const { data: promo } = await sb
+    const { data: promo, error: promoErr } = await sb
       .from("promo_codes")
       .select("*")
       .eq("code", code)
       .eq("active", true)
       .single()
 
-    if (promo) {
-      const today = new Date().toISOString().slice(0, 10)
-      const isValid =
-        (!promo.valid_from  || today >= promo.valid_from)  &&
-        (!promo.valid_until || today <= promo.valid_until) &&
-        (promo.max_uses === null || promo.uses_count < promo.max_uses)
-
-      if (isValid) {
-        discountAmount = promo.discount_type === "percentage"
-          ? (baseAmount * promo.discount_value) / 100
-          : Math.min(promo.discount_value, baseAmount)
-        promoId = promo.id
-        promoCodeUsed = promo.code
-      }
+    if (promoErr || !promo) {
+      return json({ error: "Codigo promocional invalido ou inativo." }, 422)
     }
+
+    const today = new Date().toISOString().slice(0, 10)
+    const nights = countNights(res.check_in, res.check_out)
+
+    if (promo.valid_from && today < promo.valid_from) {
+      return json({ error: "Codigo promocional ainda nao esta valido." }, 422)
+    }
+    if (promo.valid_until && today > promo.valid_until) {
+      return json({ error: "Codigo promocional expirado." }, 422)
+    }
+    if (promo.max_uses !== null && promo.uses_count >= promo.max_uses) {
+      return json({ error: "Codigo promocional esgotado." }, 422)
+    }
+    if (promo.min_nights && nights < Number(promo.min_nights)) {
+      return json({ error: `Codigo valido apenas para estadias de ${promo.min_nights}+ noites.` }, 422)
+    }
+    if (promo.min_amount && baseAmount < Number(promo.min_amount)) {
+      return json({ error: "Valor minimo da reserva nao atingido para este codigo." }, 422)
+    }
+
+    discountAmount = promo.discount_type === "percentage"
+      ? (baseAmount * Number(promo.discount_value)) / 100
+      : Math.min(Number(promo.discount_value), baseAmount)
+    promoId = promo.id
+    promoCodeUsed = promo.code
   }
 
   const finalAmount = Math.max(baseAmount - discountAmount, 0)
   const amountCents = Math.round(finalAmount * 100)
+  if (amountCents <= 0) {
+    return json({ error: "Pagamento online indisponivel para reserva com valor zerado." }, 422)
+  }
 
-  const checkIn  = (res.check_in  || "").replaceAll("-", "/")
+  const nowSecs = Math.floor(Date.now() / 1000)
+  // Pix QR expiry: use remaining booking hold time (min 5 min, max 24 h), default 1 h
+  const pixExpirySecs = res.expires_at
+    ? Math.max(Math.min(Math.floor((new Date(res.expires_at).getTime() - Date.now()) / 1000), 86400), 300)
+    : 3600
+  // Session expiry: at least 30 min, or Pix expiry + 5 min buffer, capped at 24 h
+  const sessionExpiresAt = Math.min(nowSecs + Math.max(1800, pixExpirySecs + 300), nowSecs + 86400)
+
+  const checkIn = (res.check_in || "").replaceAll("-", "/")
   const checkOut = (res.check_out || "").replaceAll("-", "/")
-  const roomName = res.room_name || res.room_id || "Suíte"
+  const roomName = res.room_name || res.room_id || "Suite"
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "payment",
-    client_reference_id: reservation_id,
-    customer_email: res.profiles?.email ?? undefined,
-    line_items: [
-      {
-        quantity: 1,
-        price_data: {
-          currency: "brl",
-          unit_amount: amountCents,
-          product_data: {
-            name: `${roomName} — Château Pireneus`,
-            description: `Check-in: ${checkIn} · Check-out: ${checkOut}${promoCodeUsed ? ` · Desconto: ${promoCodeUsed}` : ""}`,
+  let session
+  try {
+    session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      payment_method_types: ["card", "pix"],
+      payment_method_options: {
+        card: { installments: { enabled: true } },
+        pix: { expires_after_seconds: pixExpirySecs },
+      },
+      client_reference_id: reservation_id,
+      customer_email: res.profiles?.email ?? undefined,
+      line_items: [
+        {
+          quantity: 1,
+          price_data: {
+            currency: "brl",
+            unit_amount: amountCents,
+            product_data: {
+              name: `${roomName} - Chateau Pireneus`,
+              description: `Check-in: ${checkIn} - Check-out: ${checkOut}${promoCodeUsed ? ` - Desconto: ${promoCodeUsed}` : ""}`,
+            },
           },
         },
+      ],
+      metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
+      payment_intent_data: {
+        metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
       },
-    ],
-    metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
-    success_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}`,
-    cancel_url:  `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-cancel.html?reservation_id=${reservation_id}`,
-    expires_at: Math.floor(Date.now() / 1000) + 1800, // 30 min
-  })
+      success_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}`,
+      cancel_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}&cancelled=1`,
+      expires_at: sessionExpiresAt,
+    })
+  } catch (err) {
+    console.error("Stripe checkout creation failed:", err)
+    return json({ error: "Nao foi possivel iniciar o pagamento." }, 502)
+  }
 
-  // Persist discount info on reservation + increment promo uses
   const reservationUpdate: Record<string, unknown> = {
     stripe_checkout_session_id: session.id,
     discount_amount: discountAmount,
   }
-  if (promoId)       reservationUpdate.promo_code_id = promoId
-  if (promoCodeUsed) reservationUpdate.promo_code    = promoCodeUsed
+  if (promoId) reservationUpdate.promo_code_id = promoId
+  if (promoCodeUsed) reservationUpdate.promo_code = promoCodeUsed
 
-  await sb.from("reservations").update(reservationUpdate).eq("id", reservation_id)
+  const { error: updateErr } = await sb
+    .from("reservations")
+    .update(reservationUpdate)
+    .eq("id", reservation_id)
 
-  if (promoId) {
-    await sb.rpc("increment_promo_uses", { p_promo_id: promoId })
+  if (updateErr) {
+    console.error("Reservation checkout update error:", updateErr)
+    return json({ error: "Nao foi possivel atualizar a reserva." }, 500)
   }
 
   return json({ checkout_url: session.url })
 })
+
+function countNights(checkIn: string | null, checkOut: string | null): number {
+  if (!checkIn || !checkOut) return 0
+  const start = new Date(`${checkIn}T00:00:00Z`).getTime()
+  const end = new Date(`${checkOut}T00:00:00Z`).getTime()
+  if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return 0
+  return Math.round((end - start) / 86_400_000)
+}
 
 function json(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {

@@ -8,7 +8,7 @@
   banner.setAttribute("role", "region");
   banner.setAttribute("aria-label", "Aviso de cookies");
   banner.innerHTML =
-    '<span>Este site usa apenas <strong>cookies essenciais</strong> para manter sua sessão de login. Não usamos rastreamento ou analytics de terceiros. ' +
+    '<span>Este site usa <strong>cookies essenciais</strong> de login e o <strong>GoatCounter Analytics</strong> (sem cookies, sem dados pessoais) para medir acessos. ' +
     'Saiba mais na nossa <a href="privacidade.html">Política de Privacidade</a>.</span>' +
     '<button id="cookieAcceptBtn" aria-label="Fechar aviso de cookies">Entendi</button>';
 

@@ -13,7 +13,8 @@
   <link rel="shortcut icon" href="chateau-logo.png" />
   <link rel="apple-touch-icon" href="chateau-logo.png" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css">
 
   <style>
@@ -624,7 +625,7 @@
         <h1 class="hero-title">FICHA NACIONAL DE REGISTRO DE HÓSPEDE</h1>
         <p class="hero-text">
           A FNRH é exigida pela Lei nº 11.771/2008 para todos os meios de hospedagem no Brasil.
-          Preencher online leva menos de 2 minutos e agiliza seu check-in.
+          Preencher online antes da chegada leva menos de 2 minutos e agiliza seu check-in.
         </p>
 
         <ul class="fnrh-list">
@@ -639,7 +640,7 @@
         <span class="card-eyebrow">Registro obrigatório</span>
         <h2 class="card-title">DADOS DO HÓSPEDE</h2>
         <p class="card-subtitle">
-          Preencha os dados abaixo. Campos marcados com * são exigidos pela FNRH.
+          Preencha os dados abaixo antes do check-in. Campos marcados com * são exigidos pela FNRH.
           O endereço pode ser preenchido automaticamente digitando o CEP.
         </p>
         <div class="orn"></div>
@@ -796,7 +797,6 @@
   <script>
     const supabaseClient = window.supabaseClient
 
-    const topHeader   = document.getElementById("topHeader")
     const loadingState = document.getElementById("loadingState")
     const fichaForm   = document.getElementById("fichaForm")
     const submitBtn   = document.getElementById("submitBtn")
@@ -969,11 +969,18 @@
       el("purposeOfVisit").value = reservation.purpose_of_visit || ""
 
       reservationInfoEl.style.display = "block"
-      reservationInfoEl.innerHTML = `
-        <strong>${reservation.room_type || "Hospedagem"}</strong>
-        <span>Check-in: ${formatDate(reservation.check_in)}</span>
-        <span>Check-out: ${formatDate(reservation.check_out)}</span>
-      `
+      reservationInfoEl.textContent = ""
+
+      const title = document.createElement("strong")
+      title.textContent = reservation.room_type || "Hospedagem"
+
+      const checkIn = document.createElement("span")
+      checkIn.textContent = "Check-in: " + formatDate(reservation.check_in)
+
+      const checkOut = document.createElement("span")
+      checkOut.textContent = "Check-out: " + formatDate(reservation.check_out)
+
+      reservationInfoEl.append(title, checkIn, checkOut)
     }
 
     // ── Form submit ────────────────────────────────────────────────
@@ -1098,16 +1105,12 @@
     // ── Auth check + init ──────────────────────────────────────────
 
     function redirectToLogin(){
-      window.location.href = `login.html?return_to=${encodeURIComponent(window.location.pathname + window.location.search)}`
-    }
-
-    function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu")
-      const backdrop = document.getElementById("backdrop")
-      const isOpen = menu.classList.contains("open")
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
-      menu.classList.toggle("open", open)
-      if (backdrop) backdrop.classList.toggle("open", open)
+      const returnTo = window.location.pathname + window.location.search
+      if (window.redirectToLogin) {
+        window.redirectToLogin(returnTo)
+        return
+      }
+      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
     }
 
     async function logout(){
@@ -1115,14 +1118,6 @@
       window.location.href = "index.html"
     }
 
-    function onScrollHeader(){
-      const y = window.scrollY || document.documentElement.scrollTop
-      topHeader.classList.toggle("solid", y > 40)
-    }
-
-    window.addEventListener("scroll", onScrollHeader)
-    onScrollHeader()
-    window.toggleMenu = toggleMenu
     window.logout = logout
 
     ;(async function init(){
@@ -1143,6 +1138,10 @@
       fichaForm.style.display    = "grid"
     })()
   </script>
+  <a class="whatsapp-fab" href="https://wa.me/5562998167654?text=Ol%C3%A1%21+Preciso+de+ajuda+com+minha+reserva+no+Chateau+Pireneus.+Pode+me+ajudar%3F" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="fab-label">Fale conosco</span>
+  </a>
   <script src="cookie-consent.js"></script>
 </body>
 </html>

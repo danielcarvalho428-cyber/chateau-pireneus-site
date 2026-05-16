@@ -62,7 +62,8 @@
 
   <script type="application/ld+json" id="suiteRoomStructuredData"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1425,13 +1426,13 @@
       <div class="booking-section-head">
         <div class="booking-section-kicker">Reserve agora</div>
         <h2 class="booking-section-title" id="bookingSectionTitle">Reservar</h2>
-        <p class="booking-section-sub">Escolha as datas e confirme sua hospedagem diretamente nesta página.</p>
+        <p class="booking-section-sub">Escolha as datas, revise valores e siga para pagamento seguro. A reserva é confirmada após aprovação do pagamento.</p>
       </div>
 
       <div class="booking-layout">
         <div class="b-panel">
           <h3 class="b-panel-title">DADOS DA RESERVA</h3>
-          <p class="b-panel-subtitle">Preencha as datas e o número de hóspedes para concluir.</p>
+          <p class="b-panel-subtitle">Preencha datas e hóspedes. As datas ficam em hold temporário somente depois que a solicitação é criada.</p>
 
           <div class="locked-room-display">
             <span class="locked-room-label">Suíte selecionada</span>
@@ -1443,19 +1444,19 @@
               <div class="b-field full">
                 <label for="b_date_range">Período da hospedagem</label>
                 <input type="text" id="b_date_range" placeholder="Selecione check-in e check-out" required readonly>
-                <div class="b-note-box">Datas indisponíveis ficam bloqueadas. O calendário mostra o valor de cada diária.</div>
+                <div class="b-note-box">Datas indisponíveis ficam bloqueadas. O calendário mostra valor de cada diária e mínimo de noites quando houver.</div>
                 <div id="bAvailabilityStatus" class="b-status-box info show">Carregando disponibilidade…</div>
               </div>
 
               <div class="b-field">
                 <label for="b_guests">Número de hóspedes</label>
                 <input type="number" id="b_guests" min="1" max="2" value="2" required>
-                <div class="b-help-text">Máximo de 2 hóspedes por suíte.</div>
+                <div class="b-help-text">Máximo de 2 hóspedes por suíte. Situações especiais devem ser consultadas antes da reserva.</div>
               </div>
 
               <div class="b-field">
                 <label>Horários</label>
-                <div class="b-note-box">Check-in das 12h às 19h.<br>Check-out até 12h.</div>
+                <div class="b-note-box">Check-in das 12h às 19h.<br>Check-out até 12h.<br>Fora desse horário, combine antes com a pousada.</div>
               </div>
 
               <!-- FNRH fields — shown only when missing from profile -->
@@ -1502,8 +1503,8 @@
               <div class="b-field full">
                 <button type="submit" class="b-submit-btn" id="bSubmitBtn" disabled>CONFIRMAR SOLICITAÇÃO</button>
                 <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0;text-align:center;">
-                  Ao reservar, você concorda com nossa <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a>.
-                  Seus dados são coletados nos termos da LGPD e da Lei 11.771/2008.
+                  Ao reservar, você concorda com nossa <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a> e com as <a href="policies.html" style="color:var(--navy);">Políticas da Pousada</a>.
+                  A confirmação depende da aprovação do pagamento.
                 </p>
               </div>
             </div>
@@ -1571,35 +1572,17 @@
 
           <div class="b-info-card">
             <strong>Pagamento seguro</strong>
-            <p>Após a confirmação, você é direcionado ao Stripe Checkout para concluir o pagamento com segurança.</p>
+            <p>Após criar a solicitação, você é direcionado ao Stripe Checkout. Se o pagamento não for concluído no prazo, o hold pode expirar e as datas podem voltar ao calendário.</p>
           </div>
 
           <div class="b-info-card">
             <strong>Valores por data</strong>
-            <p>Fins de semana, feriados e datas especiais aparecem com valores calculados automaticamente no calendário.</p>
+            <p>Fins de semana, feriados, datas especiais e mínimo de noites aparecem com cálculo automático no calendário.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
-
-
-  <script>
-    function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu");
-      const backdrop = document.getElementById("backdrop");
-      const isOpen = menu.classList.contains("open");
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen);
-
-      if(open){
-        menu.classList.add("open");
-        backdrop.classList.add("open");
-      }else{
-        menu.classList.remove("open");
-        backdrop.classList.remove("open");
-      }
-    }
-  </script>
 
   <script>
     (function () {
@@ -2430,8 +2413,10 @@
       const { data: userData, error: userError } = await sb.auth.getUser();
       if (userError || !userData.user) {
         setStatus("error", "Faça login para concluir a reserva.");
-        const returnTo = encodeURIComponent(window.location.pathname + window.location.search);
-        setTimeout(function() { window.location.href = "login.html?return_to=" + returnTo; }, 1200);
+        const returnTo = window.location.pathname + window.location.search;
+        setTimeout(function() {
+          window.location.href = window.buildLoginHref ? window.buildLoginHref(returnTo) : "login.html?return_to=" + encodeURIComponent(returnTo);
+        }, 1200);
         bSubmitBtn.disabled = false;
         bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
         return;
@@ -2516,7 +2501,7 @@
           .eq("id", reservationId);
       }
 
-      setStatus("success", "Reserva criada. Redirecionando para pagamento...");
+      setStatus("success", "Reserva criada em hold temporário. Redirecionando para pagamento seguro...");
 
       const checkoutBody = { reservation_id: reservationId };
       if (appliedPromo?.code) checkoutBody.promo_code = appliedPromo.code;
@@ -2533,7 +2518,7 @@
 
       const checkoutData = await checkoutRes.json().catch(function() { return null; });
       if (!checkoutRes.ok || !checkoutData?.checkout_url) {
-        setStatus("error", checkoutData?.error || "Não foi possível iniciar o pagamento.");
+        setStatus("error", checkoutData?.error || "Não foi possível iniciar o pagamento. Se o hold expirar, escolha as datas novamente.");
         bSubmitBtn.disabled = false;
         bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
         return;

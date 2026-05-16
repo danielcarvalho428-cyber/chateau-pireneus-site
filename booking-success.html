@@ -4,11 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Status da Reserva | Chateau Pireneus</title>
+  <meta name="robots" content="noindex, nofollow" />
 
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
   <script src="auth.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     @font-face{
@@ -433,17 +435,27 @@
         return window.location.pathname + window.location.search + window.location.hash;
       }
 
+      function normalizeStatus(status) {
+        return String(status || "").toLowerCase();
+      }
+
+      function isExpiredReservation(reservation) {
+        if (!reservation?.expires_at) return false;
+        return new Date(reservation.expires_at).getTime() <= Date.now();
+      }
+
       function isRetryEligible(reservation) {
         if (!reservation) return false;
 
         const allowedStatuses = ["pending", "held", "confirmed"];
         const allowedBookingStatuses = ["pending", "held", "booked"];
-        const blockedPaymentStatuses = ["paid", "refunded"];
+        const blockedPaymentStatuses = ["paid", "refunded", "expired", "failed", "cancelled", "canceled"];
 
         return (
-          allowedStatuses.includes(String(reservation.status || "")) &&
-          allowedBookingStatuses.includes(String(reservation.booking_status || "")) &&
-          !blockedPaymentStatuses.includes(String(reservation.payment_status || ""))
+          !isExpiredReservation(reservation) &&
+          allowedStatuses.includes(normalizeStatus(reservation.status)) &&
+          allowedBookingStatuses.includes(normalizeStatus(reservation.booking_status)) &&
+          !blockedPaymentStatuses.includes(normalizeStatus(reservation.payment_status))
         );
       }
 
@@ -476,9 +488,9 @@
         setPill("warning", "Pagamento pendente");
         titleText.textContent = "Pagamento não concluído";
         messageLine1.textContent = "Sua reserva foi criada, mas o pagamento não foi finalizado.";
-        messageLine2.textContent = "Você pode tentar novamente abaixo sem refazer a reserva.";
+        messageLine2.textContent = "Você pode tentar novamente enquanto o hold da reserva ainda estiver válido.";
         situationText.textContent = "Pagamento pendente";
-        setNotice("warning", "A reserva continua disponível para nova tentativa de pagamento enquanto permanecer elegível.");
+        setNotice("warning", "A reserva ainda não está confirmada. Se o prazo do hold expirar, as datas podem voltar ao calendário.");
         statusText.textContent = "Retorno recebido com cancelamento do checkout.";
         if (isRetryEligible(reservation)) {
           retryBtn.classList.remove("hidden");
@@ -489,9 +501,9 @@
         setPill("success", "Reserva confirmada");
         titleText.textContent = "Reserva confirmada";
         messageLine1.textContent = "Seu pagamento foi aprovado e sua reserva está confirmada.";
-        messageLine2.textContent = "Você pode acompanhar os detalhes também na sua área do cliente.";
+        messageLine2.textContent = "Preencha a ficha de hóspede (FNRH) antes do check-in para agilizar sua chegada.";
         situationText.textContent = "Pagamento aprovado";
-        setNotice("success", "Tudo certo. Sua hospedagem foi confirmada com sucesso.");
+        setNotice("success", "Tudo certo. Você também pode acompanhar os detalhes na sua área do cliente.");
         statusText.textContent =
           `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
       }
@@ -500,7 +512,7 @@
         setPill("info", "Processando");
         titleText.textContent = "Pagamento em validação";
         messageLine1.textContent = "Recebemos o retorno do checkout.";
-        messageLine2.textContent = "Estamos aguardando a confirmação final do pagamento pelo sistema.";
+        messageLine2.textContent = "A reserva ainda não está confirmada até a aprovação final do pagamento.";
         situationText.textContent = "Validação em andamento";
         setNotice("info", "Isso normalmente leva apenas alguns segundos. Esta página será atualizada automaticamente.");
         statusText.textContent =
@@ -543,7 +555,8 @@
             payment_status,
             payment_provider,
             payment_id,
-            stripe_checkout_session_id
+            stripe_checkout_session_id,
+            expires_at
           `)
           .eq("id", reservationId)
           .maybeSingle();
@@ -564,17 +577,21 @@
             fillReservationDetails(data);
 
             if (
-              data.payment_status === "paid" ||
-              (data.booking_status === "booked" && data.status === "confirmed")
+              normalizeStatus(data.payment_status) === "paid" ||
+              (normalizeStatus(data.booking_status) === "booked" && normalizeStatus(data.status) === "confirmed")
             ) {
+              if (window.goatcounter && typeof window.goatcounter.count === "function") {
+                window.goatcounter.count({ path: "booking-completed", title: "Booking Completed", event: true })
+              }
               renderConfirmed(data);
               return;
             }
 
             if (
-              data.booking_status === "cancelled" ||
-              data.booking_status === "expired" ||
-              data.status === "cancelled"
+              isExpiredReservation(data) ||
+              normalizeStatus(data.booking_status) === "cancelled" ||
+              normalizeStatus(data.booking_status) === "expired" ||
+              normalizeStatus(data.status) === "cancelled"
             ) {
               if (cancelled === "1" && isRetryEligible(data)) {
                 renderCancelledPending(data);
@@ -608,14 +625,15 @@
           if (cancelled === "1") {
             renderCancelledPending(lastReservation);
           } else if (
-            lastReservation.payment_status === "paid" ||
-            (lastReservation.booking_status === "booked" && lastReservation.status === "confirmed")
+            normalizeStatus(lastReservation.payment_status) === "paid" ||
+            (normalizeStatus(lastReservation.booking_status) === "booked" && normalizeStatus(lastReservation.status) === "confirmed")
           ) {
             renderConfirmed(lastReservation);
           } else if (
-            lastReservation.booking_status === "cancelled" ||
-            lastReservation.booking_status === "expired" ||
-            lastReservation.status === "cancelled"
+            isExpiredReservation(lastReservation) ||
+            normalizeStatus(lastReservation.booking_status) === "cancelled" ||
+            normalizeStatus(lastReservation.booking_status) === "expired" ||
+            normalizeStatus(lastReservation.status) === "cancelled"
           ) {
             renderFailedOrExpired(lastReservation);
           } else {
@@ -650,7 +668,7 @@
           const { data: userData, error: userError } = await supabaseClient.auth.getUser();
 
           if (userError || !userData.user) {
-            window.location.href = `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
+            window.location.href = window.buildLoginHref ? window.buildLoginHref(buildReturnTo()) : `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
             return;
           }
 
@@ -658,7 +676,7 @@
           const accessToken = sessionData?.session?.access_token;
 
           if (!accessToken) {
-            window.location.href = `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
+            window.location.href = window.buildLoginHref ? window.buildLoginHref(buildReturnTo()) : `login.html?return_to=${encodeURIComponent(buildReturnTo())}`;
             return;
           }
 
@@ -729,6 +747,10 @@
       loadReservationState();
     })();
   </script>
+  <a class="whatsapp-fab" href="https://wa.me/5562998167654?text=Ol%C3%A1%21+Preciso+de+ajuda+com+minha+reserva+no+Chateau+Pireneus.+Pode+me+ajudar%3F" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="fab-label">Fale conosco</span>
+  </a>
   <script src="cookie-consent.js"></script>
 </body>
 </html>

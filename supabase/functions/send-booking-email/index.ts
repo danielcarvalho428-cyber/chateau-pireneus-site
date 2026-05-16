@@ -53,7 +53,7 @@ Deno.serve(async (req) => {
   const checkIn  = formatDate(res.check_in)
   const checkOut = formatDate(res.check_out)
   const nights   = daysBetween(res.check_in, res.check_out)
-  const amount   = formatBRL(res.total_price ?? res.amount_brl ?? 0)
+  const amount   = formatBRL(parseFloat(res.total_amount ?? res.total_price ?? res.amount_brl ?? 0))
   const roomName = res.room_name ?? res.room_id ?? "Suíte"
 
   const html = buildEmail({ guestName, checkIn, checkOut, nights, amount, roomName, reservationId: reservation_id })

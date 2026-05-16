@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Minha Área | Chateau Pireneus</title>
+  <meta name="robots" content="noindex, nofollow" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css">
 
   <style>
@@ -571,6 +573,31 @@
       transform:none;
     }
 
+    .cancel-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1.5px solid rgba(181,74,74,0.35);
+      border-radius:14px;
+      padding:13px 18px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:#b54a4a;
+      background:rgba(181,74,74,0.07);
+      cursor:pointer;
+      transition:0.18s ease;
+    }
+    .cancel-btn:hover{
+      background:rgba(181,74,74,0.13);
+      border-color:rgba(181,74,74,0.55);
+    }
+    .cancel-btn:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+    }
+
     .fnrh-banner{
       display:none;
       margin-top:18px;
@@ -875,7 +902,7 @@
         <div class="hero-kicker">Área do hóspede</div>
         <h1 class="hero-title" id="welcome">BEM-VINDO</h1>
         <p class="hero-text">
-          Acompanhe suas reservas, consulte o andamento dos pagamentos e gerencie sua experiência no Chateau Pireneus em um só lugar.
+          Acompanhe suas reservas, consulte pagamentos, preencha a FNRH e veja os próximos passos da sua hospedagem em um só lugar.
         </p>
 
         <div class="hero-links">
@@ -888,7 +915,7 @@
         <span class="card-eyebrow">Sua conta</span>
         <h2 class="card-title">MINHA ÁREA</h2>
         <p class="card-subtitle">
-          Aqui você visualiza os dados principais da sua conta e acompanha o status real das suas reservas.
+          Aqui você visualiza os dados principais da sua conta, status de pagamento, holds temporários e reservas confirmadas.
         </p>
         <div class="orn"></div>
 
@@ -917,7 +944,7 @@
           <div class="fnrh-banner-text">
             <strong>Complete sua ficha de hóspede</strong>
             Exigida pela Lei 11.771/2008, a FNRH precisa ser preenchida antes do check-in.
-            Leva menos de 2 minutos e seus dados ficam salvos para as próximas estadias.
+            Leva menos de 2 minutos, agiliza sua chegada e seus dados ficam salvos para as próximas estadias.
           </div>
           <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
         </div>
@@ -955,7 +982,7 @@
             <span class="panel-kicker">Acompanhe suas reservas</span>
             <h2 class="panel-title">MINHAS RESERVAS</h2>
             <p class="panel-subtitle">
-              Veja o histórico e o andamento real das suas reservas e pagamentos.
+              Veja histórico, status de pagamento, prazo do hold, FNRH e próximas ações disponíveis.
             </p>
           </div>
 
@@ -997,7 +1024,7 @@
 
         <div class="cta-card">
           <div class="cta-text">
-            Para fazer uma nova reserva, use a página principal de reservas. É lá que o sistema valida disponibilidade, cria o hold e direciona para o pagamento.
+            Para fazer uma nova reserva, use a página principal de reservas. O sistema valida disponibilidade, calcula valores, cria o hold temporário e direciona para o pagamento seguro.
           </div>
           <a href="booking.html" class="cta-btn">Fazer nova reserva</a>
         </div>
@@ -1031,33 +1058,12 @@
     let currentUser = null
     let allReservations = []
 
-    const topHeader = document.getElementById("topHeader")
-
-    function onScrollHeader(){
-      const y = window.scrollY || document.documentElement.scrollTop
-      topHeader.classList.toggle("solid", y > 40)
-    }
-
-    window.addEventListener("scroll", onScrollHeader)
-    onScrollHeader()
-
-    function toggleMenu(forceOpen){
-      const menu = document.getElementById("sideMenu")
-      const backdrop = document.getElementById("backdrop")
-      const isOpen = menu.classList.contains("open")
-      const open = (forceOpen === true) || (forceOpen === undefined && !isOpen)
-
-      if(open){
-        menu.classList.add("open")
-        backdrop.classList.add("open")
-      }else{
-        menu.classList.remove("open")
-        backdrop.classList.remove("open")
-      }
-    }
-
     function redirectToLogin() {
       const returnTo = window.location.pathname + window.location.search
+      if (window.redirectToLogin) {
+        window.redirectToLogin(returnTo)
+        return
+      }
       window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
     }
 
@@ -1085,6 +1091,15 @@
 
     function normalizeStatus(status) {
       return String(status || "").toLowerCase()
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
     }
 
     function formatMainStatus(status) {
@@ -1159,14 +1174,28 @@
       return reservation.check_in >= new Date().toISOString().split("T")[0]
     }
 
+    function isConfirmedReservation(reservation) {
+      return (
+        normalizeStatus(reservation.status) === "confirmed" ||
+        normalizeStatus(reservation.booking_status) === "booked" ||
+        normalizeStatus(reservation.payment_status) === "paid"
+      )
+    }
+
+    function isExpiredReservation(reservation) {
+      if (!reservation.expires_at) return false
+      return new Date(reservation.expires_at).getTime() <= Date.now()
+    }
+
     function isRetryEligible(reservation) {
       if (!reservation) return false
 
       const allowedStatuses = ["pending", "held", "confirmed"]
       const allowedBookingStatuses = ["pending", "held", "booked"]
-      const blockedPaymentStatuses = ["paid", "refunded"]
+      const blockedPaymentStatuses = ["paid", "refunded", "expired", "failed", "cancelled", "canceled"]
 
       return (
+        !isExpiredReservation(reservation) &&
         allowedStatuses.includes(normalizeStatus(reservation.status)) &&
         allowedBookingStatuses.includes(normalizeStatus(reservation.booking_status)) &&
         !blockedPaymentStatuses.includes(normalizeStatus(reservation.payment_status))
@@ -1175,19 +1204,7 @@
 
     async function isAdminUser(userId) {
       if (!userId) return false
-
-      const { data, error } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", userId)
-        .maybeSingle()
-
-      if (error) {
-        console.error(error)
-        return false
-      }
-
-      return !!data
+      return window.isCurrentUserAdmin ? window.isCurrentUserAdmin() : false
     }
 
     function updateSummary() {
@@ -1297,7 +1314,7 @@
       if (bannerLink) {
         const upcoming = allReservations.find(r =>
           isFutureReservation(r) &&
-          (normalizeStatus(r.status) === "confirmed" || normalizeStatus(r.booking_status) === "booked" || normalizeStatus(r.payment_status) === "paid")
+          isConfirmedReservation(r)
         )
         if (upcoming) bannerLink.href = `ficha.html?booking_id=${upcoming.id}`
       }
@@ -1405,6 +1422,80 @@
       }
     }
 
+    function isCancelEligible(reservation) {
+      if (!reservation) return false
+      const paymentStatus = (reservation.payment_status || "").toLowerCase()
+      const status        = (reservation.status || "").toLowerCase()
+      const isPaid = ["paid", "confirmed"].includes(paymentStatus) || status === "confirmed"
+      if (!isPaid) return false
+      if (!reservation.check_in) return false
+      const checkIn = new Date(reservation.check_in + "T12:00:00")
+      return checkIn > new Date()
+    }
+
+    function calcRefundPreview(createdAt, checkIn) {
+      const now       = new Date()
+      const booking   = new Date(createdAt)
+      const ci        = new Date(checkIn + "T12:00:00")
+      const daysSince = (now - booking) / 86_400_000
+      const daysUntil = (ci - now) / 86_400_000
+      const daysB2C   = (ci - booking) / 86_400_000
+      if (daysB2C >= 5 && daysSince <= 7) return { pct: 100, rule: "lei_arrependimento" }
+      if (daysB2C < 5  && daysUntil >= 2) return { pct: 100, rule: "short_notice_48h" }
+      return { pct: 0, rule: "no_refund" }
+    }
+
+    async function cancelReservation(reservationId, createdAt, checkIn, totalAmount, button) {
+      const { pct } = calcRefundPreview(createdAt, checkIn)
+      const amount  = parseFloat(totalAmount) || 0
+      const refundBRL = (amount * pct / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+
+      const msg = pct === 100
+        ? `Você tem direito a reembolso de 100% (${refundBRL}).\n\nDeseja confirmar o cancelamento?`
+        : `Não há reembolso disponível para esta reserva conforme nossa política de cancelamento.\n\nDeseja confirmar o cancelamento mesmo assim?`
+
+      if (!confirm(msg)) return
+
+      button.disabled = true
+      button.textContent = "Cancelando…"
+
+      try {
+        const { data: sessionData } = await supabaseClient.auth.getSession()
+        const token = sessionData?.session?.access_token
+        if (!token) { alert("Sessão expirada. Faça login novamente."); return }
+
+        const response = await fetch(window.FUNCTIONS_URL + "/cancel-reservation", {
+          method: "POST",
+          headers: {
+            "Content-Type":  "application/json",
+            "Authorization": "Bearer " + token,
+          },
+          body: JSON.stringify({ reservation_id: reservationId }),
+        })
+
+        const payload = await response.json().catch(() => null)
+
+        if (!response.ok) {
+          alert(payload?.error || "Não foi possível cancelar a reserva. Entre em contato com a pousada.")
+          button.disabled = false
+          button.textContent = "Cancelar reserva"
+          return
+        }
+
+        const refundMsg = payload.refund_pct === 100
+          ? `Reserva cancelada com sucesso. O reembolso de ${refundBRL} será processado em até 5 dias úteis.`
+          : "Reserva cancelada. Nenhum reembolso é devido conforme nossa política."
+
+        alert(refundMsg)
+        await loadReservations()
+      } catch (err) {
+        console.error(err)
+        alert("Ocorreu um erro inesperado. Tente novamente ou entre em contato com a pousada.")
+        button.disabled = false
+        button.textContent = "Cancelar reserva"
+      }
+    }
+
     function renderReservations() {
       const container = document.getElementById("reservations-list")
       const reservations = getFilteredReservations()
@@ -1416,16 +1507,21 @@
         return
       }
 
-      container.innerHTML = reservations.map(reservation => `
+      container.innerHTML = reservations.map(reservation => {
+        const canFillFnrh = isFutureReservation(reservation) && isConfirmedReservation(reservation)
+        const canRetryPayment = isRetryEligible(reservation)
+        const canCancel = isCancelEligible(reservation)
+
+        return `
         <article class="reservation-card">
           <div class="reservation-top">
             <div>
-              <div class="reservation-name">${reservation.room_type || "Hospedagem"}</div>
+              <div class="reservation-name">${escapeHtml(reservation.room_type || "Hospedagem")}</div>
               <div class="reservation-subtext">
                 Acompanhe o status real desta reserva e do pagamento.
               </div>
               <div class="reservation-meta">
-                <span class="mini-chip">Reserva: ${reservation.id || "-"}</span>
+                <span class="mini-chip">Reserva: ${escapeHtml(reservation.id || "-")}</span>
                 <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
               </div>
             </div>
@@ -1484,26 +1580,35 @@
 
             <div class="reservation-item" style="grid-column:1 / -1;">
               <strong>Pedidos especiais</strong>
-              <span>${reservation.special_requests || "Nenhum pedido especial informado."}</span>
+              <span>${escapeHtml(reservation.special_requests || "Nenhum pedido especial informado.")}</span>
             </div>
           </div>
 
-          ${(isFutureReservation(reservation) || isRetryEligible(reservation)) ? `
+          ${(canFillFnrh || canRetryPayment || canCancel) ? `
             <div class="reservation-actions">
-              ${isFutureReservation(reservation) ? `
-                <a class="cta-btn" href="ficha.html?booking_id=${reservation.id}" style="text-decoration:none">
+              ${canFillFnrh ? `
+                <a class="cta-btn" href="ficha.html?booking_id=${encodeURIComponent(reservation.id)}" style="text-decoration:none">
                   FICHA DE HÓSPEDE
                 </a>
               ` : ""}
-              ${isRetryEligible(reservation) ? `
-                <button class="retry-btn retry-payment-btn" type="button" data-id="${reservation.id}">
+              ${canRetryPayment ? `
+                <button class="retry-btn retry-payment-btn" type="button" data-id="${escapeHtml(reservation.id)}">
                   Tentar pagamento novamente
+                </button>
+              ` : ""}
+              ${canCancel ? `
+                <button class="cancel-btn cancel-reservation-btn" type="button"
+                  data-id="${escapeHtml(reservation.id)}"
+                  data-created="${escapeHtml(reservation.created_at || "")}"
+                  data-checkin="${escapeHtml(reservation.check_in || "")}"
+                  data-amount="${escapeHtml(String(reservation.total_amount || 0))}">
+                  Cancelar reserva
                 </button>
               ` : ""}
             </div>
           ` : ""}
         </article>
-      `).join("")
+      `}).join("")
     }
 
     function clearFilters() {
@@ -1530,11 +1635,22 @@
     document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
 
     document.addEventListener("click", async (event) => {
-      const button = event.target.closest(".retry-payment-btn")
-      if (!button) return
+      const retryBtn = event.target.closest(".retry-payment-btn")
+      if (retryBtn) {
+        await retryPayment(retryBtn.getAttribute("data-id"), retryBtn)
+        return
+      }
 
-      const reservationId = button.getAttribute("data-id")
-      await retryPayment(reservationId, button)
+      const cancelBtn = event.target.closest(".cancel-reservation-btn")
+      if (cancelBtn) {
+        await cancelReservation(
+          cancelBtn.getAttribute("data-id"),
+          cancelBtn.getAttribute("data-created"),
+          cancelBtn.getAttribute("data-checkin"),
+          cancelBtn.getAttribute("data-amount"),
+          cancelBtn
+        )
+      }
     })
 
     async function init() {
@@ -1543,13 +1659,16 @@
       await loadReservations()
     }
 
-    window.toggleMenu = toggleMenu
     window.logout = logout
     window.refreshDashboard = refreshDashboard
 
     init()
   </script>
 
+  <a class="whatsapp-fab" href="https://wa.me/5562998167654?text=Ol%C3%A1%21+Preciso+de+ajuda+com+minha+reserva+no+Chateau+Pireneus.+Pode+me+ajudar%3F" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="fab-label">Fale conosco</span>
+  </a>
   <script src="cookie-consent.js"></script>
 </body>
 </html>

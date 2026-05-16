@@ -105,6 +105,21 @@ Deno.serve(async (request) => {
           )
         }
 
+        const { error: promoCountError } = await supabase.rpc("count_promo_use_for_paid_reservation", {
+          p_reservation_id: reservationId,
+        })
+
+        if (promoCountError) {
+          console.error("count_promo_use_for_paid_reservation error:", promoCountError)
+          return new Response(
+            JSON.stringify({ error: promoCountError.message }),
+            {
+              status: 500,
+              headers: { "Content-Type": "application/json" },
+            }
+          )
+        }
+
         console.log("Reservation confirmed:", reservationId)
 
         const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string

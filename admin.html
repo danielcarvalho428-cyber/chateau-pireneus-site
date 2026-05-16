@@ -6,7 +6,8 @@
   <title>Admin | Chateau Pireneus</title>
   <meta name="robots" content="noindex, nofollow" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
@@ -1391,7 +1392,10 @@
             <h2 class="panel-title">RESERVAS</h2>
             <p class="panel-subtitle">Filtre e acompanhe todas as reservas, os status de pagamento e o comportamento do fluxo de hospedagem.</p>
           </div>
-          <button id="refreshReservationsBtn" class="secondary-btn-light" type="button">ATUALIZAR</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button id="refreshReservationsBtn" class="secondary-btn-light" type="button">ATUALIZAR</button>
+            <button id="exportCsvBtn" class="secondary-btn-light" type="button">EXPORTAR CSV</button>
+          </div>
         </div>
 
         <div class="toolbar">
@@ -1581,7 +1585,7 @@
   <div class="toast-container" id="toastContainer"></div>
 
   <footer>
-    <img class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus" />
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus" />
     <div class="footer-overlay">
       <div class="footer-contact">
         <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
@@ -1623,8 +1627,6 @@
         document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
       });
     });
-
-    const topHeader = document.getElementById("topHeader");
 
     const pricingRoom = document.getElementById("pricingRoom");
     const applyAllSuites = document.getElementById("applyAllSuites");
@@ -1675,30 +1677,12 @@
     let pricingSelectionStart = "";
     let pricingSelectionEnd = "";
 
-    function onScrollHeader() {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      topHeader.classList.toggle("solid", y > 20);
-    }
-
-    window.addEventListener("scroll", onScrollHeader);
-    onScrollHeader();
-
-    function toggleMenu(forceOpen) {
-      const menu = document.getElementById("sideMenu");
-      const backdrop = document.getElementById("backdrop");
-      const isOpen = menu.classList.contains("open");
-      const open = forceOpen === true || (forceOpen === undefined && !isOpen);
-      if (open) {
-        menu.classList.add("open");
-        backdrop.classList.add("open");
-      } else {
-        menu.classList.remove("open");
-        backdrop.classList.remove("open");
-      }
-    }
-
     function redirectToLogin() {
       const returnTo = window.location.pathname + window.location.search;
+      if (window.redirectToLogin) {
+        window.redirectToLogin(returnTo);
+        return;
+      }
       window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
     }
 
@@ -1868,19 +1852,14 @@
 
       currentUser = data.user;
 
-      const { data: adminRow, error: adminError } = await supabaseClient
-        .from("admins")
-        .select("id")
-        .eq("id", currentUser.id)
-        .maybeSingle();
+      const admin = window.isCurrentUserAdmin ? await window.isCurrentUserAdmin() : false;
 
-      if (adminError) {
-        console.error(adminError);
+      if (!window.isCurrentUserAdmin) {
         showToast("Não foi possível validar o acesso administrativo.", "error");
         return false;
       }
 
-      if (!adminRow) {
+      if (!admin) {
         window.location.href = "dashboard.html";
         return false;
       }
@@ -2254,6 +2233,58 @@
       updateSummaryCards();
       renderReservations();
       updateRelatorios();
+    }
+
+    function exportReservationsCSV() {
+      const rows = allReservations;
+      if (!rows.length) { showToast("Nenhuma reserva para exportar.", "warn"); return; }
+
+      const headers = [
+        "ID", "Hóspede", "Email", "Suíte", "Check-in", "Check-out", "Noites",
+        "Valor Total", "Desconto", "Cód. Promo", "Status Geral", "Status Pagamento",
+        "Status Reserva", "Criada em", "Pago via"
+      ];
+
+      function nights(ci, co) {
+        if (!ci || !co) return "";
+        return Math.round((new Date(co) - new Date(ci)) / 86_400_000);
+      }
+      function esc(v) {
+        if (v === null || v === undefined) return "";
+        const s = String(v).replace(/"/g, '""');
+        return s.includes(",") || s.includes('"') || s.includes("\n") ? `"${s}"` : s;
+      }
+
+      const lines = [headers.join(",")];
+      rows.forEach(r => {
+        const profile = profilesMap[r.user_id] || {};
+        lines.push([
+          r.id,
+          profile.full_name || r.guest_name || "",
+          profile.email    || r.guest_email || "",
+          r.room_name      || r.room_id     || "",
+          r.check_in       || "",
+          r.check_out      || "",
+          nights(r.check_in, r.check_out),
+          r.total_amount   || "",
+          r.discount_amount|| "",
+          r.promo_code     || "",
+          r.status         || "",
+          r.payment_status || "",
+          r.booking_status || "",
+          r.created_at     ? r.created_at.slice(0, 16).replace("T", " ") : "",
+          r.payment_provider || "",
+        ].map(esc).join(","));
+      });
+
+      const blob = new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href     = url;
+      a.download = `reservas-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`${rows.length} reservas exportadas.`, "success");
     }
 
     function updateSummaryCards() {
@@ -2690,6 +2721,7 @@
       document.getElementById("deletePricingBtn").addEventListener("click", deletePricingSelection);
 
       document.getElementById("refreshReservationsBtn").addEventListener("click", loadReservations);
+      document.getElementById("exportCsvBtn").addEventListener("click", exportReservationsCSV);
 
       document.getElementById("clearFiltersBtn").addEventListener("click", () => {
         searchInput.value = "";
@@ -2755,30 +2787,48 @@
         return;
       }
 
-      const fmt = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+      const fmt  = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      const fmt2 = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
       list.innerHTML = data.map(p => {
         const discStr = p.discount_type === "percentage"
           ? `${p.discount_value}% de desconto`
-          : `${fmt(p.discount_value)} de desconto`;
+          : `${fmt2(p.discount_value)} de desconto`;
         const expiry = p.valid_until ? ` · até ${p.valid_until.split("-").reverse().join("/")}` : "";
-        const uses = p.max_uses ? ` · ${p.uses_count}/${p.max_uses} usos` : ` · ${p.uses_count} usos`;
+        const usesLabel = p.max_uses ? `${p.uses_count}/${p.max_uses} usos` : `${p.uses_count} usos`;
         const activeColor = p.active ? "#2a7a4b" : "#888";
+
+        // Compute analytics from already-loaded reservations
+        const promoRes = allReservations.filter(r => r.promo_code === p.code);
+        const paidRes  = promoRes.filter(r =>
+          ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) ||
+          normalizeStatus(r.status) === "confirmed"
+        );
+        const totalDiscount = paidRes.reduce((s, r) => s + (parseFloat(r.discount_amount) || 0), 0);
+        const totalRevenue  = paidRes.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0);
+
         return `
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;
-            background:rgba(29,53,87,.04);border-radius:10px;padding:14px 18px;">
-            <div>
-              <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${p.code}</span>
-              <span style="margin-left:12px;font-size:13px;color:#555;">${discStr}${expiry}${uses}</span>
-              ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${p.description}</span>` : ""}
+          <div style="background:rgba(29,53,87,.04);border-radius:10px;padding:14px 18px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+              <div>
+                <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${p.code}</span>
+                <span style="margin-left:12px;font-size:13px;color:#555;">${discStr}${expiry}</span>
+                ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${p.description}</span>` : ""}
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <span style="font-size:12px;font-weight:600;color:${activeColor};">${p.active ? "ATIVO" : "INATIVO"}</span>
+                <button type="button" onclick="togglePromo('${p.id}', ${p.active})"
+                  style="background:${p.active ? "#e74c3c" : "#2a7a4b"};color:#fff;border:none;border-radius:6px;
+                    padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">
+                  ${p.active ? "Desativar" : "Ativar"}
+                </button>
+              </div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <span style="font-size:12px;font-weight:600;color:${activeColor};">${p.active ? "ATIVO" : "INATIVO"}</span>
-              <button type="button" onclick="togglePromo('${p.id}', ${p.active})"
-                style="background:${p.active ? "#e74c3c" : "#2a7a4b"};color:#fff;border:none;border-radius:6px;
-                  padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">
-                ${p.active ? "Desativar" : "Ativar"}
-              </button>
+            <div style="display:flex;gap:24px;margin-top:10px;flex-wrap:wrap;">
+              <span style="font-size:12px;color:#666;">${usesLabel}</span>
+              <span style="font-size:12px;color:#666;">Reservas pagas: <b>${paidRes.length}</b></span>
+              <span style="font-size:12px;color:#c0392b;">Desconto concedido: <b>${fmt(totalDiscount)}</b></span>
+              <span style="font-size:12px;color:#2a7a4b;">Receita gerada: <b>${fmt(totalRevenue)}</b></span>
             </div>
           </div>`;
       }).join("");
@@ -2848,7 +2898,6 @@
       updateQuickFilterUI();
     }
 
-    window.toggleMenu = toggleMenu;
     window.logout = logout;
     init();
   </script>

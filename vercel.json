@@ -6,7 +6,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' cdn.jsdelivr.net gc.zgo.at 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://pjxurbtvmzdlpnexfqpd.supabase.co https://chateaupireneus.goatcounter.com https://gc.zgo.at; frame-src 'none'; object-src 'none'; base-uri 'self';"
+          "value": "default-src 'self'; script-src 'self' cdn.jsdelivr.net gc.zgo.at 'unsafe-inline'; style-src 'self' cdn.jsdelivr.net 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://pjxurbtvmzdlpnexfqpd.supabase.co https://chateaupireneus.goatcounter.com https://gc.zgo.at; frame-src 'none'; object-src 'none'; base-uri 'self';"
         },
         {
           "key": "X-Frame-Options",

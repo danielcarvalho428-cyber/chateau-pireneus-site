@@ -200,23 +200,31 @@ Deno.serve(async (req) => {
     return json({ error: "Nao foi possivel iniciar o pagamento." }, 502)
   }
 
-  const reservationUpdate: Record<string, unknown> = {
+  // Core update — fields that exist in the base schema (must succeed)
+  const coreUpdate: Record<string, unknown> = {
     stripe_checkout_session_id: session.id,
     discount_amount: discountAmount,
-    addons_amount: addonTotal,
-    addons: add_ons ?? [],
   }
-  if (promoId) reservationUpdate.promo_code_id = promoId
-  if (promoCodeUsed) reservationUpdate.promo_code = promoCodeUsed
+  if (promoId) coreUpdate.promo_code_id = promoId
+  if (promoCodeUsed) coreUpdate.promo_code = promoCodeUsed
 
   const { error: updateErr } = await sb
     .from("reservations")
-    .update(reservationUpdate)
+    .update(coreUpdate)
     .eq("id", reservation_id)
 
   if (updateErr) {
     console.error("Reservation checkout update error:", updateErr)
     return json({ error: "Nao foi possivel atualizar a reserva." }, 500)
+  }
+
+  // Optional update — addon columns added by migration; swallow error if columns don't exist yet
+  if (addonTotal > 0 || (add_ons && add_ons.length > 0)) {
+    await sb
+      .from("reservations")
+      .update({ addons_amount: addonTotal, addons: add_ons ?? [] })
+      .eq("id", reservation_id)
+      .then(({ error: e }) => { if (e) console.warn("addon column update skipped (migration pending?):", e.message) })
   }
 
   return json({ checkout_url: session.url })

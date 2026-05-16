@@ -118,17 +118,13 @@ Deno.serve(async (req) => {
     }
   }
 
-  // Update reservation status
+  // Update reservation status — core fields that exist in base schema
   const { error: updateErr } = await sb
     .from("reservations")
     .update({
       status:         "cancelled",
       booking_status: "cancelled",
       payment_status: refundAmount > 0 ? "refunded" : paymentStatus,
-      cancelled_at:   now.toISOString(),
-      refund_rule:    refundRule,
-      refund_amount:  refundAmount / 100,
-      stripe_refund_id: stripeRefundId,
     })
     .eq("id", reservation_id)
 
@@ -136,6 +132,13 @@ Deno.serve(async (req) => {
     console.error("Reservation update error:", updateErr)
     return json({ error: "Reserva cancelada, mas não foi possível atualizar o status. Entre em contato com a pousada." }, 500)
   }
+
+  // Optional — new columns from migration; swallow error if columns don't exist yet
+  await sb
+    .from("reservations")
+    .update({ cancelled_at: now.toISOString(), refund_rule: refundRule, refund_amount: refundAmount / 100, stripe_refund_id: stripeRefundId })
+    .eq("id", reservation_id)
+    .then(({ error: e }) => { if (e) console.warn("cancel detail columns skipped (migration pending?):", e.message) })
 
   // Release the availability slot
   await sb.rpc("release_booking_hold", { p_reservation_id: reservation_id })

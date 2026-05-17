@@ -1471,6 +1471,7 @@
           headers: {
             "Content-Type":  "application/json",
             "Authorization": "Bearer " + token,
+            "apikey": window.SUPABASE_KEY,
           },
           body: JSON.stringify({ reservation_id: reservationId }),
         })

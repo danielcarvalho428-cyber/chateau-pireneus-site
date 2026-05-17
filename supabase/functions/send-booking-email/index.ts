@@ -8,21 +8,29 @@ interface Payload {
   reservation_id: string
 }
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+}
+
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders })
+  }
   if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 })
+    return new Response("Method not allowed", { status: 405, headers: corsHeaders })
   }
 
   let payload: Payload
   try {
     payload = await req.json()
   } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400 })
+    return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400, headers: corsHeaders })
   }
 
   const { reservation_id } = payload
   if (!reservation_id) {
-    return new Response(JSON.stringify({ error: "Missing reservation_id" }), { status: 400 })
+    return new Response(JSON.stringify({ error: "Missing reservation_id" }), { status: 400, headers: corsHeaders })
   }
 
   const sb = createClient(
@@ -39,7 +47,7 @@ Deno.serve(async (req) => {
 
   if (resErr || !res) {
     console.error("Reservation fetch error:", resErr)
-    return new Response(JSON.stringify({ error: "Reservation not found" }), { status: 404 })
+    return new Response(JSON.stringify({ error: "Reservation not found" }), { status: 404, headers: corsHeaders })
   }
 
   const { data: profile } = await sb
@@ -53,7 +61,7 @@ Deno.serve(async (req) => {
 
   if (!guestEmail) {
     console.error("No guest email for reservation:", reservation_id)
-    return new Response(JSON.stringify({ error: "No guest email" }), { status: 422 })
+    return new Response(JSON.stringify({ error: "No guest email" }), { status: 422, headers: corsHeaders })
   }
 
   const checkIn  = formatDate(res.check_in)
@@ -92,14 +100,14 @@ Deno.serve(async (req) => {
   if (!resendRes.ok) {
     const errBody = await resendRes.text()
     console.error("Resend error:", errBody)
-    return new Response(JSON.stringify({ error: "Email send failed", detail: errBody }), { status: 502 })
+    return new Response(JSON.stringify({ error: "Email send failed", detail: errBody }), { status: 502, headers: corsHeaders })
   }
 
   const result = await resendRes.json()
   console.log("Email sent:", result.id, "→", guestEmail)
   return new Response(JSON.stringify({ ok: true, email_id: result.id }), {
     status: 200,
-    headers: { "Content-Type": "application/json" },
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
   })
 })
 

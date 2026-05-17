@@ -1436,7 +1436,7 @@
 
     function calcRefundPreview(createdAt, checkIn) {
       const now       = new Date()
-      const booking   = new Date(createdAt)
+      const booking   = new Date((createdAt || "").replace(" ", "T").replace(/(\+\d{2})$/, "$1:00"))
       const ci        = new Date(checkIn + "T12:00:00")
       const daysSince = (now - booking) / 86_400_000
       const daysUntil = (ci - now) / 86_400_000

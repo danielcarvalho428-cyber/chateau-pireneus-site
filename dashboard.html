@@ -1436,11 +1436,12 @@
 
     function calcRefundPreview(createdAt, checkIn) {
       const now       = new Date()
-      const booking   = new Date((createdAt || "").replace(" ", "T").replace(/(\+\d{2})$/, "$1:00"))
+      const normalized = (createdAt || "").replace(" ", "T").replace(/(\.\d+)?([+-]\d{2})$/, "$1$2:00")
+      const booking   = new Date(normalized)
       const ci        = new Date(checkIn + "T12:00:00")
-      const daysSince = (now - booking) / 86_400_000
+      const daysSince = isNaN(booking.getTime()) ? 0 : (now - booking) / 86_400_000
       const daysUntil = (ci - now) / 86_400_000
-      const daysB2C   = (ci - booking) / 86_400_000
+      const daysB2C   = isNaN(booking.getTime()) ? 999 : (ci - booking) / 86_400_000
       if (daysB2C >= 5 && daysSince <= 7) return { pct: 100, rule: "lei_arrependimento" }
       if (daysB2C < 5  && daysUntil >= 2) return { pct: 100, rule: "short_notice_48h" }
       return { pct: 0, rule: "no_refund" }

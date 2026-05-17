@@ -163,7 +163,10 @@ Deno.serve(async (req) => {
 
   const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
-    automatic_payment_methods: { enabled: true },
+    payment_method_types: ["card", "link"],
+    payment_method_options: {
+      card: { installments: { enabled: true } },
+    },
     client_reference_id: reservation_id,
     customer_email: user.email ?? undefined,
     line_items: [

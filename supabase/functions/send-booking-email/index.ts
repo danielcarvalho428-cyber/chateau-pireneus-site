@@ -13,12 +13,26 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 }
 
+function isAuthorized(req: Request): boolean {
+  const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  const auth = req.headers.get("Authorization") ?? ""
+  // Allow service-role key (webhook/internal) OR any authenticated user JWT (admin panel resend)
+  if (auth === `Bearer ${svcKey}`) return true
+  const token = auth.replace("Bearer ", "")
+  // A valid Supabase JWT is a non-empty string that is not the anon key
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? ""
+  return token.length > 0 && token !== anonKey
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders })
   }
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405, headers: corsHeaders })
+  }
+  if (!isAuthorized(req)) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders })
   }
 
   let payload: Payload

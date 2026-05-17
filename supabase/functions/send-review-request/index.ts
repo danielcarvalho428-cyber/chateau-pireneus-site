@@ -6,10 +6,16 @@ const FROM_EMAIL     = Deno.env.get("EMAIL_FROM") ?? "reservas@chateaupireneus.c
 // e.g. https://g.page/r/YOUR_PLACE_ID/review
 const GOOGLE_REVIEW_URL = Deno.env.get("GOOGLE_REVIEW_URL") ?? "https://g.page/r/CQpHvSHbimQREAE/review"
 
+function isInternalRequest(req: Request): boolean {
+  const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  return req.headers.get("Authorization") === `Bearer ${svcKey}`
+}
+
 Deno.serve(async (req) => {
   if (req.method !== "GET" && req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 })
   }
+  if (!isInternalRequest(req)) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 })
 
   const sb = createClient(
     Deno.env.get("SUPABASE_URL") as string,

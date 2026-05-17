@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
     hospedes:       [hospede],
   }
 
-  console.log("FNRH payload:", JSON.stringify(fnrhPayload))
+  console.log("FNRH payload submitted for reservation:", reservationId)
 
   // ── Submit to e-FNRH API ────────────────────────────────────────────────────
 

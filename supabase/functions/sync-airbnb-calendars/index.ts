@@ -365,6 +365,11 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
+  const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  if (req.headers.get("Authorization") !== `Bearer ${svcKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 })
+  }
+
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");

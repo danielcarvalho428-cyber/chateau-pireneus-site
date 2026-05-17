@@ -2154,6 +2154,10 @@
       renderAddonList();
     }
 
+    function esc(v) {
+      return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+    }
+
     function renderAddonList() {
       const list  = document.getElementById("addon-list");
       const field = document.getElementById("addon-field");
@@ -2174,8 +2178,8 @@
           <label class="addon-item">
             <input type="checkbox" value="${a.id}" id="addon-${a.id}">
             <div class="addon-info">
-              <span class="addon-name">${a.label}</span>
-              <span class="addon-desc">${a.description}${a.per === "person_night" ? " · R$ " + a.price + "/pessoa/noite" : ""}</span>
+              <span class="addon-name">${esc(a.label)}</span>
+              <span class="addon-desc">${esc(a.description)}${a.per === "person_night" ? " · R$ " + a.price + "/pessoa/noite" : ""}</span>
             </div>
             <span class="addon-price" id="price-${a.id}">R$ ${price.toLocaleString("pt-BR")}</span>
           </label>`;

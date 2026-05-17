@@ -5,10 +5,15 @@ const NFSE_BASE = "https://api.nfe.io/v1"
 // Service code for "Serviços de alojamento e hospedagem" — adjust per your municipio
 const CITY_SERVICE_CODE = Deno.env.get("NFSE_CITY_SERVICE_CODE") ?? "0107"
 
+function isInternalRequest(req: Request): boolean {
+  const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+  return req.headers.get("Authorization") === `Bearer ${svcKey}`
+}
+
 Deno.serve(async (req) => {
-  if (req.method !== "POST") {
-    return json({ error: "Method not allowed" }, 405)
-  }
+  if (req.method === "OPTIONS") return json(null, 204)
+  if (req.method !== "POST") return json({ error: "Method not allowed" }, 405)
+  if (!isInternalRequest(req)) return json({ error: "Unauthorized" }, 401)
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL") as string,
@@ -164,7 +169,11 @@ Deno.serve(async (req) => {
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    },
   })
 }
 

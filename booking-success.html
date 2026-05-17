@@ -601,6 +601,9 @@
       }
 
       async function fetchReservation() {
+        const { data: { user } } = await supabaseClient.auth.getUser()
+        if (!user) return { data: null, error: new Error("unauthenticated") }
+
         const { data, error } = await supabaseClient
           .from("reservations")
           .select(`
@@ -619,6 +622,7 @@
             expires_at
           `)
           .eq("id", reservationId)
+          .eq("user_id", user.id)
           .maybeSingle();
 
         return { data, error };

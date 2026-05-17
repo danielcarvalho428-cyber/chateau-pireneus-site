@@ -1600,14 +1600,9 @@
                 </button>
               ` : ""}
               ${canCancel ? `
-                <button class="cancel-btn cancel-reservation-btn" type="button"
-                  data-id="${escapeHtml(reservation.id)}"
-                  data-created="${escapeHtml(reservation.created_at || "")}"
-                  data-checkin="${escapeHtml(reservation.check_in || "")}"
-                  data-amount="${escapeHtml(String(reservation.total_amount || 0))}"
-                  data-discount="${escapeHtml(String(reservation.discount_amount || 0))}">
+                <a class="cancel-btn" href="https://wa.me/5562998167654?text=${encodeURIComponent(`Olá! Gostaria de cancelar minha reserva. ID: ${reservation.id}`)}" target="_blank" rel="noopener">
                   Cancelar reserva
-                </button>
+                </a>
               ` : ""}
             </div>
           ` : ""}

@@ -709,8 +709,8 @@
           return
         }
 
-        const returnTo = sanitizeReturnTo(getReturnTo())
-        window.location.href = returnTo
+        const returnTo = getReturnTo()
+        window.location.replace(returnTo && returnTo !== "dashboard.html" ? returnTo : "dashboard.html")
       }, 700)
     })
 

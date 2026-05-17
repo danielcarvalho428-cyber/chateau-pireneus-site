@@ -152,51 +152,49 @@ Deno.serve(async (req) => {
   }
 
   const nowSecs = Math.floor(Date.now() / 1000)
-  // Pix QR expiry: use remaining booking hold time. Stripe requires a practical
-  // payment window, so do not let this drop below 10 minutes.
-  const pixExpirySecs = res.expires_at
-    ? Math.max(Math.min(Math.floor((new Date(res.expires_at).getTime() - Date.now()) / 1000), 86400), 600)
+  const holdRemainingSecs = res.expires_at
+    ? Math.max(Math.floor((new Date(res.expires_at).getTime() - Date.now()) / 1000), 0)
     : 3600
-  // Session expiry: at least 30 min, or Pix expiry + 5 min buffer, capped at 24 h
-  const sessionExpiresAt = Math.min(nowSecs + Math.max(1800, pixExpirySecs + 300), nowSecs + 86400)
+  const sessionExpiresAt = Math.min(nowSecs + Math.max(1800, holdRemainingSecs), nowSecs + 86400)
 
   const checkIn = (res.check_in || "").replaceAll("-", "/")
   const checkOut = (res.check_out || "").replaceAll("-", "/")
   const roomName = res.room_name || res.room_id || "Suite"
 
-  let session
-  try {
-    session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      payment_method_types: ["card", "pix"],
-      payment_method_options: {
-        card: { installments: { enabled: true } },
-        pix: { expires_after_seconds: pixExpirySecs },
-      },
-      client_reference_id: reservation_id,
-      customer_email: user.email ?? undefined,
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency: "brl",
-            unit_amount: amountCents,
-            product_data: {
-              name: `${roomName} - Chateau Pireneus`,
-              description: `Check-in: ${checkIn} - Check-out: ${checkOut}${promoCodeUsed ? ` - Desconto: ${promoCodeUsed}` : ""}`,
-            },
+  const sessionParams: Stripe.Checkout.SessionCreateParams = {
+    mode: "payment",
+    payment_method_types: ["card"],
+    payment_method_options: {
+      card: { installments: { enabled: true } },
+    },
+    client_reference_id: reservation_id,
+    customer_email: user.email ?? undefined,
+    line_items: [
+      {
+        quantity: 1,
+        price_data: {
+          currency: "brl",
+          unit_amount: amountCents,
+          product_data: {
+            name: `${roomName} - Chateau Pireneus`,
+            description: `Check-in: ${checkIn} - Check-out: ${checkOut}${promoCodeUsed ? ` - Desconto: ${promoCodeUsed}` : ""}`,
           },
         },
-        ...addonLineItems,
-      ],
-      metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
-      payment_intent_data: {
-        metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
       },
-      success_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}`,
-      cancel_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}&cancelled=1`,
-      expires_at: sessionExpiresAt,
-    })
+      ...addonLineItems,
+    ],
+    metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
+    payment_intent_data: {
+      metadata: { reservation_id, promo_code: promoCodeUsed ?? "" },
+    },
+    success_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}`,
+    cancel_url: `${Deno.env.get("SITE_URL") ?? "https://chateaupireneus.com.br"}/booking-success.html?reservation_id=${reservation_id}&cancelled=1`,
+    expires_at: sessionExpiresAt,
+  }
+
+  let session: Stripe.Checkout.Session
+  try {
+    session = await stripe.checkout.sessions.create(sessionParams)
   } catch (err) {
     console.error("Stripe checkout creation failed:", err)
     return json({ error: "Nao foi possivel iniciar o pagamento." }, 502)

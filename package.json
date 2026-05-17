@@ -1,10 +1,10 @@
 {
   "scripts": {
-    "deploy:functions": "supabase functions deploy checkoutstripe --use-api && supabase functions deploy stripewebhook --use-api --no-verify-jwt && supabase functions deploy validate-promo --use-api && supabase functions deploy send-booking-email --use-api && supabase functions deploy send-checkin-reminder --use-api && supabase functions deploy cancel-reservation --use-api && supabase functions deploy send-admin-message --use-api && supabase functions deploy send-abandoned-booking --use-api && supabase functions deploy send-review-request --use-api && supabase functions deploy submit-fnrh --use-api && supabase functions deploy emit-nfse --use-api && supabase functions deploy sync-airbnb-calendars --use-api",
+    "deploy:functions": "supabase functions deploy checkoutstripe --use-api && supabase functions deploy stripewebhook --use-api --no-verify-jwt && supabase functions deploy validate-promo --use-api --no-verify-jwt && supabase functions deploy send-booking-email --use-api && supabase functions deploy send-checkin-reminder --use-api && supabase functions deploy cancel-reservation --use-api && supabase functions deploy send-admin-message --use-api && supabase functions deploy send-abandoned-booking --use-api && supabase functions deploy send-review-request --use-api && supabase functions deploy submit-fnrh --use-api && supabase functions deploy emit-nfse --use-api && supabase functions deploy sync-airbnb-calendars --use-api",
     "deploy:checkoutstripe": "supabase functions deploy checkoutstripe --use-api",
     "deploy:emit-nfse": "supabase functions deploy emit-nfse --use-api",
     "deploy:stripewebhook": "supabase functions deploy stripewebhook --use-api --no-verify-jwt",
-    "deploy:validate-promo": "supabase functions deploy validate-promo --use-api",
+    "deploy:validate-promo": "supabase functions deploy validate-promo --use-api --no-verify-jwt",
     "deploy:send-booking-email": "supabase functions deploy send-booking-email --use-api",
     "deploy:send-checkin-reminder": "supabase functions deploy send-checkin-reminder --use-api",
     "deploy:cancel-reservation": "supabase functions deploy cancel-reservation --use-api",

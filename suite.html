@@ -1144,7 +1144,8 @@
       text-transform:uppercase;
       color:rgba(29,53,87,.60);
     }
-    .b-field input{
+    .b-field input,
+    .b-field select{
       width:100%;
       border:1px solid rgba(29,53,87,.12);
       background:rgba(255,255,255,.90);
@@ -1155,9 +1156,59 @@
       outline:none;
       transition:border-color .2s ease,box-shadow .2s ease;
     }
-    .b-field input:focus{
+    .b-field input:focus,
+    .b-field select:focus{
       border-color:rgba(184,149,95,.80);
       box-shadow:0 0 0 4px rgba(216,199,161,.18);
+    }
+    .payment-options{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .payment-option{
+      position:relative;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      border:1px solid rgba(29,53,87,.12);
+      border-radius:14px;
+      background:rgba(255,255,255,.72);
+      padding:13px 14px;
+      cursor:pointer;
+      transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;
+    }
+    .payment-option input{
+      width:16px;
+      height:16px;
+      margin:2px 0 0;
+      accent-color:var(--navy);
+      flex:0 0 auto;
+    }
+    .payment-option strong{
+      display:block;
+      font-size:13px;
+      color:var(--navy);
+      line-height:1.25;
+    }
+    .payment-option span{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.45;
+      margin-top:4px;
+    }
+    .payment-option:has(input:checked){
+      border-color:rgba(184,149,95,.72);
+      box-shadow:0 0 0 4px rgba(216,199,161,.16);
+      background:#fff;
+    }
+    .payment-option.disabled{
+      cursor:not-allowed;
+      opacity:.62;
+    }
+    .payment-option.disabled input{
+      cursor:not-allowed;
     }
     .b-note-box,.b-status-box{
       font-size:13px;
@@ -1303,6 +1354,7 @@
     @media (max-width:980px){
       .booking-layout{grid-template-columns:1fr;}
       .b-form-grid{grid-template-columns:1fr;}
+      .payment-options{grid-template-columns:1fr;}
     }
     @media (max-width:640px){
       .booking-section{padding:44px 0 60px;}
@@ -1515,6 +1567,26 @@
               </div>
 
               <div class="b-field full">
+                <label>Forma de pagamento</label>
+                <div class="payment-options" role="radiogroup" aria-label="Forma de pagamento">
+                  <label class="payment-option">
+                    <input type="radio" name="payment_method" value="card" checked>
+                    <span>
+                      <strong>Cartão</strong>
+                      <span>Cartão, Apple Pay, Google Pay ou Link via Stripe.</span>
+                    </span>
+                  </label>
+                  <label class="payment-option disabled" title="Pix será liberado após validação da integração Inter">
+                    <input type="radio" name="payment_method" value="pix" disabled>
+                    <span>
+                      <strong>Pix</strong>
+                      <span>Aguardando validação da integração Banco Inter.</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="b-field full">
                 <button type="submit" class="b-submit-btn" id="bSubmitBtn" disabled>CONFIRMAR SOLICITAÇÃO</button>
                 <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0;text-align:center;">
                   Ao reservar, você concorda com nossa <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a> e com as <a href="policies.html" style="color:var(--navy);">Políticas da Pousada</a>.
@@ -1586,7 +1658,7 @@
 
           <div class="b-info-card">
             <strong>Pagamento seguro</strong>
-            <p>Após criar a solicitação, você é direcionado ao Stripe Checkout. Se o pagamento não for concluído no prazo, o hold pode expirar e as datas podem voltar ao calendário.</p>
+            <p>Cartão segue pelo Stripe Checkout. Pix será liberado no site depois que a integração Banco Inter for aprovada e puder confirmar pagamentos automaticamente.</p>
           </div>
 
           <div class="b-info-card">
@@ -2149,6 +2221,7 @@
     const bSummaryBreakdown = document.getElementById("bSummaryBreakdown");
     const bSummaryTotal = document.getElementById("bSummaryTotal");
     const bookingForm = document.getElementById("bookingForm");
+    const paymentMethodInputs = Array.from(document.querySelectorAll('input[name="payment_method"]'));
 
     let selectedCheckIn = "";
     let selectedCheckOut = "";
@@ -2160,6 +2233,11 @@
     let appliedPromo = null; // { code, promo_id, discount_amount, final_amount }
 
     if(bSummaryRoom) bSummaryRoom.textContent = roomName || "—";
+
+    function getPaymentMethod() {
+      const selected = paymentMethodInputs.find(input => input.checked);
+      return selected ? selected.value : "card";
+    }
 
     // Promo code UI
     const bPromoInput        = document.getElementById("bPromoInput");
@@ -2587,6 +2665,14 @@
       const accessToken = sessionData?.session?.access_token;
       if (!accessToken) {
         setStatus("error", "Sessão expirada. Faça login novamente.");
+        bSubmitBtn.disabled = false;
+        bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
+        return;
+      }
+
+      const paymentMethod = getPaymentMethod();
+      if (paymentMethod === "pix") {
+        setStatus("info", "Pix ainda está aguardando validação da integração Banco Inter. Por enquanto, escolha cartão.");
         bSubmitBtn.disabled = false;
         bSubmitBtn.textContent = "CONFIRMAR SOLICITAÇÃO";
         return;

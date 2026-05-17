@@ -669,8 +669,7 @@
         return true
       }
 
-      const returnTo = sanitizeReturnTo(getReturnTo())
-      window.location.href = returnTo
+      window.location.href = "dashboard.html"
       return true
     }
 
@@ -704,13 +703,7 @@
       setStatus("success", "Login realizado com sucesso. Redirecionando...")
 
       setTimeout(() => {
-        if (admin) {
-          window.location.href = "admin.html"
-          return
-        }
-
-        const returnTo = getReturnTo()
-        window.location.replace(returnTo && returnTo !== "dashboard.html" ? returnTo : "dashboard.html")
+        window.location.href = admin ? "admin.html" : "dashboard.html"
       }, 700)
     })
 

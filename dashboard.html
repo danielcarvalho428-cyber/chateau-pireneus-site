@@ -1447,10 +1447,10 @@
       return { pct: 0, rule: "no_refund" }
     }
 
-    async function cancelReservation(reservationId, createdAt, checkIn, totalAmount, button) {
+    async function cancelReservation(reservationId, createdAt, checkIn, totalAmount, discount, button) {
       const { pct } = calcRefundPreview(createdAt, checkIn)
-      const amount  = parseFloat(totalAmount) || 0
-      const refundBRL = (amount * pct / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+      const paid    = Math.max((parseFloat(totalAmount) || 0) - (parseFloat(discount) || 0), 0)
+      const refundBRL = (paid * pct / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
 
       const msg = pct === 100
         ? `Você tem direito a reembolso de 100% (${refundBRL}).\n\nDeseja confirmar o cancelamento?`
@@ -1603,7 +1603,8 @@
                   data-id="${escapeHtml(reservation.id)}"
                   data-created="${escapeHtml(reservation.created_at || "")}"
                   data-checkin="${escapeHtml(reservation.check_in || "")}"
-                  data-amount="${escapeHtml(String(reservation.total_amount || 0))}">
+                  data-amount="${escapeHtml(String(reservation.total_amount || 0))}"
+                  data-discount="${escapeHtml(String(reservation.discount_amount || 0))}">
                   Cancelar reserva
                 </button>
               ` : ""}
@@ -1650,6 +1651,7 @@
           cancelBtn.getAttribute("data-created"),
           cancelBtn.getAttribute("data-checkin"),
           cancelBtn.getAttribute("data-amount"),
+          cancelBtn.getAttribute("data-discount"),
           cancelBtn
         )
       }

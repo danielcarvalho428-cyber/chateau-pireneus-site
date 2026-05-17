@@ -101,8 +101,10 @@ Deno.serve(async (req) => {
     refundRule = "short_notice_48h"
   }
 
-  const totalAmount   = parseFloat(res.total_amount) || 0
-  const refundAmount  = Math.round((totalAmount * refundPct) / 100 * 100) // in cents
+  const totalAmount    = parseFloat(res.total_amount) || 0
+  const discountAmount = parseFloat(res.discount_amount) || 0
+  const paidAmount     = Math.max(totalAmount - discountAmount, 0)
+  const refundAmount   = Math.round((paidAmount * refundPct) / 100 * 100) // in cents
 
   // If a Stripe payment intent exists, issue the refund via Stripe
   const paymentIntentId: string | null = res.stripe_payment_intent_id ?? null

@@ -366,7 +366,7 @@ serve(async (req) => {
   }
 
   const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-  if (req.headers.get("Authorization") !== `Bearer ${svcKey}`) {
+  if (!(svcKey && req.headers.get("Authorization") === `Bearer ${svcKey}`) && !(await isAdminRequest(req))) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 })
   }
 
@@ -464,3 +464,23 @@ serve(async (req) => {
     );
   }
 });
+
+async function isAdminRequest(req: Request): Promise<boolean> {
+  const auth = req.headers.get("Authorization") ?? "";
+  const token = auth.replace("Bearer ", "");
+  if (!token) return false;
+
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  if (!supabaseUrl || !anonKey) return false;
+
+  const supabase = createClient(supabaseUrl, anonKey, {
+    global: { headers: { Authorization: auth } },
+  });
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) return false;
+
+  const { data: isAdmin, error: adminError } = await supabase.rpc("is_current_user_admin");
+  return !adminError && isAdmin === true;
+}

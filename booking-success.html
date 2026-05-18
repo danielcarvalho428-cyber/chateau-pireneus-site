@@ -194,6 +194,10 @@
       word-break: break-word;
     }
 
+    .technical-row {
+      display: none;
+    }
+
     .notice {
       margin-top: 18px;
       border-radius: 18px;
@@ -228,6 +232,36 @@
       color: var(--info);
       background: var(--info-bg);
       border-color: rgba(31,36,48,0.08);
+    }
+
+    .next-steps {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.66);
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .next-steps h2 {
+      margin: 0 0 12px;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+    }
+
+    .next-steps ol {
+      margin: 0;
+      padding-left: 22px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    .next-steps a {
+      color: var(--ink);
+      font-weight: 700;
     }
 
     .actions {
@@ -337,11 +371,11 @@
         <h2>Resumo</h2>
 
         <div class="detail-row">
-          <span class="detail-label">Reserva</span>
+          <span class="detail-label">Código</span>
           <span id="reservationIdText" class="detail-value">Carregando...</span>
         </div>
 
-        <div class="detail-row">
+        <div class="detail-row technical-row">
           <span class="detail-label">Sessão de pagamento</span>
           <span id="sessionIdText" class="detail-value">—</span>
         </div>
@@ -379,6 +413,11 @@
 
       <div id="noticeBox" class="notice info">
         Aguarde enquanto validamos o retorno do pagamento.
+      </div>
+
+      <div id="nextSteps" class="next-steps hidden">
+        <h2>Próximos passos</h2>
+        <ol id="nextStepsList"></ol>
       </div>
 
       <div id="calendarActions" class="hidden" style="margin:12px 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
@@ -454,6 +493,37 @@
         return String(status || "").toLowerCase();
       }
 
+      function shortCode(value) {
+        const clean = String(value || "").trim();
+        if (!clean) return "Não informado";
+        return clean.length > 12 ? clean.slice(0, 8).toUpperCase() : clean.toUpperCase();
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function hideNextSteps() {
+        nextSteps.classList.add("hidden");
+        nextStepsList.innerHTML = "";
+      }
+
+      function showNextSteps(reservation) {
+        const code = shortCode(reservation?.id || reservationId);
+        const fichaHref = `/ficha.html?booking_id=${encodeURIComponent(reservation?.id || reservationId)}`;
+        nextStepsList.innerHTML = `
+          <li>Guarde o código ${escapeHtml(code)} para qualquer contato sobre a estadia.</li>
+          <li><a href="${fichaHref}">Preencha a ficha de hóspede</a> antes do check-in.</li>
+          <li>Adicione a estadia ao calendário e acompanhe tudo pela sua área.</li>
+        `;
+        nextSteps.classList.remove("hidden");
+      }
+
       function isExpiredReservation(reservation) {
         if (!reservation?.expires_at) return false;
         return new Date(reservation.expires_at).getTime() <= Date.now();
@@ -475,12 +545,18 @@
       }
 
       function fillReservationDetails(reservation) {
-        reservationIdText.textContent = reservation?.id || reservationId || "Não informado";
+        const fullReservationId = reservation?.id || reservationId || "";
+        reservationIdText.textContent = shortCode(fullReservationId);
+        reservationIdText.title = fullReservationId || "";
         sessionIdText.textContent =
           sessionId ||
           reservation?.stripe_checkout_session_id ||
           reservation?.payment_id ||
           "Não informado";
+        const sessionRow = sessionIdText.closest(".detail-row");
+        if (sessionRow && sessionIdText.textContent !== "Não informado") {
+          sessionRow.style.display = "flex";
+        }
 
         roomText.textContent = reservation?.room_type || "—";
         checkInText.textContent = formatDate(reservation?.check_in);
@@ -490,23 +566,25 @@
       }
 
       function renderMissingReservation() {
+        hideNextSteps();
         setPill("error", "Reserva não localizada");
         titleText.textContent = "Reserva não localizada";
         messageLine1.textContent = "Não foi possível localizar o código da reserva.";
         messageLine2.textContent = "Volte para as acomodações e tente novamente.";
-        situationText.textContent = "URL sem reservation_id";
-        setNotice("error", "Esta página foi aberta sem um identificador de reserva válido.");
-        statusText.textContent = "Página carregada sem reservation_id.";
+        situationText.textContent = "Código ausente";
+        setNotice("error", "Esta página foi aberta sem um código de reserva válido.");
+        statusText.textContent = "Abra a página pelo link enviado após o checkout ou pela sua área.";
       }
 
       function renderCancelledPending(reservation) {
+        hideNextSteps();
         setPill("warning", "Pagamento pendente");
         titleText.textContent = "Pagamento não concluído";
         messageLine1.textContent = "Sua reserva foi criada, mas o pagamento não foi finalizado.";
-        messageLine2.textContent = "Você pode tentar novamente enquanto o hold da reserva ainda estiver válido.";
+        messageLine2.textContent = "Você pode tentar novamente enquanto as datas ainda estiverem disponíveis.";
         situationText.textContent = "Pagamento pendente";
-        setNotice("warning", "A reserva ainda não está confirmada. Se o prazo do hold expirar, as datas podem voltar ao calendário.");
-        statusText.textContent = "Retorno recebido com cancelamento do checkout.";
+        setNotice("warning", "A reserva ainda não está confirmada. Se o prazo expirar, as datas podem voltar ao calendário.");
+        statusText.textContent = "Clique em tentar pagamento novamente ou fale conosco pelo WhatsApp.";
         if (isRetryEligible(reservation)) {
           retryBtn.classList.remove("hidden");
         }
@@ -519,8 +597,8 @@
         messageLine2.textContent = "Preencha a ficha de hóspede (FNRH) antes do check-in para agilizar sua chegada.";
         situationText.textContent = "Pagamento aprovado";
         setNotice("success", "Tudo certo. Você também pode acompanhar os detalhes na sua área do cliente.");
-        statusText.textContent =
-          `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+        statusText.textContent = `Reserva pronta. Código ${shortCode(reservation?.id || reservationId)}.`;
+        showNextSteps(reservation);
         buildCalendarLinks(reservation);
       }
 
@@ -569,35 +647,36 @@
       }
 
       function renderProcessing(reservation) {
+        hideNextSteps();
         setPill("info", "Processando");
         titleText.textContent = "Pagamento em validação";
         messageLine1.textContent = "Recebemos o retorno do checkout.";
         messageLine2.textContent = "A reserva ainda não está confirmada até a aprovação final do pagamento.";
         situationText.textContent = "Validação em andamento";
         setNotice("info", "Isso normalmente leva apenas alguns segundos. Esta página será atualizada automaticamente.");
-        statusText.textContent =
-          `Status atual: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+        statusText.textContent = "Se a confirmação não aparecer, acompanhe pela sua área ou fale conosco pelo WhatsApp.";
       }
 
       function renderFailedOrExpired(reservation) {
+        hideNextSteps();
         setPill("error", "Reserva encerrada");
         titleText.textContent = "Pagamento não confirmado";
         messageLine1.textContent = "Esta reserva não pôde ser concluída.";
         messageLine2.textContent = "As datas podem ter sido liberadas novamente para nova tentativa de reserva.";
         situationText.textContent = "Reserva cancelada ou expirada";
         setNotice("error", "Para continuar, volte às acomodações e crie uma nova solicitação de reserva.");
-        statusText.textContent =
-          `Status: ${reservation?.status || "—"} • Booking: ${reservation?.booking_status || "—"} • Pagamento: ${reservation?.payment_status || "—"}`;
+        statusText.textContent = "Você também pode falar conosco pelo WhatsApp para confirmar disponibilidade.";
       }
 
       function renderGenericFallback() {
+        hideNextSteps();
         setPill("info", "Aguardando");
         titleText.textContent = "Reserva em análise";
         messageLine1.textContent = "Não foi possível carregar todos os detalhes desta reserva neste momento.";
         messageLine2.textContent = "Tente novamente em instantes ou acesse sua área para acompanhar.";
         situationText.textContent = "Consulta parcial";
         setNotice("info", "Se você acabou de concluir o checkout, o processamento ainda pode estar finalizando.");
-        statusText.textContent = "Consulta sem detalhes completos da reserva.";
+        statusText.textContent = "Tente novamente em instantes ou acompanhe pela sua área.";
       }
 
       async function fetchReservation() {
@@ -761,7 +840,7 @@
           if (!response.ok || !payload?.checkout_url) {
             setPill("error", "Erro no pagamento");
             setNotice("error", payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento.");
-            statusText.textContent = payload?.error || "Falha ao gerar novo checkout.";
+            statusText.textContent = payload?.error || "Tente novamente em instantes ou fale conosco pelo WhatsApp.";
             retryBtn.disabled = false;
             retryBtn.textContent = "Tentar pagamento novamente";
             return;
@@ -771,8 +850,8 @@
         } catch (error) {
           console.error(error);
           setPill("error", "Erro no pagamento");
-          setNotice("error", "Ocorreu um erro inesperado ao iniciar uma nova tentativa de pagamento.");
-          statusText.textContent = error instanceof Error ? error.message : "Erro inesperado.";
+          setNotice("error", "Não foi possível iniciar uma nova tentativa de pagamento agora.");
+          statusText.textContent = "Tente novamente em instantes ou fale conosco pelo WhatsApp.";
           retryBtn.disabled = false;
           retryBtn.textContent = "Tentar pagamento novamente";
         }
@@ -797,9 +876,16 @@
       const retryBtn = document.getElementById("retryBtn");
       const statusText = document.getElementById("statusText");
       const noticeBox = document.getElementById("noticeBox");
+      const nextSteps = document.getElementById("nextSteps");
+      const nextStepsList = document.getElementById("nextStepsList");
 
-      reservationIdText.textContent = reservationId || "Não informado";
+      reservationIdText.textContent = shortCode(reservationId);
+      reservationIdText.title = reservationId || "";
       sessionIdText.textContent = sessionId || "Não informado";
+      if (sessionId) {
+        const sessionRow = sessionIdText.closest(".detail-row");
+        if (sessionRow) sessionRow.style.display = "flex";
+      }
 
       retryBtn.addEventListener("click", retryPayment);
 

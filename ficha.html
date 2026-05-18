@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Ficha de Hóspede | Chateau Pireneus</title>
-  <meta name="description" content="Preencha a Ficha Nacional de Registro de Hóspedes (FNRH) do Chateau Pireneus. Exigida pela Lei 11.771/2008, o preenchimento online facilita seu check-in." />
+  <meta name="description" content="Preencha sua ficha de hóspede do Chateau Pireneus antes da chegada. O processo agiliza o check-in e atende à FNRH." />
   <meta name="robots" content="noindex, follow" />
   <link rel="canonical" href="https://chateaupireneus.com.br/ficha.html" />
 
@@ -622,11 +622,11 @@
   <section class="hero" aria-label="Ficha de hóspede">
     <div class="hero-shell">
       <div class="hero-copy">
-        <div class="hero-kicker">Obrigatório por lei</div>
-        <h1 class="hero-title">FICHA NACIONAL DE REGISTRO DE HÓSPEDE</h1>
+        <div class="hero-kicker">Check-in mais rápido</div>
+        <h1 class="hero-title">FICHA DE HÓSPEDE</h1>
         <p class="hero-text">
-          A FNRH é exigida pela Lei nº 11.771/2008 para todos os meios de hospedagem no Brasil.
-          Preencher online antes da chegada leva menos de 2 minutos e agiliza seu check-in.
+          Preencha seus dados antes da chegada para deixar o check-in mais simples.
+          A ficha também atende à FNRH exigida para meios de hospedagem no Brasil.
         </p>
 
         <ul class="fnrh-list">
@@ -638,10 +638,10 @@
       </div>
 
       <div class="register-card">
-        <span class="card-eyebrow">Registro obrigatório</span>
+        <span class="card-eyebrow">Antes da chegada</span>
         <h2 class="card-title">DADOS DO HÓSPEDE</h2>
         <p class="card-subtitle">
-          Preencha os dados abaixo antes do check-in. Campos marcados com * são exigidos pela FNRH.
+          Preencha os dados abaixo antes do check-in. Campos marcados com * são necessários para finalizar a ficha.
           O endereço pode ser preenchido automaticamente digitando o CEP.
         </p>
         <div class="orn"></div>
@@ -760,7 +760,7 @@
           </div>
 
           <p class="required-note">
-            * Campos exigidos pela Ficha Nacional de Registro de Hóspedes (FNRH).
+            * Campos necessários para finalizar sua ficha de hóspede.
           </p>
 
           <button type="submit" id="submitBtn" class="submit-btn">SALVAR FICHA</button>
@@ -1059,11 +1059,13 @@
       statusBox.scrollIntoView({ behavior: "smooth", block: "center" })
 
       // Submit to e-FNRH (MTur) — non-blocking, best-effort
-      submitToFNRH(bookingId).then(ok => {
-        if (ok) {
+      submitToFNRH(bookingId).then(result => {
+        if (result.ok) {
           setStatus("success", "Ficha registrada com sucesso na FNRH! Seu check-in será mais rápido.")
-        } else {
+        } else if (result.retryable) {
           setStatus("success", "Dados salvos com sucesso. O envio ao sistema FNRH será reprocessado automaticamente.")
+        } else {
+          setStatus("error", result.message || "Dados salvos, mas ainda faltam informações para enviar a FNRH. Revise a ficha ou fale com a pousada.")
         }
       })
     })
@@ -1073,7 +1075,7 @@
     async function submitToFNRH(bookingId) {
       try {
         const { data: { session } } = await supabaseClient.auth.getSession()
-        if (!session) return false
+        if (!session) return { ok: false, retryable: false, message: "Sessão expirada. Faça login novamente." }
 
         const body = bookingId ? { booking_id: bookingId } : {}
 
@@ -1089,17 +1091,19 @@
           }
         )
 
-        const data = await res.json()
+        const data = await res.json().catch(() => null)
         if (!res.ok) {
           console.warn("FNRH submission failed:", data)
-          return false
+          const retryable = res.status >= 500 || data?.error === "A API da FNRH retornou um erro"
+          const missing = Array.isArray(data?.missing) ? " Campos pendentes: " + data.missing.join(", ") + "." : ""
+          return { ok: false, retryable, message: (data?.error || "Falha ao enviar FNRH.") + missing }
         }
 
         console.log("FNRH submitted:", data)
-        return true
+        return { ok: true }
       } catch (err) {
         console.warn("FNRH fetch error:", err)
-        return false
+        return { ok: false, retryable: true }
       }
     }
 

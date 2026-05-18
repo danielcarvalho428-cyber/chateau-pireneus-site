@@ -1706,7 +1706,13 @@
       const icons = { success:"✓", error:"✕", info:"ℹ", warn:"⚠" };
       const toast = document.createElement("div");
       toast.className = `toast toast-${type}`;
-      toast.innerHTML = `<span class="toast-icon">${icons[type] || "ℹ"}</span><span class="toast-msg">${msg}</span>`;
+      const icon = document.createElement("span");
+      icon.className = "toast-icon";
+      icon.textContent = icons[type] || "ℹ";
+      const text = document.createElement("span");
+      text.className = "toast-msg";
+      text.textContent = msg;
+      toast.append(icon, text);
       container.appendChild(toast);
       setTimeout(() => {
         toast.style.transition = "0.3s ease";
@@ -1786,6 +1792,10 @@
 
     function escHtml(v) {
       return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")
+    }
+
+    function escAttr(v) {
+      return escHtml(v)
     }
 
     function formatDate(dateString) {
@@ -3046,13 +3056,13 @@
           <div style="background:rgba(29,53,87,.04);border-radius:10px;padding:14px 18px;">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
               <div>
-                <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${p.code}</span>
-                <span style="margin-left:12px;font-size:13px;color:#555;">${discStr}${expiry}</span>
-                ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${p.description}</span>` : ""}
+                <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${escHtml(p.code)}</span>
+                <span style="margin-left:12px;font-size:13px;color:#555;">${escHtml(discStr)}${escHtml(expiry)}</span>
+                ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${escHtml(p.description)}</span>` : ""}
               </div>
               <div style="display:flex;gap:8px;align-items:center;">
                 <span style="font-size:12px;font-weight:600;color:${activeColor};">${p.active ? "ATIVO" : "INATIVO"}</span>
-                <button type="button" onclick="togglePromo('${p.id}', ${p.active})"
+                <button type="button" class="toggle-promo-btn" data-id="${escAttr(p.id)}" data-active="${p.active ? "true" : "false"}"
                   style="background:${p.active ? "#e74c3c" : "#2a7a4b"};color:#fff;border:none;border-radius:6px;
                     padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">
                   ${p.active ? "Desativar" : "Ativar"}
@@ -3073,7 +3083,12 @@
       await supabaseClient.from("promo_codes").update({ active: !currentActive }).eq("id", id);
       await loadPromos();
     }
-    window.togglePromo = togglePromo;
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".toggle-promo-btn");
+      if (!btn) return;
+      await togglePromo(btn.dataset.id, btn.dataset.active === "true");
+    });
 
     document.getElementById("promoCreateBtn").addEventListener("click", async function() {
       const code  = document.getElementById("promoCode").value.trim().toUpperCase();
@@ -3136,12 +3151,14 @@
         return;
       }
 
-      list.innerHTML = data.map(a => `
+      list.innerHTML = data.map((a, index) => {
+        const rowId = `extra-${index}`;
+        return `
         <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
           <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-            <span style="font-weight:700;font-size:15px;color:var(--navy);flex:1;">${a.label}</span>
+            <span style="font-weight:700;font-size:15px;color:var(--navy);flex:1;">${escHtml(a.label)}</span>
             <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
-              <input type="checkbox" id="extra-active-${a.id}" ${a.active ? "checked" : ""}
+              <input type="checkbox" id="${rowId}-active" ${a.active ? "checked" : ""}
                 style="width:16px;height:16px;accent-color:var(--navy);">
               Ativo
             </label>
@@ -3151,27 +3168,27 @@
               <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">
                 Preço (R$) ${a.per === "person_night" ? "· por pessoa/noite" : "· valor fixo"}
               </label>
-              <input id="extra-price-${a.id}" type="number" min="0" step="0.01" value="${a.price}"
+              <input id="${rowId}-price" type="number" min="0" step="0.01" value="${escAttr(a.price)}"
                 style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
             </div>
             <div>
               <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">Descrição (exibida no formulário de reserva)</label>
-              <input id="extra-desc-${a.id}" type="text" value="${a.description.replace(/"/g,'&quot;')}"
+              <input id="${rowId}-desc" type="text" value="${escAttr(a.description)}"
                 style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
             </div>
           </div>
-          <button type="button" onclick="saveExtra('${a.id}')"
+          <button type="button" class="save-extra-btn" data-id="${escAttr(a.id)}" data-row-id="${rowId}"
             style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
             Salvar alterações
           </button>
         </div>
-      `).join("");
+      `}).join("");
     }
 
-    async function saveExtra(id) {
-      const active = document.getElementById(`extra-active-${id}`).checked;
-      const price  = parseFloat(document.getElementById(`extra-price-${id}`).value);
-      const desc   = document.getElementById(`extra-desc-${id}`).value.trim();
+    async function saveExtra(id, rowId) {
+      const active = document.getElementById(`${rowId}-active`).checked;
+      const price  = parseFloat(document.getElementById(`${rowId}-price`).value);
+      const desc   = document.getElementById(`${rowId}-desc`).value.trim();
       const msg    = document.getElementById("extrasMsg");
 
       if (isNaN(price) || price < 0) { msg.textContent = "Preço inválido."; msg.style.color = "#c0392b"; return; }
@@ -3190,7 +3207,12 @@
         setTimeout(() => { msg.textContent = ""; }, 3000);
       }
     }
-    window.saveExtra = saveExtra;
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".save-extra-btn");
+      if (!btn) return;
+      await saveExtra(btn.dataset.id, btn.dataset.rowId);
+    });
 
     document.querySelector('[data-tab="extras"]').addEventListener("click", loadExtras);
 
@@ -3211,27 +3233,29 @@
         return;
       }
 
-      list.innerHTML = data.map(r => `
+      list.innerHTML = data.map((r, index) => {
+        const rowId = `ical-${index}`;
+        return `
         <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
-          <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:12px;">${r.name}</div>
+          <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:12px;">${escHtml(r.name)}</div>
           <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">URL do calendário iCal (Airbnb / Booking.com)</label>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input id="ical-url-${r.id}" type="url" placeholder="https://www.airbnb.com.br/calendar/ical/…"
-              value="${r.airbnb_ical_url ? r.airbnb_ical_url.replace(/"/g,'&quot;') : ''}"
+            <input id="${rowId}-url" type="url" placeholder="https://www.airbnb.com.br/calendar/ical/…"
+              value="${escAttr(r.airbnb_ical_url || '')}"
               style="flex:1;min-width:260px;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:13px;font-family:inherit;">
-            <button type="button" onclick="saveIcalUrl('${r.id}')"
+            <button type="button" class="save-ical-btn" data-id="${escAttr(r.id)}" data-row-id="${rowId}"
               style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;white-space:nowrap;">
               Salvar
             </button>
           </div>
-          <p id="ical-msg-${r.id}" style="font-size:12px;margin:6px 0 0;min-height:16px;"></p>
+          <p id="${rowId}-msg" style="font-size:12px;margin:6px 0 0;min-height:16px;"></p>
         </div>
-      `).join("");
+      `}).join("");
     }
 
-    async function saveIcalUrl(roomId) {
-      const url = document.getElementById(`ical-url-${roomId}`).value.trim();
-      const msg = document.getElementById(`ical-msg-${roomId}`);
+    async function saveIcalUrl(roomId, rowId) {
+      const url = document.getElementById(`${rowId}-url`).value.trim();
+      const msg = document.getElementById(`${rowId}-msg`);
 
       if (url && !url.startsWith("http")) {
         msg.textContent = "URL inválida — deve começar com https://";
@@ -3253,7 +3277,12 @@
         setTimeout(() => { msg.textContent = ""; }, 4000);
       }
     }
-    window.saveIcalUrl = saveIcalUrl;
+
+    document.addEventListener("click", async (e) => {
+      const btn = e.target.closest(".save-ical-btn");
+      if (!btn) return;
+      await saveIcalUrl(btn.dataset.id, btn.dataset.rowId);
+    });
 
     document.querySelector('[data-tab="integracoes"]').addEventListener("click", () => {
       loadIntegracoes();

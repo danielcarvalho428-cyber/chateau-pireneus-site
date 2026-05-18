@@ -13,15 +13,26 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 }
 
-function isAuthorized(req: Request): boolean {
+async function getCaller(req: Request): Promise<{ service: boolean; userId: string | null; isAdmin: boolean }> {
   const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
   const auth = req.headers.get("Authorization") ?? ""
-  // Allow service-role key (webhook/internal) OR any authenticated user JWT (admin panel resend)
-  if (auth === `Bearer ${svcKey}`) return true
+  // Allow service-role key for webhook/internal calls.
+  if (svcKey && auth === `Bearer ${svcKey}`) return { service: true, userId: null, isAdmin: false }
+
   const token = auth.replace("Bearer ", "")
-  // A valid Supabase JWT is a non-empty string that is not the anon key
-  const anonKey = Deno.env.get("SUPABASE_ANON_KEY") ?? ""
-  return token.length > 0 && token !== anonKey
+  if (!token) return { service: false, userId: null, isAdmin: false }
+
+  const sbUser = createClient(
+    Deno.env.get("SUPABASE_URL") as string,
+    Deno.env.get("SUPABASE_ANON_KEY") as string,
+    { global: { headers: { Authorization: auth } } }
+  )
+
+  const { data: { user }, error: authErr } = await sbUser.auth.getUser(token)
+  if (authErr || !user) return { service: false, userId: null, isAdmin: false }
+
+  const { data: isAdmin, error: adminErr } = await sbUser.rpc("is_current_user_admin")
+  return { service: false, userId: user.id, isAdmin: !adminErr && isAdmin === true }
 }
 
 Deno.serve(async (req) => {
@@ -31,10 +42,6 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405, headers: corsHeaders })
   }
-  if (!isAuthorized(req)) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders })
-  }
-
   let payload: Payload
   try {
     payload = await req.json()
@@ -47,21 +54,40 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({ error: "Missing reservation_id" }), { status: 400, headers: corsHeaders })
   }
 
+  const caller = await getCaller(req)
+  if (!caller.service && !caller.userId) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders })
+  }
+
   const sb = createClient(
     Deno.env.get("SUPABASE_URL") as string,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") as string
   )
 
   // Fetch reservation + profile
-  const { data: res, error: resErr } = await sb
+  let reservationQuery = sb
     .from("reservations")
     .select("*")
     .eq("id", reservation_id)
-    .single()
+  if (!caller.service && !caller.isAdmin) {
+    reservationQuery = reservationQuery.eq("user_id", caller.userId)
+  }
+
+  const { data: res, error: resErr } = await reservationQuery.single()
 
   if (resErr || !res) {
     console.error("Reservation fetch error:", resErr)
     return new Response(JSON.stringify({ error: "Reservation not found" }), { status: 404, headers: corsHeaders })
+  }
+
+  if (!caller.service && !caller.isAdmin) {
+    const paidOrConfirmed =
+      ["paid", "confirmed"].includes(String(res.payment_status ?? "").toLowerCase()) ||
+      String(res.status ?? "").toLowerCase() === "confirmed" ||
+      String(res.booking_status ?? "").toLowerCase() === "booked"
+    if (!paidOrConfirmed) {
+      return new Response(JSON.stringify({ error: "Reservation is not confirmed" }), { status: 403, headers: corsHeaders })
+    }
   }
 
   const { data: profile } = await sb

@@ -5,15 +5,31 @@ const NFSE_BASE = "https://api.nfe.io/v1"
 // Service code for "Serviços de alojamento e hospedagem" — adjust per your municipio
 const CITY_SERVICE_CODE = Deno.env.get("NFSE_CITY_SERVICE_CODE") ?? "0107"
 
-function isInternalRequest(req: Request): boolean {
+async function isAuthorized(req: Request): Promise<boolean> {
   const svcKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
-  return req.headers.get("Authorization") === `Bearer ${svcKey}`
+  const auth = req.headers.get("Authorization") ?? ""
+  if (svcKey && auth === `Bearer ${svcKey}`) return true
+
+  const token = auth.replace("Bearer ", "")
+  if (!token) return false
+
+  const sbUser = createClient(
+    Deno.env.get("SUPABASE_URL") as string,
+    Deno.env.get("SUPABASE_ANON_KEY") as string,
+    { global: { headers: { Authorization: auth } } }
+  )
+
+  const { data: { user }, error: authErr } = await sbUser.auth.getUser(token)
+  if (authErr || !user) return false
+
+  const { data: isAdmin, error: adminErr } = await sbUser.rpc("is_current_user_admin")
+  return !adminErr && isAdmin === true
 }
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json(null, 204)
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405)
-  if (!isInternalRequest(req)) return json({ error: "Unauthorized" }, 401)
+  if (!(await isAuthorized(req))) return json({ error: "Unauthorized" }, 401)
 
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL") as string,

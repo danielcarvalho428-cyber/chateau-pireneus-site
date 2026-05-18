@@ -916,7 +916,7 @@
         <span class="card-eyebrow">Sua conta</span>
         <h2 class="card-title">MINHA ÁREA</h2>
         <p class="card-subtitle">
-          Aqui você visualiza os dados principais da sua conta, status de pagamento, holds temporários e reservas confirmadas.
+          Aqui você visualiza os dados principais da sua conta, pagamentos em andamento e reservas confirmadas.
         </p>
         <div class="orn"></div>
 
@@ -944,8 +944,8 @@
         <div id="fnrhBanner" class="fnrh-banner" role="alert">
           <div class="fnrh-banner-text">
             <strong>Complete sua ficha de hóspede</strong>
-            Exigida pela Lei 11.771/2008, a FNRH precisa ser preenchida antes do check-in.
-            Leva menos de 2 minutos, agiliza sua chegada e seus dados ficam salvos para as próximas estadias.
+            Preencha antes do check-in para agilizar sua chegada. A ficha também atende à FNRH exigida para hospedagens no Brasil.
+            Leva menos de 2 minutos e seus dados ficam salvos para as próximas estadias.
           </div>
           <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
         </div>
@@ -962,7 +962,7 @@
         </div>
 
         <div class="summary-card">
-          <span class="summary-label">Pendentes / Holds</span>
+          <span class="summary-label">Aguardando pagamento</span>
           <span class="summary-value" id="pending-reservations">0</span>
         </div>
 
@@ -983,7 +983,7 @@
             <span class="panel-kicker">Acompanhe suas reservas</span>
             <h2 class="panel-title">MINHAS RESERVAS</h2>
             <p class="panel-subtitle">
-              Veja histórico, status de pagamento, prazo do hold, FNRH e próximas ações disponíveis.
+              Veja histórico, situação do pagamento, ficha de hóspede e próximas ações disponíveis.
             </p>
           </div>
 
@@ -992,7 +992,7 @@
 
         <div class="toolbar">
           <div class="toolbar-card">
-            <label for="search-input">Buscar por suíte, id da reserva ou pedido especial</label>
+            <label for="search-input">Buscar por suíte, código ou pedido especial</label>
             <input type="text" id="search-input" placeholder="Digite para buscar..." />
           </div>
 
@@ -1000,7 +1000,7 @@
             <label for="status-filter">Filtrar por situação</label>
             <select id="status-filter">
               <option value="all">Todos</option>
-              <option value="pending">Pendentes / Holds</option>
+              <option value="pending">Aguardando pagamento</option>
               <option value="confirmed">Confirmadas / Pagas</option>
               <option value="cancelled">Canceladas / Expiradas</option>
             </select>
@@ -1025,7 +1025,7 @@
 
         <div class="cta-card">
           <div class="cta-text">
-            Para fazer uma nova reserva, use a página principal de reservas. O sistema valida disponibilidade, calcula valores, cria o hold temporário e direciona para o pagamento seguro.
+            Para fazer uma nova reserva, use a página principal de reservas. O sistema valida disponibilidade, calcula valores e direciona para o pagamento seguro.
           </div>
           <a href="booking.html" class="cta-btn">Fazer nova reserva</a>
         </div>
@@ -1103,6 +1103,12 @@
         .replace(/'/g, "&#39;")
     }
 
+    function shortReservationCode(value) {
+      const clean = String(value || "").trim()
+      if (!clean) return "-"
+      return clean.length > 12 ? clean.slice(0, 8).toUpperCase() : clean.toUpperCase()
+    }
+
     function formatMainStatus(status) {
       const map = {
         pending: "Pendente",
@@ -1118,7 +1124,7 @@
 
     function formatBookingStatus(status) {
       const map = {
-        held: "Em hold",
+        held: "Aguardando pagamento",
         pending: "Pendente",
         booked: "Reservada",
         cancelled: "Cancelada",
@@ -1126,6 +1132,26 @@
         expired: "Expirada"
       }
       return map[normalizeStatus(status)] || status || "Não definido"
+    }
+
+    function formatGuestSituation(reservation) {
+      const status = normalizeStatus(reservation.status)
+      const bookingStatus = normalizeStatus(reservation.booking_status)
+      const paymentStatus = normalizeStatus(reservation.payment_status)
+
+      if (status === "confirmed" || bookingStatus === "booked" || paymentStatus === "paid") {
+        return "Reserva confirmada"
+      }
+
+      if (status === "cancelled" || status === "canceled" || bookingStatus === "cancelled" || paymentStatus === "failed") {
+        return "Reserva não concluída"
+      }
+
+      if (status === "expired" || bookingStatus === "expired" || paymentStatus === "expired") {
+        return "Prazo expirado"
+      }
+
+      return "Aguardando pagamento"
     }
 
     function formatPaymentStatus(status) {
@@ -1408,7 +1434,7 @@
         const payload = await response.json().catch(() => null)
 
         if (!response.ok || !payload?.checkout_url) {
-          alert(payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento.")
+          alert(payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento. Tente novamente em instantes ou fale conosco pelo WhatsApp.")
           button.disabled = false
           button.textContent = "TENTAR PAGAMENTO NOVAMENTE"
           return
@@ -1417,7 +1443,7 @@
         window.location.href = payload.checkout_url
       } catch (error) {
         console.error(error)
-        alert("Ocorreu um erro inesperado ao iniciar o pagamento.")
+        alert("Não foi possível iniciar o pagamento agora. Tente novamente em instantes ou fale conosco pelo WhatsApp.")
         button.disabled = false
         button.textContent = "TENTAR PAGAMENTO NOVAMENTE"
       }
@@ -1493,7 +1519,7 @@
         await loadReservations()
       } catch (err) {
         console.error(err)
-        alert("Ocorreu um erro inesperado. Tente novamente ou entre em contato com a pousada.")
+        alert("Não foi possível cancelar agora. Tente novamente ou entre em contato com a pousada.")
         button.disabled = false
         button.textContent = "Cancelar reserva"
       }
@@ -1514,6 +1540,8 @@
         const canFillFnrh = isFutureReservation(reservation) && isConfirmedReservation(reservation)
         const canRetryPayment = isRetryEligible(reservation)
         const canCancel = isCancelEligible(reservation)
+        const guestSituation = formatGuestSituation(reservation)
+        const reservationCode = shortReservationCode(reservation.id)
 
         return `
         <article class="reservation-card">
@@ -1521,16 +1549,16 @@
             <div>
               <div class="reservation-name">${escapeHtml(reservation.room_type || "Hospedagem")}</div>
               <div class="reservation-subtext">
-                Acompanhe o status real desta reserva e do pagamento.
+                Acompanhe sua estadia, pagamento e próximos passos.
               </div>
               <div class="reservation-meta">
-                <span class="mini-chip">Reserva: ${escapeHtml(reservation.id || "-")}</span>
+                <span class="mini-chip" title="${escapeHtml(reservation.id || "")}">Código: ${escapeHtml(reservationCode)}</span>
                 <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
               </div>
             </div>
 
             <div class="badge-stack">
-              <span class="status-badge ${getMainBadgeClass(reservation)}">${formatMainStatus(reservation.status)}</span>
+              <span class="status-badge ${getMainBadgeClass(reservation)}">${guestSituation}</span>
               <span class="status-badge ${getPaymentBadgeClass(reservation.payment_status)}">${formatPaymentStatus(reservation.payment_status)}</span>
             </div>
           </div>
@@ -1557,18 +1585,18 @@
             </div>
 
             <div class="reservation-item">
-              <strong>Status da reserva</strong>
+              <strong>Reserva</strong>
               <span>${formatBookingStatus(reservation.booking_status)}</span>
             </div>
 
             <div class="reservation-item">
-              <strong>Status do pagamento</strong>
+              <strong>Pagamento</strong>
               <span>${formatPaymentStatus(reservation.payment_status)}</span>
             </div>
 
             <div class="reservation-item">
-              <strong>Status geral</strong>
-              <span>${formatMainStatus(reservation.status)}</span>
+              <strong>Situação</strong>
+              <span>${guestSituation}</span>
             </div>
 
             <div class="reservation-item">

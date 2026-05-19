@@ -222,6 +222,262 @@
       flex-wrap:wrap;
     }
 
+    .dash-wrap{
+      max-width:1080px;
+      margin:0 auto;
+      padding:108px 24px 18px;
+    }
+
+    .greet{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:28px;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .greet h1{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:42px;
+      color:var(--navy);
+      margin:0;
+      letter-spacing:1.2px;
+      line-height:1.1;
+      text-transform:uppercase;
+    }
+
+    .greet h1 span{
+      color:var(--gold2);
+      font-family:"Cormorant Garamond",serif;
+      font-style:italic;
+      text-transform:none;
+    }
+
+    .greet-sub{
+      font-size:13px;
+      color:rgba(22,37,58,.60);
+      margin-top:6px;
+    }
+
+    .greet-nav{
+      display:flex;
+      gap:6px;
+      background:#fff;
+      padding:5px;
+      border:1px solid rgba(29,53,87,.10);
+      border-radius:14px;
+    }
+
+    .greet-nav a,
+    .greet-nav button{
+      padding:9px 16px;
+      background:transparent;
+      color:rgba(22,37,58,.65);
+      border:0;
+      border-radius:10px;
+      cursor:pointer;
+      font:700 12px/1 "Inter",sans-serif;
+      letter-spacing:.5px;
+      text-decoration:none;
+      transition:.18s ease;
+    }
+
+    .greet-nav .active{
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .next-stay{
+      position:relative;
+      overflow:hidden;
+      margin-bottom:32px;
+      border-radius:28px;
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+      color:#fff;
+      box-shadow:0 30px 70px rgba(29,53,87,.20);
+    }
+
+    .ns-bg{
+      position:absolute;
+      top:0;
+      right:0;
+      bottom:0;
+      width:50%;
+      background-image:url("public/suites/aurora/aurora1.jpeg");
+      background-size:cover;
+      background-position:center;
+      opacity:.62;
+      transition:background-image .2s ease;
+    }
+
+    .ns-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to left,transparent,var(--navy));
+    }
+
+    .ns-content{
+      position:relative;
+      z-index:2;
+      max-width:62%;
+      padding:40px 44px;
+    }
+
+    .ns-tag{
+      display:inline-block;
+      padding:5px 12px;
+      margin-bottom:18px;
+      border:1px solid rgba(216,199,161,.40);
+      border-radius:999px;
+      background:rgba(216,199,161,.18);
+      color:var(--gold);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
+    }
+
+    .ns-title{
+      margin:0 0 4px;
+      font-family:"Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:36px;
+      line-height:1.1;
+    }
+
+    .ns-suite{
+      margin-bottom:24px;
+      color:rgba(216,199,161,.88);
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:.5px;
+    }
+
+    .ns-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:28px;
+    }
+
+    .ns-stat{
+      padding-right:12px;
+      border-right:1px solid rgba(255,255,255,.15);
+    }
+
+    .ns-stat:last-child{border-right:0;}
+
+    .ns-stat .l{
+      margin-bottom:6px;
+      color:rgba(255,255,255,.58);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+    }
+
+    .ns-stat .v{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:600;
+      font-size:22px;
+      color:#fff;
+      line-height:1;
+    }
+
+    .ns-stat .v small{
+      font-family:"Inter",sans-serif;
+      font-size:11px;
+      color:rgba(255,255,255,.58);
+      font-weight:400;
+    }
+
+    .ns-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .ns-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:11px 18px;
+      border-radius:11px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:.22s ease;
+    }
+
+    .ns-btn.primary{
+      background:var(--gold);
+      color:var(--navy);
+    }
+
+    .ns-btn.ghost{
+      background:rgba(255,255,255,.10);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.20);
+    }
+
+    .ns-btn:hover{transform:translateY(-1px);}
+
+    .qa-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-bottom:32px;
+    }
+
+    .qa-card{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:22px;
+      border:1px solid rgba(29,53,87,.08);
+      border-radius:18px;
+      background:#fff;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+
+    .qa-card:hover{
+      transform:translateY(-3px);
+      border-color:var(--gold2);
+      box-shadow:0 18px 40px rgba(0,0,0,.08);
+    }
+
+    .qa-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:rgba(216,199,161,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--navy);
+      flex:0 0 auto;
+      font-size:20px;
+    }
+
+    .qa-card h4{
+      margin:0 0 4px;
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .qa-card p{
+      margin:0;
+      color:rgba(22,37,58,.62);
+      font-size:12.5px;
+      line-height:1.55;
+    }
+
     .section{
       padding:74px 0;
       background:
@@ -730,6 +986,42 @@
     }
 
     @media (max-width:980px){
+      .dash-wrap{
+        padding:94px 18px 10px;
+      }
+
+      .greet h1{
+        font-size:32px;
+      }
+
+      .greet-nav{
+        width:100%;
+        overflow-x:auto;
+      }
+
+      .next-stay{
+        border-radius:22px;
+      }
+
+      .ns-bg{
+        display:none;
+      }
+
+      .ns-content{
+        max-width:100%;
+        padding:28px;
+      }
+
+      .ns-grid,
+      .qa-grid{
+        grid-template-columns:1fr;
+      }
+
+      .ns-stat{
+        border-right:0;
+        padding-right:0;
+      }
+
       .hero-shell{
         grid-template-columns:1fr;
         gap:22px;
@@ -787,7 +1079,7 @@
       }
 
       .hero{
-        padding:118px 16px 74px;
+        display:none;
       }
 
       .hero-title{
@@ -897,63 +1189,90 @@
     </div>
   </header>
 
-  <section class="hero" aria-label="Minha área">
-    <div class="hero-shell">
-      <div class="hero-copy">
-        <div class="hero-kicker">Área do hóspede</div>
-        <h1 class="hero-title" id="welcome">BEM-VINDO</h1>
-        <p class="hero-text">
-          Acompanhe suas reservas, consulte pagamentos, preencha a FNRH e veja os próximos passos da sua hospedagem em um só lugar.
-        </p>
-
-        <div class="hero-links">
-          <a class="ghost-btn" href="index.html">VOLTAR AO SITE</a>
-          <a class="ghost-btn" href="booking.html">FAZER NOVA RESERVA</a>
-        </div>
+  <div class="dash-wrap">
+    <div class="greet">
+      <div>
+        <h1 id="welcome">Olá, <span>hóspede</span></h1>
+        <div class="greet-sub">Bem-vindo de volta à sua área pessoal</div>
       </div>
-
-      <div class="hero-card">
-        <span class="card-eyebrow">Sua conta</span>
-        <h2 class="card-title">MINHA ÁREA</h2>
-        <p class="card-subtitle">
-          Aqui você visualiza os dados principais da sua conta, pagamentos em andamento e reservas confirmadas.
-        </p>
-        <div class="orn"></div>
-
-        <div class="hero-meta">
-          <div class="meta-card">
-            <span class="meta-label">Email</span>
-            <span class="meta-value" id="user-email"></span>
-          </div>
-
-          <div class="meta-card">
-            <span class="meta-label">Telefone</span>
-            <span class="meta-value" id="user-phone"></span>
-          </div>
-
-          <div class="meta-card">
-            <span class="meta-label">Status</span>
-            <span class="meta-value">Hóspede cadastrado</span>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <button class="secondary-btn-light" type="button" onclick="refreshDashboard()">Atualizar agora</button>
-        </div>
-
-        <div id="fnrhBanner" class="fnrh-banner" role="alert">
-          <div class="fnrh-banner-text">
-            <strong>Complete sua ficha de hóspede</strong>
-            Preencha antes do check-in para agilizar sua chegada. A ficha também atende à FNRH exigida para hospedagens no Brasil.
-            Leva menos de 2 minutos e seus dados ficam salvos para as próximas estadias.
-          </div>
-          <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
-        </div>
+      <div class="greet-nav" aria-label="Atalhos da área do hóspede">
+        <a class="active" href="#reservas">Próximas</a>
+        <a href="#reservas">Histórico</a>
+        <button type="button" onclick="refreshDashboard()">Atualizar</button>
       </div>
     </div>
-  </section>
 
-  <section class="section">
+    <section class="next-stay" id="nextStayCard" aria-label="Próxima estadia">
+      <div class="ns-bg" id="nextStayImage"></div>
+      <div class="ns-content">
+        <div class="ns-tag" id="nextStayTag">Próxima estadia</div>
+        <h2 class="ns-title" id="nextStayTitle">Carregando reservas</h2>
+        <div class="ns-suite" id="nextStaySuite">Buscando sua próxima hospedagem...</div>
+        <div class="ns-grid">
+          <div class="ns-stat">
+            <div class="l">Check-in</div>
+            <div class="v" id="nextStayCheckIn">—</div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Check-out</div>
+            <div class="v" id="nextStayCheckOut">—</div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Noites</div>
+            <div class="v" id="nextStayNights">—</div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Valor</div>
+            <div class="v" id="nextStayTotal">—</div>
+          </div>
+        </div>
+        <div class="ns-actions">
+          <a class="ns-btn primary" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar com a pousada</a>
+          <a class="ns-btn ghost" href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/" target="_blank" rel="noopener">Como chegar</a>
+          <a class="ns-btn ghost" href="#reservas">Detalhes</a>
+        </div>
+      </div>
+    </section>
+
+    <div id="fnrhBanner" class="fnrh-banner" role="alert">
+      <div class="fnrh-banner-text">
+        <strong>Complete sua ficha de hóspede</strong>
+        Preencha antes do check-in para agilizar sua chegada. A ficha também atende à FNRH exigida para hospedagens no Brasil.
+      </div>
+      <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
+    </div>
+
+    <div class="qa-grid" aria-label="Atalhos">
+      <a class="qa-card" href="booking.html">
+        <div class="qa-icon" aria-hidden="true">+</div>
+        <div>
+          <h4>Reservar novamente</h4>
+          <p>Escolha datas e suíte para sua próxima estadia.</p>
+        </div>
+      </a>
+      <a class="qa-card" href="#reservas">
+        <div class="qa-icon" aria-hidden="true">i</div>
+        <div>
+          <h4>Minhas reservas</h4>
+          <p>Acompanhe pagamentos, FNRH e próximas ações.</p>
+        </div>
+      </a>
+      <a class="qa-card" href="https://wa.me/5562998167654" target="_blank" rel="noopener">
+        <div class="qa-icon" aria-hidden="true">?</div>
+        <div>
+          <h4>Falar com a pousada</h4>
+          <p>Tire dúvidas pelo WhatsApp da equipe.</p>
+        </div>
+      </a>
+    </div>
+
+    <div style="display:none">
+      <span id="user-email"></span>
+      <span id="user-phone"></span>
+    </div>
+  </div>
+
+  <section class="section" id="reservas">
     <div class="wrap">
       <div class="summary-grid">
         <div class="summary-card">
@@ -1274,6 +1593,66 @@
       document.getElementById("reservation-count").textContent = total
     }
 
+    function countNights(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 0
+      const start = new Date(checkIn + "T00:00:00")
+      const end = new Date(checkOut + "T00:00:00")
+      return Math.max(0, Math.round((end - start) / 86400000))
+    }
+
+    function suiteImage(roomType) {
+      const key = String(roomType || "").toLowerCase()
+      if (key.includes("aurora")) return "public/suites/aurora/aurora1.jpeg"
+      if (key.includes("divino")) return "public/suites/divino/divino1.jpeg"
+      if (key.includes("cavalhadas")) return "public/suites/cavalhadas/cavalhadas1.jpeg"
+      if (key.includes("rosário") || key.includes("rosario")) return "public/suites/rosario/rosario1.jpeg"
+      if (key.includes("bonfim")) return "public/suites/bonfim/bonfim1.jpeg"
+      return "hero.webp"
+    }
+
+    function renderNextStay() {
+      const upcoming = allReservations
+        .filter(r => isFutureReservation(r) && isConfirmedReservation(r))
+        .sort((a, b) => new Date(a.check_in || 0) - new Date(b.check_in || 0))[0]
+
+      const title = document.getElementById("nextStayTitle")
+      const suite = document.getElementById("nextStaySuite")
+      const tag = document.getElementById("nextStayTag")
+      const image = document.getElementById("nextStayImage")
+      const checkIn = document.getElementById("nextStayCheckIn")
+      const checkOut = document.getElementById("nextStayCheckOut")
+      const nights = document.getElementById("nextStayNights")
+      const total = document.getElementById("nextStayTotal")
+
+      if (!title || !suite || !tag || !image) return
+
+      if (!upcoming) {
+        tag.textContent = "Sua próxima estadia"
+        title.textContent = "Sem reserva futura"
+        suite.textContent = "Quando você fizer uma nova reserva, os detalhes aparecem aqui."
+        checkIn.textContent = "—"
+        checkOut.textContent = "—"
+        nights.textContent = "—"
+        total.textContent = "—"
+        image.style.backgroundImage = 'url("hero.webp")'
+        return
+      }
+
+      const today = new Date()
+      const checkInDate = new Date(upcoming.check_in + "T00:00:00")
+      const days = Math.max(0, Math.ceil((checkInDate - today) / 86400000))
+      const nightCount = countNights(upcoming.check_in, upcoming.check_out)
+
+      tag.textContent = "Próxima estadia"
+      title.textContent = days === 0 ? "Sua estadia começa hoje" : `Faltam ${days} dia${days === 1 ? "" : "s"}`
+      suite.textContent = `${upcoming.room_type || "Hospedagem"} · ${formatDate(upcoming.check_in)} a ${formatDate(upcoming.check_out)}`
+      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small> / 12h</small>`
+      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small> / 12h</small>`
+      nights.textContent = nightCount || "—"
+      total.textContent = formatCurrency(upcoming.total_amount)
+      image.style.backgroundImage = `url("${suiteImage(upcoming.room_type)}")`
+    }
+
     async function loadProfile() {
       const { data: userData, error: userError } = await supabaseClient.auth.getUser()
 
@@ -1300,7 +1679,8 @@
         console.error(profileError)
       }
 
-      document.getElementById("welcome").textContent = "BEM-VINDO, " + (((profile && profile.full_name) || "HÓSPEDE").toUpperCase())
+      const firstName = ((profile && profile.full_name) || "hóspede").trim().split(/\s+/)[0]
+      document.getElementById("welcome").innerHTML = `Olá, <span>${escapeHtml(firstName)}</span>`
       document.getElementById("user-email").textContent = currentUser.email || ""
       document.getElementById("user-phone").textContent = (profile && profile.phone) || "Não informado"
 
@@ -1335,6 +1715,7 @@
 
       allReservations = data || []
       updateSummary()
+      renderNextStay()
       renderReservations()
 
       const bannerLink = document.getElementById("fnrhBannerLink")

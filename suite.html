@@ -1411,6 +1411,143 @@
       .b-summary-value{text-align:left;}
       .b-summary-total{font-size:16px;}
     }
+
+    /* New design pass: keep the live booking logic, present the summary as the white booking block. */
+    .booking-section{
+      padding-top:72px;
+    }
+    .booking-layout{
+      grid-template-columns:minmax(0,1fr) 380px;
+      gap:32px;
+    }
+    .booking-layout .b-panel:nth-child(2){
+      position:sticky;
+      top:94px;
+      background:#fff;
+      border:2px solid var(--gold2);
+      border-radius:22px;
+      box-shadow:0 24px 60px rgba(0,0,0,.10),0 0 0 6px rgba(216,199,161,.10);
+      padding:28px;
+    }
+    .booking-layout .b-panel:nth-child(2) .b-panel-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:28px;
+      font-weight:700;
+      letter-spacing:.2px;
+      text-transform:none;
+    }
+    .booking-layout .b-panel:nth-child(2) .b-info-card{
+      background:#fff;
+      border-color:rgba(29,53,87,.12);
+      border-radius:14px;
+      box-shadow:none;
+    }
+    .booking-layout .b-panel:nth-child(2) .b-summary-total{
+      font-family:"Cormorant Garamond",serif;
+      font-size:24px;
+    }
+    .booking-layout .b-panel:first-child{
+      border-radius:22px;
+      background:rgba(255,255,255,.84);
+    }
+    @media (max-width:980px){
+      .booking-layout{
+        grid-template-columns:1fr;
+      }
+      .booking-layout .b-panel:nth-child(2){
+        position:static;
+      }
+    }
+
+    .booking-layout-live-card{
+      grid-template-columns:minmax(360px, 440px) minmax(0, 1fr);
+      justify-content:center;
+      align-items:start;
+      gap:28px;
+      max-width:1040px;
+      margin:0 auto;
+    }
+    .booking-card-form{
+      min-width:0;
+    }
+    .live-booking-card{
+      position:relative;
+      background:#fff;
+      border:2px solid var(--gold2);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:0 24px 60px rgba(0,0,0,.10),0 0 0 6px rgba(216,199,161,.10);
+    }
+    .live-booking-card .locked-room-display.compact{
+      margin-top:18px;
+      border-radius:14px;
+    }
+    .live-booking-grid{
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    }
+    .live-booking-grid .b-field input,
+    .live-booking-grid .b-field select,
+    #bFnrhBlock input,
+    #bCpfField input{
+      box-sizing:border-box;
+    }
+    .live-subhead{
+      font-size:13px;
+      font-weight:700;
+      color:var(--navy);
+      margin-bottom:10px;
+      padding-bottom:8px;
+      border-bottom:1px solid rgba(29,53,87,.09);
+    }
+    .booking-calendar-legend.compact{
+      grid-template-columns:1fr;
+      margin-top:8px;
+    }
+    .booking-summary-card{
+      margin-top:18px;
+      background:#fff;
+      border-color:rgba(29,53,87,.12);
+      border-radius:14px;
+    }
+    .booking-support-panel{
+      display:grid;
+      gap:14px;
+    }
+    .booking-support-panel .b-info-card{
+      margin-top:0;
+      background:rgba(255,255,255,.78);
+      border-radius:18px;
+    }
+    .live-booking-card .bk-cta{
+      width:100%;
+      margin-top:16px;
+    }
+    .live-booking-card .payment-options{
+      grid-template-columns:1fr;
+    }
+    @media (max-width:980px){
+      .booking-layout-live-card{
+        grid-template-columns:1fr;
+      }
+      .booking-support-panel{
+        grid-template-columns:1fr;
+      }
+    }
+    @media (max-width:640px){
+      .live-booking-card{
+        padding:22px 16px;
+      }
+      .live-booking-grid{
+        grid-template-columns:1fr;
+      }
+      .bk-price{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:10px;
+      }
+    }
   </style>
 </head>
 
@@ -1537,76 +1674,45 @@
         <p class="booking-section-sub">Escolha as datas, revise valores e siga para pagamento seguro. A reserva só é confirmada após aprovação do pagamento.</p>
       </div>
 
-      <div class="booking-layout">
-        <div class="b-panel">
-          <h3 class="b-panel-title">DADOS DA RESERVA</h3>
-          <p class="b-panel-subtitle">Preencha datas e hóspedes. As datas ficam separadas por tempo limitado somente enquanto você conclui o pagamento.</p>
+      <div class="booking-layout booking-layout-live-card">
+        <form id="bookingForm" class="booking-card-form">
+          <div class="b-panel live-booking-card">
+            <span class="new-tag-block">Reserva direta</span>
+            <div class="bk-price">
+              <div>
+                <div class="num" id="bSidebarPrice">A definir</div>
+                <div class="unit" id="bSidebarUnit">Escolha suas datas</div>
+              </div>
+              <div class="rating" aria-label="Avaliação">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.9 <span class="bk-rating-count">(127)</span>
+              </div>
+            </div>
 
-          <div class="locked-room-display">
-            <span class="locked-room-label">Suíte selecionada</span>
-            <span class="locked-room-name" id="bLockedRoomName">—</span>
-          </div>
+            <div class="locked-room-display compact">
+              <span class="locked-room-label">Suíte selecionada</span>
+              <span class="locked-room-name" id="bLockedRoomName">—</span>
+            </div>
 
-          <form id="bookingForm">
-            <div class="b-form-grid">
+            <div class="b-form-grid live-booking-grid">
               <div class="b-field full">
-                <label for="b_date_range">Período da hospedagem</label>
-                <input type="text" id="b_date_range" placeholder="Selecione check-in e check-out" required readonly>
-                <div class="b-note-box">
-                  Datas indisponíveis ficam bloqueadas. O calendário mostra valor de cada diária e mínimo de noites quando houver.
-                  <div class="booking-calendar-legend" aria-label="Legenda do calendário">
-                    <span><i class="legend-open"></i> Datas claras podem ser selecionadas.</span>
-                    <span><i class="legend-blocked"></i> Datas cinza estão indisponíveis.</span>
-                    <span><i class="legend-price"></i> Valores e mínimo de noites aparecem dentro do dia.</span>
-                  </div>
-                </div>
+                <label for="b_date_range">Check-in e check-out</label>
+                <input type="text" id="b_date_range" placeholder="Selecione as datas" required readonly>
                 <div id="bAvailabilityStatus" class="b-status-box info show">Carregando disponibilidade…</div>
+                <div class="booking-calendar-legend compact" aria-label="Legenda do calendário">
+                  <span><i class="legend-open"></i> Datas claras podem ser selecionadas.</span>
+                  <span><i class="legend-blocked"></i> Datas cinza estão indisponíveis.</span>
+                  <span><i class="legend-price"></i> Valores e mínimo aparecem no dia.</span>
+                </div>
               </div>
 
               <div class="b-field">
-                <label for="b_guests">Número de hóspedes</label>
+                <label for="b_guests">Hóspedes</label>
                 <input type="number" id="b_guests" min="1" max="2" value="2" required>
-                <div class="b-help-text">Máximo de 2 hóspedes por suíte. Situações especiais devem ser consultadas antes da reserva.</div>
               </div>
 
               <div class="b-field">
-                <label>Horários</label>
-                <div class="b-note-box">Check-in das 12h às 19h.<br>Check-out até 12h.<br>Fora desse horário, combine antes com a pousada.</div>
-              </div>
-
-              <!-- FNRH fields — shown only when missing from profile -->
-              <div class="b-field full" id="bFnrhBlock" style="display:none">
-                <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid rgba(29,53,87,0.09);">
-                  Dados para sua ficha de hóspede (FNRH)
-                </div>
-
-                <div id="bDobWrap" style="display:none;margin-bottom:12px;">
-                  <label for="b_dob" style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Data de nascimento</label>
-                  <input type="date" id="b_dob" style="width:100%;box-sizing:border-box;" autocomplete="bday" />
-                </div>
-
-                <div id="bNationalityWrap" style="display:none;margin-bottom:12px;">
-                  <label for="b_nationality" style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Nacionalidade</label>
-                  <input type="text" id="b_nationality" placeholder="Brasileira" value="Brasileira" style="width:100%;box-sizing:border-box;" autocomplete="off" />
-                </div>
-
-                <div id="bAddressWrap" style="display:none;margin-bottom:12px;">
-                  <label style="display:block;margin-bottom:4px;font-size:13.5px;font-weight:600;">Cidade e estado de origem</label>
-                  <div style="display:grid;grid-template-columns:1fr 80px;gap:8px;">
-                    <input type="text" id="b_address_city" placeholder="Cidade" autocomplete="address-level2" style="width:100%;box-sizing:border-box;" />
-                    <input type="text" id="b_address_state" placeholder="UF" maxlength="2" autocomplete="address-level1" style="width:100%;box-sizing:border-box;text-transform:uppercase;" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="b-field full" id="bCpfField" style="display:none">
-                <label for="b_cpf_cnpj">CPF ou CNPJ <span style="font-weight:400;font-size:12px;opacity:.7">(necessário para nota fiscal)</span></label>
-                <input type="text" id="b_cpf_cnpj" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" autocomplete="off" />
-                <div class="b-help-text">Informe seu CPF (pessoa física) ou CNPJ (empresa).</div>
-              </div>
-
-              <div class="b-field full">
-                <label for="b_purpose">Motivo da viagem</label>
+                <label for="b_purpose">Motivo</label>
                 <select id="b_purpose">
                   <option value="Turismo">Turismo / Lazer</option>
                   <option value="Negócios">Negócios</option>
@@ -1618,6 +1724,30 @@
               <div class="b-field full" id="addon-field" style="display:none;">
                 <label>Extras opcionais</label>
                 <div class="addon-list" id="addon-list"></div>
+              </div>
+
+              <div class="b-field full" id="bFnrhBlock" style="display:none">
+                <div class="live-subhead">Dados para sua ficha de hóspede (FNRH)</div>
+                <div id="bDobWrap" style="display:none;margin-bottom:12px;">
+                  <label for="b_dob">Data de nascimento</label>
+                  <input type="date" id="b_dob" autocomplete="bday" />
+                </div>
+                <div id="bNationalityWrap" style="display:none;margin-bottom:12px;">
+                  <label for="b_nationality">Nacionalidade</label>
+                  <input type="text" id="b_nationality" placeholder="Brasileira" value="Brasileira" autocomplete="off" />
+                </div>
+                <div id="bAddressWrap" style="display:none;margin-bottom:12px;">
+                  <label>Cidade e estado de origem</label>
+                  <div style="display:grid;grid-template-columns:1fr 80px;gap:8px;">
+                    <input type="text" id="b_address_city" placeholder="Cidade" autocomplete="address-level2" />
+                    <input type="text" id="b_address_state" placeholder="UF" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase;" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="b-field full" id="bCpfField" style="display:none">
+                <label for="b_cpf_cnpj">CPF ou CNPJ <span style="font-weight:400;font-size:12px;opacity:.7">(necessário para nota fiscal)</span></label>
+                <input type="text" id="b_cpf_cnpj" inputmode="numeric" maxlength="18" placeholder="000.000.000-00 ou 00.000.000/0000-00" autocomplete="off" />
               </div>
 
               <div class="b-field full">
@@ -1639,23 +1769,9 @@
                   </label>
                 </div>
               </div>
-
-              <div class="b-field full">
-                <button type="submit" class="b-submit-btn" id="bSubmitBtn" disabled>IR PARA PAGAMENTO SEGURO</button>
-                <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:10px 0 0;text-align:center;">
-                  Ao reservar, você concorda com nossa <a href="privacidade.html" style="color:var(--navy);">Política de Privacidade</a> e com as <a href="policies.html" style="color:var(--navy);">Políticas da Pousada</a>.
-                  A confirmação depende da aprovação do pagamento.
-                </p>
-              </div>
             </div>
-          </form>
-        </div>
 
-        <div class="b-panel">
-          <h3 class="b-panel-title">RESUMO</h3>
-          <p class="b-panel-subtitle">Confira noites, valores e regras antes de seguir para o pagamento.</p>
-
-          <div class="b-info-card">
+            <div class="b-info-card booking-summary-card">
             <div class="b-summary-line">
               <span class="b-summary-label">Suíte</span>
               <span class="b-summary-value" id="bSummaryRoom">—</span>
@@ -1693,10 +1809,10 @@
               <span>Total com desconto</span>
               <span id="bPromoFinalTotal"></span>
             </div>
-          </div>
+            </div>
 
-          <div class="b-info-card" style="padding:0;">
-            <div style="padding:16px 18px 12px;">
+            <div class="b-info-card" style="padding:0;">
+              <div style="padding:16px 18px 12px;">
               <strong style="font-size:13px;display:block;margin-bottom:10px;">Código promocional</strong>
               <div style="display:flex;gap:8px;">
                 <input id="bPromoInput" type="text" placeholder="Ex: CHATEAU10" autocomplete="off" autocapitalize="characters"
@@ -1707,19 +1823,27 @@
                 </button>
               </div>
               <p id="bPromoMsg" style="margin:8px 0 0;font-size:12.5px;min-height:18px;"></p>
+              </div>
+            </div>
+
+            <button type="submit" class="b-submit-btn bk-cta" id="bSubmitBtn" disabled>Reservar agora</button>
+            <p class="bk-note">Pagamento seguro via Stripe. A confirmação depende da aprovação do pagamento.</p>
+            <div class="bk-trust">
+              <span>Pagamento seguro</span>
+              <span>Cancelamento flexível</span>
             </div>
           </div>
+        </form>
 
+        <div class="booking-support-panel">
           <div class="b-info-card">
-            <strong>Pagamento seguro</strong>
-            <p>Cartão segue pelo Stripe Checkout. Seus dados de pagamento não ficam armazenados no site.</p>
-            <ul class="booking-trust-list">
-              <li>Confirmação enviada por e-mail após pagamento aprovado.</li>
-              <li>Ficha de hóspede pode ser finalizada antes da chegada.</li>
-              <li>Atendimento por WhatsApp se algo não carregar como esperado.</li>
-            </ul>
+            <strong>Como funciona</strong>
+            <p>Escolha as datas, confira o total calculado automaticamente e siga para o pagamento seguro. As datas ficam separadas por tempo limitado enquanto você conclui a reserva.</p>
           </div>
-
+          <div class="b-info-card">
+            <strong>Horários</strong>
+            <p>Check-in das 12h às 19h. Check-out até 12h. Fora desse horário, combine antes com a pousada.</p>
+          </div>
           <div class="b-info-card">
             <strong>Valores por data</strong>
             <p>Fins de semana, feriados, datas especiais e mínimo de noites aparecem com cálculo automático no calendário.</p>
@@ -2418,6 +2542,8 @@
 
     function updateSummary() {
       const nights = countNights(selectedCheckIn, selectedCheckOut);
+      const bSidebarPrice = document.getElementById("bSidebarPrice");
+      const bSidebarUnit = document.getElementById("bSidebarUnit");
       bSummaryCheckIn.textContent = formatDateDisplay(selectedCheckIn);
       bSummaryCheckOut.textContent = formatDateDisplay(selectedCheckOut);
       bSummaryNights.textContent = nights > 0 ? String(nights) : "—";
@@ -2427,6 +2553,8 @@
         bSummaryBreakdown.innerHTML = "";
         bSummaryTotal.textContent = "A definir";
         bSummaryMinNights.textContent = "—";
+        if (bSidebarPrice) bSidebarPrice.textContent = "A definir";
+        if (bSidebarUnit) bSidebarUnit.textContent = selectedCheckIn && selectedCheckOut ? "Aguardando cálculo" : "Escolha suas datas";
         updateSubmitState();
         return;
       }
@@ -2438,6 +2566,8 @@
       }).join("");
 
       bSummaryTotal.textContent = formatCurrency(currentQuote.total || 0);
+      if (bSidebarPrice) bSidebarPrice.textContent = formatCurrency(currentQuote.total || 0);
+      if (bSidebarUnit) bSidebarUnit.textContent = nights > 0 ? "total da estadia" : "Escolha suas datas";
       const reqMin = Number(currentQuote.required_min_nights || 1);
       bSummaryMinNights.textContent = reqMin + " noite" + (reqMin > 1 ? "s" : "");
       updateSubmitState();

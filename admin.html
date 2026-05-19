@@ -1118,9 +1118,63 @@
       .cell-price{ font-size:13px; }
       .cell-meta{ font-size:10px; }
     }
+
+    body.admin-redesign{background:#f4f1ea;}
+    body.admin-redesign .top-header,
+    body.admin-redesign .hero{display:none;}
+
+    .admin-sidebar{position:fixed;inset:0 auto 0 0;z-index:80;width:240px;background:var(--navy2);color:#fff;display:flex;flex-direction:column;padding:24px 0;}
+    .admin-sidebar-brand{padding:0 22px 24px;border-bottom:1px solid rgba(255,255,255,.08);}
+    .admin-sidebar-brand .l1{font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:rgba(216,199,161,.85);}
+    .admin-sidebar-brand .l2{margin-top:3px;font-family:"Gyahegi","Cormorant Garamond",serif;font-size:22px;letter-spacing:2px;line-height:1.1;text-transform:uppercase;color:#fff;}
+    .admin-sidebar-nav{flex:1;padding:18px 14px;}
+    .admin-sidebar-section{padding:14px 10px 6px;color:rgba(255,255,255,.35);font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;}
+    .admin-sidebar-link{display:flex;align-items:center;gap:10px;margin-bottom:2px;padding:10px 12px;border-radius:11px;color:rgba(255,255,255,.68);font-size:13.5px;font-weight:600;text-decoration:none;transition:.18s ease;}
+    .admin-sidebar-link:hover,.admin-sidebar-link.active{background:rgba(216,199,161,.16);color:var(--gold);}
+    .admin-sidebar-icon{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
+    .admin-sidebar-foot{padding:14px 22px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.48);font-size:11.5px;}
+    .admin-sidebar-avatar{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--gold);color:var(--navy);font-family:"Cormorant Garamond",serif;font-weight:700;font-size:14px;}
+
+    body.admin-redesign .section{margin-left:240px;min-height:100vh;padding:28px 32px 40px;background:#f4f1ea;border-top:0;}
+    body.admin-redesign .wrap{max-width:none;padding:0;}
+    .admin-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
+    .admin-top h1{margin:0 0 3px;font-family:"Gyahegi","Cormorant Garamond",serif;font-weight:400;font-size:30px;letter-spacing:1.2px;color:var(--navy);text-transform:uppercase;}
+    .admin-top .sub{color:rgba(22,37,58,.60);font-size:13px;}
+    .admin-top-actions{display:flex;gap:10px;flex-wrap:wrap;}
+
+    body.admin-redesign .summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:14px;margin-bottom:24px;}
+    body.admin-redesign .summary-card{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:18px;box-shadow:none;padding:18px 20px;}
+    body.admin-redesign .summary-label{font-size:10px;letter-spacing:1.8px;color:rgba(22,37,58,.55);}
+    body.admin-redesign .summary-value{font-size:28px;font-weight:600;}
+    body.admin-redesign .tab-nav{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;margin-bottom:20px;padding:8px;border:1px solid rgba(29,53,87,.08);border-radius:16px;background:rgba(255,255,255,.78);backdrop-filter:blur(10px);}
+    body.admin-redesign .tab-btn{border-radius:11px;background:transparent;border:0;color:rgba(22,37,58,.62);box-shadow:none;min-height:38px;white-space:nowrap;}
+    body.admin-redesign .tab-btn.active{background:var(--navy);color:#fff;}
+    body.admin-redesign .panel,body.admin-redesign .calendar-shell,body.admin-redesign .editor-shell{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:20px;box-shadow:none;}
+    body.admin-redesign .panel{padding:22px;}
+    body.admin-redesign .panel-title{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:24px;letter-spacing:.2px;text-transform:none;}
+    body.admin-redesign .panel-kicker{font-family:"Inter",sans-serif;font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:rgba(22,37,58,.55);}
+    body.admin-redesign .pricing-layout{grid-template-columns:minmax(0,1fr) 340px;gap:20px;}
+    body.admin-redesign .calendar-cell{border-radius:12px;background:#fbfaf7;border:1px solid rgba(29,53,87,.06);box-shadow:none;}
+    body.admin-redesign .calendar-cell.edited{background:rgba(216,199,161,.16);border-color:rgba(216,199,161,.42);}
+    body.admin-redesign .reservation-card{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:18px;box-shadow:none;padding:18px;}
+    body.admin-redesign .reservation-name{font-family:"Cormorant Garamond",serif;font-size:22px;}
+    body.admin-redesign .reservation-grid{grid-template-columns:repeat(3,1fr);}
+
+    @media (max-width:1100px){
+      body.admin-redesign .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+      body.admin-redesign .pricing-layout{grid-template-columns:1fr;}
+    }
+    @media (max-width:760px){
+      .admin-sidebar{width:64px;}
+      .admin-sidebar-brand,.admin-sidebar-section,.admin-sidebar-link span,.admin-sidebar-foot{display:none;}
+      .admin-sidebar-nav{padding:14px 10px;}
+      .admin-sidebar-link{justify-content:center;padding:12px;}
+      body.admin-redesign .section{margin-left:64px;padding:18px;}
+      body.admin-redesign .summary-grid,body.admin-redesign .reservation-grid{grid-template-columns:1fr !important;}
+    }
   </style>
 </head>
-<body>
+<body class="admin-redesign">
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
@@ -1138,6 +1192,42 @@
     <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
     <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
   </nav>
+
+  <aside class="admin-sidebar" aria-label="Administração">
+    <div class="admin-sidebar-brand">
+      <div class="l1">Chateau</div>
+      <div class="l2">Pireneus</div>
+    </div>
+    <nav class="admin-sidebar-nav">
+      <div class="admin-sidebar-section">Operação</div>
+      <a class="admin-sidebar-link active admin-tab-link" href="#pricing-section" data-tab="pricing">
+        <span class="admin-sidebar-icon">□</span><span>Calendário</span>
+      </a>
+      <a class="admin-sidebar-link admin-tab-link" href="#reservations-section" data-tab="reservations">
+        <span class="admin-sidebar-icon">≡</span><span>Reservas</span>
+      </a>
+      <a class="admin-sidebar-link admin-tab-link" href="#tab-relatorios" data-tab="relatorios">
+        <span class="admin-sidebar-icon">⌁</span><span>Relatórios</span>
+      </a>
+      <div class="admin-sidebar-section">Receita</div>
+      <a class="admin-sidebar-link admin-tab-link" href="#tab-promos" data-tab="promos">
+        <span class="admin-sidebar-icon">%</span><span>Promoções</span>
+      </a>
+      <a class="admin-sidebar-link admin-tab-link" href="#tab-extras" data-tab="extras">
+        <span class="admin-sidebar-icon">+</span><span>Extras</span>
+      </a>
+      <a class="admin-sidebar-link admin-tab-link" href="#tab-integracoes" data-tab="integracoes">
+        <span class="admin-sidebar-icon">↔</span><span>Integrações</span>
+      </a>
+    </nav>
+    <div class="admin-sidebar-foot">
+      <div class="admin-sidebar-avatar">A</div>
+      <div>
+        <strong style="display:block;color:#fff;font-size:12px;">Admin</strong>
+        <span>Painel interno</span>
+      </div>
+    </div>
+  </aside>
 
   <header class="top-header" id="topHeader">
     <div class="top-header-inner">
@@ -1183,6 +1273,18 @@
 
   <section class="section">
     <div class="wrap">
+      <div class="admin-top">
+        <div>
+          <h1>Painel Administrativo</h1>
+          <div class="sub">Calendário, reservas e receita em uma operação mais direta.</div>
+        </div>
+        <div class="admin-top-actions">
+          <a href="dashboard.html" class="secondary-btn-light" style="text-decoration:none;">Minha área</a>
+          <button id="adminTopRefreshBtn" class="secondary-btn-light" type="button">Atualizar</button>
+          <button id="adminTopLogoutBtn" class="logout-btn-public" type="button">Sair</button>
+        </div>
+      </div>
+
       <div class="summary-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))">
         <div class="summary-card">
           <div class="summary-icon icon-total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/></svg></div>
@@ -1723,12 +1825,28 @@
     }
 
     // ---- Tab navigation ----
+    function activateAdminTab(tab) {
+      const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+      const panel = document.getElementById("tab-" + tab);
+      if (!btn || !panel) return;
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".admin-tab-link").forEach(link => link.classList.toggle("active", link.dataset.tab === tab));
+      btn.classList.add("active");
+      panel.classList.add("active");
+    }
+
     document.querySelectorAll(".tab-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        activateAdminTab(btn.dataset.tab);
+      });
+    });
+
+    document.querySelectorAll(".admin-tab-link").forEach(link => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        activateAdminTab(link.dataset.tab);
+        document.querySelector(".tab-nav")?.scrollIntoView({ behavior:"smooth", block:"start" });
       });
     });
 
@@ -1985,6 +2103,7 @@
     }
 
     document.getElementById("headerLogoutBtn").addEventListener("click", logout);
+    document.getElementById("adminTopLogoutBtn")?.addEventListener("click", logout);
 
     async function loadRooms() {
       const { data, error } = await supabaseClient
@@ -2966,6 +3085,7 @@
       document.getElementById("deletePricingBtn").addEventListener("click", deletePricingSelection);
 
       document.getElementById("refreshReservationsBtn").addEventListener("click", loadReservations);
+      document.getElementById("adminTopRefreshBtn")?.addEventListener("click", loadReservations);
       document.getElementById("exportCsvBtn").addEventListener("click", exportReservationsCSV);
 
       document.getElementById("clearFiltersBtn").addEventListener("click", () => {
@@ -3132,7 +3252,7 @@
     });
 
     // Load promos when tab is switched to
-    document.querySelector('[data-tab="promos"]').addEventListener("click", loadPromos);
+    document.querySelectorAll('[data-tab="promos"]').forEach(el => el.addEventListener("click", loadPromos));
 
     // ---- Extras tab ----
     async function loadExtras() {
@@ -3214,7 +3334,7 @@
       await saveExtra(btn.dataset.id, btn.dataset.rowId);
     });
 
-    document.querySelector('[data-tab="extras"]').addEventListener("click", loadExtras);
+    document.querySelectorAll('[data-tab="extras"]').forEach(el => el.addEventListener("click", loadExtras));
 
     // ---- Integrações tab ----
     async function loadIntegracoes() {
@@ -3284,7 +3404,7 @@
       await saveIcalUrl(btn.dataset.id, btn.dataset.rowId);
     });
 
-    document.querySelector('[data-tab="integracoes"]').addEventListener("click", () => {
+    document.querySelectorAll('[data-tab="integracoes"]').forEach(el => el.addEventListener("click", () => {
       loadIntegracoes();
       // Wire up force-sync button once tab is visible
       const syncBtn = document.getElementById("forceSyncBtn");
@@ -3325,7 +3445,7 @@
           }
         });
       }
-    });
+    }));
 
     // ---- Guest messaging modal ----
     function openMessageModal(reservationId, guestEmail, guestName) {

@@ -264,6 +264,88 @@
       transform:translateY(-1px);
     }
 
+    .search-bar{
+      position:absolute;
+      left:50%;
+      bottom:90px;
+      z-index:5;
+      display:flex;
+      align-items:stretch;
+      width:min(900px, calc(100vw - 40px));
+      padding:6px;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 24px 70px rgba(0,0,0,0.30);
+      opacity:0;
+      transform:translate(-50%, 20px);
+      animation:searchIn 1.4s .3s ease forwards;
+    }
+    @keyframes searchIn{to{opacity:1;transform:translate(-50%, 0);}}
+    .search-bar .new-tag{
+      position:absolute;
+      top:-18px;
+      right:-12px;
+      padding:5px 10px;
+      border-radius:999px;
+      background:var(--gold);
+      color:var(--navy);
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      box-shadow:0 6px 16px rgba(216,199,161,.55);
+    }
+    .sb-field{
+      flex:1;
+      min-width:0;
+      padding:12px 18px;
+      border-right:1px solid rgba(29,53,87,.10);
+      border-radius:14px;
+      text-align:left;
+      transition:background .18s ease;
+    }
+    .sb-field:hover{background:rgba(216,199,161,.10);}
+    .sb-field label{
+      display:block;
+      margin-bottom:4px;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:rgba(22,37,58,.60);
+    }
+    .sb-field input,
+    .sb-field select{
+      width:100%;
+      padding:0;
+      border:0;
+      background:transparent;
+      color:var(--navy);
+      font:600 14px/1.4 "Inter",sans-serif;
+      outline:0;
+    }
+    .sb-search-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      padding:12px 28px;
+      border:0;
+      border-radius:14px;
+      background:linear-gradient(180deg,#1d3557 0%,#142a45 100%);
+      color:#fff;
+      font:900 11px/1 "Inter",sans-serif;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      white-space:nowrap;
+      cursor:pointer;
+      transition:.22s ease;
+    }
+    .sb-search-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 30px rgba(29,53,87,.40);
+    }
+
     .scroll-cue{
       position:absolute;
       left:50%;
@@ -810,30 +892,37 @@
 
     footer{
       position:relative;
+      min-height:160px;
+      max-height:none;
+      overflow:hidden;
       margin-top:0;
       background:#032c52;
     }
 
     .footer-bg{
+      position:absolute;
+      top:0;
+      left:0;
       display:block;
-      width:100%;
-      height:200px;
-      object-fit:cover;
-      object-position:center center;
+      width:auto;
+      height:100%;
+      max-width:none;
+      object-fit:contain;
+      object-position:left center;
     }
 
     .footer-overlay{
-      position:absolute;
-      inset:0;
+      position:relative;
       z-index:2;
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      padding:14px 40px 14px 24px;
+      min-height:160px;
+      padding:18px 40px 18px 24px;
     }
 
     .footer-contact{
-      width:min(400px, 100%);
+      width:min(420px, 60%);
       display:flex;
       flex-direction:column;
       gap:6px;
@@ -861,6 +950,23 @@
       .hero-title span{
         font-size:46px;
         line-height:1.32;
+      }
+
+      .search-bar{
+        bottom:50px;
+        width:calc(100vw - 32px);
+        flex-direction:column;
+        padding:8px;
+      }
+      .sb-field{
+        border-right:0;
+        border-bottom:1px solid rgba(29,53,87,.10);
+      }
+      .sb-field:last-of-type{border-bottom:0;}
+      .sb-search-btn{
+        width:100%;
+        margin-top:6px;
+        padding:14px;
       }
 
       .welcome{ padding:44px 0 56px; }
@@ -1092,9 +1198,19 @@
       }
 
       .footer-overlay{
-        justify-content:center;
-        align-items:flex-end;
-        padding:16px;
+        flex-direction:column;
+        justify-content:flex-start;
+        align-items:center;
+        min-height:auto;
+        padding:140px 16px 18px;
+      }
+
+      .footer-bg{
+        top:8px;
+        left:50%;
+        height:120px;
+        transform:translateX(-50%);
+        object-position:center top;
       }
 
       .footer-contact{
@@ -1167,6 +1283,29 @@
         <a class="ghost" href="acomodacoes.html">CONHEÇA AS ACOMODAÇÕES</a>
       </div>
     </div>
+
+    <form class="search-bar" action="booking.html" method="get" aria-label="Verificar disponibilidade">
+      <span class="new-tag">Novo</span>
+      <div class="sb-field">
+        <label for="heroCheckin">Check-in</label>
+        <input id="heroCheckin" name="checkin" type="date" aria-label="Data de check-in">
+      </div>
+      <div class="sb-field">
+        <label for="heroCheckout">Check-out</label>
+        <input id="heroCheckout" name="checkout" type="date" aria-label="Data de check-out">
+      </div>
+      <div class="sb-field">
+        <label for="heroGuests">Hóspedes</label>
+        <select id="heroGuests" name="guests" aria-label="Número de hóspedes">
+          <option value="2">2 adultos</option>
+          <option value="1">1 adulto</option>
+        </select>
+      </div>
+      <button class="sb-search-btn" type="submit">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Verificar disponibilidade
+      </button>
+    </form>
 
     <div class="scroll-cue" aria-hidden="true"></div>
   </section>

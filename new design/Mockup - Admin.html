@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/styles.css">
+  <link rel="stylesheet" href="mockup-fixes.css">
+  <style>
+    body{ margin:0; font-family:"Inter",sans-serif; background:#f4f1ea; color:var(--navy); overflow-x:hidden; display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width:240px; flex-shrink:0;
+      background:var(--navy2); color:#fff;
+      padding:24px 0;
+      display:flex; flex-direction:column;
+      position:fixed; top:0; left:0; bottom:0; z-index:50;
+    }
+    .sb-brand {
+      padding:0 22px 24px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .sb-brand .l1 {
+      font-family:"Inter",sans-serif; font-size:9px; letter-spacing:2.5px;
+      text-transform:uppercase; color:rgba(216,199,161,0.85); font-weight:600;
+    }
+    .sb-brand .l2 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:22px; color:#fff; letter-spacing:2px; text-transform:uppercase;
+      margin-top:3px; line-height:1.1;
+    }
+    .sb-nav { padding:18px 14px; flex:1; }
+    .sb-section {
+      font-family:"Inter",sans-serif; font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:rgba(255,255,255,0.35);
+      padding:14px 10px 6px; font-weight:600;
+    }
+    .sb-link {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:11px;
+      color:rgba(255,255,255,0.68);
+      font-family:"Inter",sans-serif; font-size:13.5px; font-weight:500;
+      text-decoration:none;
+      transition:0.18s;
+      margin-bottom:2px;
+    }
+    .sb-link:hover { background:rgba(255,255,255,0.06); color:#fff; }
+    .sb-link.active { background:rgba(216,199,161,0.16); color:var(--gold); }
+    .sb-link svg { width:16px; height:16px; }
+    .sb-foot {
+      padding:14px 22px; border-top:1px solid rgba(255,255,255,0.08);
+      font-family:"Inter",sans-serif; font-size:11.5px; color:rgba(255,255,255,0.4);
+      display:flex; align-items:center; gap:10px;
+    }
+    .sb-avatar {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--gold); color:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:14px;
+    }
+
+    /* MAIN */
+    .main { margin-left:240px; flex:1; padding:28px 32px 40px; min-width:0; }
+
+    .top {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:24px; gap:16px; flex-wrap:wrap;
+    }
+    .top h1 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:30px; color:var(--navy); margin:0 0 3px;
+      letter-spacing:1.2px;
+    }
+    .top .sub {
+      font-family:"Inter",sans-serif; font-size:13px;
+      color:rgba(22,37,58,0.6);
+    }
+    .top-actions { display:flex; gap:10px; }
+    .btn-icon {
+      width:38px; height:38px; border-radius:11px;
+      background:#fff; border:1px solid rgba(29,53,87,0.10);
+      cursor:pointer; color:var(--navy);
+      display:inline-flex; align-items:center; justify-content:center;
+    }
+    .btn-icon svg { width:16px; height:16px; }
+    .btn-primary {
+      padding:0 18px; height:38px;
+      background:var(--navy); color:#fff;
+      border:none; border-radius:11px;
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
+      letter-spacing:1.6px; text-transform:uppercase;
+      cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+    }
+    .btn-primary:hover { background:var(--navy2); }
+
+    /* KPI ROW */
+    .kpis { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:24px; }
+    .kpi {
+      background:#fff; border-radius:18px;
+      padding:18px 20px;
+      border:1px solid rgba(29,53,87,0.08);
+    }
+    .kpi .l {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      font-weight:600; margin-bottom:8px;
+    }
+    .kpi .v {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:28px;
+      color:var(--navy); line-height:1; margin-bottom:4px;
+    }
+    .kpi .v small {
+      font-family:"Inter",sans-serif; font-size:12px;
+      color:rgba(22,37,58,0.55); font-weight:400;
+    }
+    .kpi .trend {
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      display:inline-flex; align-items:center; gap:4px;
+    }
+    .trend.up { color:var(--success); }
+    .trend.down { color:var(--danger); }
+    .trend.flat { color:rgba(22,37,58,0.55); }
+
+    /* MAIN GRID */
+    .grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
+
+    /* CALENDAR */
+    .cal-card {
+      background:#fff; border-radius:20px;
+      border:1px solid rgba(29,53,87,0.08);
+      overflow:hidden;
+    }
+    .cal-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 22px;
+      border-bottom:1px solid rgba(29,53,87,0.08);
+    }
+    .cal-title {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:18px;
+      color:var(--navy);
+    }
+    .cal-controls { display:flex; gap:4px; align-items:center; }
+    .cal-month {
+      font-family:"Inter",sans-serif; font-size:13.5px; font-weight:600;
+      color:var(--navy); padding:0 12px;
+    }
+    .cal-controls button {
+      width:30px; height:30px; border-radius:8px;
+      background:transparent; border:1px solid rgba(29,53,87,0.10);
+      cursor:pointer; color:var(--navy);
+    }
+    .cal-view-toggle {
+      display:flex; background:#f4f1ea; border-radius:9px; padding:3px;
+      margin-left:12px;
+    }
+    .cal-view-toggle button {
+      padding:6px 12px; background:transparent; border:none;
+      border-radius:6px; font-family:"Inter",sans-serif; font-size:11px;
+      font-weight:600; color:rgba(22,37,58,0.55); cursor:pointer;
+    }
+    .cal-view-toggle button.active { background:#fff; color:var(--navy); box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+
+    /* Calendar timeline view */
+    .cal-timeline {
+      overflow-x:auto;
+      padding:14px 22px 24px;
+    }
+    .cal-row {
+      display:grid;
+      grid-template-columns:140px repeat(14, 56px);
+      gap:0;
+      align-items:center;
+      min-height:42px;
+    }
+    .cal-row.header {
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding-bottom:10px; margin-bottom:6px;
+    }
+    .cal-suite-name {
+      font-family:"Inter",sans-serif; font-size:13px; font-weight:600;
+      color:var(--navy);
+      padding-right:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .cal-suite-name img {
+      width:30px; height:30px; border-radius:8px; object-fit:cover;
+    }
+    .cal-day-cell {
+      text-align:center;
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.55);
+      padding:4px 0;
+      position:relative;
+      border-left:1px solid rgba(29,53,87,0.06);
+      height:42px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    }
+    .cal-day-cell.weekend { background:rgba(216,199,161,0.07); }
+    .cal-day-cell.today { background:rgba(29,53,87,0.06); }
+    .cal-day-cell .dn {
+      font-size:9px; letter-spacing:1.2px; text-transform:uppercase;
+      color:rgba(22,37,58,0.4); font-weight:600;
+    }
+    .cal-day-cell .num {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:15px;
+      color:var(--navy);
+    }
+    .cal-day-cell.today .num {
+      background:var(--navy); color:#fff;
+      width:24px; height:24px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* Booking bars on calendar */
+    .cal-booking {
+      position:absolute; top:8px; bottom:8px;
+      background:var(--gold);
+      color:var(--navy);
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:600;
+      display:flex; align-items:center;
+      padding:0 10px; border-radius:6px;
+      white-space:nowrap; overflow:hidden;
+      z-index:3;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .cal-booking:hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,0.10); }
+    .cal-booking.confirmed { background:var(--gold); color:var(--navy); }
+    .cal-booking.pending { background:rgba(184,149,95,0.20); color:#8f6c3c; border:1.5px dashed #8f6c3c; }
+    .cal-booking.checkin { background:var(--navy); color:#fff; }
+    .cal-booking.blocked { background:repeating-linear-gradient(45deg, #ccc 0, #ccc 4px, #ddd 4px, #ddd 8px); color:rgba(22,37,58,0.6); }
+    .cal-booking .gn {
+      overflow:hidden; text-overflow:ellipsis;
+    }
+
+    /* RIGHT COLUMN */
+    .panel {
+      background:#fff; border-radius:18px;
+      border:1px solid rgba(29,53,87,0.08);
+      padding:20px 22px;
+      margin-bottom:14px;
+    }
+    .panel h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:17px;
+      color:var(--navy); margin:0 0 14px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .panel h3 .pill {
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:600;
+      padding:3px 10px; border-radius:30px;
+      background:rgba(216,199,161,0.20); color:#8f6c3c;
+      letter-spacing:0.3px;
+    }
+
+    .check-row {
+      display:flex; gap:12px; padding:11px 0;
+      border-bottom:1px solid rgba(29,53,87,0.06);
+      align-items:center;
+    }
+    .check-row:last-child { border-bottom:none; }
+    .check-row img { width:40px; height:40px; border-radius:10px; object-fit:cover; flex-shrink:0; }
+    .check-row .ci-info { flex:1; min-width:0; }
+    .check-row .gn {
+      font-family:"Inter",sans-serif; font-size:13px; font-weight:600;
+      color:var(--navy); margin-bottom:2px;
+    }
+    .check-row .sn {
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      color:rgba(22,37,58,0.6);
+    }
+    .check-row .time {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:14px;
+      color:var(--navy);
+    }
+    .check-row .time small {
+      display:block; font-family:"Inter",sans-serif; font-size:10px;
+      color:rgba(22,37,58,0.5); font-weight:400; letter-spacing:0.5px;
+    }
+
+    /* Room status */
+    .room-status-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:8px;
+    }
+    .room-status {
+      display:flex; align-items:center; gap:8px;
+      padding:9px 12px;
+      border-radius:11px;
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      background:rgba(29,53,87,0.04);
+    }
+    .room-status .dot {
+      width:8px; height:8px; border-radius:50%;
+      flex-shrink:0;
+    }
+    .room-status.clean .dot { background:var(--success); }
+    .room-status.dirty .dot { background:var(--danger); }
+    .room-status.ready .dot { background:var(--gold2); }
+    .room-status.occupied .dot { background:var(--navy); }
+    .room-status .nm { color:var(--navy); font-weight:600; }
+    .room-status .st {
+      margin-left:auto; font-size:10px;
+      color:rgba(22,37,58,0.55); letter-spacing:0.3px;
+    }
+
+    /* LEGEND */
+    .legend {
+      display:flex; flex-wrap:wrap; gap:14px;
+      padding:14px 22px; background:rgba(29,53,87,0.02);
+      border-top:1px solid rgba(29,53,87,0.06);
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.65);
+    }
+    .legend-item { display:inline-flex; align-items:center; gap:6px; }
+    .legend-swatch {
+      width:16px; height:10px; border-radius:3px;
+    }
+
+    .mockup-badge {
+      position:fixed; top:16px; right:24px; z-index:9999;
+      background:#fff; color:var(--navy);
+      padding:6px 12px; border-radius:30px;
+      font-family:"Inter",sans-serif; font-size:10px;
+      font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      box-shadow:0 6px 16px rgba(0,0,0,0.15);
+      border:1px solid rgba(216,199,161,0.6);
+    }
+    .mockup-badge a { color:inherit; text-decoration:none; }
+
+    @media (max-width:1100px) {
+      .kpis { grid-template-columns:repeat(2, 1fr); }
+      .grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:760px) {
+      .sidebar { width:60px; }
+      .sb-brand, .sb-section, .sb-link span, .sb-foot { display:none; }
+      .sb-link { justify-content:center; padding:12px; }
+      .main { margin-left:60px; padding:18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <span class="mockup-badge"><a href="Mockups.html">← Todos os mockups</a></span>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <div class="l1">Chateau</div>
+      <div class="l2">Pireneus</div>
+    </div>
+    <nav class="sb-nav">
+      <a class="sb-link active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Calendário</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
+        <span>Reservas</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Hóspedes</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span>Suítes</span>
+      </a>
+      <div class="sb-section">Gestão</div>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 14l4-4 4 4 6-6"/></svg>
+        <span>Financeiro</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        <span>Mensagens</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        <span>Configurações</span>
+      </a>
+    </nav>
+    <div class="sb-foot">
+      <div class="sb-avatar">G</div>
+      <div><span>Geovana</span></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="top">
+      <div>
+        <h1>Bom dia, Geovana ✦</h1>
+        <div class="sub">Terça-feira · 19 de maio de 2026</div>
+      </div>
+      <div class="top-actions">
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+        <button class="btn-icon" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
+          <span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--danger);"></span>
+        </button>
+        <button class="btn-primary">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+          Nova reserva
+        </button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="l">Receita · Maio</div>
+        <div class="v">R$&nbsp;18.400</div>
+        <div class="trend up">↑ 12% vs. abril</div>
+      </div>
+      <div class="kpi">
+        <div class="l">Ocupação hoje</div>
+        <div class="v">4<small> /6 suítes</small></div>
+        <div class="trend flat">67% de ocupação</div>
+      </div>
+      <div class="kpi">
+        <div class="l">Check-ins hoje</div>
+        <div class="v">2</div>
+        <div class="trend flat">Aurora · Cavalhadas</div>
+      </div>
+      <div class="kpi">
+        <div class="l">Reservas pendentes</div>
+        <div class="v">3</div>
+        <div class="trend down">Aguardando confirmação</div>
+      </div>
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- CALENDAR TIMELINE -->
+      <div class="cal-card">
+        <div class="cal-head">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="cal-title">Calendário de reservas</div>
+            <div class="cal-view-toggle">
+              <button class="active">Timeline</button>
+              <button>Lista</button>
+            </div>
+          </div>
+          <div class="cal-controls">
+            <button>‹</button>
+            <span class="cal-month">19 — 31 maio 2026</span>
+            <button>›</button>
+            <button style="margin-left:8px;padding:0 10px;width:auto;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;">Hoje</button>
+          </div>
+        </div>
+
+        <div class="cal-timeline">
+          <!-- header row -->
+          <div class="cal-row header">
+            <div class="cal-suite-name" style="font-size:11px;color:rgba(22,37,58,0.5);letter-spacing:1px;text-transform:uppercase;">Suítes</div>
+            <div class="cal-day-cell today"><span class="dn">Ter</span><span class="num">19</span></div>
+            <div class="cal-day-cell"><span class="dn">Qua</span><span class="num">20</span></div>
+            <div class="cal-day-cell"><span class="dn">Qui</span><span class="num">21</span></div>
+            <div class="cal-day-cell"><span class="dn">Sex</span><span class="num">22</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Sáb</span><span class="num">23</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Dom</span><span class="num">24</span></div>
+            <div class="cal-day-cell"><span class="dn">Seg</span><span class="num">25</span></div>
+            <div class="cal-day-cell"><span class="dn">Ter</span><span class="num">26</span></div>
+            <div class="cal-day-cell"><span class="dn">Qua</span><span class="num">27</span></div>
+            <div class="cal-day-cell"><span class="dn">Qui</span><span class="num">28</span></div>
+            <div class="cal-day-cell"><span class="dn">Sex</span><span class="num">29</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Sáb</span><span class="num">30</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Dom</span><span class="num">31</span></div>
+            <div class="cal-day-cell"><span class="dn">Seg</span><span class="num">1</span></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/aurora/aurora1.jpeg" alt=""> Aurora</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking checkin" style="left:50%;width:140px;">
+                <span class="gn">Mariana F. · 21–23</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking pending" style="left:50%;width:200px;">
+                <span class="gn">Roberto N. · 24–27</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:50%;width:140px;">
+                <span class="gn">Ana L. · 30–1</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/divino/divino1.jpeg" alt=""> Divino</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:170px;">
+                <span class="gn">Carlos & Sofia · 18–22</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking blocked" style="left:50%;width:140px;">
+                <span class="gn">Manutenção</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt=""> Cavalhadas</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking checkin" style="left:50%;width:200px;">
+                <span class="gn">Juliana C. · 21–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking pending" style="left:0;width:170px;">
+                <span class="gn">Paulo & Renata</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/rosario/rosario1.jpeg" alt=""> Rosário</div>
+            <div class="cal-day-cell today"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:180px;">
+                <span class="gn">Letícia M. · 22–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/bonfim/bonfim1.jpeg" alt=""> Bonfim</div>
+            <div class="cal-day-cell today"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:140px;">
+                <span class="gn">Família G. · 23–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/aurora/aurora2.jpeg" alt=""> Pireneus</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking blocked" style="left:0;width:780px;">
+                <span class="gn">Em breve · Suíte em finalização</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--navy)"></span> Check-in hoje</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span> Confirmada</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:rgba(184,149,95,0.20);border:1.5px dashed #8f6c3c"></span> Pendente</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:repeating-linear-gradient(45deg,#ccc 0,#ccc 4px,#ddd 4px,#ddd 8px);"></span> Bloqueado</span>
+          <button class="btn-icon" style="margin-left:auto;width:auto;padding:0 12px;height:30px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--navy);gap:6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 10v6M9 13h6"/></svg>
+            Bloquear data
+          </button>
+        </div>
+      </div>
+
+      <!-- SIDE PANEL -->
+      <div>
+        <!-- Today's panel -->
+        <div class="panel">
+          <h3>Hoje <span class="pill">19 mai</span></h3>
+
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin-bottom:6px;">Check-ins (2)</div>
+          <div class="check-row">
+            <img src="site/public/suites/aurora/aurora1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Mariana Ferreira</div>
+              <div class="sn">Suíte Aurora · 2 noites</div>
+            </div>
+            <div class="time">14:00<small>chegada</small></div>
+          </div>
+          <div class="check-row">
+            <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Juliana Costa</div>
+              <div class="sn">Cavalhadas · 4 noites</div>
+            </div>
+            <div class="time">16:30<small>chegada</small></div>
+          </div>
+
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin:14px 0 6px;">Check-outs (1)</div>
+          <div class="check-row">
+            <img src="site/public/suites/rosario/rosario1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Beatriz Andrade</div>
+              <div class="sn">Suíte Rosário · 3 noites</div>
+            </div>
+            <div class="time">12:00<small>partida</small></div>
+          </div>
+        </div>
+
+        <!-- Room status -->
+        <div class="panel">
+          <h3>Status dos quartos</h3>
+          <div class="room-status-grid">
+            <div class="room-status occupied"><span class="dot"></span><span class="nm">Aurora</span><span class="st">Ocupado</span></div>
+            <div class="room-status occupied"><span class="dot"></span><span class="nm">Divino</span><span class="st">Ocupado</span></div>
+            <div class="room-status dirty"><span class="dot"></span><span class="nm">Cavalhadas</span><span class="st">Limpar</span></div>
+            <div class="room-status ready"><span class="dot"></span><span class="nm">Rosário</span><span class="st">Pronto</span></div>
+            <div class="room-status clean"><span class="dot"></span><span class="nm">Bonfim</span><span class="st">Limpo</span></div>
+            <div class="room-status" style="background:rgba(22,37,58,0.06);"><span class="dot" style="background:rgba(22,37,58,0.3);"></span><span class="nm" style="color:rgba(22,37,58,0.6);">Pireneus</span><span class="st">Inativa</span></div>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="panel">
+          <h3>Atividade recente</h3>
+          <div style="font-family:'Inter',sans-serif;font-size:12.5px;color:rgba(22,37,58,0.7);line-height:1.65;">
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">+ Nova reserva</b> · Roberto N. · há 12 min</div>
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✓ Pagamento</b> · Mariana F. · há 1h</div>
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✉ Mensagem</b> · Juliana C. · há 2h</div>
+            <div style="padding:6px 0;"><b style="color:var(--navy);">★ Avaliação 5★</b> · Carlos & Sofia · ontem</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

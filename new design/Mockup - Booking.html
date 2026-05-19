@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservar — Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/styles.css">
+  <link rel="stylesheet" href="mockup-fixes.css">
+  <style>
+    body{ margin:0; font-family:"Inter",sans-serif; background:var(--bg); color:var(--navy); overflow-x:hidden; }
+
+    /* PAGE HEADER */
+    .booking-header {
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      color:#fff; padding:120px 24px 60px;
+      position:relative; overflow:hidden;
+    }
+    .booking-header::before {
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(900px 320px at 20% 20%, rgba(216,199,161,0.10), transparent 60%),
+        radial-gradient(700px 280px at 80% 80%, rgba(216,199,161,0.06), transparent 60%);
+      pointer-events:none;
+    }
+    .booking-header-inner {
+      max-width:var(--max); margin:0 auto;
+      position:relative; z-index:2;
+      text-align:center;
+    }
+    .booking-header .kicker {
+      font-family:"Inter",sans-serif; font-size:11px; letter-spacing:4px;
+      text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+      font-weight:500;
+    }
+    .booking-header h1 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:46px; letter-spacing:3px; text-transform:uppercase;
+      margin:0; line-height:1;
+    }
+    .booking-header p {
+      font-family:"Cormorant Garamond",serif; font-style:italic;
+      font-size:18px; max-width:540px; margin:18px auto 0;
+      color:rgba(255,255,255,0.85); line-height:1.55;
+    }
+
+    /* STEPPER */
+    .stepper {
+      max-width:760px; margin:48px auto 0;
+      display:flex; align-items:center; justify-content:space-between;
+      position:relative;
+    }
+    .stepper::before {
+      content:""; position:absolute; top:22px; left:54px; right:54px;
+      height:2px; background:rgba(255,255,255,0.18); z-index:0;
+    }
+    .stepper-progress {
+      content:""; position:absolute; top:22px; left:54px;
+      height:2px; background:var(--gold);
+      z-index:1; transition:width 0.4s ease;
+      width:calc(50% - 54px);
+    }
+    .step {
+      position:relative; z-index:2;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      text-align:center; width:140px;
+      cursor:pointer;
+    }
+    .step-circle {
+      width:44px; height:44px; border-radius:50%;
+      background:rgba(255,255,255,0.10);
+      border:2px solid rgba(255,255,255,0.20);
+      display:flex; align-items:center; justify-content:center;
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:18px;
+      color:#fff; transition:0.3s;
+    }
+    .step.done .step-circle, .step.active .step-circle {
+      background:var(--gold); border-color:var(--gold); color:var(--navy);
+    }
+    .step.done .step-circle svg { width:18px; height:18px; }
+    .step-label {
+      font-family:"Inter",sans-serif; font-size:11px; letter-spacing:1.4px;
+      text-transform:uppercase; color:rgba(255,255,255,0.6); font-weight:600;
+      transition:0.3s;
+    }
+    .step.active .step-label { color:#fff; }
+    .step.done .step-label { color:var(--gold); }
+
+    /* MAIN LAYOUT */
+    .booking-main {
+      max-width:var(--max); margin:-40px auto 0;
+      padding:0 24px 80px;
+      display:grid; grid-template-columns:1fr 380px; gap:32px;
+      align-items:start;
+    }
+
+    /* STEP CARD */
+    .step-card {
+      background:#fff;
+      border-radius:24px;
+      padding:36px 40px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.10);
+      border:1px solid rgba(29,53,87,0.08);
+    }
+    .step-card h2 {
+      font-family:"Cormorant Garamond",serif; font-weight:700;
+      font-size:28px; color:var(--navy); margin:0 0 6px;
+    }
+    .step-card .step-sub {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:rgba(22,37,58,0.65); margin:0 0 28px;
+    }
+
+    /* DATE PICKER (mock visual) */
+    .date-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:24px;
+    }
+    .date-cell {
+      border:1.5px solid rgba(29,53,87,0.16);
+      border-radius:14px; padding:14px 18px;
+      cursor:pointer; transition:0.18s;
+    }
+    .date-cell.active { border-color:var(--navy); background:rgba(29,53,87,0.03); }
+    .date-cell .lbl {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      font-weight:600; margin-bottom:6px;
+    }
+    .date-cell .val {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:22px;
+      color:var(--navy); line-height:1;
+    }
+    .date-cell .day-name {
+      font-family:"Inter",sans-serif; font-size:12px;
+      color:rgba(22,37,58,0.6); margin-top:4px;
+    }
+
+    /* CALENDAR MOCK */
+    .cal {
+      background:rgba(216,199,161,0.06);
+      border-radius:16px; padding:20px;
+      margin-bottom:8px;
+    }
+    .cal-head {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:16px;
+    }
+    .cal-month {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:18px;
+      color:var(--navy);
+    }
+    .cal-nav { display:flex; gap:6px; }
+    .cal-nav button {
+      width:30px; height:30px; border-radius:8px;
+      background:#fff; border:1px solid rgba(29,53,87,0.12);
+      cursor:pointer; color:var(--navy);
+      transition:0.18s;
+    }
+    .cal-nav button:hover { background:var(--gold); }
+    .cal-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:2px; }
+    .cal-dn {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.4px;
+      text-transform:uppercase; color:rgba(22,37,58,0.5);
+      text-align:center; padding:4px 0 8px; font-weight:600;
+    }
+    .cal-d {
+      aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+      font-family:"Inter",sans-serif; font-size:13px; color:var(--navy);
+      border-radius:8px; cursor:pointer; transition:0.15s;
+    }
+    .cal-d:hover { background:rgba(216,199,161,0.3); }
+    .cal-d.muted { color:rgba(22,37,58,0.25); }
+    .cal-d.unavail { color:rgba(22,37,58,0.25); text-decoration:line-through; cursor:not-allowed; }
+    .cal-d.in-range { background:rgba(216,199,161,0.35); border-radius:0; }
+    .cal-d.start, .cal-d.end {
+      background:var(--navy); color:#fff; font-weight:600; border-radius:50%;
+    }
+
+    .cal-legend {
+      display:flex; gap:18px; margin-top:14px;
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.6);
+    }
+    .cal-legend span { display:inline-flex; align-items:center; gap:6px; }
+    .cal-legend .dot { width:10px; height:10px; border-radius:50%; }
+
+    /* GUEST SELECTOR */
+    .guest-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 0; border-bottom:1px solid rgba(29,53,87,0.08);
+    }
+    .guest-row:last-child { border-bottom:none; }
+    .guest-row .g-info .name {
+      font-family:"Inter",sans-serif; font-size:15px; font-weight:600; color:var(--navy);
+    }
+    .guest-row .g-info .sub {
+      font-family:"Inter",sans-serif; font-size:12.5px; color:rgba(22,37,58,0.6);
+    }
+    .stepper-mini {
+      display:flex; align-items:center; gap:14px;
+    }
+    .stepper-mini button {
+      width:36px; height:36px; border-radius:50%;
+      background:#fff; border:1.5px solid rgba(29,53,87,0.18);
+      cursor:pointer; font-size:18px; color:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .stepper-mini button:hover { border-color:var(--navy); }
+    .stepper-mini button:disabled { opacity:0.3; cursor:not-allowed; }
+    .stepper-mini .count {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:18px;
+      color:var(--navy); min-width:24px; text-align:center;
+    }
+
+    /* SUITE PICKER (step 2 mock) */
+    .suite-picker { display:flex; flex-direction:column; gap:14px; }
+    .pick-card {
+      display:grid; grid-template-columns:140px 1fr auto; gap:18px;
+      align-items:center;
+      padding:14px;
+      border:1.5px solid rgba(29,53,87,0.10);
+      border-radius:16px;
+      cursor:pointer; transition:0.2s;
+      background:#fff;
+    }
+    .pick-card:hover { border-color:var(--gold2); }
+    .pick-card.selected {
+      border-color:var(--navy); background:rgba(29,53,87,0.03);
+      box-shadow:0 8px 22px rgba(29,53,87,0.10);
+    }
+    .pick-img {
+      width:140px; height:100px; border-radius:12px; overflow:hidden;
+    }
+    .pick-img img { width:100%; height:100%; object-fit:cover; }
+    .pick-info h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:18px;
+      color:var(--navy); margin:0 0 4px;
+    }
+    .pick-info p {
+      font-family:"Inter",sans-serif; font-size:13px; color:rgba(22,37,58,0.65);
+      margin:0 0 6px; line-height:1.55;
+    }
+    .pick-info .feats {
+      font-family:"Inter",sans-serif; font-size:11px; color:rgba(22,37,58,0.5);
+      letter-spacing:0.3px;
+    }
+    .pick-right { text-align:right; }
+    .pick-right .px {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:20px;
+      color:var(--navy); line-height:1;
+    }
+    .pick-right .px-unit {
+      font-family:"Inter",sans-serif; font-size:11px; color:rgba(22,37,58,0.55);
+    }
+    .pick-right .px-sub {
+      font-family:"Inter",sans-serif; font-size:11px; color:rgba(22,37,58,0.6);
+      margin-top:3px;
+    }
+    .pick-radio {
+      width:22px; height:22px; border-radius:50%;
+      border:2px solid rgba(29,53,87,0.20);
+      margin-top:8px; margin-left:auto;
+      transition:0.2s; position:relative;
+    }
+    .pick-card.selected .pick-radio { border-color:var(--navy); }
+    .pick-card.selected .pick-radio::after {
+      content:""; position:absolute; inset:3px;
+      background:var(--navy); border-radius:50%;
+    }
+
+    /* STEP NAV */
+    .step-nav {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-top:32px; padding-top:24px;
+      border-top:1px solid rgba(29,53,87,0.08);
+    }
+    .btn-back, .btn-next {
+      padding:13px 24px; border-radius:12px;
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
+      letter-spacing:1.8px; text-transform:uppercase;
+      cursor:pointer; transition:0.22s; border:none;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn-back { background:transparent; color:rgba(22,37,58,0.6); }
+    .btn-back:hover { color:var(--navy); }
+    .btn-next {
+      background:var(--navy); color:#fff;
+      box-shadow:0 12px 28px rgba(29,53,87,0.25);
+    }
+    .btn-next:hover { background:var(--navy2); transform:translateY(-1px); }
+
+    /* SUMMARY SIDEBAR */
+    .summary {
+      position:sticky; top:24px;
+      background:#fff; border-radius:24px;
+      padding:28px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.08);
+      border:1px solid rgba(29,53,87,0.08);
+    }
+    .summary h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:700;
+      font-size:20px; color:var(--navy); margin:0 0 20px;
+    }
+    .sum-section {
+      padding:14px 0; border-bottom:1px solid rgba(29,53,87,0.08);
+    }
+    .sum-section:last-of-type { border-bottom:none; }
+    .sum-section .lbl {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      font-weight:600; margin-bottom:6px;
+    }
+    .sum-section .val {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:var(--navy); font-weight:500;
+    }
+    .sum-section .sub {
+      font-family:"Inter",sans-serif; font-size:12px;
+      color:rgba(22,37,58,0.6); margin-top:2px;
+    }
+
+    .sum-photo {
+      display:flex; gap:12px; padding:14px 0;
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      align-items:center;
+    }
+    .sum-photo img { width:64px; height:64px; border-radius:12px; object-fit:cover; }
+    .sum-photo .info .name {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:16px;
+      color:var(--navy); margin-bottom:2px;
+    }
+    .sum-photo .info .small {
+      font-family:"Inter",sans-serif; font-size:12px; color:rgba(22,37,58,0.6);
+    }
+
+    .sum-breakdown { margin-top:14px; padding-top:14px; border-top:1px dashed rgba(29,53,87,0.18); }
+    .sum-br {
+      display:flex; justify-content:space-between;
+      padding:5px 0;
+      font-family:"Inter",sans-serif; font-size:13.5px;
+      color:rgba(22,37,58,0.72);
+    }
+    .sum-br.total {
+      margin-top:8px; padding-top:12px;
+      border-top:1px solid rgba(29,53,87,0.12);
+      font-size:16px; color:var(--navy); font-weight:700;
+    }
+    .sum-cta {
+      display:block; width:100%; margin-top:18px;
+      padding:15px; background:var(--navy); color:#fff;
+      border:none; border-radius:14px;
+      font-family:"Inter",sans-serif; font-size:12px; font-weight:700;
+      letter-spacing:2px; text-transform:uppercase;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(29,53,87,0.30);
+    }
+    .sum-trust {
+      display:flex; align-items:center; justify-content:center;
+      gap:14px; margin-top:14px;
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.55);
+    }
+    .sum-trust svg { width:12px; height:12px; color:var(--success); }
+    .sum-trust span { display:inline-flex; align-items:center; gap:5px; }
+
+    .mockup-badge {
+      position:fixed; top:80px; right:24px; z-index:9999;
+      background:#fff; color:var(--navy);
+      padding:6px 12px; border-radius:30px;
+      font-family:"Inter",sans-serif; font-size:10px;
+      font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      box-shadow:0 6px 16px rgba(0,0,0,0.15);
+      border:1px solid rgba(216,199,161,0.6);
+    }
+    .mockup-badge a { color:inherit; text-decoration:none; }
+
+    @media (max-width:980px) {
+      .booking-main { grid-template-columns:1fr; }
+      .summary { position:static; }
+      .step-card { padding:24px 20px; }
+      .stepper { padding:0 24px; }
+      .step { width:auto; flex:1; }
+      .step-label { font-size:9.5px; }
+    }
+  </style>
+</head>
+<body>
+
+  <span class="mockup-badge"><a href="Mockups.html">← Todos os mockups</a></span>
+
+  <header class="top-header presolid">
+    <div class="top-header-inner">
+      <a class="brand" href="Mockup - Home.html">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+      <div class="header-actions">
+        <a class="instagram-btn" href="#"><svg viewBox="0 0 24 24" fill="none"><rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg></a>
+        <button class="menu-button">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HEADER -->
+  <section class="booking-header">
+    <div class="booking-header-inner">
+      <div class="kicker">Reserva direta · Sem intermediários</div>
+      <h1>Escolha sua estadia</h1>
+      <p>Datas, suíte e dados — em três passos. Confirmação imediata e sem cobrança antecipada.</p>
+
+      <!-- STEPPER -->
+      <div class="stepper">
+        <div class="stepper-progress"></div>
+        <div class="step done">
+          <div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="step-label">1 · Datas</div>
+        </div>
+        <div class="step active">
+          <div class="step-circle">2</div>
+          <div class="step-label">2 · Suíte</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <div class="step-label">3 · Pagamento</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="booking-main">
+
+    <!-- STEP CARD (showing step 2) -->
+    <div class="step-card">
+      <h2>Escolha sua suíte</h2>
+      <p class="step-sub">5 acomodações disponíveis para suas datas selecionadas (21 — 23 mai 2026)</p>
+
+      <div class="suite-picker">
+        <label class="pick-card selected">
+          <div class="pick-img"><img src="site/public/suites/aurora/aurora1.jpeg" alt=""></div>
+          <div class="pick-info">
+            <h3>Suíte Aurora</h3>
+            <p>Romântica e tranquila — varanda privativa com rede.</p>
+            <div class="feats">Cama king · Banheira · 2 hóspedes</div>
+          </div>
+          <div class="pick-right">
+            <div class="px">R$&nbsp;520<span class="px-unit"> /noite</span></div>
+            <div class="px-sub">Total: R$ 1.120</div>
+            <div class="pick-radio"></div>
+          </div>
+        </label>
+
+        <label class="pick-card">
+          <div class="pick-img"><img src="site/public/suites/divino/divino1.jpeg" alt=""></div>
+          <div class="pick-info">
+            <h3>Suíte do Divino</h3>
+            <p>Conforto e tranquilidade para uma estadia a dois.</p>
+            <div class="feats">Cama king · Ar-condicionado · 2 hóspedes</div>
+          </div>
+          <div class="pick-right">
+            <div class="px">R$&nbsp;480<span class="px-unit"> /noite</span></div>
+            <div class="px-sub">Total: R$ 1.040</div>
+            <div class="pick-radio"></div>
+          </div>
+        </label>
+
+        <label class="pick-card">
+          <div class="pick-img"><img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt=""></div>
+          <div class="pick-info">
+            <h3>Suíte das Cavalhadas</h3>
+            <p>Vista panorâmica para a serra com varanda privativa.</p>
+            <div class="feats">Vista serra · Varanda · 2 hóspedes</div>
+          </div>
+          <div class="pick-right">
+            <div class="px">R$&nbsp;540<span class="px-unit"> /noite</span></div>
+            <div class="px-sub">Total: R$ 1.160</div>
+            <div class="pick-radio"></div>
+          </div>
+        </label>
+
+        <label class="pick-card">
+          <div class="pick-img"><img src="site/public/suites/rosario/rosario1.jpeg" alt=""></div>
+          <div class="pick-info">
+            <h3>Suíte do Rosário</h3>
+            <p>Para relaxar e curtir o charme de Pirenópolis.</p>
+            <div class="feats">Cama queen · Vista jardim · 2 hóspedes</div>
+          </div>
+          <div class="pick-right">
+            <div class="px">R$&nbsp;460<span class="px-unit"> /noite</span></div>
+            <div class="px-sub">Total: R$ 1.000</div>
+            <div class="pick-radio"></div>
+          </div>
+        </label>
+
+        <label class="pick-card">
+          <div class="pick-img"><img src="site/public/suites/bonfim/bonfim1.jpeg" alt=""></div>
+          <div class="pick-info">
+            <h3>Suíte do Bonfim</h3>
+            <p>Essencial e aconchegante — perfeita para descansar.</p>
+            <div class="feats">Cama queen · Ar-condicionado · 2 hóspedes</div>
+          </div>
+          <div class="pick-right">
+            <div class="px">R$&nbsp;420<span class="px-unit"> /noite</span></div>
+            <div class="px-sub">Total: R$ 920</div>
+            <div class="pick-radio"></div>
+          </div>
+        </label>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Voltar</button>
+        <button class="btn-next">Próximo: Pagamento <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <!-- LIVE SUMMARY -->
+    <aside class="summary">
+      <h3>Sua reserva</h3>
+
+      <div class="sum-photo">
+        <img src="site/public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+        <div class="info">
+          <div class="name">Suíte Aurora</div>
+          <div class="small">Romântica · Cama king</div>
+        </div>
+      </div>
+
+      <div class="sum-section">
+        <div class="lbl">Datas</div>
+        <div class="val">21 — 23 mai 2026</div>
+        <div class="sub">2 noites · qui & sex</div>
+      </div>
+
+      <div class="sum-section">
+        <div class="lbl">Hóspedes</div>
+        <div class="val">2 adultos</div>
+      </div>
+
+      <div class="sum-breakdown">
+        <div class="sum-br"><span>R$ 520 × 2 noites</span><span>R$ 1.040</span></div>
+        <div class="sum-br"><span>Taxa de limpeza</span><span>R$ 80</span></div>
+        <div class="sum-br"><span>Café da manhã (2 pessoas)</span><span>incluso</span></div>
+        <div class="sum-br total"><span>Total</span><span>R$ 1.120</span></div>
+      </div>
+
+      <button class="sum-cta">Confirmar reserva →</button>
+
+      <div class="sum-trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Sem cobrança antecipada</span>
+      </div>
+      <div class="sum-trust" style="margin-top:6px;">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Cancelamento grátis até 48h antes</span>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    <img class="footer-bg" src="site/footer.png" alt="Footer">
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="#">(62) 99816-7654</a>
+        <a href="#"><span class="__cf_email__" data-cfemail="e5868d8491808490958c97808b809096a58288848c89cb868a88">[email&#160;protected]</span></a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Click to select suite
+    document.querySelectorAll('.pick-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.pick-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+  </script>
+</body>
+</html>

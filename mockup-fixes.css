@@ -1,0 +1,81 @@
+/* ============================================================
+   Shared mockup overrides — applied AFTER site/styles.css
+   Loaded by all mockup pages.
+   ============================================================ */
+
+/* ---- Footer: align the chateau properly ---- */
+footer {
+  position:relative;
+  min-height:160px;
+  max-height:none;
+  overflow:hidden;
+  background:#032c52;
+  margin-top:0;
+}
+.footer-bg {
+  position:absolute !important;
+  top:0 !important;
+  left:0 !important;
+  width:auto !important;
+  height:100% !important;
+  max-width:none !important;
+  object-fit:contain;
+  object-position:left center;
+  transform:none !important;
+  display:block;
+  opacity:1;
+}
+.footer-overlay {
+  position:relative !important;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding:18px 40px 18px 24px;
+  min-height:160px;
+}
+.footer-contact {
+  width:min(420px, 60%);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-family:"Cormorant Garamond", serif;
+  font-size:18px;
+  line-height:1.2;
+  color:#fff;
+  text-align:left;
+}
+.footer-contact a { color:inherit; text-decoration:none; }
+.footer-contact a:hover { text-decoration:underline; }
+
+@media (max-width:760px){
+  footer { min-height:auto; }
+  .footer-overlay {
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    padding:140px 16px 18px;
+    min-height:auto;
+  }
+  .footer-bg {
+    height:120px !important;
+    width:auto !important;
+    left:50% !important;
+    transform:translateX(-50%) !important;
+    top:8px !important;
+    object-position:center top;
+  }
+  .footer-contact {
+    width:100%;
+    text-align:center;
+    font-size:16px;
+  }
+}
+
+/* ---- Suite detail title: scale down so long names never overflow/overlap ---- */
+.title-band h1 {
+  font-size:clamp(30px, 4vw, 48px) !important;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+  max-width:100%;
+}

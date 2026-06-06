@@ -1,3522 +1,689 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin | Chateau Pireneus</title>
-  <meta name="robots" content="noindex, nofollow" />
-
-  <link rel="preload" as="image" href="hero.webp" fetchpriority="high">
-  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-  <script src="supabase-config.js"></script>
-  <script src="auth.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/styles.css">
+  <link rel="stylesheet" href="mockup-fixes.css">
   <style>
-    :root{
-      --ok-bg:rgba(47,122,75,0.12);
-      --ok-text:#2f7a4b;
-      --warn-bg:rgba(184,149,95,0.16);
-      --warn-text:#8f6c3c;
-      --danger-bg:rgba(181,74,74,0.12);
-      --danger-text:#8e3535;
-      --info-bg:rgba(81,109,143,0.12);
-      --info-text:#355474;
+    body{ margin:0; font-family:"Inter",sans-serif; background:#f4f1ea; color:var(--navy); overflow-x:hidden; display:flex; min-height:100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width:240px; flex-shrink:0;
+      background:var(--navy2); color:#fff;
+      padding:24px 0;
+      display:flex; flex-direction:column;
+      position:fixed; top:0; left:0; bottom:0; z-index:50;
+    }
+    .sb-brand {
+      padding:0 22px 24px;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .sb-brand .l1 {
+      font-family:"Inter",sans-serif; font-size:9px; letter-spacing:2.5px;
+      text-transform:uppercase; color:rgba(216,199,161,0.85); font-weight:600;
+    }
+    .sb-brand .l2 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:22px; color:#fff; letter-spacing:2px; text-transform:uppercase;
+      margin-top:3px; line-height:1.1;
+    }
+    .sb-nav { padding:18px 14px; flex:1; }
+    .sb-section {
+      font-family:"Inter",sans-serif; font-size:9px; letter-spacing:2px;
+      text-transform:uppercase; color:rgba(255,255,255,0.35);
+      padding:14px 10px 6px; font-weight:600;
+    }
+    .sb-link {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 12px; border-radius:11px;
+      color:rgba(255,255,255,0.68);
+      font-family:"Inter",sans-serif; font-size:13.5px; font-weight:500;
+      text-decoration:none;
+      transition:0.18s;
+      margin-bottom:2px;
+    }
+    .sb-link:hover { background:rgba(255,255,255,0.06); color:#fff; }
+    .sb-link.active { background:rgba(216,199,161,0.16); color:var(--gold); }
+    .sb-link svg { width:16px; height:16px; }
+    .sb-foot {
+      padding:14px 22px; border-top:1px solid rgba(255,255,255,0.08);
+      font-family:"Inter",sans-serif; font-size:11.5px; color:rgba(255,255,255,0.4);
+      display:flex; align-items:center; gap:10px;
+    }
+    .sb-avatar {
+      width:30px; height:30px; border-radius:50%;
+      background:var(--gold); color:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:14px;
     }
 
-    body{
-      margin:0;
-      font-family:"Inter",sans-serif;
-      background:var(--bg);
-      color:var(--navy);
-      overflow-x:hidden;
-    }
-    .hero{
-      min-height:50vh;
-      position:relative;
-      background-image:url("hero.webp");
-      background-size:cover;
-      background-position:center;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      padding:108px 22px 44px;
-    }
+    /* MAIN */
+    .main { margin-left:240px; flex:1; padding:28px 32px 40px; min-width:0; }
 
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(to bottom, rgba(0,0,0,0.54), rgba(0,0,0,0.34) 40%, rgba(0,0,0,0.56));
+    .top {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:24px; gap:16px; flex-wrap:wrap;
     }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      pointer-events:none;
-      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
-      opacity:0.95;
+    .top h1 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:30px; color:var(--navy); margin:0 0 3px;
+      letter-spacing:1.2px;
     }
-
-    .hero-shell{
-      position:relative;
-      z-index:3;
-      width:100%;
-      max-width:var(--max);
-      margin:0 auto;
-      display:grid;
-      grid-template-columns:1.03fr 0.97fr;
-      gap:26px;
-      align-items:center;
+    .top .sub {
+      font-family:"Inter",sans-serif; font-size:13px;
+      color:rgba(22,37,58,0.6);
     }
-
-    .hero-copy{
-      color:#fff;
-      text-align:left;
-      opacity:0;
-      transform:translateY(18px);
-      animation:heroIn 1.2s ease forwards;
+    .top-actions { display:flex; gap:10px; }
+    .btn-icon {
+      width:38px; height:38px; border-radius:11px;
+      background:#fff; border:1px solid rgba(29,53,87,0.10);
+      cursor:pointer; color:var(--navy);
+      display:inline-flex; align-items:center; justify-content:center;
     }
-
-    .hero-kicker{
-      font-family:"Cormorant Garamond", serif;
-      font-weight:600;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      font-size:13px;
-      margin-bottom:10px;
-      opacity:0.95;
+    .btn-icon svg { width:16px; height:16px; }
+    .btn-primary {
+      padding:0 18px; height:38px;
+      background:var(--navy); color:#fff;
+      border:none; border-radius:11px;
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
+      letter-spacing:1.6px; text-transform:uppercase;
+      cursor:pointer; display:inline-flex; align-items:center; gap:6px;
     }
+    .btn-primary:hover { background:var(--navy2); }
 
-    .hero-title{
-      margin:0;
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      font-size:clamp(30px, 4.7vw, 48px);
-      letter-spacing:1.4px;
-      text-transform:uppercase;
-      line-height:1.3;
-      text-shadow:0 12px 40px rgba(0,0,0,0.55);
-    }
-
-    .hero-text{
-      margin:14px 0 0;
-      max-width:640px;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:500;
-      font-size:18px;
-      line-height:1.75;
-      text-shadow:0 10px 28px rgba(0,0,0,0.45);
-      opacity:0.98;
-    }
-
-    .hero-links{
-      margin-top:18px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .hero-card{
-      position:relative;
-      z-index:3;
-      background:linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
-      border:1px solid rgba(255,255,255,0.30);
-      border-radius:24px;
-      box-shadow:var(--shadow);
-      padding:22px 20px 20px;
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-      opacity:0;
-      transform:translateY(18px);
-      animation:heroIn 1.2s ease forwards 0.12s;
-      animation-fill-mode:forwards;
-      text-align:left;
-    }
-
-    @keyframes heroIn{ to{ opacity:1; transform:translateY(0); } }
-
-    .card-eyebrow{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      font-size:17px;
-      color:rgba(29,53,87,0.76);
-      letter-spacing:0.4px;
-      margin-bottom:8px;
-    }
-
-    .card-title{
-      margin:0;
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      font-size:28px;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      color:var(--navy);
-      line-height:1.32;
-    }
-
-    .card-subtitle{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.78;
-      font-size:14px;
-    }
-
-    .orn{
-      width:150px;
-      height:1px;
-      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
-      margin:14px 0 0;
-    }
-
-    .hero-meta{
-      margin-top:16px;
-      display:grid;
-      gap:10px;
-    }
-
-    .meta-card{
-      background:rgba(255,255,255,0.58);
+    /* KPI ROW */
+    .kpis { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:24px; }
+    .kpi {
+      background:#fff; border-radius:18px;
+      padding:18px 20px;
       border:1px solid rgba(29,53,87,0.08);
-      border-radius:18px;
-      padding:12px 14px;
     }
-
-    .meta-label{
-      display:block;
-      font-size:10px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.60);
-      margin-bottom:6px;
+    .kpi .l {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      font-weight:600; margin-bottom:8px;
     }
-
-    .meta-value{
-      display:block;
-      color:var(--ink);
-      font-size:15px;
-      font-weight:600;
-      line-height:1.6;
+    .kpi .v {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:28px;
+      color:var(--navy); line-height:1; margin-bottom:4px;
     }
-
-    .section{
-      padding:42px 0 74px;
-      background:
-        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
-        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
-        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
-      border-top:1px solid rgba(29,53,87,0.08);
+    .kpi .v small {
+      font-family:"Inter",sans-serif; font-size:12px;
+      color:rgba(22,37,58,0.55); font-weight:400;
     }
-
-    .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 22px;
+    .kpi .trend {
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      display:inline-flex; align-items:center; gap:4px;
     }
+    .trend.up { color:var(--success); }
+    .trend.down { color:var(--danger); }
+    .trend.flat { color:rgba(22,37,58,0.55); }
 
-    .summary-grid{
-      display:grid;
-      grid-template-columns:repeat(4, minmax(0, 1fr));
-      gap:14px;
-      margin-bottom:26px;
+    /* MAIN GRID */
+    .grid { display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start; }
+
+    /* CALENDAR */
+    .cal-card {
+      background:#fff; border-radius:20px;
+      border:1px solid rgba(29,53,87,0.08);
+      overflow:hidden;
     }
-
-    .summary-card{
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:20px;
-      padding:18px;
-      box-shadow:var(--shadowSoft);
+    .cal-head {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:18px 22px;
+      border-bottom:1px solid rgba(29,53,87,0.08);
     }
-
-    .summary-label{
-      display:block;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.60);
-      margin-bottom:8px;
-      line-height:1.5;
-    }
-
-    .summary-value{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-size:34px;
-      font-weight:700;
+    .cal-title {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:18px;
       color:var(--navy);
-      line-height:1;
+    }
+    .cal-controls { display:flex; gap:4px; align-items:center; }
+    .cal-month {
+      font-family:"Inter",sans-serif; font-size:13.5px; font-weight:600;
+      color:var(--navy); padding:0 12px;
+    }
+    .cal-controls button {
+      width:30px; height:30px; border-radius:8px;
+      background:transparent; border:1px solid rgba(29,53,87,0.10);
+      cursor:pointer; color:var(--navy);
+    }
+    .cal-view-toggle {
+      display:flex; background:#f4f1ea; border-radius:9px; padding:3px;
+      margin-left:12px;
+    }
+    .cal-view-toggle button {
+      padding:6px 12px; background:transparent; border:none;
+      border-radius:6px; font-family:"Inter",sans-serif; font-size:11px;
+      font-weight:600; color:rgba(22,37,58,0.55); cursor:pointer;
+    }
+    .cal-view-toggle button.active { background:#fff; color:var(--navy); box-shadow:0 1px 3px rgba(0,0,0,0.05); }
+
+    /* Calendar timeline view */
+    .cal-timeline {
+      overflow-x:auto;
+      padding:14px 22px 24px;
+    }
+    .cal-row {
+      display:grid;
+      grid-template-columns:140px repeat(14, 56px);
+      gap:0;
+      align-items:center;
+      min-height:42px;
+    }
+    .cal-row.header {
+      border-bottom:1px solid rgba(29,53,87,0.08);
+      padding-bottom:10px; margin-bottom:6px;
+    }
+    .cal-suite-name {
+      font-family:"Inter",sans-serif; font-size:13px; font-weight:600;
+      color:var(--navy);
+      padding-right:12px;
+      display:flex; align-items:center; gap:8px;
+    }
+    .cal-suite-name img {
+      width:30px; height:30px; border-radius:8px; object-fit:cover;
+    }
+    .cal-day-cell {
+      text-align:center;
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.55);
+      padding:4px 0;
+      position:relative;
+      border-left:1px solid rgba(29,53,87,0.06);
+      height:42px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+    }
+    .cal-day-cell.weekend { background:rgba(216,199,161,0.07); }
+    .cal-day-cell.today { background:rgba(29,53,87,0.06); }
+    .cal-day-cell .dn {
+      font-size:9px; letter-spacing:1.2px; text-transform:uppercase;
+      color:rgba(22,37,58,0.4); font-weight:600;
+    }
+    .cal-day-cell .num {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:15px;
+      color:var(--navy);
+    }
+    .cal-day-cell.today .num {
+      background:var(--navy); color:#fff;
+      width:24px; height:24px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
     }
 
-    .panel{
-      background:rgba(255,255,255,0.78);
-      border:1px solid rgba(29,53,87,0.10);
-      border-radius:24px;
-      box-shadow:var(--shadowSoft);
-      padding:24px 22px;
-      margin-bottom:24px;
+    /* Booking bars on calendar */
+    .cal-booking {
+      position:absolute; top:8px; bottom:8px;
+      background:var(--gold);
+      color:var(--navy);
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:600;
+      display:flex; align-items:center;
+      padding:0 10px; border-radius:6px;
+      white-space:nowrap; overflow:hidden;
+      z-index:3;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .cal-booking:hover { transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,0.10); }
+    .cal-booking.confirmed { background:var(--gold); color:var(--navy); }
+    .cal-booking.pending { background:rgba(184,149,95,0.20); color:#8f6c3c; border:1.5px dashed #8f6c3c; }
+    .cal-booking.checkin { background:var(--navy); color:#fff; }
+    .cal-booking.blocked { background:repeating-linear-gradient(45deg, #ccc 0, #ccc 4px, #ddd 4px, #ddd 8px); color:rgba(22,37,58,0.6); }
+    .cal-booking .gn {
+      overflow:hidden; text-overflow:ellipsis;
     }
 
-    .panel-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
+    /* RIGHT COLUMN */
+    .panel {
+      background:#fff; border-radius:18px;
+      border:1px solid rgba(29,53,87,0.08);
+      padding:20px 22px;
+      margin-bottom:14px;
     }
-
-    .panel-kicker{
-      display:block;
-      font-family:"Cormorant Garamond", serif;
-      font-weight:700;
-      font-size:18px;
-      color:rgba(29,53,87,0.74);
-      margin-bottom:6px;
+    .panel h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:17px;
+      color:var(--navy); margin:0 0 14px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .panel h3 .pill {
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:600;
+      padding:3px 10px; border-radius:30px;
+      background:rgba(216,199,161,0.20); color:#8f6c3c;
       letter-spacing:0.3px;
     }
 
-    .panel-title{
-      margin:0;
-      font-family:"Gyahegi","Cormorant Garamond", serif;
-      font-weight:400;
-      font-size:30px;
-      letter-spacing:1px;
-      text-transform:uppercase;
-      color:var(--navy);
-      line-height:1.28;
-    }
-
-    .panel-subtitle{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.8;
-      max-width:860px;
-    }
-
-    .calendar-topbar{
-      display:grid;
-      grid-template-columns:1.2fr auto auto;
-      gap:14px;
-      align-items:end;
-      margin-bottom:16px;
-    }
-
-    .calendar-month-nav{
-      display:flex;
+    .check-row {
+      display:flex; gap:12px; padding:11px 0;
+      border-bottom:1px solid rgba(29,53,87,0.06);
       align-items:center;
-      justify-content:flex-end;
-      gap:10px;
     }
-
-    .month-btn,
-    .primary-btn,
-    .secondary-btn-light,
-    .danger-btn,
-    .quick-action-btn,
-    .quick-filter-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:46px;
-      padding:0 18px;
-      border:none;
-      border-radius:14px;
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:0.22s ease;
-      font-family:inherit;
+    .check-row:last-child { border-bottom:none; }
+    .check-row img { width:40px; height:40px; border-radius:10px; object-fit:cover; flex-shrink:0; }
+    .check-row .ci-info { flex:1; min-width:0; }
+    .check-row .gn {
+      font-family:"Inter",sans-serif; font-size:13px; font-weight:600;
+      color:var(--navy); margin-bottom:2px;
     }
-
-    .month-btn,
-    .secondary-btn-light,
-    .quick-filter-btn{
-      background:rgba(29,53,87,0.08);
+    .check-row .sn {
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      color:rgba(22,37,58,0.6);
+    }
+    .check-row .time {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:14px;
       color:var(--navy);
     }
-
-    .quick-filter-btn.active{
-      background:rgba(216,199,161,0.26);
-      color:var(--navy);
-      box-shadow:0 0 0 1px rgba(203,181,140,0.22) inset;
+    .check-row .time small {
+      display:block; font-family:"Inter",sans-serif; font-size:10px;
+      color:rgba(22,37,58,0.5); font-weight:400; letter-spacing:0.5px;
     }
 
-    .primary-btn{
-      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
-      color:#fff;
-      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+    /* Room status */
+    .room-status-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:8px;
     }
-
-    .danger-btn{
-      background:linear-gradient(135deg, #b76565, #9e4747);
-      color:#fff;
-      box-shadow:0 18px 34px rgba(181,74,74,0.14);
+    .room-status {
+      display:flex; align-items:center; gap:8px;
+      padding:9px 12px;
+      border-radius:11px;
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      background:rgba(29,53,87,0.04);
     }
-
-    .quick-action-btn{
-      min-height:40px;
-      padding:0 14px;
-      font-size:11px;
-      letter-spacing:1px;
-    }
-
-    .quick-action-btn.action-confirm{
-      background:var(--ok-bg);
-      color:var(--ok-text);
-      border:1px solid rgba(47,122,75,0.18);
-    }
-
-    .quick-action-btn.action-cancel{
-      background:var(--danger-bg);
-      color:var(--danger-text);
-      border:1px solid rgba(181,74,74,0.18);
-    }
-
-    .quick-action-btn.action-expire{
-      background:var(--warn-bg);
-      color:var(--warn-text);
-      border:1px solid rgba(184,149,95,0.20);
-    }
-
-    .quick-action-btn:disabled{
-      opacity:0.55;
-      cursor:not-allowed;
-    }
-
-    .quick-action-btn.action-nf{
-      background:rgba(81,109,143,0.10);
-      color:#355474;
-      border:1px solid rgba(81,109,143,0.20);
-    }
-
-    .nf-badge{
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      font-size:11px;
-      font-weight:600;
-      letter-spacing:.6px;
-      padding:3px 9px;
-      border-radius:20px;
-      text-transform:uppercase;
-    }
-
-    .nf-badge.emitted  { background:var(--ok-bg);     color:var(--ok-text);     }
-    .nf-badge.processing{ background:var(--info-bg);   color:var(--info-text);   }
-    .nf-badge.pending  { background:var(--warn-bg);    color:var(--warn-text);   }
-    .nf-badge.failed   { background:var(--danger-bg);  color:var(--danger-text); }
-    .nf-badge.none     { background:rgba(0,0,0,0.05);  color:#888;               }
-
-    .nf-row{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      margin-top:8px;
-      padding-top:8px;
-      border-top:1px solid rgba(29,53,87,0.07);
-      flex-wrap:wrap;
-    }
-
-    .pricing-layout{
-      display:grid;
-      grid-template-columns:1.45fr 0.95fr;
-      gap:18px;
-      align-items:start;
-    }
-
-    .calendar-shell,
-    .editor-shell{
-      background:rgba(255,255,255,0.82);
-      border:1px solid rgba(29,53,87,0.08);
-      border-radius:20px;
-      padding:16px;
-    }
-
-    .calendar-title-row{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-      flex-wrap:wrap;
-    }
-
-    .calendar-month-label{
-      font-family:"Cormorant Garamond", serif;
-      font-size:30px;
-      font-weight:700;
-      color:var(--navy);
-      line-height:1;
-      text-transform:capitalize;
-    }
-
-    .calendar-note{
-      font-size:13px;
-      line-height:1.7;
-      color:var(--muted);
-      margin:0 0 14px;
-    }
-
-    .calendar-weekdays{
-      display:grid;
-      grid-template-columns:repeat(7, minmax(0, 1fr));
-      gap:8px;
-      margin-bottom:8px;
-    }
-
-    .weekday{
-      text-align:center;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.56);
-      padding:6px 0;
-    }
-
-    .calendar-grid{
-      display:grid;
-      grid-template-columns:repeat(7, minmax(0, 1fr));
-      gap:8px;
-    }
-
-    .calendar-cell{
-      min-height:112px;
-      border:1px solid rgba(29,53,87,0.10);
-      background:rgba(255,255,255,0.92);
-      border-radius:16px;
-      padding:10px 10px 8px;
-      display:flex;
-      flex-direction:column;
-      align-items:flex-start;
-      justify-content:flex-start;
-      gap:6px;
-      cursor:pointer;
-      transition:0.18s ease;
-      box-shadow:0 8px 18px rgba(0,0,0,0.03);
-    }
-
-    .calendar-cell:hover{
-      transform:translateY(-1px);
-      border-color:rgba(184,149,95,0.34);
-      box-shadow:0 12px 22px rgba(0,0,0,0.05);
-    }
-
-    .calendar-cell.outside{
-      opacity:0.48;
-      background:rgba(248,244,236,0.92);
-    }
-
-    .calendar-cell.today{
-      border-color:rgba(216,199,161,0.62);
-      box-shadow:0 0 0 2px rgba(216,199,161,0.18);
-    }
-
-    .calendar-cell.range-edge{
-      background:rgba(216,199,161,0.22);
-      border-color:rgba(203,181,140,0.54);
-    }
-
-    .calendar-cell.in-range{
-      background:rgba(216,199,161,0.12);
-      border-color:rgba(216,199,161,0.32);
-    }
-
-    .calendar-cell.edited{
-      background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,243,234,0.96));
-    }
-
-    .cell-day{
-      font-size:15px;
-      font-weight:800;
-      color:var(--navy);
-      line-height:1;
-    }
-
-    .cell-price{
-      font-size:15px;
-      font-weight:800;
-      color:var(--ink);
-      line-height:1.2;
-      margin-top:2px;
-    }
-
-    .cell-meta{
-      font-size:11px;
-      line-height:1.4;
-      color:var(--muted);
-    }
-
-    .cell-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:4px 7px;
-      border-radius:999px;
-      font-size:9px;
-      font-weight:800;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      border:1px solid transparent;
-      margin-top:auto;
-    }
-
-    .badge-manual{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.16); }
-    .badge-weekend{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.20); }
-    .badge-holiday{ background:rgba(159,118,63,0.14); color:#8a6330; border-color:rgba(159,118,63,0.20); }
-    .badge-seasonal{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.16); }
-    .badge-base{ background:rgba(29,53,87,0.08); color:var(--navy); border-color:rgba(29,53,87,0.12); }
-
-    .editor-head{
-      margin-bottom:16px;
-    }
-
-    .editor-head h3{
-      margin:0;
-      font-family:"Cormorant Garamond", serif;
-      font-size:30px;
-      color:var(--navy);
-      line-height:1.05;
-    }
-
-    .editor-head p{
-      margin:10px 0 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.78;
-    }
-
-    .editor-block{
-      border:1px solid rgba(29,53,87,0.08);
-      background:rgba(255,255,255,0.78);
-      border-radius:18px;
-      padding:15px;
-      margin-bottom:12px;
-    }
-
-    .editor-block-title{
-      display:block;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.58);
-      margin-bottom:8px;
-    }
-
-    .editor-highlight{
-      font-family:"Cormorant Garamond", serif;
-      font-size:24px;
-      font-weight:700;
-      color:var(--navy);
-      line-height:1.2;
-    }
-
-    .editor-sub{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.72;
-      margin-top:6px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:0;
-      margin-bottom:12px;
-    }
-
-    .field:last-child{ margin-bottom:0; }
-
-    .field label{
-      display:block;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.2px;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.60);
-    }
-
-    .field input,
-    .field select,
-    .field textarea{
-      width:100%;
-      border:1px solid rgba(29,53,87,0.12);
-      background:rgba(255,255,255,0.90);
-      color:var(--ink);
-      border-radius:14px;
-      padding:12px 14px;
-      font:inherit;
-      outline:none;
-      transition:border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .field textarea{
-      min-height:88px;
-      resize:vertical;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus{
-      border-color:rgba(184,149,95,0.80);
-      box-shadow:0 0 0 4px rgba(216,199,161,0.18);
-    }
-
-    .check-row{
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      color:var(--ink);
-      font-size:14px;
-      line-height:1.5;
-      margin-bottom:10px;
-    }
-
-    .check-row:last-child{ margin-bottom:0; }
-
-    .check-row input{
-      width:auto;
-      margin:2px 0 0;
-    }
-
-    .selected-range-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .selected-mini{
-      border:1px solid rgba(29,53,87,0.08);
-      background:rgba(255,255,255,0.84);
-      border-radius:14px;
-      padding:12px;
-    }
-
-    .selected-mini strong{
-      display:block;
-      font-size:10px;
-      font-weight:900;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
-      color:rgba(29,53,87,0.56);
-      margin-bottom:6px;
-    }
-
-    .selected-mini span{
-      display:block;
-      color:var(--ink);
-      font-size:15px;
-      font-weight:700;
-      line-height:1.5;
-    }
-
-    .actions-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .status-message{
-      display:none;
-      margin-top:14px;
-      padding:14px;
-      border-radius:16px;
-      font-size:14px;
-      line-height:1.75;
-      border:1px solid transparent;
-    }
-
-    .status-message.show{ display:block; }
-    .status-message.success{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.18); }
-    .status-message.error{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.18); }
-    .status-message.info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.18); }
-
-    .legend{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
-
-    .legend-item{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .legend-dot{
-      width:12px;
-      height:12px;
-      border-radius:999px;
-      border:1px solid rgba(29,53,87,0.12);
-      background:#fff;
-    }
-
-    .legend-dot.range{ background:rgba(216,199,161,0.22); border-color:rgba(203,181,140,0.54); }
-    .legend-dot.today{ background:#fff; box-shadow:0 0 0 3px rgba(216,199,161,0.18) inset; }
-    .legend-dot.edited{ background:linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,243,234,0.96)); }
-
-    .empty-state{
-      border:1px dashed rgba(29,53,87,0.18);
-      border-radius:20px;
-      padding:24px;
-      color:var(--muted);
-      text-align:center;
-      background:rgba(255,255,255,0.52);
-      line-height:1.8;
-    }
-
-    .toolbar{
-      display:grid;
-      grid-template-columns:1.2fr 0.9fr 0.9fr 0.9fr;
-      gap:14px;
-      margin-bottom:18px;
-      align-items:end;
-    }
-
-    .toolbar-secondary{
-      display:grid;
-      grid-template-columns:0.9fr 0.9fr auto;
-      gap:14px;
-      margin-bottom:16px;
-      align-items:end;
-    }
-
-    .quick-filters{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom:18px;
-    }
-
-    .reservation-card{
-      border:1px solid rgba(29,53,87,0.08);
-      background:rgba(255,255,255,0.84);
-      border-radius:22px;
-      padding:15px 15px 13px;
-      margin-bottom:12px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.04);
-    }
-
-    .reservation-top{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:10px;
-    }
-
-    .reservation-name{
-      font-family:"Cormorant Garamond", serif;
-      font-size:28px;
-      font-weight:700;
-      line-height:1;
-      color:var(--navy);
-      margin-bottom:6px;
-    }
-
-    .reservation-subtext{
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
-    }
-
-    .reservation-meta{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin-top:8px;
-    }
-
-    .mini-chip{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 9px;
-      border-radius:999px;
-      font-size:10px;
-      font-weight:700;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      background:rgba(255,255,255,0.84);
-      border:1px solid rgba(29,53,87,0.08);
-      color:var(--muted);
-    }
-
-    .badge-stack{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-      align-items:flex-end;
+    .room-status .dot {
+      width:8px; height:8px; border-radius:50%;
       flex-shrink:0;
     }
-
-    .status-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:700;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
-      white-space:nowrap;
-      border:1px solid transparent;
+    .room-status.clean .dot { background:var(--success); }
+    .room-status.dirty .dot { background:var(--danger); }
+    .room-status.ready .dot { background:var(--gold2); }
+    .room-status.occupied .dot { background:var(--navy); }
+    .room-status .nm { color:var(--navy); font-weight:600; }
+    .room-status .st {
+      margin-left:auto; font-size:10px;
+      color:rgba(22,37,58,0.55); letter-spacing:0.3px;
     }
 
-    .badge-ok{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.12); }
-    .badge-warn{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.14); }
-    .badge-danger{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.12); }
-    .badge-info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.12); }
-
-    .reservation-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px 14px;
+    /* LEGEND */
+    .legend {
+      display:flex; flex-wrap:wrap; gap:14px;
+      padding:14px 22px; background:rgba(29,53,87,0.02);
+      border-top:1px solid rgba(29,53,87,0.06);
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.65);
+    }
+    .legend-item { display:inline-flex; align-items:center; gap:6px; }
+    .legend-swatch {
+      width:16px; height:10px; border-radius:3px;
     }
 
-    .reservation-item{
-      background:rgba(255,255,255,0.72);
-      border:1px solid rgba(29,53,87,0.06);
-      border-radius:16px;
-      padding:10px 12px;
+    @media (max-width:1100px) {
+      .kpis { grid-template-columns:repeat(2, 1fr); }
+      .grid { grid-template-columns:1fr; }
     }
-
-    .reservation-item strong{
-      display:block;
-      font-size:10px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:5px;
-    }
-
-    .reservation-item span{
-      display:block;
-      font-size:14px;
-      font-weight:600;
-      color:var(--ink);
-      line-height:1.55;
-      word-break:break-word;
-    }
-
-    .reservation-actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      margin-top:12px;
-      justify-content:flex-end;
-      align-items:center;
-    }
-
-    /* ---- Tabs ---- */
-    .tab-nav{
-      display:flex;
-      gap:6px;
-      background:rgba(29,53,87,0.05);
-      border:1px solid rgba(29,53,87,0.08);
-      border-radius:18px;
-      padding:5px;
-      margin-bottom:22px;
-    }
-    .tab-btn{
-      flex:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-      padding:12px 18px;
-      border:none;
-      border-radius:14px;
-      font-size:11px;
-      font-weight:900;
-      letter-spacing:1.4px;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:0.2s ease;
-      background:transparent;
-      color:rgba(29,53,87,0.55);
-      font-family:inherit;
-    }
-    .tab-btn.active{
-      background:#fff;
-      color:var(--navy);
-      box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    }
-    .tab-btn:hover:not(.active){ color:var(--navy); background:rgba(255,255,255,0.55); }
-    .tab-count{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:22px;
-      height:22px;
-      padding:0 6px;
-      border-radius:999px;
-      font-size:10px;
-      font-weight:900;
-      background:rgba(216,199,161,0.28);
-      color:var(--navy);
-    }
-    .tab-count.urgent{ background:rgba(181,74,74,0.14); color:var(--danger-text); }
-    .tab-panel{ display:none; }
-    .tab-panel.active{ display:block; }
-
-    /* ---- Summary card icons ---- */
-    .summary-card{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-    .summary-icon{
-      width:38px;
-      height:38px;
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-shrink:0;
-    }
-    .summary-icon svg{ width:18px; height:18px; display:block; }
-    .icon-total{ background:rgba(29,53,87,0.08); color:var(--navy); }
-    .icon-pending{ background:rgba(184,149,95,0.14); color:var(--warn-text); }
-    .icon-confirmed{ background:rgba(47,122,75,0.12); color:var(--ok-text); }
-    .icon-cancelled{ background:rgba(181,74,74,0.10); color:var(--danger-text); }
-    .icon-revenue{ background:rgba(216,199,161,0.22); color:#7c6340; }
-
-    /* ---- Toast notifications ---- */
-    .toast-container{
-      position:fixed;
-      bottom:28px;
-      right:28px;
-      z-index:99999;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      pointer-events:none;
-    }
-    .toast{
-      display:flex;
-      align-items:flex-start;
-      gap:12px;
-      padding:14px 18px;
-      border-radius:18px;
-      font-size:13px;
-      line-height:1.6;
-      max-width:340px;
-      box-shadow:0 16px 40px rgba(0,0,0,0.16);
-      pointer-events:auto;
-      animation:toastIn 0.3s ease forwards;
-      border:1px solid transparent;
-    }
-    .toast.toast-success{ background:var(--ok-bg); color:var(--ok-text); border-color:rgba(47,122,75,0.18); }
-    .toast.toast-error{ background:var(--danger-bg); color:var(--danger-text); border-color:rgba(181,74,74,0.18); }
-    .toast.toast-info{ background:var(--info-bg); color:var(--info-text); border-color:rgba(81,109,143,0.18); }
-    .toast.toast-warn{ background:var(--warn-bg); color:var(--warn-text); border-color:rgba(184,149,95,0.20); }
-    .toast-icon{ font-size:16px; flex-shrink:0; line-height:1.4; }
-    .toast-msg{ flex:1; font-weight:500; }
-    @keyframes toastIn{
-      from{ opacity:0; transform:translateY(12px) scale(0.97); }
-      to{ opacity:1; transform:none; }
-    }
-
-    /* ---- Reservation grid 3-col ---- */
-    .reservation-grid{ grid-template-columns:1fr 1fr 1fr; }
-    @media (max-width:640px){ .reservation-grid{ grid-template-columns:1fr 1fr; } }
-
-    footer{
-      position:relative;
-      overflow:hidden;
-      margin-top:0;
-      background:#032c52;
-    }
-
-    .footer-bg{
-      display:block;
-      width:100%;
-      height:200px;
-      object-fit:cover;
-      object-position:center center;
-    }
-
-    .footer-overlay{
-      position:absolute;
-      inset:0;
-      z-index:2;
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      padding:18px 34px;
-    }
-
-    .footer-contact{
-      width:min(410px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-family:"Cormorant Garamond", serif;
-      font-size:22px;
-      line-height:1.18;
-      color:#fff;
-      text-align:left;
-    }
-
-    @media (max-width:1100px){
-      .pricing-layout{ grid-template-columns:1fr; }
-      .calendar-topbar{ grid-template-columns:1fr; }
-      .calendar-month-nav{ justify-content:flex-start; }
-      .toolbar{ grid-template-columns:1fr 1fr; }
-      .toolbar-secondary{ grid-template-columns:1fr 1fr auto; }
-    }
-
-    @media (max-width:980px){
-      .hero-shell{ grid-template-columns:1fr; gap:20px; }
-      .hero-copy{ text-align:center; }
-      .hero-text{ margin-left:auto; margin-right:auto; }
-      .hero-links{ justify-content:center; }
-      .summary-grid{ grid-template-columns:1fr 1fr !important; }
-      .calendar-grid{ gap:6px; }
-      .calendar-cell{ min-height:102px; }
-    }
-
-    @media (max-width:640px){
-      .top-header{ padding:10px 16px; }
-      .top-header-inner{ gap:12px; }
-      .brand .line2{ font-size:15px; }
-      .hero{ padding:102px 16px 38px; min-height:44vh; }
-      .hero-title{ font-size:32px; line-height:1.34; letter-spacing:1.1px; }
-      .hero-text{ font-size:17px; }
-      .card-title,.panel-title{ font-size:26px; line-height:1.34; letter-spacing:.8px; }
-      .hero-card,.panel,.calendar-shell,.editor-shell{ padding:18px 16px; border-radius:20px; }
-      .section{ padding:34px 0 60px; }
-      .wrap{ padding:0 16px; }
-      .summary-grid,.toolbar,.toolbar-secondary,.reservation-grid,.selected-range-grid{ grid-template-columns:1fr; }
-      .reservation-top{ flex-direction:column; align-items:flex-start; }
-      .badge-stack{ align-items:flex-start; }
-      .reservation-actions{ justify-content:flex-start; }
-      .calendar-cell{ min-height:94px; padding:8px; }
-      .cell-day{ font-size:14px; }
-      .cell-price{ font-size:13px; }
-      .cell-meta{ font-size:10px; }
-    }
-
-    body.admin-redesign{background:#f4f1ea;}
-    body.admin-redesign .top-header,
-    body.admin-redesign .hero{display:none;}
-
-    .admin-sidebar{position:fixed;inset:0 auto 0 0;z-index:80;width:240px;background:var(--navy2);color:#fff;display:flex;flex-direction:column;padding:24px 0;}
-    .admin-sidebar-brand{padding:0 22px 24px;border-bottom:1px solid rgba(255,255,255,.08);}
-    .admin-sidebar-brand .l1{font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:rgba(216,199,161,.85);}
-    .admin-sidebar-brand .l2{margin-top:3px;font-family:"Gyahegi","Cormorant Garamond",serif;font-size:22px;letter-spacing:2px;line-height:1.1;text-transform:uppercase;color:#fff;}
-    .admin-sidebar-nav{flex:1;padding:18px 14px;}
-    .admin-sidebar-section{padding:14px 10px 6px;color:rgba(255,255,255,.35);font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;}
-    .admin-sidebar-link{display:flex;align-items:center;gap:10px;margin-bottom:2px;padding:10px 12px;border-radius:11px;color:rgba(255,255,255,.68);font-size:13.5px;font-weight:600;text-decoration:none;transition:.18s ease;}
-    .admin-sidebar-link:hover,.admin-sidebar-link.active{background:rgba(216,199,161,.16);color:var(--gold);}
-    .admin-sidebar-icon{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;}
-    .admin-sidebar-foot{padding:14px 22px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.48);font-size:11.5px;}
-    .admin-sidebar-avatar{width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:var(--gold);color:var(--navy);font-family:"Cormorant Garamond",serif;font-weight:700;font-size:14px;}
-
-    body.admin-redesign .section{margin-left:240px;min-height:100vh;padding:28px 32px 40px;background:#f4f1ea;border-top:0;}
-    body.admin-redesign .wrap{max-width:none;padding:0;}
-    .admin-top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
-    .admin-top h1{margin:0 0 3px;font-family:"Gyahegi","Cormorant Garamond",serif;font-weight:400;font-size:30px;letter-spacing:1.2px;color:var(--navy);text-transform:uppercase;}
-    .admin-top .sub{color:rgba(22,37,58,.60);font-size:13px;}
-    .admin-top-actions{display:flex;gap:10px;flex-wrap:wrap;}
-
-    body.admin-redesign .summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:14px;margin-bottom:24px;}
-    body.admin-redesign .summary-card{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:18px;box-shadow:none;padding:18px 20px;}
-    body.admin-redesign .summary-label{font-size:10px;letter-spacing:1.8px;color:rgba(22,37,58,.55);}
-    body.admin-redesign .summary-value{font-size:28px;font-weight:600;}
-    body.admin-redesign .tab-nav{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;margin-bottom:20px;padding:8px;border:1px solid rgba(29,53,87,.08);border-radius:16px;background:rgba(255,255,255,.78);backdrop-filter:blur(10px);}
-    body.admin-redesign .tab-btn{border-radius:11px;background:transparent;border:0;color:rgba(22,37,58,.62);box-shadow:none;min-height:38px;white-space:nowrap;}
-    body.admin-redesign .tab-btn.active{background:var(--navy);color:#fff;}
-    body.admin-redesign .panel,body.admin-redesign .calendar-shell,body.admin-redesign .editor-shell{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:20px;box-shadow:none;}
-    body.admin-redesign .panel{padding:22px;}
-    body.admin-redesign .panel-title{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:24px;letter-spacing:.2px;text-transform:none;}
-    body.admin-redesign .panel-kicker{font-family:"Inter",sans-serif;font-size:10px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase;color:rgba(22,37,58,.55);}
-    body.admin-redesign .pricing-layout{grid-template-columns:minmax(0,1fr) 340px;gap:20px;}
-    body.admin-redesign .calendar-cell{border-radius:12px;background:#fbfaf7;border:1px solid rgba(29,53,87,.06);box-shadow:none;}
-    body.admin-redesign .calendar-cell.edited{background:rgba(216,199,161,.16);border-color:rgba(216,199,161,.42);}
-    body.admin-redesign .reservation-card{background:#fff;border:1px solid rgba(29,53,87,.08);border-radius:18px;box-shadow:none;padding:18px;}
-    body.admin-redesign .reservation-name{font-family:"Cormorant Garamond",serif;font-size:22px;}
-    body.admin-redesign .reservation-grid{grid-template-columns:repeat(3,1fr);}
-
-    @media (max-width:1100px){
-      body.admin-redesign .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
-      body.admin-redesign .pricing-layout{grid-template-columns:1fr;}
-    }
-    @media (max-width:760px){
-      .admin-sidebar{width:64px;}
-      .admin-sidebar-brand,.admin-sidebar-section,.admin-sidebar-link span,.admin-sidebar-foot{display:none;}
-      .admin-sidebar-nav{padding:14px 10px;}
-      .admin-sidebar-link{justify-content:center;padding:12px;}
-      body.admin-redesign .section{margin-left:64px;padding:18px;}
-      body.admin-redesign .summary-grid,body.admin-redesign .reservation-grid{grid-template-columns:1fr !important;}
+    @media (max-width:760px) {
+      .sidebar { width:60px; }
+      .sb-brand, .sb-section, .sb-link span, .sb-foot { display:none; }
+      .sb-link { justify-content:center; padding:12px; }
+      .main { margin-left:60px; padding:18px; }
     }
   </style>
 </head>
-<body class="admin-redesign">
-  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+<body>
 
-  <nav class="side-menu" id="sideMenu" aria-label="Menu">
-    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
-    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
-    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
-    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
-    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
-    <hr />
-    <a href="admin.html" onclick="toggleMenu(false)">Painel admin</a>
-    <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
-    <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
-    <hr />
-    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
-    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
-    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
-  </nav>
-
-  <aside class="admin-sidebar" aria-label="Administração">
-    <div class="admin-sidebar-brand">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
       <div class="l1">Chateau</div>
       <div class="l2">Pireneus</div>
     </div>
-    <nav class="admin-sidebar-nav">
-      <div class="admin-sidebar-section">Operação</div>
-      <a class="admin-sidebar-link active admin-tab-link" href="#pricing-section" data-tab="pricing">
-        <span class="admin-sidebar-icon">□</span><span>Calendário</span>
+    <nav class="sb-nav">
+      <a class="sb-link active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Calendário</span>
       </a>
-      <a class="admin-sidebar-link admin-tab-link" href="#reservations-section" data-tab="reservations">
-        <span class="admin-sidebar-icon">≡</span><span>Reservas</span>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
+        <span>Reservas</span>
       </a>
-      <a class="admin-sidebar-link admin-tab-link" href="#tab-relatorios" data-tab="relatorios">
-        <span class="admin-sidebar-icon">⌁</span><span>Relatórios</span>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>Hóspedes</span>
       </a>
-      <div class="admin-sidebar-section">Receita</div>
-      <a class="admin-sidebar-link admin-tab-link" href="#tab-promos" data-tab="promos">
-        <span class="admin-sidebar-icon">%</span><span>Promoções</span>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        <span>Suítes</span>
       </a>
-      <a class="admin-sidebar-link admin-tab-link" href="#tab-extras" data-tab="extras">
-        <span class="admin-sidebar-icon">+</span><span>Extras</span>
+      <div class="sb-section">Gestão</div>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 14l4-4 4 4 6-6"/></svg>
+        <span>Financeiro</span>
       </a>
-      <a class="admin-sidebar-link admin-tab-link" href="#tab-integracoes" data-tab="integracoes">
-        <span class="admin-sidebar-icon">↔</span><span>Integrações</span>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        <span>Mensagens</span>
+      </a>
+      <a class="sb-link" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+        <span>Configurações</span>
       </a>
     </nav>
-    <div class="admin-sidebar-foot">
-      <div class="admin-sidebar-avatar">A</div>
-      <div>
-        <strong style="display:block;color:#fff;font-size:12px;">Admin</strong>
-        <span>Painel interno</span>
-      </div>
+    <div class="sb-foot">
+      <div class="sb-avatar">G</div>
+      <div><span>Geovana</span></div>
     </div>
   </aside>
 
-  <header class="top-header" id="topHeader">
-    <div class="top-header-inner">
-      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
-        <span class="line1">Pousada</span>
-        <span class="line2">Chateau Pireneus</span>
-      </a>
+  <!-- MAIN -->
+  <main class="main">
 
-      <div class="header-actions">
-        <a href="dashboard.html" class="ghost-btn">MINHA ÁREA</a>
-        <a href="booking.html" class="reserve-btn">RESERVAR</a>
-        <button id="headerLogoutBtn" class="logout-btn-public" type="button">SAIR</button>
-        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
+    <div class="top">
+      <div>
+        <h1>Bom dia, Geovana ✦</h1>
+        <div class="sub">Terça-feira · 19 de maio de 2026</div>
+      </div>
+      <div class="top-actions">
+        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+        <button class="btn-icon" style="position:relative;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
+          <span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--danger);"></span>
+        </button>
+        <button class="btn-primary">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+          Nova reserva
+        </button>
       </div>
     </div>
-  </header>
 
-  <section class="hero" aria-label="Painel administrativo">
-    <div class="hero-shell">
-      <div class="hero-copy">
-        <div class="hero-kicker">Gestão do Chateau Pireneus</div>
-        <h1 class="hero-title">PAINEL ADMINISTRATIVO</h1>
-        <p class="hero-text">Controle reservas, pagamentos e preços com um fluxo mais direto, visual e prático.</p>
-        <div class="hero-links">
-          <a class="ghost-btn" href="#pricing-section">CALENDÁRIO DE PREÇOS</a>
-          <a class="ghost-btn" href="#reservations-section">RESERVAS</a>
-        </div>
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="l">Receita · Maio</div>
+        <div class="v">R$&nbsp;18.400</div>
+        <div class="trend up">↑ 12% vs. abril</div>
       </div>
-
-      <div class="hero-card">
-        <span class="card-eyebrow">Status do painel</span>
-        <h2 class="card-title">VISÃO GERAL</h2>
-        <p class="card-subtitle">Uma leitura rápida do comportamento atual das reservas para você agir com mais velocidade.</p>
-        <div class="orn"></div>
-        <div class="hero-meta">
-          <div class="meta-card"><span class="meta-label">Total de reservas</span><span class="meta-value" id="heroTotalReservations">0</span></div>
-          <div class="meta-card"><span class="meta-label">Pendentes / Holds</span><span class="meta-value" id="heroPendingReservations">0</span></div>
-          <div class="meta-card"><span class="meta-label">Confirmadas / Pagas</span><span class="meta-value" id="heroConfirmedReservations">0</span></div>
-        </div>
+      <div class="kpi">
+        <div class="l">Ocupação hoje</div>
+        <div class="v">4<small> /6 suítes</small></div>
+        <div class="trend flat">67% de ocupação</div>
+      </div>
+      <div class="kpi">
+        <div class="l">Check-ins hoje</div>
+        <div class="v">2</div>
+        <div class="trend flat">Aurora · Cavalhadas</div>
+      </div>
+      <div class="kpi">
+        <div class="l">Reservas pendentes</div>
+        <div class="v">3</div>
+        <div class="trend down">Aguardando confirmação</div>
       </div>
     </div>
-  </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="admin-top">
-        <div>
-          <h1>Painel Administrativo</h1>
-          <div class="sub">Calendário, reservas e receita em uma operação mais direta.</div>
-        </div>
-        <div class="admin-top-actions">
-          <a href="dashboard.html" class="secondary-btn-light" style="text-decoration:none;">Minha área</a>
-          <button id="adminTopRefreshBtn" class="secondary-btn-light" type="button">Atualizar</button>
-          <button id="adminTopLogoutBtn" class="logout-btn-public" type="button">Sair</button>
-        </div>
-      </div>
+    <!-- GRID -->
+    <div class="grid">
 
-      <div class="summary-grid" style="grid-template-columns:repeat(5,minmax(0,1fr))">
-        <div class="summary-card">
-          <div class="summary-icon icon-total"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18"/></svg></div>
-          <span class="summary-label">Total de reservas</span><span class="summary-value" id="total-count">0</span>
-        </div>
-        <div class="summary-card">
-          <div class="summary-icon icon-pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-          <span class="summary-label">Holds / Pendentes</span><span class="summary-value" id="pending-count">0</span>
-        </div>
-        <div class="summary-card">
-          <div class="summary-icon icon-confirmed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-5"/></svg></div>
-          <span class="summary-label">Confirmadas / Pagas</span><span class="summary-value" id="confirmed-count">0</span>
-        </div>
-        <div class="summary-card">
-          <div class="summary-icon icon-cancelled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg></div>
-          <span class="summary-label">Canceladas / Expiradas</span><span class="summary-value" id="cancelled-count">0</span>
-        </div>
-        <div class="summary-card">
-          <div class="summary-icon icon-revenue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <span class="summary-label">Receita confirmada</span><span class="summary-value" id="revenue-total" style="font-size:22px">—</span>
-        </div>
-      </div>
-
-      <div class="tab-nav">
-        <button class="tab-btn active" data-tab="pricing" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11M15 9v11"/></svg>
-          CALENDÁRIO DE PREÇOS
-        </button>
-        <button class="tab-btn" data-tab="reservations" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
-          RESERVAS
-          <span class="tab-count" id="tabPendingBadge"></span>
-        </button>
-        <button class="tab-btn" data-tab="relatorios" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          RELATÓRIOS
-        </button>
-        <button class="tab-btn" data-tab="promos" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          PROMOS
-        </button>
-        <button class="tab-btn" data-tab="extras" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          EXTRAS
-        </button>
-        <button class="tab-btn" data-tab="integracoes" type="button">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          INTEGRAÇÕES
-        </button>
-      </div>
-
-      <div class="tab-panel active" id="tab-pricing">
-      <div class="panel" id="pricing-section">
-        <div class="panel-head">
-          <div>
-            <span class="panel-kicker">Precificação no estilo calendário</span>
-            <h2 class="panel-title">CALENDÁRIO DE PREÇOS</h2>
-            <p class="panel-subtitle">Escolha as datas direto no calendário, ajuste preço e mínimo de noites, e aplique em uma suíte ou em todas.</p>
+      <!-- CALENDAR TIMELINE -->
+      <div class="cal-card">
+        <div class="cal-head">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="cal-title">Calendário de reservas</div>
+            <div class="cal-view-toggle">
+              <button class="active">Timeline</button>
+              <button>Lista</button>
+            </div>
+          </div>
+          <div class="cal-controls">
+            <button>‹</button>
+            <span class="cal-month">19 — 31 maio 2026</span>
+            <button>›</button>
+            <button style="margin-left:8px;padding:0 10px;width:auto;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;">Hoje</button>
           </div>
         </div>
 
-        <div class="calendar-topbar">
-          <div class="field">
-            <label for="pricingRoom">Suíte exibida no calendário</label>
-            <select id="pricingRoom">
-              <option value="">Selecione</option>
-            </select>
+        <div class="cal-timeline">
+          <!-- header row -->
+          <div class="cal-row header">
+            <div class="cal-suite-name" style="font-size:11px;color:rgba(22,37,58,0.5);letter-spacing:1px;text-transform:uppercase;">Suítes</div>
+            <div class="cal-day-cell today"><span class="dn">Ter</span><span class="num">19</span></div>
+            <div class="cal-day-cell"><span class="dn">Qua</span><span class="num">20</span></div>
+            <div class="cal-day-cell"><span class="dn">Qui</span><span class="num">21</span></div>
+            <div class="cal-day-cell"><span class="dn">Sex</span><span class="num">22</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Sáb</span><span class="num">23</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Dom</span><span class="num">24</span></div>
+            <div class="cal-day-cell"><span class="dn">Seg</span><span class="num">25</span></div>
+            <div class="cal-day-cell"><span class="dn">Ter</span><span class="num">26</span></div>
+            <div class="cal-day-cell"><span class="dn">Qua</span><span class="num">27</span></div>
+            <div class="cal-day-cell"><span class="dn">Qui</span><span class="num">28</span></div>
+            <div class="cal-day-cell"><span class="dn">Sex</span><span class="num">29</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Sáb</span><span class="num">30</span></div>
+            <div class="cal-day-cell weekend"><span class="dn">Dom</span><span class="num">31</span></div>
+            <div class="cal-day-cell"><span class="dn">Seg</span><span class="num">1</span></div>
           </div>
 
-          <div class="check-row" style="align-self:end; margin:0 0 12px 0;">
-            <input type="checkbox" id="applyAllSuites" />
-            <label for="applyAllSuites" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">
-              Aplicar alteração em todas as suítes
-            </label>
-          </div>
-
-          <div class="calendar-month-nav">
-            <button id="prevMonthBtn" class="month-btn" type="button">MÊS ANTERIOR</button>
-            <button id="nextMonthBtn" class="month-btn" type="button">PRÓXIMO MÊS</button>
-          </div>
-        </div>
-
-        <div class="pricing-layout">
-          <div class="calendar-shell">
-            <div class="calendar-title-row">
-              <div class="calendar-month-label" id="calendarMonthLabel">Carregando...</div>
-              <button id="clearDateSelectionBtn" class="secondary-btn-light" type="button">LIMPAR SELEÇÃO</button>
-            </div>
-
-            <p class="calendar-note">
-              Clique em um dia para iniciar a seleção e clique em outro dia para fechar o intervalo. O calendário mostra o valor efetivo de cada data e o mínimo de noites quando existir.
-            </p>
-
-            <div class="calendar-weekdays">
-              <div class="weekday">SEG</div>
-              <div class="weekday">TER</div>
-              <div class="weekday">QUA</div>
-              <div class="weekday">QUI</div>
-              <div class="weekday">SEX</div>
-              <div class="weekday">SÁB</div>
-              <div class="weekday">DOM</div>
-            </div>
-
-            <div class="calendar-grid" id="pricingCalendarGrid">
-              <div class="empty-state" style="grid-column:1 / -1;">Selecione uma suíte para visualizar o calendário.</div>
-            </div>
-
-            <div class="legend">
-              <div class="legend-item"><span class="legend-dot today"></span>Hoje</div>
-              <div class="legend-item"><span class="legend-dot range"></span>Faixa selecionada</div>
-              <div class="legend-item"><span class="legend-dot edited"></span>Data com regra/override</div>
-            </div>
-          </div>
-
-          <div class="editor-shell">
-            <div class="editor-head">
-              <h3>Editar faixa selecionada</h3>
-              <p>Aqui você define preço, mínimo de noites e observações para as datas escolhidas.</p>
-            </div>
-
-            <div class="editor-block">
-              <span class="editor-block-title">Preço base atual</span>
-              <div class="editor-highlight" id="basePriceCurrentLabel">Selecione uma suíte</div>
-              <div class="editor-sub">O preço base serve como referência da suíte exibida no calendário.</div>
-            </div>
-
-            <div class="editor-block">
-              <span class="editor-block-title">Faixa selecionada</span>
-              <div class="editor-highlight" id="selectedRangeLabel">Nenhuma data selecionada</div>
-              <div class="editor-sub" id="selectedRangeSub">Clique no calendário para escolher as datas.</div>
-
-              <div class="selected-range-grid">
-                <div class="selected-mini">
-                  <strong>Início</strong>
-                  <span id="selectedStartDate">—</span>
-                </div>
-                <div class="selected-mini">
-                  <strong>Fim</strong>
-                  <span id="selectedEndDate">—</span>
-                </div>
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/aurora/aurora1.jpeg" alt=""> Aurora</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking checkin" style="left:50%;width:140px;">
+                <span class="gn">Mariana F. · 21–23</span>
               </div>
             </div>
-
-            <div class="editor-block">
-              <span class="editor-block-title">Valor atual do primeiro dia</span>
-              <div class="editor-highlight" id="selectedCurrentPrice">—</div>
-              <div class="editor-sub" id="selectedCurrentMeta">Selecione pelo menos uma data para ver os detalhes atuais.</div>
-            </div>
-
-            <div class="field">
-              <label for="basePrice">Preço base da suíte exibida</label>
-              <input type="number" id="basePrice" min="0" step="0.01" placeholder="0,00" />
-            </div>
-
-            <div class="actions-row" style="margin-top:0; margin-bottom:14px;">
-              <button id="saveBasePriceBtn" class="secondary-btn-light" type="button">SALVAR PREÇO BASE</button>
-            </div>
-
-            <div class="field">
-              <label for="specialPrice">Preço para a faixa selecionada</label>
-              <input type="number" id="specialPrice" min="0" step="0.01" placeholder="0,00" />
-            </div>
-
-            <div class="field">
-              <label for="minNights">Mínimo de noites</label>
-              <input type="number" id="minNights" min="1" step="1" placeholder="Ex: 2" />
-            </div>
-
-            <div class="field">
-              <label for="pricingSource">Tipo da regra</label>
-              <select id="pricingSource">
-                <option value="manual">Manual</option>
-                <option value="weekend">Fim de semana</option>
-                <option value="holiday">Feriado</option>
-                <option value="seasonal">Temporada</option>
-                <option value="base_override">Override</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="pricingNotes">Observações</label>
-              <textarea id="pricingNotes" placeholder="Ex: Carnaval, julho, feriado prolongado, evento especial"></textarea>
-            </div>
-
-            <div class="editor-block">
-              <div class="check-row">
-                <input type="checkbox" id="applyWeekdays" checked />
-                <label for="applyWeekdays" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em dias úteis</label>
-              </div>
-              <div class="check-row">
-                <input type="checkbox" id="applyWeekends" checked />
-                <label for="applyWeekends" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Aplicar em finais de semana</label>
-              </div>
-              <div class="check-row">
-                <input type="checkbox" id="overwriteExisting" checked />
-                <label for="overwriteExisting" style="font-size:14px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink);">Sobrescrever preços já existentes</label>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking pending" style="left:50%;width:200px;">
+                <span class="gn">Roberto N. · 24–27</span>
               </div>
             </div>
-
-            <div class="actions-row">
-              <button id="applyPricingBtn" class="primary-btn" type="button">APLICAR ALTERAÇÃO</button>
-              <button id="deletePricingBtn" class="danger-btn" type="button">REMOVER OVERRIDE</button>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:50%;width:140px;">
+                <span class="gn">Ana L. · 30–1</span>
+              </div>
             </div>
+            <div class="cal-day-cell"></div>
+          </div>
 
-            <div id="pricingStatus" class="status-message info show">Selecione uma suíte e clique no calendário para começar.</div>
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/divino/divino1.jpeg" alt=""> Divino</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:170px;">
+                <span class="gn">Carlos & Sofia · 18–22</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking blocked" style="left:50%;width:140px;">
+                <span class="gn">Manutenção</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt=""> Cavalhadas</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking checkin" style="left:50%;width:200px;">
+                <span class="gn">Juliana C. · 21–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking pending" style="left:0;width:170px;">
+                <span class="gn">Paulo & Renata</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/rosario/rosario1.jpeg" alt=""> Rosário</div>
+            <div class="cal-day-cell today"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:180px;">
+                <span class="gn">Letícia M. · 22–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/bonfim/bonfim1.jpeg" alt=""> Bonfim</div>
+            <div class="cal-day-cell today"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend" style="position:relative;">
+              <div class="cal-booking confirmed" style="left:30%;width:140px;">
+                <span class="gn">Família G. · 23–25</span>
+              </div>
+            </div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+          </div>
+
+          <div class="cal-row">
+            <div class="cal-suite-name"><img src="site/public/suites/aurora/aurora2.jpeg" alt=""> Pireneus</div>
+            <div class="cal-day-cell today" style="position:relative;">
+              <div class="cal-booking blocked" style="left:0;width:780px;">
+                <span class="gn">Em breve · Suíte em finalização</span>
+              </div>
+            </div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell weekend"></div>
+            <div class="cal-day-cell"></div>
           </div>
         </div>
-      </div>
-      </div><!-- /tab-panel pricing -->
 
-      <div class="tab-panel" id="tab-reservations">
-      <div class="panel" id="reservations-section">
-        <div class="panel-head">
-          <div>
-            <span class="panel-kicker">Operação diária</span>
-            <h2 class="panel-title">RESERVAS</h2>
-            <p class="panel-subtitle">Filtre e acompanhe todas as reservas, os status de pagamento e o comportamento do fluxo de hospedagem.</p>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="refreshReservationsBtn" class="secondary-btn-light" type="button">ATUALIZAR</button>
-            <button id="exportCsvBtn" class="secondary-btn-light" type="button">EXPORTAR CSV</button>
-          </div>
-        </div>
-
-        <!-- Today's arrivals / departures widget -->
-        <div id="todayWidget" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;"></div>
-
-        <div class="toolbar">
-          <div class="field">
-            <label for="searchInput">Buscar</label>
-            <input type="text" id="searchInput" placeholder="Hóspede, email, suíte, reserva..." />
-          </div>
-
-          <div class="field">
-            <label for="statusFilter">Situação</label>
-            <select id="statusFilter">
-              <option value="all">Todos</option>
-              <option value="held_pending">Holds / Pendentes</option>
-              <option value="confirmed_paid">Confirmadas / Pagas</option>
-              <option value="cancelled_expired">Canceladas / Expiradas</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="roomFilter">Suíte</label>
-            <select id="roomFilter">
-              <option value="all">Todas</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="paymentFilter">Pagamento</label>
-            <select id="paymentFilter">
-              <option value="all">Todos</option>
-              <option value="paid">Pago</option>
-              <option value="pending">Pendente</option>
-              <option value="failed">Falhou</option>
-              <option value="expired">Expirado</option>
-              <option value="other">Outros</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="toolbar-secondary">
-          <div class="field">
-            <label for="sortFilter">Ordenar por</label>
-            <select id="sortFilter">
-              <option value="created_desc">Mais recentes primeiro</option>
-              <option value="created_asc">Mais antigas primeiro</option>
-              <option value="checkin_asc">Check-in mais próximo</option>
-              <option value="checkin_desc">Check-in mais distante</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="dateFilter">Período</label>
-            <select id="dateFilter">
-              <option value="all">Todos</option>
-              <option value="future">Check-in futuro</option>
-              <option value="today">Check-in hoje</option>
-              <option value="past">Check-in passado</option>
-            </select>
-          </div>
-
-          <button id="clearFiltersBtn" class="secondary-btn-light" type="button">LIMPAR FILTROS</button>
-        </div>
-
-        <div class="quick-filters">
-          <button class="quick-filter-btn active" type="button" data-quick-filter="all">Todas</button>
-          <button class="quick-filter-btn" type="button" data-quick-filter="today">Hoje</button>
-          <button class="quick-filter-btn" type="button" data-quick-filter="upcoming">Próximas</button>
-          <button class="quick-filter-btn" type="button" data-quick-filter="pending">Pendentes</button>
-          <button class="quick-filter-btn" type="button" data-quick-filter="paid">Pagas</button>
-        </div>
-
-        <div id="reservationsList">
-          <div class="empty-state">Nenhuma reserva encontrada.</div>
-        </div>
-      </div>
-    </div>
-      </div><!-- /tab-panel reservations -->
-
-      <div class="tab-panel" id="tab-relatorios">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Análise financeira</span>
-              <h2 class="panel-title">RELATÓRIOS</h2>
-              <p class="panel-subtitle">Receita mensal, desempenho por suíte e ocupação — calculados a partir das reservas confirmadas.</p>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;">
-            <div class="summary-card">
-              <span class="summary-label">Receita este mês</span>
-              <span class="summary-value" id="rep-month-revenue" style="font-size:20px">—</span>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">Ticket médio / reserva</span>
-              <span class="summary-value" id="rep-avg-ticket" style="font-size:20px">—</span>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">Reservas este mês</span>
-              <span class="summary-value" id="rep-month-count">—</span>
-            </div>
-            <div class="summary-card">
-              <span class="summary-label">Ocupação este mês</span>
-              <span class="summary-value" id="rep-occupancy" style="font-size:20px">—</span>
-              <span id="rep-occupancy-sub" style="font-size:11px;color:var(--muted);margin-top:2px;display:block;"></span>
-            </div>
-          </div>
-
-          <div style="margin-bottom:40px;">
-            <h3 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);opacity:.6;margin:0 0 16px;">Receita mensal — últimos 6 meses</h3>
-            <div style="position:relative;height:260px;background:rgba(29,53,87,0.03);border-radius:12px;padding:16px;">
-              <canvas id="chartRevenue"></canvas>
-            </div>
-          </div>
-
-          <div>
-            <h3 style="font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy);opacity:.6;margin:0 0 16px;">Receita por suíte</h3>
-            <div style="position:relative;height:220px;background:rgba(29,53,87,0.03);border-radius:12px;padding:16px;">
-              <canvas id="chartRooms"></canvas>
-            </div>
-          </div>
-        </div>
-      </div><!-- /tab-panel relatorios -->
-
-      <div class="tab-panel" id="tab-promos">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Descontos e cupons</span>
-              <h2 class="panel-title">CÓDIGOS PROMOCIONAIS</h2>
-              <p class="panel-subtitle">Crie e gerencie cupons de desconto para hóspedes.</p>
-            </div>
-          </div>
-
-          <!-- Create form -->
-          <div style="background:rgba(29,53,87,0.04);border-radius:12px;padding:24px 28px;margin-bottom:32px;">
-            <h3 style="margin:0 0 18px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--navy);">Novo código</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Código *</label>
-                <input id="promoCode" type="text" placeholder="CHATEAU10" autocapitalize="characters"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;text-transform:uppercase;" />
-              </div>
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Tipo *</label>
-                <select id="promoType" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
-                  <option value="percentage">Porcentagem (%)</option>
-                  <option value="fixed">Valor fixo (R$)</option>
-                </select>
-              </div>
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Valor *</label>
-                <input id="promoValue" type="number" min="0.01" step="0.01" placeholder="10"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
-              </div>
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Válido até</label>
-                <input id="promoValidUntil" type="date"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
-              </div>
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Máx. usos</label>
-                <input id="promoMaxUses" type="number" min="1" step="1" placeholder="Ilimitado"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
-              </div>
-              <div>
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Mín. noites</label>
-                <input id="promoMinNights" type="number" min="1" step="1" placeholder="Sem mínimo"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
-              </div>
-              <div style="grid-column:1/-1;">
-                <label style="font-size:12px;display:block;margin-bottom:6px;opacity:.7;">Descrição (aparece no e-mail do hóspede)</label>
-                <input id="promoDesc" type="text" placeholder="Ex: Desconto de boas-vindas"
-                  style="width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;" />
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:16px;margin-top:16px;">
-              <button id="promoCreateBtn" type="button" class="quick-action-btn" style="background:var(--navy);color:#d8c7a1;padding:11px 28px;">Criar código</button>
-              <span id="promoCreateMsg" style="font-size:13px;"></span>
-            </div>
-          </div>
-
-          <!-- List -->
-          <h3 style="margin:0 0 14px;font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--navy);opacity:.7;">Códigos ativos</h3>
-          <div id="promoList" style="display:flex;flex-direction:column;gap:10px;">
-            <div style="color:#888;font-size:14px;">Carregando...</div>
-          </div>
-        </div>
-      </div><!-- /tab-panel promos -->
-
-      <div class="tab-panel" id="tab-extras">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Extras no checkout</span>
-              <h2 class="panel-title">EXTRAS OPCIONAIS</h2>
-              <p class="panel-subtitle">Ative, ajuste o preço e edite a descrição de cada extra oferecido no formulário de reserva.</p>
-            </div>
-          </div>
-          <div id="extrasList" style="display:flex;flex-direction:column;gap:16px;"></div>
-          <p id="extrasMsg" style="font-size:13px;margin-top:12px;"></p>
-        </div>
-      </div><!-- /tab-panel extras -->
-
-      <div class="tab-panel" id="tab-integracoes">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Canais externos</span>
-              <h2 class="panel-title">INTEGRAÇÕES</h2>
-              <p class="panel-subtitle">Cole aqui a URL do calendário iCal exportado pelo Airbnb (ou Booking.com) de cada suíte. As datas reservadas nos canais externos serão bloqueadas automaticamente a cada 4 horas.</p>
-            </div>
-          </div>
-          <div id="integracoesList" style="display:flex;flex-direction:column;gap:20px;"></div>
-          <p id="integracoesMsg" style="font-size:13px;margin-top:12px;"></p>
-        </div>
-        <div class="panel" style="margin-top:24px;">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Como obter a URL</span>
-              <h2 class="panel-title">AIRBNB — PASSO A PASSO</h2>
-            </div>
-          </div>
-          <ol style="font-size:14px;color:var(--ink);line-height:2;padding-left:20px;margin:0;">
-            <li>Acesse o Airbnb → <strong>Anúncios</strong> → selecione o quarto.</li>
-            <li>Vá em <strong>Disponibilidade → Sincronizar calendário</strong>.</li>
-            <li>Copie o link <em>"Exportar calendário"</em> (formato <code>.ics</code>).</li>
-            <li>Cole o link no campo da suíte correspondente acima e clique em <strong>Salvar</strong>.</li>
-          </ol>
-          <div style="margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-            <button type="button" id="forceSyncBtn"
-              style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
-              ↻ Forçar sincronização agora
-            </button>
-            <span id="forceSyncStatus" style="font-size:13px;"></span>
-          </div>
-          <p style="font-size:13px;color:#888;margin:12px 0 0;">A sincronização roda automaticamente a cada 4 horas. Use o botão acima para forçar uma atualização imediata.</p>
-        </div>
-      </div><!-- /tab-panel integracoes -->
-    </div>
-  </section>
-
-  <div class="toast-container" id="toastContainer"></div>
-
-  <!-- Guest message modal -->
-  <div id="guestMessageModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;align-items:center;justify-content:center;padding:20px;">
-    <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:540px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);position:relative;">
-      <button onclick="closeMessageModal()" type="button" style="position:absolute;top:16px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;">×</button>
-      <h3 style="margin:0 0 4px;font-size:17px;color:var(--navy);font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.5px;">ENVIAR MENSAGEM AO HÓSPEDE</h3>
-      <p style="margin:0 0 18px;font-size:13px;color:#888;">Para: <strong id="msgModalName"></strong> (<span id="msgModalEmail"></span>)</p>
-      <input id="msgModalReservationId" type="hidden">
-      <div style="margin-bottom:12px;">
-        <label style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;">Assunto</label>
-        <input id="msgModalSubject" type="text" placeholder="Ex.: Confirmação de chegada, informações adicionais…"
-          style="width:100%;box-sizing:border-box;padding:10px 13px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
-      </div>
-      <div style="margin-bottom:16px;">
-        <label style="font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px;">Mensagem</label>
-        <textarea id="msgModalBody" rows="6" placeholder="Escreva sua mensagem aqui…"
-          style="width:100%;box-sizing:border-box;padding:10px 13px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;"></textarea>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <button id="sendGuestMessageBtn" type="button"
-          style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:11px 28px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
-          Enviar e-mail
-        </button>
-        <button onclick="closeMessageModal()" type="button"
-          style="background:none;border:1.5px solid rgba(29,53,87,.2);color:var(--navy);border-radius:8px;padding:10px 20px;font-size:13px;cursor:pointer;">
-          Cancelar
-        </button>
-        <span id="msgModalStatus" style="font-size:13px;margin-left:4px;"></span>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus" />
-    <div class="footer-overlay">
-      <div class="footer-contact">
-        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
-        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
-        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
-        <div style="margin-top:10px;font-size:13px;opacity:.75;">
-          <a href="policies.html" style="color:inherit;margin-right:16px;">Políticas da Pousada</a>
-          <a href="privacidade.html" style="color:inherit;">Política de Privacidade</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const supabaseClient = window.supabaseClient;
-
-    // ---- Toast notifications ----
-    function showToast(msg, type = "info", duration = 4200) {
-      const container = document.getElementById("toastContainer");
-      const icons = { success:"✓", error:"✕", info:"ℹ", warn:"⚠" };
-      const toast = document.createElement("div");
-      toast.className = `toast toast-${type}`;
-      const icon = document.createElement("span");
-      icon.className = "toast-icon";
-      icon.textContent = icons[type] || "ℹ";
-      const text = document.createElement("span");
-      text.className = "toast-msg";
-      text.textContent = msg;
-      toast.append(icon, text);
-      container.appendChild(toast);
-      setTimeout(() => {
-        toast.style.transition = "0.3s ease";
-        toast.style.opacity = "0";
-        toast.style.transform = "translateY(8px)";
-        setTimeout(() => toast.remove(), 320);
-      }, duration);
-    }
-
-    // ---- Tab navigation ----
-    function activateAdminTab(tab) {
-      const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
-      const panel = document.getElementById("tab-" + tab);
-      if (!btn || !panel) return;
-      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-      document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
-      document.querySelectorAll(".admin-tab-link").forEach(link => link.classList.toggle("active", link.dataset.tab === tab));
-      btn.classList.add("active");
-      panel.classList.add("active");
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        activateAdminTab(btn.dataset.tab);
-      });
-    });
-
-    document.querySelectorAll(".admin-tab-link").forEach(link => {
-      link.addEventListener("click", (event) => {
-        event.preventDefault();
-        activateAdminTab(link.dataset.tab);
-        document.querySelector(".tab-nav")?.scrollIntoView({ behavior:"smooth", block:"start" });
-      });
-    });
-
-    const pricingRoom = document.getElementById("pricingRoom");
-    const applyAllSuites = document.getElementById("applyAllSuites");
-    const prevMonthBtn = document.getElementById("prevMonthBtn");
-    const nextMonthBtn = document.getElementById("nextMonthBtn");
-    const clearDateSelectionBtn = document.getElementById("clearDateSelectionBtn");
-    const calendarMonthLabel = document.getElementById("calendarMonthLabel");
-    const pricingCalendarGrid = document.getElementById("pricingCalendarGrid");
-
-    const basePrice = document.getElementById("basePrice");
-    const specialPrice = document.getElementById("specialPrice");
-    const minNights = document.getElementById("minNights");
-    const pricingSource = document.getElementById("pricingSource");
-    const pricingNotes = document.getElementById("pricingNotes");
-    const applyWeekdays = document.getElementById("applyWeekdays");
-    const applyWeekends = document.getElementById("applyWeekends");
-    const overwriteExisting = document.getElementById("overwriteExisting");
-    const pricingStatus = document.getElementById("pricingStatus");
-
-    const basePriceCurrentLabel = document.getElementById("basePriceCurrentLabel");
-    const selectedRangeLabel = document.getElementById("selectedRangeLabel");
-    const selectedRangeSub = document.getElementById("selectedRangeSub");
-    const selectedStartDate = document.getElementById("selectedStartDate");
-    const selectedEndDate = document.getElementById("selectedEndDate");
-    const selectedCurrentPrice = document.getElementById("selectedCurrentPrice");
-    const selectedCurrentMeta = document.getElementById("selectedCurrentMeta");
-
-    const roomFilter = document.getElementById("roomFilter");
-    const searchInput = document.getElementById("searchInput");
-    const statusFilter = document.getElementById("statusFilter");
-    const paymentFilter = document.getElementById("paymentFilter");
-    const sortFilter = document.getElementById("sortFilter");
-    const dateFilter = document.getElementById("dateFilter");
-    const reservationsList = document.getElementById("reservationsList");
-
-    let currentUser = null;
-    let rooms = [];
-    let allReservations = [];
-    let profilesMap = {};
-    let nfMap = {};
-    let activeQuickFilter = "all";
-
-    let pricingViewDate = new Date();
-    pricingViewDate = new Date(pricingViewDate.getFullYear(), pricingViewDate.getMonth(), 1);
-
-    let pricingCalendarMap = {};
-    let pricingBasePriceValue = null;
-    let pricingSelectionStart = "";
-    let pricingSelectionEnd = "";
-
-    function redirectToLogin() {
-      const returnTo = window.location.pathname + window.location.search;
-      if (window.redirectToLogin) {
-        window.redirectToLogin(returnTo);
-        return;
-      }
-      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`;
-    }
-
-    function escHtml(v) {
-      return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")
-    }
-
-    function escAttr(v) {
-      return escHtml(v)
-    }
-
-    function formatDate(dateString) {
-      if (!dateString) return "-";
-      const [year, month, day] = String(dateString).split("-");
-      if (!year || !month || !day) return String(dateString);
-      return `${day}/${month}/${year}`;
-    }
-
-    function formatDateTime(value) {
-      if (!value) return "-";
-      return new Date(value).toLocaleString("pt-BR");
-    }
-
-    function formatCurrency(value) {
-      if (value === null || value === undefined || value === "") return "-";
-      const number = Number(value);
-      if (Number.isNaN(number)) return "-";
-      return number.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-    }
-
-    function formatCurrencyShort(value) {
-      if (value === null || value === undefined || value === "") return "—";
-      const number = Number(value);
-      if (Number.isNaN(number)) return "—";
-      return new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      }).format(number);
-    }
-
-    function normalizeStatus(status) {
-      return String(status || "").toLowerCase();
-    }
-
-    function mainStatusLabel(status) {
-      const map = { pending:"Pendente", confirmed:"Confirmada", cancelled:"Cancelada", canceled:"Cancelada", completed:"Concluída", expired:"Expirada" };
-      return map[normalizeStatus(status)] || status || "Pendente";
-    }
-
-    function bookingStatusLabel(status) {
-      const map = { held:"Em hold", pending:"Pendente", booked:"Reservada", cancelled:"Cancelada", canceled:"Cancelada", expired:"Expirada" };
-      return map[normalizeStatus(status)] || status || "—";
-    }
-
-    function paymentStatusLabel(status) {
-      const map = { pending:"Pendente", paid:"Pago", failed:"Falhou", cancelled:"Cancelado", canceled:"Cancelado", expired:"Expirado", refunded:"Reembolsado" };
-      return map[normalizeStatus(status)] || status || "—";
-    }
-
-    function statusBadgeClass(status) {
-      const value = normalizeStatus(status);
-      if (["confirmed","booked","paid"].includes(value)) return "badge-ok";
-      if (["cancelled","canceled","failed"].includes(value)) return "badge-danger";
-      if (["expired","completed","base","manual","weekend","holiday","seasonal","base_override"].includes(value)) return "badge-info";
-      return "badge-warn";
-    }
-
-    function sourceBadgeClass(source) {
-      const value = normalizeStatus(source);
-      if (value === "manual" || value === "base_override") return "badge-manual";
-      if (value === "weekend") return "badge-weekend";
-      if (value === "holiday") return "badge-holiday";
-      if (value === "seasonal") return "badge-seasonal";
-      return "badge-base";
-    }
-
-    function setPricingStatus(type, text) {
-      pricingStatus.className = `status-message show ${type}`;
-      pricingStatus.textContent = text;
-    }
-
-    function toIsoDate(date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    }
-
-    function fromIsoDate(dateString) {
-      return new Date(`${dateString}T00:00:00`);
-    }
-
-    function addDays(date, days) {
-      const cloned = new Date(date);
-      cloned.setDate(cloned.getDate() + days);
-      return cloned;
-    }
-
-    function getCalendarBounds(viewDate) {
-      const monthStart = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
-      const mondayIndex = (monthStart.getDay() + 6) % 7;
-      const gridStart = addDays(monthStart, -mondayIndex);
-      const gridEnd = addDays(gridStart, 41);
-      return { monthStart, gridStart, gridEnd };
-    }
-
-    function capitalizeMonthLabel(text) {
-      if (!text) return "";
-      return text.charAt(0).toUpperCase() + text.slice(1);
-    }
-
-    function getSelectedStart() {
-      return pricingSelectionStart;
-    }
-
-    function getSelectedEnd() {
-      return pricingSelectionEnd || pricingSelectionStart;
-    }
-
-    function hasActiveSelection() {
-      return !!pricingSelectionStart;
-    }
-
-    function getSelectionDayCount() {
-      if (!pricingSelectionStart) return 0;
-      const start = fromIsoDate(getSelectedStart());
-      const end = fromIsoDate(getSelectedEnd());
-      return Math.round((end - start) / 86400000) + 1;
-    }
-
-    function isDateInSelection(dateString) {
-      if (!pricingSelectionStart) return false;
-      const start = getSelectedStart();
-      const end = getSelectedEnd();
-      return dateString >= start && dateString <= end;
-    }
-
-    function isRangeEdge(dateString) {
-      if (!pricingSelectionStart) return false;
-      return dateString === getSelectedStart() || dateString === getSelectedEnd();
-    }
-
-    function clearPricingSelection() {
-      pricingSelectionStart = "";
-      pricingSelectionEnd = "";
-      updateSelectionDisplay();
-      renderPricingCalendar();
-    }
-
-    function handlePricingDateClick(dateString) {
-      if (!pricingSelectionStart || (pricingSelectionStart && pricingSelectionEnd)) {
-        pricingSelectionStart = dateString;
-        pricingSelectionEnd = "";
-      } else {
-        if (dateString < pricingSelectionStart) {
-          pricingSelectionEnd = pricingSelectionStart;
-          pricingSelectionStart = dateString;
-        } else {
-          pricingSelectionEnd = dateString;
-        }
-      }
-
-      updateSelectionDisplay();
-      renderPricingCalendar();
-    }
-
-    async function requireAdmin() {
-      const { data, error } = await supabaseClient.auth.getUser();
-      if (error || !data.user) {
-        redirectToLogin();
-        return false;
-      }
-
-      currentUser = data.user;
-
-      const admin = window.isCurrentUserAdmin ? await window.isCurrentUserAdmin() : false;
-
-      if (!window.isCurrentUserAdmin) {
-        showToast("Não foi possível validar o acesso administrativo.", "error");
-        return false;
-      }
-
-      if (!admin) {
-        window.location.href = "dashboard.html";
-        return false;
-      }
-
-      return true;
-    }
-
-    async function logout() {
-      await supabaseClient.auth.signOut();
-      window.location.href = "login.html";
-    }
-
-    document.getElementById("headerLogoutBtn").addEventListener("click", logout);
-    document.getElementById("adminTopLogoutBtn")?.addEventListener("click", logout);
-
-    async function loadRooms() {
-      const { data, error } = await supabaseClient
-        .from("rooms")
-        .select("id, name")
-        .eq("active", true)
-        .order("id", { ascending: true });
-
-      if (error) {
-        console.error(error);
-        showToast(error.message, "error");
-        return;
-      }
-
-      rooms = data || [];
-      pricingRoom.innerHTML = '<option value="">Selecione</option>' + rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
-      roomFilter.innerHTML = '<option value="all">Todas</option>' + rooms.map(room => `<option value="${room.name}">${room.name}</option>`).join("");
-    }
-
-    async function loadBasePriceForRoom(roomName) {
-      if (!roomName) {
-        pricingBasePriceValue = null;
-        basePrice.value = "";
-        basePriceCurrentLabel.textContent = "Selecione uma suíte";
-        return;
-      }
-
-      const { data, error } = await supabaseClient.rpc("admin_get_room_base_price", {
-        p_room_type: roomName
-      });
-
-      if (error) {
-        console.error(error);
-        setPricingStatus("error", error.message || "Não foi possível carregar o preço base.");
-        return;
-      }
-
-      pricingBasePriceValue = data ?? null;
-      basePrice.value = data ?? "";
-      basePriceCurrentLabel.textContent = data !== null && data !== undefined ? formatCurrency(data) : "Sem preço base";
-    }
-
-    async function loadPricingMonthData() {
-      const roomName = pricingRoom.value;
-      if (!roomName) {
-        pricingCalendarMap = {};
-        basePriceCurrentLabel.textContent = "Selecione uma suíte";
-        pricingCalendarGrid.innerHTML = '<div class="empty-state" style="grid-column:1 / -1;">Selecione uma suíte para visualizar o calendário.</div>';
-        calendarMonthLabel.textContent = "Selecione uma suíte";
-        updateSelectionDisplay();
-        return;
-      }
-
-      const { monthStart, gridStart, gridEnd } = getCalendarBounds(pricingViewDate);
-      const monthLabel = monthStart.toLocaleDateString("pt-BR", { month:"long", year:"numeric" });
-      calendarMonthLabel.textContent = capitalizeMonthLabel(monthLabel);
-
-      await loadBasePriceForRoom(roomName);
-
-      const { data, error } = await supabaseClient.rpc("admin_get_room_prices", {
-        p_room_type: roomName,
-        p_start_date: toIsoDate(gridStart),
-        p_end_date: toIsoDate(gridEnd)
-      });
-
-      if (error) {
-        console.error(error);
-        pricingCalendarMap = {};
-        pricingCalendarGrid.innerHTML = '<div class="empty-state" style="grid-column:1 / -1;">Não foi possível carregar o calendário dessa suíte.</div>';
-        return setPricingStatus("error", error.message || "Erro ao carregar o calendário de preços.");
-      }
-
-      pricingCalendarMap = {};
-      (data || []).forEach(item => {
-        pricingCalendarMap[item.rate_date] = item;
-      });
-
-      renderPricingCalendar();
-      updateSelectionDisplay();
-      setPricingStatus("info", applyAllSuites.checked
-        ? "Visualizando a suíte selecionada. As próximas alterações serão aplicadas em todas as suítes."
-        : "Calendário carregado. Clique nas datas para editar preço e mínimo de noites.");
-    }
-
-    function renderPricingCalendar() {
-      const roomName = pricingRoom.value;
-      if (!roomName) return;
-
-      const { monthStart, gridStart } = getCalendarBounds(pricingViewDate);
-      const todayIso = toIsoDate(new Date());
-
-      pricingCalendarGrid.innerHTML = "";
-
-      for (let index = 0; index < 42; index++) {
-        const date = addDays(gridStart, index);
-        const dateIso = toIsoDate(date);
-        const info = pricingCalendarMap[dateIso];
-        const isOutside = date.getMonth() !== monthStart.getMonth();
-        const hasOverride = !!info && (
-          info.override_price !== null ||
-          Number(info.min_nights || 1) > 1 ||
-          ["manual","weekend","holiday","seasonal","base_override"].includes(normalizeStatus(info.source))
-        );
-
-        const cell = document.createElement("button");
-        cell.type = "button";
-        cell.className = "calendar-cell";
-        if (isOutside) cell.classList.add("outside");
-        if (dateIso === todayIso) cell.classList.add("today");
-        if (hasOverride) cell.classList.add("edited");
-        if (isDateInSelection(dateIso)) cell.classList.add("in-range");
-        if (isRangeEdge(dateIso)) cell.classList.add("range-edge");
-
-        const priceText = info ? formatCurrencyShort(info.effective_price) : "—";
-        const minText = info && Number(info.min_nights || 1) > 1 ? `mín ${info.min_nights} noite${Number(info.min_nights) > 1 ? "s" : ""}` : "mín 1 noite";
-        const source = normalizeStatus(info?.source || "base");
-
-        let badgeLabel = "base";
-        if (source === "manual" || source === "base_override") badgeLabel = "manual";
-        if (source === "weekend") badgeLabel = "fim de semana";
-        if (source === "holiday") badgeLabel = "feriado";
-        if (source === "seasonal") badgeLabel = "temporada";
-
-        cell.innerHTML = `
-          <div class="cell-day">${date.getDate()}</div>
-          <div class="cell-price">${priceText}</div>
-          <div class="cell-meta">${minText}</div>
-          <span class="cell-badge ${sourceBadgeClass(source)}">${badgeLabel}</span>
-        `;
-
-        cell.addEventListener("click", () => handlePricingDateClick(dateIso));
-        pricingCalendarGrid.appendChild(cell);
-      }
-    }
-
-    function updateSelectionDisplay() {
-      if (!hasActiveSelection()) {
-        selectedRangeLabel.textContent = "Nenhuma data selecionada";
-        selectedRangeSub.textContent = "Clique no calendário para escolher as datas.";
-        selectedStartDate.textContent = "—";
-        selectedEndDate.textContent = "—";
-        selectedCurrentPrice.textContent = "—";
-        selectedCurrentMeta.textContent = pricingRoom.value
-          ? "Selecione pelo menos uma data para ver os detalhes atuais."
-          : "Selecione uma suíte para começar.";
-        return;
-      }
-
-      const start = getSelectedStart();
-      const end = getSelectedEnd();
-      const days = getSelectionDayCount();
-      const firstDayInfo = pricingCalendarMap[start];
-
-      selectedRangeLabel.textContent = days === 1
-        ? formatDate(start)
-        : `${formatDate(start)} até ${formatDate(end)}`;
-
-      selectedRangeSub.textContent = days === 1
-        ? "Alteração de 1 dia selecionado."
-        : `${days} dias selecionados para alteração em bloco.`;
-
-      selectedStartDate.textContent = formatDate(start);
-      selectedEndDate.textContent = formatDate(end);
-
-      if (!firstDayInfo) {
-        selectedCurrentPrice.textContent = "—";
-        selectedCurrentMeta.textContent = "Não há dados atuais para o primeiro dia da seleção.";
-        return;
-      }
-
-      selectedCurrentPrice.textContent = formatCurrency(firstDayInfo.effective_price);
-      selectedCurrentMeta.textContent = `Origem: ${firstDayInfo.source || "base"} • Mínimo atual: ${firstDayInfo.min_nights || 1} noite${Number(firstDayInfo.min_nights || 1) > 1 ? "s" : ""}${firstDayInfo.notes ? ` • Obs: ${firstDayInfo.notes}` : ""}`;
-    }
-
-    function getTargetRoomNames() {
-      if (applyAllSuites.checked) return rooms.map(room => room.name);
-      return pricingRoom.value ? [pricingRoom.value] : [];
-    }
-
-    async function saveBasePrice() {
-      const targetRooms = getTargetRoomNames();
-
-      if (!targetRooms.length) {
-        return setPricingStatus("error", "Selecione uma suíte para continuar.");
-      }
-
-      if (basePrice.value === "") {
-        return setPricingStatus("error", "Informe o preço base.");
-      }
-
-      const numericBasePrice = Number(basePrice.value);
-      if (!Number.isFinite(numericBasePrice) || numericBasePrice < 0) {
-        return setPricingStatus("error", "Informe um preço base válido.");
-      }
-
-      setPricingStatus("info", "Salvando preço base...");
-
-      let updatedRooms = 0;
-
-      for (const roomName of targetRooms) {
-        const { error } = await supabaseClient.rpc("admin_upsert_room_base_price", {
-          p_room_type: roomName,
-          p_base_price: numericBasePrice
-        });
-
-        if (error) {
-          console.error(error);
-          return setPricingStatus("error", `Erro ao salvar preço base para ${roomName}: ${error.message || "erro desconhecido"}`);
-        }
-
-        updatedRooms += 1;
-      }
-
-      setPricingStatus("success", updatedRooms === 1
-        ? "Preço base salvo com sucesso."
-        : `Preço base salvo com sucesso em ${updatedRooms} suítes.`);
-
-      await loadPricingMonthData();
-    }
-
-    async function applyPricingSelection() {
-      const targetRooms = getTargetRoomNames();
-      const startDate = getSelectedStart();
-      const endDate = getSelectedEnd();
-
-      if (!targetRooms.length) {
-        return setPricingStatus("error", "Selecione uma suíte para continuar.");
-      }
-
-      if (!startDate || !endDate) {
-        return setPricingStatus("error", "Selecione uma faixa de datas no calendário.");
-      }
-
-      if (specialPrice.value === "") {
-        return setPricingStatus("error", "Informe o preço da faixa selecionada.");
-      }
-
-      const priceValue = Number(specialPrice.value);
-      const minNightsValue = minNights.value === "" ? null : Number(minNights.value);
-
-      if (!Number.isFinite(priceValue) || priceValue < 0) {
-        return setPricingStatus("error", "Informe um preço válido.");
-      }
-
-      if (minNightsValue !== null && (!Number.isFinite(minNightsValue) || minNightsValue < 1)) {
-        return setPricingStatus("error", "Informe um mínimo de noites válido.");
-      }
-
-      setPricingStatus("info", "Aplicando alterações no calendário...");
-
-      let totalUpdated = 0;
-
-      for (const roomName of targetRooms) {
-        const { data, error } = await supabaseClient.rpc("admin_upsert_room_prices", {
-          p_room_type: roomName,
-          p_start_date: startDate,
-          p_end_date: endDate,
-          p_price: priceValue,
-          p_apply_weekdays: applyWeekdays.checked,
-          p_apply_weekends: applyWeekends.checked,
-          p_source: pricingSource.value,
-          p_notes: pricingNotes.value.trim() || null,
-          p_overwrite: overwriteExisting.checked,
-          p_min_nights: minNightsValue
-        });
-
-        if (error) {
-          console.error(error);
-          return setPricingStatus("error", `Erro ao aplicar em ${roomName}: ${error.message || "erro desconhecido"}`);
-        }
-
-        totalUpdated += Number(data || 0);
-      }
-
-      setPricingStatus("success", targetRooms.length === 1
-        ? `${totalUpdated} data(s) atualizada(s) com sucesso.`
-        : `${totalUpdated} data(s) atualizada(s) em ${targetRooms.length} suítes.`);
-
-      await loadPricingMonthData();
-    }
-
-    async function deletePricingSelection() {
-      const targetRooms = getTargetRoomNames();
-      const startDate = getSelectedStart();
-      const endDate = getSelectedEnd();
-
-      if (!targetRooms.length) {
-        return setPricingStatus("error", "Selecione uma suíte para continuar.");
-      }
-
-      if (!startDate || !endDate) {
-        return setPricingStatus("error", "Selecione uma faixa de datas no calendário.");
-      }
-
-      setPricingStatus("info", "Removendo overrides da faixa selecionada...");
-
-      let totalDeleted = 0;
-
-      for (const roomName of targetRooms) {
-        const { data, error } = await supabaseClient.rpc("admin_delete_room_prices", {
-          p_room_type: roomName,
-          p_start_date: startDate,
-          p_end_date: endDate,
-          p_delete_weekdays: applyWeekdays.checked,
-          p_delete_weekends: applyWeekends.checked
-        });
-
-        if (error) {
-          console.error(error);
-          return setPricingStatus("error", `Erro ao remover override em ${roomName}: ${error.message || "erro desconhecido"}`);
-        }
-
-        totalDeleted += Number(data || 0);
-      }
-
-      setPricingStatus("success", targetRooms.length === 1
-        ? `${totalDeleted} override(s) removido(s).`
-        : `${totalDeleted} override(s) removido(s) em ${targetRooms.length} suítes.`);
-
-      await loadPricingMonthData();
-    }
-
-    async function loadReservations() {
-      const { data: reservations, error: reservationError } = await supabaseClient
-        .from("reservations")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (reservationError) {
-        console.error(reservationError);
-        showToast(reservationError.message, "error");
-        return;
-      }
-
-      const { data: profiles, error: profileError } = await supabaseClient
-        .from("profiles")
-        .select("id, full_name, phone, email, cpf_cnpj");
-
-      if (profileError) {
-        console.error(profileError);
-        showToast(profileError.message, "error");
-        return;
-      }
-
-      profilesMap = {};
-      (profiles || []).forEach(profile => {
-        profilesMap[profile.id] = profile;
-      });
-
-      const { data: nfRows } = await supabaseClient
-        .from("notas_fiscais")
-        .select("reservation_id, status, pdf_url, error_msg, emitted_at, provider_id");
-
-      nfMap = {};
-      (nfRows || []).forEach(nf => { nfMap[nf.reservation_id] = nf; });
-
-      allReservations = reservations || [];
-      updateSummaryCards();
-      renderReservations();
-      updateRelatorios();
-      renderTodayWidget();
-    }
-
-    function renderTodayWidget() {
-      const widget  = document.getElementById("todayWidget");
-      if (!widget) return;
-      const todayStr = new Date().toISOString().slice(0, 10);
-      const paid = r => ["paid","confirmed"].includes((r.payment_status||"").toLowerCase()) || (r.status||"").toLowerCase() === "confirmed";
-
-      const arrivals   = allReservations.filter(r => r.check_in  === todayStr && paid(r));
-      const departures = allReservations.filter(r => r.check_out === todayStr && paid(r));
-
-      function listHtml(items, emptyMsg) {
-        if (!items.length) return `<p style="font-size:13px;color:var(--muted);margin:0;">${emptyMsg}</p>`;
-        return items.map(r => {
-          const p = profilesMap[r.user_id] || {};
-          return `<div style="padding:8px 0;border-bottom:1px solid rgba(29,53,87,.07);">
-            <div style="font-size:13px;font-weight:600;color:var(--navy);">${escHtml(p.full_name || "Hóspede")}</div>
-            <div style="font-size:12px;color:var(--muted);">${escHtml(r.room_name || r.room_id || "—")} · ${escHtml(p.phone || p.email || "")}</div>
-          </div>`;
-        }).join("");
-      }
-
-      widget.innerHTML = `
-        <div style="background:rgba(47,122,75,.07);border:1px solid rgba(47,122,75,.18);border-radius:12px;padding:16px 18px;">
-          <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#2f7a4b;font-weight:700;margin-bottom:10px;">
-            ↓ Check-ins hoje (${arrivals.length})
-          </div>
-          ${listHtml(arrivals, "Nenhum check-in hoje.")}
-        </div>
-        <div style="background:rgba(181,74,74,.07);border:1px solid rgba(181,74,74,.18);border-radius:12px;padding:16px 18px;">
-          <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#b54a4a;font-weight:700;margin-bottom:10px;">
-            ↑ Check-outs hoje (${departures.length})
-          </div>
-          ${listHtml(departures, "Nenhum check-out hoje.")}
-        </div>`;
-    }
-
-    function exportReservationsCSV() {
-      const rows = allReservations;
-      if (!rows.length) { showToast("Nenhuma reserva para exportar.", "warn"); return; }
-
-      const headers = [
-        "ID", "Hóspede", "Email", "Suíte", "Check-in", "Check-out", "Noites",
-        "Valor Total", "Desconto", "Cód. Promo", "Status Geral", "Status Pagamento",
-        "Status Reserva", "Criada em", "Pago via"
-      ];
-
-      function nights(ci, co) {
-        if (!ci || !co) return "";
-        return Math.round((new Date(co) - new Date(ci)) / 86_400_000);
-      }
-      function esc(v) {
-        if (v === null || v === undefined) return "";
-        const s = String(v).replace(/"/g, '""');
-        return s.includes(",") || s.includes('"') || s.includes("\n") ? `"${s}"` : s;
-      }
-
-      const lines = [headers.join(",")];
-      rows.forEach(r => {
-        const profile = profilesMap[r.user_id] || {};
-        lines.push([
-          r.id,
-          profile.full_name || r.guest_name || "",
-          profile.email    || r.guest_email || "",
-          r.room_name      || r.room_id     || "",
-          r.check_in       || "",
-          r.check_out      || "",
-          nights(r.check_in, r.check_out),
-          r.total_amount   || "",
-          r.discount_amount|| "",
-          r.promo_code     || "",
-          r.status         || "",
-          r.payment_status || "",
-          r.booking_status || "",
-          r.created_at     ? r.created_at.slice(0, 16).replace("T", " ") : "",
-          r.payment_provider || "",
-        ].map(esc).join(","));
-      });
-
-      const blob = new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement("a");
-      a.href     = url;
-      a.download = `reservas-${new Date().toISOString().slice(0,10)}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast(`${rows.length} reservas exportadas.`, "success");
-    }
-
-    function updateSummaryCards() {
-      const total = allReservations.length;
-      const pending = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return general === "pending" || booking === "held" || payment === "pending";
-      }).length;
-
-      const confirmed = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return general === "confirmed" || booking === "booked" || payment === "paid";
-      }).length;
-
-      const cancelled = allReservations.filter(r => {
-        const general = normalizeStatus(r.status);
-        const booking = normalizeStatus(r.booking_status);
-        const payment = normalizeStatus(r.payment_status);
-        return ["cancelled","canceled","expired"].includes(general) ||
-               ["cancelled","expired"].includes(booking) ||
-               ["failed","expired"].includes(payment);
-      }).length;
-
-      const revenue = allReservations
-        .filter(r => ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) || normalizeStatus(r.status) === "confirmed")
-        .reduce((sum, r) => sum + (parseFloat(r.total_amount) || 0), 0);
-
-      document.getElementById("total-count").textContent = total;
-      document.getElementById("pending-count").textContent = pending;
-      document.getElementById("confirmed-count").textContent = confirmed;
-      document.getElementById("cancelled-count").textContent = cancelled;
-      document.getElementById("heroTotalReservations").textContent = total;
-      document.getElementById("heroPendingReservations").textContent = pending;
-      document.getElementById("heroConfirmedReservations").textContent = confirmed;
-      document.getElementById("revenue-total").textContent = revenue > 0
-        ? "R$ " + revenue.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
-        : "R$ 0";
-
-      const badge = document.getElementById("tabPendingBadge");
-      if (pending > 0) {
-        badge.textContent = pending;
-        badge.className = "tab-count urgent";
-      } else {
-        badge.textContent = "";
-      }
-    }
-
-    let chartRevenue = null;
-    let chartRooms = null;
-
-    function updateRelatorios() {
-      const paid = allReservations.filter(r =>
-        ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) ||
-        normalizeStatus(r.status) === "confirmed"
-      );
-
-      const fmt = v => "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-      // This month stats
-      const now = new Date();
-      const thisMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
-      const monthPaid = paid.filter(r => (r.created_at || "").startsWith(thisMonth));
-      const monthRevenue = monthPaid.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0);
-      const avgTicket = paid.length > 0 ? paid.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0) / paid.length : 0;
-
-      document.getElementById("rep-month-revenue").textContent = fmt(monthRevenue);
-      document.getElementById("rep-avg-ticket").textContent = fmt(avgTicket);
-      document.getElementById("rep-month-count").textContent = monthPaid.length;
-
-      // Occupancy rate = total nights booked this month / (days_in_month × total_rooms)
-      const totalRooms = rooms.length || 1;
-      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-      let nightsBooked = 0;
-      paid.forEach(r => {
-        if (!r.check_in || !r.check_out) return;
-        const cin  = new Date(r.check_in  + "T00:00:00Z");
-        const cout = new Date(r.check_out + "T00:00:00Z");
-        const monthStart = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
-        const monthEnd   = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
-        const start = cin  < monthStart ? monthStart : cin;
-        const end   = cout > monthEnd   ? monthEnd   : cout;
-        if (end > start) nightsBooked += Math.round((end - start) / 86_400_000);
-      });
-      const occupancyPct = Math.min(100, Math.round((nightsBooked / (daysInMonth * totalRooms)) * 100));
-      document.getElementById("rep-occupancy").textContent = occupancyPct + "%";
-      document.getElementById("rep-occupancy-sub").textContent = `${nightsBooked} noites de ${daysInMonth * totalRooms} disponíveis`;
-
-      // Last 6 months revenue
-      const months = [];
-      const monthRevenues = [];
-      for (let i = 5; i >= 0; i--) {
-        const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
-        const label = d.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
-        months.push(label);
-        monthRevenues.push(paid.filter(r => (r.created_at || "").startsWith(key))
-          .reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0));
-      }
-
-      // Revenue by room
-      const roomMap = {};
-      paid.forEach(r => {
-        const name = r.room_name || r.room_id || "Desconhecida";
-        roomMap[name] = (roomMap[name] || 0) + (parseFloat(r.total_amount) || 0);
-      });
-      const roomLabels = Object.keys(roomMap);
-      const roomValues = Object.values(roomMap);
-
-      const navy = "rgba(29,53,87,0.85)";
-      const gold = "rgba(216,199,161,0.85)";
-      const gridColor = "rgba(29,53,87,0.08)";
-      const fontColor = "#1d3557";
-
-      Chart.defaults.font.family = "'Inter', sans-serif";
-      Chart.defaults.font.size = 12;
-      Chart.defaults.color = fontColor;
-
-      if (chartRevenue) chartRevenue.destroy();
-      chartRevenue = new Chart(document.getElementById("chartRevenue"), {
-        type: "bar",
-        data: {
-          labels: months,
-          datasets: [{ label: "Receita (R$)", data: monthRevenues, backgroundColor: navy, borderRadius: 6, borderSkipped: false }]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmt(ctx.raw) } } },
-          scales: {
-            x: { grid: { display: false } },
-            y: { grid: { color: gridColor }, ticks: { callback: v => "R$ " + (v/1000).toFixed(0) + "k" } }
-          }
-        }
-      });
-
-      if (chartRooms) chartRooms.destroy();
-      chartRooms = new Chart(document.getElementById("chartRooms"), {
-        type: "bar",
-        data: {
-          labels: roomLabels,
-          datasets: [{ label: "Receita (R$)", data: roomValues, backgroundColor: gold, borderRadius: 6, borderSkipped: false }]
-        },
-        options: {
-          indexAxis: "y",
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => fmt(ctx.raw) } } },
-          scales: {
-            x: { grid: { color: gridColor }, ticks: { callback: v => "R$ " + (v/1000).toFixed(0) + "k" } },
-            y: { grid: { display: false } }
-          }
-        }
-      });
-    }
-
-    function setQuickFilter(value) {
-      activeQuickFilter = value;
-
-      if (value === "all") {
-        statusFilter.value = "all";
-        paymentFilter.value = "all";
-        dateFilter.value = "all";
-      }
-
-      if (value === "today") {
-        statusFilter.value = "all";
-        paymentFilter.value = "all";
-        dateFilter.value = "today";
-      }
-
-      if (value === "upcoming") {
-        statusFilter.value = "all";
-        paymentFilter.value = "all";
-        dateFilter.value = "future";
-      }
-
-      if (value === "pending") {
-        statusFilter.value = "held_pending";
-        paymentFilter.value = "pending";
-        dateFilter.value = "all";
-      }
-
-      if (value === "paid") {
-        statusFilter.value = "confirmed_paid";
-        paymentFilter.value = "paid";
-        dateFilter.value = "all";
-      }
-
-      updateQuickFilterUI();
-      renderReservations();
-    }
-
-    function clearQuickFilterState() {
-      activeQuickFilter = "";
-      updateQuickFilterUI();
-    }
-
-    function updateQuickFilterUI() {
-      document.querySelectorAll(".quick-filter-btn").forEach(button => {
-        button.classList.toggle("active", button.dataset.quickFilter === activeQuickFilter);
-      });
-    }
-
-    function getFilteredReservations() {
-      const search = searchInput.value.trim().toLowerCase();
-      const statusValue = statusFilter.value;
-      const roomValue = roomFilter.value;
-      const paymentValue = paymentFilter.value;
-      const sortValue = sortFilter.value;
-      const dateValue = dateFilter.value;
-      const today = new Date();
-      today.setHours(0,0,0,0);
-
-      const filtered = allReservations.filter(reservation => {
-        const profile = profilesMap[reservation.user_id] || {};
-        const room = String(reservation.room_type || "").toLowerCase();
-        const fullName = String(profile.full_name || "").toLowerCase();
-        const email = String(profile.email || "").toLowerCase();
-        const phone = String(profile.phone || "").toLowerCase();
-        const reservationId = String(reservation.id || "").toLowerCase();
-        const general = normalizeStatus(reservation.status);
-        const booking = normalizeStatus(reservation.booking_status);
-        const payment = normalizeStatus(reservation.payment_status);
-
-        const matchesSearch = !search ||
-          fullName.includes(search) ||
-          email.includes(search) ||
-          phone.includes(search) ||
-          room.includes(search) ||
-          reservationId.includes(search);
-
-        let matchesStatus = true;
-        if (statusValue === "held_pending") matchesStatus = general === "pending" || booking === "held" || payment === "pending";
-        if (statusValue === "confirmed_paid") matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid";
-        if (statusValue === "cancelled_expired") matchesStatus =
-          ["cancelled","canceled","expired"].includes(general) ||
-          ["cancelled","expired"].includes(booking) ||
-          ["failed","expired"].includes(payment);
-
-        const matchesRoom = roomValue === "all" ? true : reservation.room_type === roomValue;
-
-        let matchesPayment = true;
-        if (paymentValue !== "all") {
-          if (paymentValue === "other") matchesPayment = !["paid","pending","failed","expired"].includes(payment);
-          else matchesPayment = payment === paymentValue;
-        }
-
-        let matchesDate = true;
-        if (reservation.check_in && dateValue !== "all") {
-          const checkInDate = new Date(reservation.check_in + "T00:00:00");
-          checkInDate.setHours(0,0,0,0);
-          if (dateValue === "future") matchesDate = checkInDate > today;
-          if (dateValue === "today") matchesDate = checkInDate.getTime() === today.getTime();
-          if (dateValue === "past") matchesDate = checkInDate < today;
-        }
-
-        return matchesSearch && matchesStatus && matchesRoom && matchesPayment && matchesDate;
-      });
-
-      filtered.sort((a, b) => {
-        if (sortValue === "created_asc") return new Date(a.created_at || 0) - new Date(b.created_at || 0);
-        if (sortValue === "checkin_asc") return new Date(a.check_in || 0) - new Date(b.check_in || 0);
-        if (sortValue === "checkin_desc") return new Date(b.check_in || 0) - new Date(a.check_in || 0);
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
-      });
-
-      return filtered;
-    }
-
-    function renderReservations() {
-      const reservations = getFilteredReservations();
-
-      if (!reservations.length) {
-        reservationsList.innerHTML = '<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>';
-        return;
-      }
-
-      reservationsList.innerHTML = reservations.map(reservation => {
-        const profile = profilesMap[reservation.user_id] || {};
-        const currentStatus = normalizeStatus(reservation.status);
-        const nf = nfMap[reservation.id] || null;
-
-        const nfBadgeClass = nf ? nf.status : "none";
-        const nfLabel = { emitted: "NF Emitida", processing: "NF Processando", pending: "NF Pendente", failed: "NF Falhou", none: "Sem NF" };
-        const nfBadgeText = nfLabel[nfBadgeClass] ?? "Sem NF";
-        const isPaid = normalizeStatus(reservation.payment_status) === "paid";
-        const hasEmail = !!(profile.email || reservation.guest_email);
-
-        return `
-          <article class="reservation-card">
-            <div class="reservation-top">
-              <div>
-                <div class="reservation-name">${escHtml(reservation.room_type || 'Hospedagem')}</div>
-                <div class="reservation-subtext">${escHtml(profile.full_name || 'Hóspede não identificado')} • ${escHtml(profile.email || 'Sem email')} • ${escHtml(profile.phone || 'Sem telefone')}</div>
-                <div class="reservation-meta">
-                  <span class="mini-chip">Reserva: ${escHtml(reservation.id || '-')}</span>
-                  <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
-                  ${profile.cpf_cnpj ? `<span class="mini-chip">CPF/CNPJ: ${escHtml(profile.cpf_cnpj)}</span>` : ''}
-                </div>
-              </div>
-
-              <div class="badge-stack">
-                <span class="status-badge ${statusBadgeClass(reservation.status)}">${mainStatusLabel(reservation.status)}</span>
-                <span class="status-badge ${statusBadgeClass(reservation.booking_status)}">${bookingStatusLabel(reservation.booking_status)}</span>
-                <span class="status-badge ${statusBadgeClass(reservation.payment_status)}">${paymentStatusLabel(reservation.payment_status)}</span>
-              </div>
-            </div>
-
-            <div class="reservation-grid">
-              <div class="reservation-item"><strong>Check-in</strong><span>${formatDate(reservation.check_in)}</span></div>
-              <div class="reservation-item"><strong>Check-out</strong><span>${formatDate(reservation.check_out)}</span></div>
-              <div class="reservation-item"><strong>Hóspedes</strong><span>${reservation.guests || '-'}</span></div>
-              <div class="reservation-item"><strong>Valor total</strong><span>${formatCurrency(reservation.total_amount)}</span></div>
-              <div class="reservation-item"><strong>Expira em</strong><span>${formatDateTime(reservation.expires_at)}</span></div>
-              <div class="reservation-item"><strong>Meio de pagamento</strong><span>${reservation.payment_provider || '—'}</span></div>
-            </div>
-
-            <div class="nf-row">
-              <span class="nf-badge ${nfBadgeClass}">${nfBadgeText}</span>
-              ${nf?.emitted_at ? `<span style="font-size:12px;color:var(--muted)">Emitida em ${formatDateTime(nf.emitted_at)}</span>` : ''}
-              ${nf?.error_msg  ? `<span style="font-size:12px;color:var(--danger-text)">${escHtml(nf.error_msg)}</span>` : ''}
-              ${nf?.pdf_url   ? `<a href="${escHtml(nf.pdf_url)}" target="_blank" rel="noopener" class="quick-action-btn action-nf" style="text-decoration:none;min-height:32px;font-size:11px;padding:0 12px;display:inline-flex;align-items:center;">PDF NF</a>` : ''}
-              ${isPaid ? `<button class="quick-action-btn action-nf emit-nf-btn" type="button" data-id="${reservation.id}">${nf ? 'RE-EMITIR NF' : 'EMITIR NF'}</button>` : ''}
-              ${isPaid && hasEmail ? `<button class="quick-action-btn resend-email-btn" type="button" data-id="${reservation.id}" style="background:rgba(29,53,87,.08);color:var(--navy);border:none;" title="Reenviar email de confirmação ao hóspede">✉ REENVIAR CONFIRMAÇÃO</button>` : ''}
-            </div>
-
-            <div class="reservation-actions">
-              <button
-                class="quick-action-btn action-confirm status-action-btn"
-                type="button"
-                data-id="${reservation.id}"
-                data-status="confirmed"
-                ${currentStatus === 'confirmed' ? 'disabled' : ''}
-              >
-                CONFIRMAR
-              </button>
-
-              <button
-                class="quick-action-btn action-cancel status-action-btn"
-                type="button"
-                data-id="${reservation.id}"
-                data-status="cancelled"
-                ${currentStatus === 'cancelled' || currentStatus === 'canceled' ? 'disabled' : ''}
-              >
-                CANCELAR
-              </button>
-
-              <button
-                class="quick-action-btn action-expire status-action-btn"
-                type="button"
-                data-id="${reservation.id}"
-                data-status="expired"
-                ${currentStatus === 'expired' ? 'disabled' : ''}
-              >
-                EXPIRAR
-              </button>
-
-              ${profile.email ? `<button
-                class="quick-action-btn open-message-modal-btn"
-                type="button"
-                data-reservation-id="${escHtml(reservation.id)}"
-                data-email="${escHtml(profile.email || '')}"
-                data-name="${escHtml(profile.full_name || 'Hóspede')}"
-                style="background:rgba(29,53,87,.08);color:var(--navy);border:none;"
-                title="Enviar email para o hóspede">
-                ✉ MENSAGEM
-              </button>` : ''}
-            </div>
-
-            <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(29,53,87,.07);">
-              <label style="font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px;">Notas internas (visíveis apenas para admin)</label>
-              <div style="display:flex;gap:8px;align-items:flex-start;">
-                <textarea
-                  class="admin-note-area"
-                  data-id="${reservation.id}"
-                  rows="2"
-                  placeholder="Pedidos especiais confirmados, acordos verbais, observações..."
-                  style="flex:1;padding:9px 12px;border:1.5px solid rgba(29,53,87,.14);border-radius:8px;font-size:13px;font-family:inherit;resize:vertical;background:rgba(255,255,255,.7);color:var(--navy);"
-                >${(reservation.admin_notes || '').replace(/</g,'&lt;')}</textarea>
-                <button type="button" class="save-note-btn quick-action-btn" data-id="${reservation.id}"
-                  style="padding:9px 16px;font-size:12px;white-space:nowrap;">
-                  SALVAR
-                </button>
-              </div>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    document.addEventListener("click", async (e) => {
-      const resendBtn = e.target.closest(".resend-email-btn");
-      if (resendBtn) {
-        const id = resendBtn.dataset.id;
-        resendBtn.disabled = true;
-        resendBtn.textContent = "Enviando…";
-        try {
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          const res = await fetch(window.FUNCTIONS_URL + "/send-booking-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + (session?.access_token ?? "") },
-            body: JSON.stringify({ reservation_id: id }),
-          });
-          resendBtn.textContent = res.ok ? "✓ ENVIADO" : "ERRO";
-          setTimeout(() => { resendBtn.disabled = false; resendBtn.textContent = "✉ REENVIAR CONFIRMAÇÃO"; }, 3000);
-        } catch {
-          resendBtn.disabled = false;
-          resendBtn.textContent = "✉ REENVIAR CONFIRMAÇÃO";
-        }
-        return;
-      }
-    });
-
-    document.addEventListener("click", (e) => {
-      const msgBtn = e.target.closest(".open-message-modal-btn");
-      if (msgBtn) {
-        openMessageModal(msgBtn.dataset.reservationId, msgBtn.dataset.email, msgBtn.dataset.name);
-        return;
-      }
-    });
-
-    document.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".save-note-btn");
-      if (!btn) return;
-      const id   = btn.dataset.id;
-      const area = document.querySelector(`.admin-note-area[data-id="${id}"]`);
-      if (!area) return;
-      btn.disabled = true;
-      btn.textContent = "...";
-      const { error } = await supabaseClient
-        .from("reservations")
-        .update({ admin_notes: area.value.trim() || null })
-        .eq("id", id);
-      btn.disabled = false;
-      btn.textContent = error ? "ERRO" : "SALVO ✓";
-      setTimeout(() => { btn.textContent = "SALVAR"; }, 2000);
-      if (error) console.error("save note error:", error);
-    });
-
-    async function updateReservationStatus(reservationId, nextStatus, button) {
-      button.disabled = true;
-      const originalText = button.textContent;
-      button.textContent = "SALVANDO...";
-
-      const { error } = await supabaseClient.rpc("admin_update_reservation_status", {
-        p_reservation_id: reservationId,
-        p_status: nextStatus
-      });
-
-      if (error) {
-        console.error(error);
-        showToast(error.message || "Não foi possível salvar o status.", "error");
-        button.disabled = false;
-        button.textContent = originalText;
-        return;
-      }
-
-      const labels = { confirmed:"Reserva confirmada", cancelled:"Reserva cancelada", expired:"Reserva expirada" };
-      showToast(labels[nextStatus] || "Status atualizado", nextStatus === "confirmed" ? "success" : "warn");
-      await loadReservations();
-    }
-
-    async function emitNF(reservationId, button) {
-      button.disabled = true;
-      const originalText = button.textContent;
-      button.textContent = "EMITINDO...";
-
-      try {
-        const { data: sessionData } = await supabaseClient.auth.getSession();
-        const token = sessionData?.session?.access_token;
-
-        const res = await fetch(window.FUNCTIONS_URL + "/emit-nfse", {
-          method: "POST",
-          headers: {
-            "Content-Type":  "application/json",
-            "Authorization": "Bearer " + token,
-            "apikey":        window.SUPABASE_KEY,
-          },
-          body: JSON.stringify({ reservation_id: reservationId }),
-        });
-
-        const data = await res.json().catch(() => null);
-
-        if (!res.ok) {
-          showToast(data?.error || "Falha ao emitir nota fiscal.", "error");
-          button.disabled = false;
-          button.textContent = originalText;
-          return;
-        }
-
-        const statusMsg = data?.status === "emitted" ? "Nota fiscal emitida com sucesso." : "Nota fiscal em processamento na prefeitura.";
-        showToast(statusMsg, "success");
-        await loadReservations();
-      } catch (err) {
-        showToast(err.message || "Erro ao emitir nota fiscal.", "error");
-        button.disabled = false;
-        button.textContent = originalText;
-      }
-    }
-
-    function bindEvents() {
-      pricingRoom.addEventListener("change", async () => {
-        clearPricingSelection();
-        await loadPricingMonthData();
-      });
-
-      applyAllSuites.addEventListener("change", () => {
-        if (pricingRoom.value) {
-          setPricingStatus("info", applyAllSuites.checked
-            ? "Visualizando a suíte selecionada. As próximas alterações serão aplicadas em todas as suítes."
-            : "As próximas alterações serão aplicadas apenas na suíte selecionada.");
-        }
-      });
-
-      prevMonthBtn.addEventListener("click", async () => {
-        pricingViewDate = new Date(pricingViewDate.getFullYear(), pricingViewDate.getMonth() - 1, 1);
-        await loadPricingMonthData();
-      });
-
-      nextMonthBtn.addEventListener("click", async () => {
-        pricingViewDate = new Date(pricingViewDate.getFullYear(), pricingViewDate.getMonth() + 1, 1);
-        await loadPricingMonthData();
-      });
-
-      clearDateSelectionBtn.addEventListener("click", clearPricingSelection);
-
-      document.getElementById("saveBasePriceBtn").addEventListener("click", saveBasePrice);
-      document.getElementById("applyPricingBtn").addEventListener("click", applyPricingSelection);
-      document.getElementById("deletePricingBtn").addEventListener("click", deletePricingSelection);
-
-      document.getElementById("refreshReservationsBtn").addEventListener("click", loadReservations);
-      document.getElementById("adminTopRefreshBtn")?.addEventListener("click", loadReservations);
-      document.getElementById("exportCsvBtn").addEventListener("click", exportReservationsCSV);
-
-      document.getElementById("clearFiltersBtn").addEventListener("click", () => {
-        searchInput.value = "";
-        statusFilter.value = "all";
-        roomFilter.value = "all";
-        paymentFilter.value = "all";
-        sortFilter.value = "created_desc";
-        dateFilter.value = "all";
-        setQuickFilter("all");
-      });
-
-      [searchInput, statusFilter, roomFilter, paymentFilter, sortFilter, dateFilter].forEach(el => {
-        el.addEventListener("input", () => {
-          clearQuickFilterState();
-          renderReservations();
-        });
-        el.addEventListener("change", () => {
-          clearQuickFilterState();
-          renderReservations();
-        });
-      });
-
-      document.querySelectorAll(".quick-filter-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          setQuickFilter(button.dataset.quickFilter);
-        });
-      });
-
-      document.addEventListener("click", async (event) => {
-        const nfButton = event.target.closest(".emit-nf-btn");
-        if (nfButton) {
-          await emitNF(nfButton.getAttribute("data-id"), nfButton);
-          return;
-        }
-
-        const actionButton = event.target.closest(".status-action-btn");
-        if (actionButton) {
-          await updateReservationStatus(
-            actionButton.getAttribute("data-id"),
-            actionButton.getAttribute("data-status"),
-            actionButton
-          );
-          return;
-        }
-      });
-    }
-
-    // ── Promo codes management ───────────────────────────────────────────────
-
-    async function loadPromos() {
-      const list = document.getElementById("promoList");
-      const { data, error } = await supabaseClient
-        .from("promo_codes")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error || !data) {
-        list.innerHTML = '<div style="color:#c0392b;font-size:14px;">Erro ao carregar códigos.</div>';
-        return;
-      }
-      if (data.length === 0) {
-        list.innerHTML = '<div style="color:#888;font-size:14px;">Nenhum código cadastrado.</div>';
-        return;
-      }
-
-      const fmt  = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-      const fmt2 = v => "R$ " + Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-      list.innerHTML = data.map(p => {
-        const discStr = p.discount_type === "percentage"
-          ? `${p.discount_value}% de desconto`
-          : `${fmt2(p.discount_value)} de desconto`;
-        const expiry = p.valid_until ? ` · até ${p.valid_until.split("-").reverse().join("/")}` : "";
-        const usesLabel = p.max_uses ? `${p.uses_count}/${p.max_uses} usos` : `${p.uses_count} usos`;
-        const activeColor = p.active ? "#2a7a4b" : "#888";
-
-        // Compute analytics from already-loaded reservations
-        const promoRes = allReservations.filter(r => r.promo_code === p.code);
-        const paidRes  = promoRes.filter(r =>
-          ["confirmed","paid"].includes(normalizeStatus(r.payment_status)) ||
-          normalizeStatus(r.status) === "confirmed"
-        );
-        const totalDiscount = paidRes.reduce((s, r) => s + (parseFloat(r.discount_amount) || 0), 0);
-        const totalRevenue  = paidRes.reduce((s, r) => s + (parseFloat(r.total_amount) || 0), 0);
-
-        return `
-          <div style="background:rgba(29,53,87,.04);border-radius:10px;padding:14px 18px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-              <div>
-                <span style="font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--navy);">${escHtml(p.code)}</span>
-                <span style="margin-left:12px;font-size:13px;color:#555;">${escHtml(discStr)}${escHtml(expiry)}</span>
-                ${p.description ? `<span style="margin-left:8px;font-size:12px;color:#888;">— ${escHtml(p.description)}</span>` : ""}
-              </div>
-              <div style="display:flex;gap:8px;align-items:center;">
-                <span style="font-size:12px;font-weight:600;color:${activeColor};">${p.active ? "ATIVO" : "INATIVO"}</span>
-                <button type="button" class="toggle-promo-btn" data-id="${escAttr(p.id)}" data-active="${p.active ? "true" : "false"}"
-                  style="background:${p.active ? "#e74c3c" : "#2a7a4b"};color:#fff;border:none;border-radius:6px;
-                    padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;">
-                  ${p.active ? "Desativar" : "Ativar"}
-                </button>
-              </div>
-            </div>
-            <div style="display:flex;gap:24px;margin-top:10px;flex-wrap:wrap;">
-              <span style="font-size:12px;color:#666;">${usesLabel}</span>
-              <span style="font-size:12px;color:#666;">Reservas pagas: <b>${paidRes.length}</b></span>
-              <span style="font-size:12px;color:#c0392b;">Desconto concedido: <b>${fmt(totalDiscount)}</b></span>
-              <span style="font-size:12px;color:#2a7a4b;">Receita gerada: <b>${fmt(totalRevenue)}</b></span>
-            </div>
-          </div>`;
-      }).join("");
-    }
-
-    async function togglePromo(id, currentActive) {
-      await supabaseClient.from("promo_codes").update({ active: !currentActive }).eq("id", id);
-      await loadPromos();
-    }
-
-    document.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".toggle-promo-btn");
-      if (!btn) return;
-      await togglePromo(btn.dataset.id, btn.dataset.active === "true");
-    });
-
-    document.getElementById("promoCreateBtn").addEventListener("click", async function() {
-      const code  = document.getElementById("promoCode").value.trim().toUpperCase();
-      const type  = document.getElementById("promoType").value;
-      const value = parseFloat(document.getElementById("promoValue").value);
-      const desc  = document.getElementById("promoDesc").value.trim() || null;
-      const until = document.getElementById("promoValidUntil").value || null;
-      const maxU  = parseInt(document.getElementById("promoMaxUses").value) || null;
-      const minN  = parseInt(document.getElementById("promoMinNights").value) || null;
-      const msg   = document.getElementById("promoCreateMsg");
-
-      if (!code || !type || isNaN(value) || value <= 0) {
-        msg.style.color = "#c0392b";
-        msg.textContent = "Preencha código, tipo e valor.";
-        return;
-      }
-      if (type === "percentage" && value > 100) {
-        msg.style.color = "#c0392b";
-        msg.textContent = "Porcentagem não pode ultrapassar 100%.";
-        return;
-      }
-
-      this.disabled = true;
-      const { error } = await supabaseClient.from("promo_codes").insert({
-        code, discount_type: type, discount_value: value,
-        description: desc, valid_until: until, max_uses: maxU, min_nights: minN
-      });
-      this.disabled = false;
-
-      if (error) {
-        msg.style.color = "#c0392b";
-        msg.textContent = error.message.includes("unique") ? "Código já existe." : error.message;
-        return;
-      }
-
-      msg.style.color = "#2a7a4b";
-      msg.textContent = `Código ${code} criado!`;
-      ["promoCode","promoValue","promoDesc","promoValidUntil","promoMaxUses","promoMinNights"]
-        .forEach(id => { document.getElementById(id).value = ""; });
-      await loadPromos();
-    });
-
-    // Load promos when tab is switched to
-    document.querySelectorAll('[data-tab="promos"]').forEach(el => el.addEventListener("click", loadPromos));
-
-    // ---- Extras tab ----
-    async function loadExtras() {
-      const list = document.getElementById("extrasList");
-      const msg  = document.getElementById("extrasMsg");
-      list.innerHTML = '<p style="color:#888;font-size:14px;">Carregando...</p>';
-      msg.textContent = "";
-
-      const { data, error } = await supabaseClient
-        .from("addons")
-        .select("*")
-        .order("id");
-
-      if (error || !data) {
-        list.innerHTML = `<p style="color:#c0392b;font-size:14px;">Erro: ${error?.message}</p>`;
-        return;
-      }
-
-      list.innerHTML = data.map((a, index) => {
-        const rowId = `extra-${index}`;
-        return `
-        <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-            <span style="font-weight:700;font-size:15px;color:var(--navy);flex:1;">${escHtml(a.label)}</span>
-            <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;">
-              <input type="checkbox" id="${rowId}-active" ${a.active ? "checked" : ""}
-                style="width:16px;height:16px;accent-color:var(--navy);">
-              Ativo
-            </label>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px;margin-bottom:12px;">
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">
-                Preço (R$) ${a.per === "person_night" ? "· por pessoa/noite" : "· valor fixo"}
-              </label>
-              <input id="${rowId}-price" type="number" min="0" step="0.01" value="${escAttr(a.price)}"
-                style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
-            </div>
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">Descrição (exibida no formulário de reserva)</label>
-              <input id="${rowId}-desc" type="text" value="${escAttr(a.description)}"
-                style="width:100%;box-sizing:border-box;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:14px;font-family:inherit;">
-            </div>
-          </div>
-          <button type="button" class="save-extra-btn" data-id="${escAttr(a.id)}" data-row-id="${rowId}"
-            style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;">
-            Salvar alterações
+        <div class="legend">
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--navy)"></span> Check-in hoje</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span> Confirmada</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:rgba(184,149,95,0.20);border:1.5px dashed #8f6c3c"></span> Pendente</span>
+          <span class="legend-item"><span class="legend-swatch" style="background:repeating-linear-gradient(45deg,#ccc 0,#ccc 4px,#ddd 4px,#ddd 8px);"></span> Bloqueado</span>
+          <button class="btn-icon" style="margin-left:auto;width:auto;padding:0 12px;height:30px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--navy);gap:6px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 10v6M9 13h6"/></svg>
+            Bloquear data
           </button>
         </div>
-      `}).join("");
-    }
+      </div>
 
-    async function saveExtra(id, rowId) {
-      const active = document.getElementById(`${rowId}-active`).checked;
-      const price  = parseFloat(document.getElementById(`${rowId}-price`).value);
-      const desc   = document.getElementById(`${rowId}-desc`).value.trim();
-      const msg    = document.getElementById("extrasMsg");
+      <!-- SIDE PANEL -->
+      <div>
+        <!-- Today's panel -->
+        <div class="panel">
+          <h3>Hoje <span class="pill">19 mai</span></h3>
 
-      if (isNaN(price) || price < 0) { msg.textContent = "Preço inválido."; msg.style.color = "#c0392b"; return; }
-
-      const { error } = await supabaseClient
-        .from("addons")
-        .update({ active, price, description: desc, updated_at: new Date().toISOString() })
-        .eq("id", id);
-
-      if (error) {
-        msg.textContent = "Erro: " + error.message;
-        msg.style.color = "#c0392b";
-      } else {
-        msg.textContent = "Salvo com sucesso.";
-        msg.style.color = "#2a7a4b";
-        setTimeout(() => { msg.textContent = ""; }, 3000);
-      }
-    }
-
-    document.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".save-extra-btn");
-      if (!btn) return;
-      await saveExtra(btn.dataset.id, btn.dataset.rowId);
-    });
-
-    document.querySelectorAll('[data-tab="extras"]').forEach(el => el.addEventListener("click", loadExtras));
-
-    // ---- Integrações tab ----
-    async function loadIntegracoes() {
-      const list = document.getElementById("integracoesList");
-      const msg  = document.getElementById("integracoesMsg");
-      list.innerHTML = '<p style="color:#888;font-size:14px;">Carregando...</p>';
-      msg.textContent = "";
-
-      const { data, error } = await supabaseClient
-        .from("rooms")
-        .select("id, name, airbnb_ical_url")
-        .order("id", { ascending: true });
-
-      if (error || !data) {
-        list.innerHTML = `<p style="color:#c0392b;font-size:14px;">Erro: ${error?.message}</p>`;
-        return;
-      }
-
-      list.innerHTML = data.map((r, index) => {
-        const rowId = `ical-${index}`;
-        return `
-        <div style="background:rgba(29,53,87,.04);border-radius:12px;padding:20px 22px;">
-          <div style="font-weight:700;font-size:15px;color:var(--navy);margin-bottom:12px;">${escHtml(r.name)}</div>
-          <label style="font-size:12px;display:block;margin-bottom:5px;opacity:.7;">URL do calendário iCal (Airbnb / Booking.com)</label>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-            <input id="${rowId}-url" type="url" placeholder="https://www.airbnb.com.br/calendar/ical/…"
-              value="${escAttr(r.airbnb_ical_url || '')}"
-              style="flex:1;min-width:260px;padding:9px 12px;border:1.5px solid rgba(29,53,87,.18);border-radius:8px;font-size:13px;font-family:inherit;">
-            <button type="button" class="save-ical-btn" data-id="${escAttr(r.id)}" data-row-id="${rowId}"
-              style="background:var(--navy);color:#d8c7a1;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.5px;white-space:nowrap;">
-              Salvar
-            </button>
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin-bottom:6px;">Check-ins (2)</div>
+          <div class="check-row">
+            <img src="site/public/suites/aurora/aurora1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Mariana Ferreira</div>
+              <div class="sn">Suíte Aurora · 2 noites</div>
+            </div>
+            <div class="time">14:00<small>chegada</small></div>
           </div>
-          <p id="${rowId}-msg" style="font-size:12px;margin:6px 0 0;min-height:16px;"></p>
+          <div class="check-row">
+            <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Juliana Costa</div>
+              <div class="sn">Cavalhadas · 4 noites</div>
+            </div>
+            <div class="time">16:30<small>chegada</small></div>
+          </div>
+
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin:14px 0 6px;">Check-outs (1)</div>
+          <div class="check-row">
+            <img src="site/public/suites/rosario/rosario1.jpeg" alt="">
+            <div class="ci-info">
+              <div class="gn">Beatriz Andrade</div>
+              <div class="sn">Suíte Rosário · 3 noites</div>
+            </div>
+            <div class="time">12:00<small>partida</small></div>
+          </div>
         </div>
-      `}).join("");
-    }
 
-    async function saveIcalUrl(roomId, rowId) {
-      const url = document.getElementById(`${rowId}-url`).value.trim();
-      const msg = document.getElementById(`${rowId}-msg`);
+        <!-- Room status -->
+        <div class="panel">
+          <h3>Status dos quartos</h3>
+          <div class="room-status-grid">
+            <div class="room-status occupied"><span class="dot"></span><span class="nm">Aurora</span><span class="st">Ocupado</span></div>
+            <div class="room-status occupied"><span class="dot"></span><span class="nm">Divino</span><span class="st">Ocupado</span></div>
+            <div class="room-status dirty"><span class="dot"></span><span class="nm">Cavalhadas</span><span class="st">Limpar</span></div>
+            <div class="room-status ready"><span class="dot"></span><span class="nm">Rosário</span><span class="st">Pronto</span></div>
+            <div class="room-status clean"><span class="dot"></span><span class="nm">Bonfim</span><span class="st">Limpo</span></div>
+            <div class="room-status" style="background:rgba(22,37,58,0.06);"><span class="dot" style="background:rgba(22,37,58,0.3);"></span><span class="nm" style="color:rgba(22,37,58,0.6);">Pireneus</span><span class="st">Inativa</span></div>
+          </div>
+        </div>
 
-      if (url && !url.startsWith("http")) {
-        msg.textContent = "URL inválida — deve começar com https://";
-        msg.style.color = "#c0392b";
-        return;
-      }
+        <!-- Recent activity -->
+        <div class="panel">
+          <h3>Atividade recente</h3>
+          <div style="font-family:'Inter',sans-serif;font-size:12.5px;color:rgba(22,37,58,0.7);line-height:1.65;">
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">+ Nova reserva</b> · Roberto N. · há 12 min</div>
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✓ Pagamento</b> · Mariana F. · há 1h</div>
+            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✉ Mensagem</b> · Juliana C. · há 2h</div>
+            <div style="padding:6px 0;"><b style="color:var(--navy);">★ Avaliação 5★</b> · Carlos & Sofia · ontem</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      const { error } = await supabaseClient
-        .from("rooms")
-        .update({ airbnb_ical_url: url || null })
-        .eq("id", roomId);
+  </main>
 
-      if (error) {
-        msg.textContent = "Erro: " + error.message;
-        msg.style.color = "#c0392b";
-      } else {
-        msg.textContent = url ? "URL salva. Sincronização ativa." : "URL removida.";
-        msg.style.color = "#2a7a4b";
-        setTimeout(() => { msg.textContent = ""; }, 4000);
-      }
-    }
-
-    document.addEventListener("click", async (e) => {
-      const btn = e.target.closest(".save-ical-btn");
-      if (!btn) return;
-      await saveIcalUrl(btn.dataset.id, btn.dataset.rowId);
-    });
-
-    document.querySelectorAll('[data-tab="integracoes"]').forEach(el => el.addEventListener("click", () => {
-      loadIntegracoes();
-      // Wire up force-sync button once tab is visible
-      const syncBtn = document.getElementById("forceSyncBtn");
-      if (syncBtn && !syncBtn._wired) {
-        syncBtn._wired = true;
-        syncBtn.addEventListener("click", async () => {
-          const statusEl = document.getElementById("forceSyncStatus");
-          syncBtn.disabled = true;
-          statusEl.textContent = "Sincronizando…";
-          statusEl.style.color = "#888";
-          try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            const res = await fetch(window.FUNCTIONS_URL + "/sync-airbnb-calendars", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + (session?.access_token ?? ""),
-              },
-              body: "{}",
-            });
-            const json = await res.json().catch(() => ({}));
-            if (res.ok) {
-              const parts = Object.entries(json.results || {}).map(([room, r]) =>
-                `${room}: ${r.success ? `${r.touched_airbnb ?? 0} datas atualizadas` : r.error}`
-              );
-              statusEl.textContent = parts.length ? parts.join(" · ") : "Concluído.";
-              statusEl.style.color = "#2a7a4b";
-            } else {
-              statusEl.textContent = "Erro: " + (json.error || res.status);
-              statusEl.style.color = "#c0392b";
-            }
-          } catch (e) {
-            statusEl.textContent = "Erro de rede: " + e.message;
-            statusEl.style.color = "#c0392b";
-          } finally {
-            syncBtn.disabled = false;
-            setTimeout(() => { statusEl.textContent = ""; }, 8000);
-          }
-        });
-      }
-    }));
-
-    // ---- Guest messaging modal ----
-    function openMessageModal(reservationId, guestEmail, guestName) {
-      document.getElementById("msgModalReservationId").value = reservationId;
-      document.getElementById("msgModalEmail").textContent   = guestEmail;
-      document.getElementById("msgModalName").textContent    = guestName;
-      document.getElementById("msgModalSubject").value = "";
-      document.getElementById("msgModalBody").value    = "";
-      document.getElementById("msgModalStatus").textContent  = "";
-      document.getElementById("guestMessageModal").style.display = "flex";
-      document.getElementById("msgModalSubject").focus();
-    }
-    window.openMessageModal = openMessageModal;
-
-    function closeMessageModal() {
-      document.getElementById("guestMessageModal").style.display = "none";
-    }
-    window.closeMessageModal = closeMessageModal;
-
-    document.getElementById("sendGuestMessageBtn").addEventListener("click", async () => {
-      const reservationId = document.getElementById("msgModalReservationId").value;
-      const email   = document.getElementById("msgModalEmail").textContent.trim();
-      const subject = document.getElementById("msgModalSubject").value.trim();
-      const body    = document.getElementById("msgModalBody").value.trim();
-      const status  = document.getElementById("msgModalStatus");
-
-      if (!subject || !body) { status.textContent = "Preencha assunto e mensagem."; status.style.color = "#c0392b"; return; }
-
-      status.textContent = "Enviando…";
-      status.style.color = "#888";
-
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      const res = await fetch(window.FUNCTIONS_URL + "/send-admin-message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session?.access_token },
-        body: JSON.stringify({ reservation_id: reservationId, to_email: email, subject, body }),
-      });
-
-      if (res.ok) {
-        status.textContent = "Mensagem enviada com sucesso!";
-        status.style.color = "#2a7a4b";
-        setTimeout(closeMessageModal, 2000);
-      } else {
-        const err = await res.json().catch(() => ({}));
-        status.textContent = "Erro: " + (err.error || res.status);
-        status.style.color = "#c0392b";
-      }
-    });
-
-    // Close modal on backdrop click
-    document.getElementById("guestMessageModal").addEventListener("click", function(e) {
-      if (e.target === this) closeMessageModal();
-    });
-
-    // ── Init ─────────────────────────────────────────────────────────────────
-
-    async function init() {
-      const ok = await requireAdmin();
-      if (!ok) return;
-
-      bindEvents();
-      await loadRooms();
-      await loadReservations();
-      updateSelectionDisplay();
-      setPricingStatus("info", "Selecione uma suíte e clique no calendário para começar.");
-      updateQuickFilterUI();
-    }
-
-    window.logout = logout;
-    init();
-  </script>
-  <script src="cookie-consent.js"></script>
 </body>
 </html>

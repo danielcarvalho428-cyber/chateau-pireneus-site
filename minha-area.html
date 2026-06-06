@@ -1,14 +1,415 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Minha Área | Chateau Pireneus</title>
-  <link rel="canonical" href="https://chateaupireneus.com.br/dashboard.html">
-  <meta http-equiv="refresh" content="0; url=dashboard.html">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Área — Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/styles.css">
+  <link rel="stylesheet" href="mockup-fixes.css">
+  <style>
+    body{ margin:0; font-family:"Inter",sans-serif; background:#fbfaf7; color:var(--navy); overflow-x:hidden; }
+
+    .dash-wrap { max-width:1080px; margin:0 auto; padding:100px 24px 64px; }
+
+    /* GREETING */
+    .greet {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:28px; gap:24px; flex-wrap:wrap;
+    }
+    .greet h1 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:42px; color:var(--navy); margin:0 0 34px;
+      letter-spacing:1.2px; line-height:1.2;
+    }
+    .greet h1 span { color:var(--gold2); font-style:italic; }
+    .greet-sub {
+      font-family:"Inter",sans-serif; font-size:13px;
+      color:rgba(22,37,58,0.6); margin-top:6px;
+    }
+    .greet-nav {
+      display:flex; gap:6px;
+      background:#fff; padding:5px;
+      border:1px solid rgba(29,53,87,0.10); border-radius:14px;
+    }
+    .greet-nav button {
+      padding:9px 16px; background:transparent; color:rgba(22,37,58,0.65);
+      border:none; border-radius:10px; cursor:pointer;
+      font-family:"Inter",sans-serif; font-size:12px; font-weight:600;
+      letter-spacing:0.5px; transition:0.18s;
+    }
+    .greet-nav button.active { background:var(--navy); color:#fff; }
+
+    /* NEXT STAY HERO CARD */
+    .next-stay {
+      position:relative;
+      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
+      border-radius:28px;
+      overflow:hidden;
+      color:#fff;
+      box-shadow:0 30px 70px rgba(29,53,87,0.20);
+      margin-bottom:32px;
+    }
+    .ns-bg {
+      position:absolute; top:0; right:0; bottom:0; width:50%;
+      background-image:url("site/public/suites/aurora/aurora1.jpeg");
+      background-size:cover; background-position:center;
+      opacity:0.6;
+    }
+    .ns-bg::after {
+      content:""; position:absolute; inset:0;
+      background:linear-gradient(to left, transparent, var(--navy));
+    }
+    .ns-content {
+      position:relative; z-index:2;
+      padding:40px 44px;
+      max-width:60%;
+    }
+    .ns-tag {
+      display:inline-block;
+      padding:5px 12px;
+      background:rgba(216,199,161,0.18);
+      border:1px solid rgba(216,199,161,0.4);
+      border-radius:30px;
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:2px;
+      text-transform:uppercase; color:var(--gold); font-weight:600;
+      margin-bottom:18px;
+    }
+    .ns-title {
+      font-family:"Cormorant Garamond",serif; font-weight:400;
+      font-size:36px; margin:0 0 4px; line-height:1.1;
+    }
+    .ns-suite {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:rgba(216,199,161,0.85); font-weight:500; letter-spacing:0.5px;
+      margin-bottom:24px;
+    }
+    .ns-grid {
+      display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;
+      margin-bottom:28px;
+    }
+    .ns-stat {
+      padding-right:12px;
+      border-right:1px solid rgba(255,255,255,0.15);
+    }
+    .ns-stat:last-child { border-right:none; }
+    .ns-stat .l {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(255,255,255,0.55);
+      font-weight:600; margin-bottom:6px;
+    }
+    .ns-stat .v {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:22px;
+      color:#fff; line-height:1;
+    }
+    .ns-stat .v small {
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(255,255,255,0.55); font-weight:400;
+    }
+    .ns-actions {
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .ns-btn {
+      padding:11px 18px; border-radius:11px;
+      font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
+      letter-spacing:1.6px; text-transform:uppercase;
+      text-decoration:none; transition:0.22s;
+      display:inline-flex; align-items:center; gap:7px;
+    }
+    .ns-btn.primary {
+      background:var(--gold); color:var(--navy);
+    }
+    .ns-btn.primary:hover { background:#e3d2ad; transform:translateY(-1px); }
+    .ns-btn.ghost {
+      background:rgba(255,255,255,0.10); color:#fff;
+      border:1px solid rgba(255,255,255,0.20);
+    }
+    .ns-btn.ghost:hover { background:rgba(255,255,255,0.18); }
+    .ns-btn svg { width:13px; height:13px; }
+
+    /* WEATHER BADGE on hero */
+    .ns-weather {
+      position:absolute; top:32px; right:32px; z-index:3;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(10px);
+      padding:10px 16px; border-radius:14px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .ns-weather svg { width:24px; height:24px; color:var(--gold); }
+    .ns-weather .temp {
+      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:22px;
+      color:#fff; line-height:1;
+    }
+    .ns-weather .lbl {
+      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.4px;
+      text-transform:uppercase; color:rgba(255,255,255,0.7);
+    }
+
+    /* SECTION TITLES */
+    .sec-title {
+      font-family:"Cormorant Garamond",serif; font-weight:700;
+      font-size:22px; color:var(--navy); margin:0 0 16px;
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .sec-title a {
+      font-family:"Inter",sans-serif; font-size:11px;
+      letter-spacing:2px; text-transform:uppercase; font-weight:700;
+      color:var(--navy); text-decoration:none;
+      padding-bottom:2px; border-bottom:1px solid var(--gold2);
+    }
+
+    /* HISTORICAL RESERVAS */
+    .reservas { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:32px; }
+    .res-card {
+      display:flex; gap:16px; background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:14px;
+      transition:0.2s;
+    }
+    .res-card:hover { transform:translateY(-2px); box-shadow:0 18px 40px rgba(0,0,0,0.06); }
+    .res-card img { width:90px; height:90px; border-radius:12px; object-fit:cover; flex-shrink:0; }
+    .res-card .info { flex:1; display:flex; flex-direction:column; }
+    .res-card h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:17px;
+      color:var(--navy); margin:0 0 4px;
+    }
+    .res-card .dates {
+      font-family:"Inter",sans-serif; font-size:12.5px;
+      color:rgba(22,37,58,0.65); margin-bottom:6px;
+    }
+    .res-card .meta {
+      display:flex; gap:14px; margin-top:auto; align-items:center;
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      color:rgba(22,37,58,0.65);
+    }
+    .badge {
+      display:inline-flex; align-items:center; gap:5px;
+      padding:3px 9px; border-radius:20px;
+      font-family:"Inter",sans-serif; font-size:10.5px; font-weight:600;
+      letter-spacing:0.5px;
+    }
+    .badge::before { content:''; width:5px; height:5px; border-radius:50%; }
+    .badge.upcoming { background:rgba(216,199,161,0.18); color:#8f6c3c; }
+    .badge.upcoming::before { background:#8f6c3c; }
+    .badge.completed { background:rgba(47,122,75,0.10); color:var(--success); }
+    .badge.completed::before { background:var(--success); }
+    .badge.cancelled { background:rgba(142,53,53,0.10); color:var(--danger); }
+    .badge.cancelled::before { background:var(--danger); }
+
+    /* QUICK ACTIONS GRID */
+    .qa-grid {
+      display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+      margin-bottom:32px;
+    }
+    .qa-card {
+      background:#fff;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:22px;
+      text-decoration:none;
+      transition:0.2s;
+      display:flex; gap:14px; align-items:flex-start;
+    }
+    .qa-card:hover { transform:translateY(-3px); box-shadow:0 18px 40px rgba(0,0,0,0.08); border-color:var(--gold2); }
+    .qa-icon {
+      width:42px; height:42px; border-radius:12px;
+      background:rgba(216,199,161,0.18);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--navy); flex-shrink:0;
+    }
+    .qa-icon svg { width:20px; height:20px; }
+    .qa-card h4 {
+      font-family:"Inter",sans-serif; font-weight:700; font-size:14px;
+      color:var(--navy); margin:0 0 4px;
+    }
+    .qa-card p {
+      font-family:"Inter",sans-serif; font-size:12.5px;
+      color:rgba(22,37,58,0.62); margin:0; line-height:1.55;
+    }
+
+    /* RECOMMENDED */
+    .recommend {
+      background:#fff;
+      border-radius:24px;
+      padding:32px;
+      border:1px solid rgba(29,53,87,0.08);
+    }
+    .rec-grid {
+      display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
+      margin-top:16px;
+    }
+    .rec-card {
+      border-radius:14px; overflow:hidden;
+      border:1px solid rgba(29,53,87,0.08);
+      transition:0.2s; text-decoration:none; color:inherit;
+    }
+    .rec-card:hover { transform:translateY(-3px); }
+    .rec-card img { width:100%; aspect-ratio:4/3; object-fit:cover; }
+    .rec-card .b { padding:12px 14px; }
+    .rec-card h5 {
+      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:15px;
+      color:var(--navy); margin:0 0 3px;
+    }
+    .rec-card p {
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      color:rgba(22,37,58,0.6); margin:0;
+    }
+
+    @media (max-width:900px) {
+      .ns-bg { display:none; }
+      .ns-content { max-width:100%; padding:28px; }
+      .ns-grid { grid-template-columns:repeat(2, 1fr); }
+      .ns-weather { top:auto; bottom:28px; right:28px; }
+      .reservas, .qa-grid, .rec-grid { grid-template-columns:1fr; }
+      .greet h1 { font-size:32px; }
+    }
+  </style>
 </head>
 <body>
-  <script>window.location.replace("dashboard.html");</script>
-  <a href="dashboard.html">Abrir Minha Área</a>
+
+  <header class="top-header presolid">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+      <div class="header-actions">
+        <a class="instagram-btn" href="#"><svg viewBox="0 0 24 24" fill="none"><rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg></a>
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
+        <button class="menu-button">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="dash-wrap">
+
+    <!-- GREETING -->
+    <div class="greet">
+      <div>
+        <h1>Olá, <span>Mariana</span></h1>
+        <div class="greet-sub">Bem-vinda de volta à sua área pessoal</div>
+      </div>
+      <div class="greet-nav">
+        <button class="active">Próximas</button>
+        <button>Histórico</button>
+        <button>Dados pessoais</button>
+      </div>
+    </div>
+
+    <!-- NEXT STAY HERO CARD -->
+    <div class="next-stay">
+      <div class="ns-bg"></div>
+      <div class="ns-weather">
+        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.64 5.64l1.42 1.42M16.95 16.95l1.41 1.41M5.64 18.36l1.42-1.42M16.95 7.05l1.41-1.41" stroke="currentColor" stroke-width="1.5"/></svg>
+        <div>
+          <div class="temp">28°</div>
+          <div class="lbl">Em Piri</div>
+        </div>
+      </div>
+
+      <div class="ns-content">
+        <div class="ns-tag">Próxima estadia</div>
+        <h2 class="ns-title">Faltam 12 dias</h2>
+        <div class="ns-suite">Suíte Aurora · 21 a 23 maio 2026</div>
+
+        <div class="ns-grid">
+          <div class="ns-stat">
+            <div class="l">Check-in</div>
+            <div class="v">21 mai<small> / 14h</small></div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Check-out</div>
+            <div class="v">23 mai<small> / 12h</small></div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Noites</div>
+            <div class="v">2</div>
+          </div>
+          <div class="ns-stat">
+            <div class="l">Pago</div>
+            <div class="v">R$ 1.120</div>
+          </div>
+        </div>
+
+        <div class="ns-actions">
+          <a class="ns-btn primary" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074"/></svg> Falar com a pousada</a>
+          <a class="ns-btn ghost" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Como chegar</a>
+          <a class="ns-btn ghost" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Detalhes</a>
+          <a class="ns-btn ghost" href="#">Cancelar reserva</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <h2 class="sec-title">Atalhos</h2>
+    <div class="qa-grid">
+      <a class="qa-card" href="#">
+        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <div>
+          <h4>Reservar novamente</h4>
+          <p>Reserve sua próxima estadia em poucos cliques.</p>
+        </div>
+      </a>
+      <a class="qa-card" href="#">
+        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+        <div>
+          <h4>Dados pessoais</h4>
+          <p>Atualize seu cadastro e preferências.</p>
+        </div>
+      </a>
+      <a class="qa-card" href="#">
+        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/></svg></div>
+        <div>
+          <h4>Avaliar estadia</h4>
+          <p>Conte como foi sua experiência nas estadias anteriores.</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- RESERVAS HISTORY -->
+    <h2 class="sec-title">Estadias anteriores <a href="#">Ver todas</a></h2>
+    <div class="reservas">
+      <div class="res-card">
+        <img src="site/public/suites/divino/divino1.jpeg" alt="">
+        <div class="info">
+          <h3>Suíte do Divino</h3>
+          <div class="dates">14 — 17 fev 2026 · 3 noites</div>
+          <div class="meta">
+            <span class="badge completed">Concluída</span>
+            <span>R$ 1.560</span>
+          </div>
+        </div>
+      </div>
+      <div class="res-card">
+        <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="">
+        <div class="info">
+          <h3>Suíte das Cavalhadas</h3>
+          <div class="dates">28 nov — 1 dez 2025 · 3 noites</div>
+          <div class="meta">
+            <span class="badge completed">Concluída</span>
+            <span>R$ 1.680</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+  <footer>
+    <img class="footer-bg" src="site/footer.png" alt="Footer">
+    <div class="footer-overlay">
+      <div class="footer-contact">
+        <a href="#">(62) 99816-7654</a>
+        <a href="#">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

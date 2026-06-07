@@ -113,7 +113,7 @@ function json(body: unknown, status = 200) {
 
 function corsHeaders() {
   return {
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://chateaupireneus.com.br",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   }
 }

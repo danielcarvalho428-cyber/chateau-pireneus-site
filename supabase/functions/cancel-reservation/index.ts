@@ -214,7 +214,7 @@ function json(body: unknown, status = 200) {
     status,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": "https://chateaupireneus.com.br",
       "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     },
   })

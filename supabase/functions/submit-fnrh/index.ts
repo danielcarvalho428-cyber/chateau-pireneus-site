@@ -5,7 +5,7 @@ const FNRH_CHAVE   = Deno.env.get("FNRH_CHAVE")   ?? ""
 const FNRH_BASE    = Deno.env.get("FNRH_BASE_URL") ?? "https://fnrh.turismo.serpro.gov.br/FNRH_API/rest/v1"
 
 const CORS = {
-  "Access-Control-Allow-Origin":  "*",
+  "Access-Control-Allow-Origin": "https://chateaupireneus.com.br",
   "Access-Control-Allow-Headers": "authorization, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 }

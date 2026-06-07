@@ -3,11 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chateau Pireneus — Início</title>
+  <title>Chateau Pireneus — Pousada boutique em Pirenópolis</title>
+  <meta name="description" content="Pousada boutique em Pirenópolis para casais, com suítes aconchegantes, piscina, varanda com rede e reserva direta." />
+  <link rel="canonical" href="https://chateaupireneus.com.br/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Chateau Pireneus — Pousada boutique em Pirenópolis" />
+  <meta property="og:description" content="Hospedagem charmosa em Pirenópolis para casais que buscam conforto, privacidade e uma experiência acolhedora." />
+  <meta property="og:url" content="https://chateaupireneus.com.br/" />
+  <meta property="og:image" content="https://chateaupireneus.com.br/site/hero.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site/styles.css">
   <link rel="stylesheet" href="mockup-fixes.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LodgingBusiness",
+    "name": "Chateau Pireneus",
+    "url": "https://chateaupireneus.com.br/",
+    "image": "https://chateaupireneus.com.br/site/hero.webp",
+    "telephone": "+55 62 99816-7654",
+    "email": "chateaupireneus@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Tupinambás, Quadra 09, Lote 16, Setor Meia Ponte",
+      "addressLocality": "Pirenópolis",
+      "addressRegion": "GO",
+      "addressCountry": "BR"
+    },
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Piscina", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Reserva direta", "value": true },
+      { "@type": "LocationFeatureSpecification", "name": "Suítes para casais", "value": true }
+    ]
+  }
+  </script>
   <style>
     body{ margin:0; font-family:"Inter",sans-serif; background:var(--bg); color:var(--navy); overflow-x:hidden; }
 
@@ -281,7 +312,7 @@
       box-shadow:0 0 18px rgba(216,199,161,0.55);
     }
 
-    /* PIRI (matches existing — using placeholder "Imagem em breve") */
+    /* PIRI */
     .piri {
       background:linear-gradient(to bottom, #f8f6f2 0%, #f3eee4 100%);
       border-top:1px solid rgba(29,53,87,0.08);
@@ -316,13 +347,15 @@
     .piri-card:hover { transform:translateY(-6px); box-shadow:0 22px 48px rgba(0,0,0,0.12); }
     .piri-image {
       position:relative; aspect-ratio:4/3; overflow:hidden;
-      background:
-        linear-gradient(135deg, rgba(29,53,87,0.92), rgba(20,42,69,0.82)),
-        radial-gradient(circle at 20% 20%, rgba(216,199,161,0.22), transparent 35%);
+      background-size:cover;
+      background-position:center;
       display:flex; align-items:flex-end; padding:18px;
     }
+    .piri-card:nth-child(1) .piri-image { background-image:linear-gradient(180deg, transparent 35%, rgba(29,53,87,0.72)), url("hero-piri.jpeg"); }
+    .piri-card:nth-child(2) .piri-image { background-image:linear-gradient(180deg, transparent 35%, rgba(29,53,87,0.72)), url("site/public/galeria/lazer2.jpeg"); }
+    .piri-card:nth-child(3) .piri-image { background-image:linear-gradient(180deg, transparent 35%, rgba(29,53,87,0.72)), url("site/public/galeria/sala-jantar2.jpeg"); }
     .piri-image::after {
-      content:"Imagem em breve";
+      content:"";
       font-family:"Cormorant Garamond",serif;
       font-size:18px; letter-spacing:0.4px; color:rgba(255,255,255,0.82);
     }
@@ -594,7 +627,7 @@
     </div>
   </section>
 
-  <!-- PIRI (unchanged from existing — placeholder images) -->
+  <!-- PIRI -->
   <section class="piri" id="piri">
     <div class="wrap">
       <div class="piri-top">
@@ -639,6 +672,7 @@
         <a href="https://wa.me/5562998167654" target="_blank" rel="noopener">(62) 99816-7654</a>
         <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
         <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+        <div class="footer-legal-links"><a href="policies.html">Políticas da Pousada</a><a href="privacidade.html">Política de Privacidade</a></div>
       </div>
     </div>
   </footer>

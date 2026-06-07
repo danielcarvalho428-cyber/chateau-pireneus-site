@@ -148,6 +148,13 @@
     });
   }
 
+  function enhanceImages() {
+    document.querySelectorAll("img").forEach((img, index) => {
+      if (!img.hasAttribute("decoding")) img.setAttribute("decoding", "async");
+      if (index > 0 && !img.hasAttribute("loading")) img.setAttribute("loading", "lazy");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setExternalLinks();
     ensureMenu();
@@ -155,5 +162,6 @@
     initBookingMockup();
     wireSuiteReserveButtons();
     wireSearchBar();
+    enhanceImages();
   });
 })();

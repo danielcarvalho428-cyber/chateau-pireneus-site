@@ -1,367 +1,1275 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Minha Área — Chateau Pireneus</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site/styles.css">
-  <link rel="stylesheet" href="mockup-fixes.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Área | Chateau Pireneus</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="preload" as="image" href="hero.webp" fetchpriority="high">
+  <link rel="preconnect" href="https://pjxurbtvmzdlpnexfqpd.supabase.co" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="stylesheet" href="styles.css">
+
   <style>
-    body{ margin:0; font-family:"Inter",sans-serif; background:#fbfaf7; color:var(--navy); overflow-x:hidden; }
+    :root{
+      --ok-bg:rgba(47,122,75,0.12);
+      --ok-text:#2f7a4b;
+      --warn-bg:rgba(184,149,95,0.16);
+      --warn-text:#8f6c3c;
+      --danger-bg:rgba(181,74,74,0.12);
+      --danger-text:#8e3535;
+      --info-bg:rgba(81,109,143,0.12);
+      --info-text:#355474;
+    }
 
-    .dash-wrap { max-width:1080px; margin:0 auto; padding:100px 24px 64px; }
+    body{
+      margin:0;
+      font-family:"Inter", sans-serif;
+      background:var(--bg);
+      color:var(--navy);
+      overflow-x:hidden;
+    }
 
-    /* GREETING */
-    .greet {
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:28px; gap:24px; flex-wrap:wrap;
-    }
-    .greet h1 {
-      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
-      font-size:42px; color:var(--navy); margin:0 0 34px;
-      letter-spacing:1.2px; line-height:1.2;
-    }
-    .greet h1 span { color:var(--gold2); font-style:italic; }
-    .greet-sub {
-      font-family:"Inter",sans-serif; font-size:13px;
-      color:rgba(22,37,58,0.6); margin-top:6px;
-    }
-    .greet-nav {
-      display:flex; gap:6px;
-      background:#fff; padding:5px;
-      border:1px solid rgba(29,53,87,0.10); border-radius:14px;
-    }
-    .greet-nav button {
-      padding:9px 16px; background:transparent; color:rgba(22,37,58,0.65);
-      border:none; border-radius:10px; cursor:pointer;
-      font-family:"Inter",sans-serif; font-size:12px; font-weight:600;
-      letter-spacing:0.5px; transition:0.18s;
-    }
-    .greet-nav button.active { background:var(--navy); color:#fff; }
-
-    /* NEXT STAY HERO CARD */
-    .next-stay {
+    .hero{
+      min-height:92vh;
       position:relative;
-      background:linear-gradient(135deg, var(--navy) 0%, var(--navy2) 100%);
-      border-radius:28px;
+      background-image:url("hero.webp");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       overflow:hidden;
+      padding:136px 22px 88px;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.54),
+        rgba(0,0,0,0.34) 40%,
+        rgba(0,0,0,0.56)
+      );
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      pointer-events:none;
+      background:radial-gradient(900px 420px at 50% 32%, rgba(216,199,161,0.10), transparent 60%);
+      opacity:0.95;
+    }
+
+    .hero-shell{
+      position:relative;
+      z-index:3;
+      width:100%;
+      max-width:var(--max);
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1.05fr 0.95fr;
+      gap:30px;
+      align-items:center;
+    }
+
+    .hero-copy{
       color:#fff;
-      box-shadow:0 30px 70px rgba(29,53,87,0.20);
+      text-align:left;
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards;
+    }
+
+    .hero-kicker{
+      font-family:"Cormorant Garamond", serif;
+      font-weight:600;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+      margin-bottom:12px;
+      opacity:0.95;
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:clamp(34px, 5.5vw, 58px);
+      letter-spacing:2px;
+      text-transform:uppercase;
+      line-height:1.24;
+      text-shadow:0 12px 40px rgba(0,0,0,0.55);
+    }
+
+    .hero-text{
+      margin:18px 0 0;
+      max-width:640px;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:500;
+      font-size:21px;
+      line-height:1.7;
+      text-shadow:0 10px 28px rgba(0,0,0,0.45);
+      opacity:0.98;
+    }
+
+    .hero-links{
+      margin-top:20px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .hero-card{
+      position:relative;
+      z-index:3;
+      background:linear-gradient(135deg, rgba(255,255,255,0.80), rgba(255,255,255,0.62));
+      border:1px solid rgba(255,255,255,0.30);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:28px 24px 24px;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      opacity:0;
+      transform:translateY(18px);
+      animation:heroIn 1.2s ease forwards 0.12s;
+      animation-fill-mode:forwards;
+      text-align:left;
+    }
+
+    @keyframes heroIn{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .card-eyebrow{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.76);
+      letter-spacing:0.4px;
+      margin-bottom:8px;
+    }
+
+    .card-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.28;
+    }
+
+    .card-subtitle{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .orn{
+      width:150px;
+      height:1px;
+      background:linear-gradient(to right, rgba(216,199,161,0), rgba(216,199,161,1), rgba(216,199,161,0));
+      margin:14px 0 0;
+    }
+
+    .hero-meta{
+      margin-top:22px;
+      display:grid;
+      gap:12px;
+    }
+
+    .meta-card{
+      background:rgba(255,255,255,0.58);
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:18px;
+      padding:14px 15px;
+    }
+
+    .meta-label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:7px;
+    }
+
+    .meta-value{
+      display:block;
+      color:var(--ink);
+      font-size:15px;
+      font-weight:600;
+      line-height:1.6;
+      word-break:break-word;
+    }
+
+    .hero-actions{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .dash-wrap{
+      max-width:1080px;
+      margin:0 auto;
+      padding:108px 24px 18px;
+    }
+
+    .greet{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:28px;
+      gap:24px;
+      flex-wrap:wrap;
+    }
+
+    .greet h1{
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:42px;
+      color:var(--navy);
+      margin:0;
+      letter-spacing:1.2px;
+      line-height:1.1;
+      text-transform:uppercase;
+    }
+
+    .greet h1 span{
+      color:var(--gold2);
+      font-family:"Cormorant Garamond",serif;
+      font-style:italic;
+      text-transform:none;
+    }
+
+    .greet-sub{
+      font-size:13px;
+      color:rgba(22,37,58,.60);
+      margin-top:6px;
+    }
+
+    .greet-nav{
+      display:flex;
+      gap:6px;
+      background:#fff;
+      padding:5px;
+      border:1px solid rgba(29,53,87,.10);
+      border-radius:14px;
+    }
+
+    .greet-nav a,
+    .greet-nav button{
+      padding:9px 16px;
+      background:transparent;
+      color:rgba(22,37,58,.65);
+      border:0;
+      border-radius:10px;
+      cursor:pointer;
+      font:700 12px/1 "Inter",sans-serif;
+      letter-spacing:.5px;
+      text-decoration:none;
+      transition:.18s ease;
+    }
+
+    .greet-nav .active{
+      background:var(--navy);
+      color:#fff;
+    }
+
+    .next-stay{
+      position:relative;
+      overflow:hidden;
       margin-bottom:32px;
+      border-radius:28px;
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
+      color:#fff;
+      box-shadow:0 30px 70px rgba(29,53,87,.20);
     }
-    .ns-bg {
-      position:absolute; top:0; right:0; bottom:0; width:50%;
-      background-image:url("site/public/suites/aurora/aurora1.jpeg");
-      background-size:cover; background-position:center;
-      opacity:0.6;
+
+    .ns-bg{
+      position:absolute;
+      top:0;
+      right:0;
+      bottom:0;
+      width:50%;
+      background-image:url("public/suites/aurora/aurora1.jpeg");
+      background-size:cover;
+      background-position:center;
+      opacity:.62;
+      transition:background-image .2s ease;
     }
-    .ns-bg::after {
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(to left, transparent, var(--navy));
+
+    .ns-bg::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to left,transparent,var(--navy));
     }
-    .ns-content {
-      position:relative; z-index:2;
+
+    .ns-content{
+      position:relative;
+      z-index:2;
+      max-width:62%;
       padding:40px 44px;
-      max-width:60%;
     }
-    .ns-tag {
+
+    .ns-tag{
       display:inline-block;
       padding:5px 12px;
-      background:rgba(216,199,161,0.18);
-      border:1px solid rgba(216,199,161,0.4);
-      border-radius:30px;
-      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:2px;
-      text-transform:uppercase; color:var(--gold); font-weight:600;
       margin-bottom:18px;
+      border:1px solid rgba(216,199,161,.40);
+      border-radius:999px;
+      background:rgba(216,199,161,.18);
+      color:var(--gold);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
     }
-    .ns-title {
-      font-family:"Cormorant Garamond",serif; font-weight:400;
-      font-size:36px; margin:0 0 4px; line-height:1.1;
+
+    .ns-title{
+      margin:0 0 4px;
+      font-family:"Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:36px;
+      line-height:1.1;
     }
-    .ns-suite {
-      font-family:"Inter",sans-serif; font-size:14px;
-      color:rgba(216,199,161,0.85); font-weight:500; letter-spacing:0.5px;
+
+    .ns-suite{
       margin-bottom:24px;
+      color:rgba(216,199,161,.88);
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:.5px;
     }
-    .ns-grid {
-      display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;
+
+    .ns-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
       margin-bottom:28px;
     }
-    .ns-stat {
+
+    .ns-stat{
       padding-right:12px;
-      border-right:1px solid rgba(255,255,255,0.15);
-    }
-    .ns-stat:last-child { border-right:none; }
-    .ns-stat .l {
-      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.8px;
-      text-transform:uppercase; color:rgba(255,255,255,0.55);
-      font-weight:600; margin-bottom:6px;
-    }
-    .ns-stat .v {
-      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:22px;
-      color:#fff; line-height:1;
-    }
-    .ns-stat .v small {
-      font-family:"Inter",sans-serif; font-size:11px;
-      color:rgba(255,255,255,0.55); font-weight:400;
-    }
-    .ns-actions {
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .ns-btn {
-      padding:11px 18px; border-radius:11px;
-      font-family:"Inter",sans-serif; font-size:11px; font-weight:700;
-      letter-spacing:1.6px; text-transform:uppercase;
-      text-decoration:none; transition:0.22s;
-      display:inline-flex; align-items:center; gap:7px;
-    }
-    .ns-btn.primary {
-      background:var(--gold); color:var(--navy);
-    }
-    .ns-btn.primary:hover { background:#e3d2ad; transform:translateY(-1px); }
-    .ns-btn.ghost {
-      background:rgba(255,255,255,0.10); color:#fff;
-      border:1px solid rgba(255,255,255,0.20);
-    }
-    .ns-btn.ghost:hover { background:rgba(255,255,255,0.18); }
-    .ns-btn svg { width:13px; height:13px; }
-
-    /* WEATHER BADGE on hero */
-    .ns-weather {
-      position:absolute; top:32px; right:32px; z-index:3;
-      background:rgba(255,255,255,0.12);
-      border:1px solid rgba(255,255,255,0.18);
-      backdrop-filter:blur(10px);
-      padding:10px 16px; border-radius:14px;
-      display:flex; align-items:center; gap:10px;
-    }
-    .ns-weather svg { width:24px; height:24px; color:var(--gold); }
-    .ns-weather .temp {
-      font-family:"Cormorant Garamond",serif; font-weight:600; font-size:22px;
-      color:#fff; line-height:1;
-    }
-    .ns-weather .lbl {
-      font-family:"Inter",sans-serif; font-size:10px; letter-spacing:1.4px;
-      text-transform:uppercase; color:rgba(255,255,255,0.7);
+      border-right:1px solid rgba(255,255,255,.15);
     }
 
-    /* SECTION TITLES */
-    .sec-title {
-      font-family:"Cormorant Garamond",serif; font-weight:700;
-      font-size:22px; color:var(--navy); margin:0 0 16px;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .sec-title a {
-      font-family:"Inter",sans-serif; font-size:11px;
-      letter-spacing:2px; text-transform:uppercase; font-weight:700;
-      color:var(--navy); text-decoration:none;
-      padding-bottom:2px; border-bottom:1px solid var(--gold2);
+    .ns-stat:last-child{border-right:0;}
+
+    .ns-stat .l{
+      margin-bottom:6px;
+      color:rgba(255,255,255,.58);
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
     }
 
-    /* HISTORICAL RESERVAS */
-    .reservas { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:32px; }
-    .res-card {
-      display:flex; gap:16px; background:#fff;
+    .ns-stat .v{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:600;
+      font-size:22px;
+      color:#fff;
+      line-height:1;
+    }
+
+    .ns-stat .v small{
+      font-family:"Inter",sans-serif;
+      font-size:11px;
+      color:rgba(255,255,255,.58);
+      font-weight:400;
+    }
+
+    .ns-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .ns-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:11px 18px;
+      border-radius:11px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      text-decoration:none;
+      transition:.22s ease;
+    }
+
+    .ns-btn.primary{
+      background:var(--gold);
+      color:var(--navy);
+    }
+
+    .ns-btn.ghost{
+      background:rgba(255,255,255,.10);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.20);
+    }
+
+    .ns-btn:hover{transform:translateY(-1px);}
+
+    .qa-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-bottom:32px;
+    }
+
+    .qa-card{
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
+      padding:22px;
+      border:1px solid rgba(29,53,87,.08);
+      border-radius:18px;
+      background:#fff;
+      text-decoration:none;
+      transition:.2s ease;
+    }
+
+    .qa-card:hover{
+      transform:translateY(-3px);
+      border-color:var(--gold2);
+      box-shadow:0 18px 40px rgba(0,0,0,.08);
+    }
+
+    .qa-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:rgba(216,199,161,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--navy);
+      flex:0 0 auto;
+      font-size:20px;
+    }
+
+    .qa-card h4{
+      margin:0 0 4px;
+      color:var(--navy);
+      font-size:14px;
+    }
+
+    .qa-card p{
+      margin:0;
+      color:rgba(22,37,58,.62);
+      font-size:12.5px;
+      line-height:1.55;
+    }
+
+    .section{
+      padding:74px 0;
+      background:
+        radial-gradient(900px 280px at 8% 18%, rgba(216,199,161,0.08), transparent 58%),
+        radial-gradient(720px 240px at 92% 82%, rgba(29,53,87,0.05), transparent 62%),
+        linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 22px;
+    }
+
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:14px;
+      margin-bottom:26px;
+    }
+
+    .summary-card{
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:var(--shadowSoft);
+    }
+
+    .summary-label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:8px;
+      line-height:1.5;
+    }
+
+    .summary-value{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-size:34px;
+      font-weight:700;
+      color:var(--navy);
+      line-height:1;
+    }
+
+    .panel{
+      background:rgba(255,255,255,0.78);
+      border:1px solid rgba(29,53,87,0.10);
+      border-radius:24px;
+      box-shadow:var(--shadowSoft);
+      padding:24px 22px;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .panel-title-wrap{
+      min-width:0;
+    }
+
+    .panel-kicker{
+      display:block;
+      font-family:"Cormorant Garamond", serif;
+      font-weight:700;
+      font-size:18px;
+      color:rgba(29,53,87,0.74);
+      margin-bottom:6px;
+      letter-spacing:0.3px;
+    }
+
+    .panel-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond", serif;
+      font-weight:400;
+      font-size:32px;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:var(--navy);
+      line-height:1.2;
+    }
+
+    .panel-subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+      max-width:820px;
+    }
+
+    .list-count{
+      min-width:40px;
+      height:40px;
+      padding:0 14px;
+      border-radius:999px;
+      background:rgba(216,199,161,0.24);
+      color:#8c6a39;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      font-weight:700;
+      border:1px solid rgba(216,199,161,0.40);
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.3fr 0.9fr 0.9fr auto;
+      gap:14px;
+      align-items:end;
+      margin-bottom:18px;
+    }
+
+    .toolbar-card{
+      background:rgba(255,255,255,0.82);
       border:1px solid rgba(29,53,87,0.08);
       border-radius:18px;
       padding:14px;
-      transition:0.2s;
     }
-    .res-card:hover { transform:translateY(-2px); box-shadow:0 18px 40px rgba(0,0,0,0.06); }
-    .res-card img { width:90px; height:90px; border-radius:12px; object-fit:cover; flex-shrink:0; }
-    .res-card .info { flex:1; display:flex; flex-direction:column; }
-    .res-card h3 {
-      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:17px;
-      color:var(--navy); margin:0 0 4px;
-    }
-    .res-card .dates {
-      font-family:"Inter",sans-serif; font-size:12.5px;
-      color:rgba(22,37,58,0.65); margin-bottom:6px;
-    }
-    .res-card .meta {
-      display:flex; gap:14px; margin-top:auto; align-items:center;
-      font-family:"Inter",sans-serif; font-size:11.5px;
-      color:rgba(22,37,58,0.65);
-    }
-    .badge {
-      display:inline-flex; align-items:center; gap:5px;
-      padding:3px 9px; border-radius:20px;
-      font-family:"Inter",sans-serif; font-size:10.5px; font-weight:600;
-      letter-spacing:0.5px;
-    }
-    .badge::before { content:''; width:5px; height:5px; border-radius:50%; }
-    .badge.upcoming { background:rgba(216,199,161,0.18); color:#8f6c3c; }
-    .badge.upcoming::before { background:#8f6c3c; }
-    .badge.completed { background:rgba(47,122,75,0.10); color:var(--success); }
-    .badge.completed::before { background:var(--success); }
-    .badge.cancelled { background:rgba(142,53,53,0.10); color:var(--danger); }
-    .badge.cancelled::before { background:var(--danger); }
 
-    /* QUICK ACTIONS GRID */
-    .qa-grid {
-      display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
-      margin-bottom:32px;
+    .toolbar label{
+      display:block;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:rgba(29,53,87,0.60);
+      margin-bottom:8px;
     }
-    .qa-card {
-      background:#fff;
+
+    .toolbar input,
+    .toolbar select{
+      width:100%;
+      border:1px solid rgba(29,53,87,0.12);
+      background:rgba(255,255,255,0.90);
+      color:var(--ink);
+      border-radius:14px;
+      padding:12px 14px;
+      font:inherit;
+      outline:none;
+      transition:border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .toolbar input:focus,
+    .toolbar select:focus{
+      border-color:rgba(184,149,95,0.80);
+      box-shadow:0 0 0 4px rgba(216,199,161,0.18);
+    }
+
+    .secondary-btn-light{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      padding:0 18px;
+      border:none;
+      border-radius:14px;
+      background:rgba(29,53,87,0.08);
+      color:var(--navy);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.3px;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:0.22s ease;
+    }
+
+    .secondary-btn-light:hover{
+      transform:translateY(-1px);
+      background:rgba(29,53,87,0.12);
+    }
+
+    .reservation-card{
       border:1px solid rgba(29,53,87,0.08);
-      border-radius:18px;
-      padding:22px;
-      text-decoration:none;
-      transition:0.2s;
-      display:flex; gap:14px; align-items:flex-start;
+      background:rgba(255,255,255,0.84);
+      border-radius:22px;
+      padding:18px 18px 16px;
+      margin-bottom:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.04);
     }
-    .qa-card:hover { transform:translateY(-3px); box-shadow:0 18px 40px rgba(0,0,0,0.08); border-color:var(--gold2); }
-    .qa-icon {
-      width:42px; height:42px; border-radius:12px;
+
+    .reservation-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:12px;
+    }
+
+    .reservation-name{
+      font-family:"Cormorant Garamond", serif;
+      font-size:30px;
+      font-weight:700;
+      line-height:1;
+      color:var(--navy);
+      margin-bottom:8px;
+    }
+
+    .reservation-subtext{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .reservation-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .mini-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:rgba(255,255,255,0.84);
+      border:1px solid rgba(29,53,87,0.08);
+      color:var(--muted);
+    }
+
+    .badge-stack{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-end;
+      flex-shrink:0;
+    }
+
+    .status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      white-space:nowrap;
+      border:1px solid transparent;
+    }
+
+    .badge-ok{
+      background:var(--ok-bg);
+      color:var(--ok-text);
+      border-color:rgba(47,122,75,0.12);
+    }
+
+    .badge-warn{
+      background:var(--warn-bg);
+      color:var(--warn-text);
+      border-color:rgba(184,149,95,0.14);
+    }
+
+    .badge-danger{
+      background:var(--danger-bg);
+      color:var(--danger-text);
+      border-color:rgba(181,74,74,0.12);
+    }
+
+    .badge-info{
+      background:var(--info-bg);
+      color:var(--info-text);
+      border-color:rgba(81,109,143,0.12);
+    }
+
+    .reservation-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px 16px;
+    }
+
+    .reservation-item{
+      background:rgba(255,255,255,0.72);
+      border:1px solid rgba(29,53,87,0.06);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .reservation-item strong{
+      display:block;
+      font-size:11px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .reservation-item span{
+      display:block;
+      font-size:15px;
+      font-weight:600;
+      color:var(--ink);
+      line-height:1.6;
+      word-break:break-word;
+    }
+
+    .reservation-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      justify-content:flex-end;
+    }
+
+    .retry-btn,
+    .cta-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      border-radius:14px;
+      padding:14px 18px;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      color:#fff;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      box-shadow:0 18px 34px rgba(0,0,0,0.12);
+      cursor:pointer;
+      transition:0.22s ease;
+    }
+
+    .retry-btn:hover,
+    .cta-btn:hover{
+      transform:translateY(-1px);
+      box-shadow:0 22px 40px rgba(0,0,0,0.16);
+    }
+
+    .retry-btn:disabled{
+      opacity:0.75;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .cancel-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1.5px solid rgba(181,74,74,0.35);
+      border-radius:14px;
+      padding:13px 18px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:1.2px;
+      text-transform:uppercase;
+      color:#b54a4a;
+      background:rgba(181,74,74,0.07);
+      cursor:pointer;
+      transition:0.18s ease;
+    }
+    .cancel-btn:hover{
+      background:rgba(181,74,74,0.13);
+      border-color:rgba(181,74,74,0.55);
+    }
+    .cancel-btn:disabled{
+      opacity:0.6;
+      cursor:not-allowed;
+    }
+
+    .fnrh-banner{
+      display:none;
+      margin-top:18px;
+      padding:16px 18px;
       background:rgba(216,199,161,0.18);
-      display:flex; align-items:center; justify-content:center;
-      color:var(--navy); flex-shrink:0;
-    }
-    .qa-icon svg { width:20px; height:20px; }
-    .qa-card h4 {
-      font-family:"Inter",sans-serif; font-weight:700; font-size:14px;
-      color:var(--navy); margin:0 0 4px;
-    }
-    .qa-card p {
-      font-family:"Inter",sans-serif; font-size:12.5px;
-      color:rgba(22,37,58,0.62); margin:0; line-height:1.55;
+      border:1px solid rgba(216,199,161,0.46);
+      border-radius:18px;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
     }
 
-    /* RECOMMENDED */
-    .recommend {
-      background:#fff;
-      border-radius:24px;
-      padding:32px;
-      border:1px solid rgba(29,53,87,0.08);
-    }
-    .rec-grid {
-      display:grid; grid-template-columns:repeat(3, 1fr); gap:14px;
-      margin-top:16px;
-    }
-    .rec-card {
-      border-radius:14px; overflow:hidden;
-      border:1px solid rgba(29,53,87,0.08);
-      transition:0.2s; text-decoration:none; color:inherit;
-    }
-    .rec-card:hover { transform:translateY(-3px); }
-    .rec-card img { width:100%; aspect-ratio:4/3; object-fit:cover; }
-    .rec-card .b { padding:12px 14px; }
-    .rec-card h5 {
-      font-family:"Cormorant Garamond",serif; font-weight:700; font-size:15px;
-      color:var(--navy); margin:0 0 3px;
-    }
-    .rec-card p {
-      font-family:"Inter",sans-serif; font-size:11.5px;
-      color:rgba(22,37,58,0.6); margin:0;
+    .fnrh-banner.show{
+      display:flex;
     }
 
-    @media (max-width:900px) {
-      .ns-bg { display:none; }
-      .ns-content { max-width:100%; padding:28px; }
-      .ns-grid { grid-template-columns:repeat(2, 1fr); }
-      .ns-weather { top:auto; bottom:28px; right:28px; }
-      .reservas, .qa-grid, .rec-grid { grid-template-columns:1fr; }
-      .greet h1 { font-size:32px; }
+    .fnrh-banner-text{
+      font-size:13.5px;
+      line-height:1.7;
+      color:var(--muted);
+      flex:1;
+      min-width:0;
+    }
+
+    .fnrh-banner-text strong{
+      display:block;
+      color:var(--navy);
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:3px;
+    }
+
+    .fnrh-banner-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:11px 18px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(216,199,161,0.96), rgba(203,181,140,0.98));
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      white-space:nowrap;
+      transition:0.22s ease;
+      flex-shrink:0;
+    }
+
+    .fnrh-banner-link:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 28px rgba(0,0,0,0.13);
+    }
+
+    .empty-state{
+      border:1px dashed rgba(29,53,87,0.18);
+      border-radius:20px;
+      padding:26px 22px;
+      color:var(--muted);
+      text-align:center;
+      background:rgba(255,255,255,0.52);
+      line-height:1.8;
+    }
+
+    .cta-card{
+      margin-top:18px;
+      border:1px solid rgba(29,53,87,0.08);
+      background:rgba(255,255,255,0.68);
+      border-radius:20px;
+      padding:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .cta-text{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.8;
+      max-width:720px;
+    }
+
+    footer{
+      position:relative;
+      overflow:hidden;
+      margin-top:0;
+      background:#032c52;
+    }
+
+    .footer-bg{
+      display:block;
+      width:100%;
+      height:200px;
+      object-fit:cover;
+      object-position:center center;
+    }
+
+    .footer-overlay{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:18px 34px;
+    }
+
+    .footer-contact{
+      width:min(410px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size:22px;
+      line-height:1.18;
+      color:#fff;
+      text-align:left;
+    }
+
+    .footer-contact a{
+      color:inherit;
+      text-decoration:none;
+    }
+
+    .footer-contact a:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width:980px){
+      .dash-wrap{
+        padding:94px 18px 10px;
+      }
+
+      .greet h1{
+        font-size:32px;
+      }
+
+      .greet-nav{
+        width:100%;
+        overflow-x:auto;
+      }
+
+      .next-stay{
+        border-radius:22px;
+      }
+
+      .ns-bg{
+        display:none;
+      }
+
+      .ns-content{
+        max-width:100%;
+        padding:28px;
+      }
+
+      .ns-grid,
+      .qa-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .ns-stat{
+        border-right:0;
+        padding-right:0;
+      }
+
+      .hero-shell{
+        grid-template-columns:1fr;
+        gap:22px;
+      }
+
+      .hero-copy{
+        text-align:center;
+      }
+
+      .hero-text{
+        margin-left:auto;
+        margin-right:auto;
+      }
+
+      .hero-links{
+        justify-content:center;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+
+      .footer-overlay{
+        align-items:flex-end;
+        justify-content:center;
+        padding:18px 18px 20px;
+      }
+
+      .footer-contact{
+        width:100%;
+        font-size:18px;
+        gap:10px;
+      }
+    }
+
+    @media (max-width:640px){
+      .top-header{
+        padding:12px 16px;
+      }
+
+      .top-header-inner{
+        gap:12px;
+      }
+
+      .brand .line2{
+        font-size:16px;
+      }
+
+      .header-actions{
+        gap:8px;
+      }
+
+      .hero{
+        display:none;
+      }
+
+      .hero-title{
+        font-size:34px;
+        line-height:1.34;
+        letter-spacing:1.2px;
+      }
+
+      .hero-text{
+        font-size:18px;
+      }
+
+      .card-title{
+        font-size:28px;
+        line-height:1.34;
+        letter-spacing:1px;
+      }
+
+      .hero-card{
+        padding:22px 18px 20px;
+        border-radius:22px;
+      }
+
+      .section{
+        padding:54px 0;
+      }
+
+      .wrap{
+        padding:0 16px;
+      }
+
+      .summary-grid{
+        grid-template-columns:1fr;
+      }
+
+      .qa-grid{
+        grid-template-columns:1fr;
+      }
+
+      .panel{
+        padding:20px 16px;
+        border-radius:22px;
+      }
+
+      .reservation-grid{
+        grid-template-columns:1fr;
+      }
+
+      .reservation-top{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .badge-stack{
+        align-items:flex-start;
+      }
+
+      .reservation-actions{
+        justify-content:flex-start;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <header class="top-header presolid">
+  <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
+
+  <nav class="side-menu" id="sideMenu" aria-label="Menu">
+    <a href="index.html#top" onclick="toggleMenu(false)">Home</a>
+    <a href="pousada.html" onclick="toggleMenu(false)">A pousada</a>
+    <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
+    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
+    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+
+    <hr>
+
+    <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
+    <button type="button" onclick="refreshDashboard(); toggleMenu(false)">Atualizar reservas</button>
+    <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
+
+    <hr>
+
+    <a href="https://wa.me/5562998167654" target="_blank" onclick="toggleMenu(false)">Entre em contato</a>
+    <a href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/data=!3m1!4b1!4m9!3m8!1s0x935c6d77cfd0e945:0x11648adb21bd470a!5m2!4m1!1i2!8m2!3d-15.8504682!4d-48.9460178!16s%2Fg%2F11t4x3fkbm?entry=ttu&g_ep=EgoyMDI2MDMwNC4xIKXMDSoASAFQAw%3D%3D" target="_blank" onclick="toggleMenu(false)">Mapa e Localização</a>
+    <a href="policies.html" onclick="toggleMenu(false)">Políticas da Pousada</a>
+    <a href="privacidade.html" onclick="toggleMenu(false)">Política de Privacidade</a>
+  </nav>
+
+  <header class="top-header" id="topHeader">
     <div class="top-header-inner">
-      <a class="brand" href="index.html">
+      <a class="brand" href="index.html#top" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
         <span class="line2">Chateau Pireneus</span>
       </a>
+
       <div class="header-actions">
-        <a class="instagram-btn" href="#"><svg viewBox="0 0 24 24" fill="none"><rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/></svg></a>
-        <a class="reserve-btn" href="booking.html">RESERVAR</a>
-        <button class="menu-button">☰</button>
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+
+        <button id="refresh-top-btn" class="ghost-btn" type="button">ATUALIZAR</button>
+        <a href="booking.html" class="reserve-btn">RESERVAR</a>
+        <button id="logout-btn-top" class="logout-btn-public" type="button">SAIR</button>
+        <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
     </div>
   </header>
 
   <div class="dash-wrap">
-
-    <!-- GREETING -->
     <div class="greet">
       <div>
-        <h1>Olá, <span>Mariana</span></h1>
-        <div class="greet-sub">Bem-vinda de volta à sua área pessoal</div>
+        <h1 id="welcome">Olá, <span>hóspede</span></h1>
+        <div class="greet-sub">Bem-vindo de volta à sua área pessoal</div>
       </div>
-      <div class="greet-nav">
-        <button class="active">Próximas</button>
-        <button>Histórico</button>
-        <button>Dados pessoais</button>
+      <div class="greet-nav" aria-label="Atalhos da área do hóspede">
+        <a class="active" href="#reservas">Próximas</a>
+        <a href="#reservas">Histórico</a>
+        <button type="button" onclick="refreshDashboard()">Atualizar</button>
       </div>
     </div>
 
-    <!-- NEXT STAY HERO CARD -->
-    <div class="next-stay">
-      <div class="ns-bg"></div>
-      <div class="ns-weather">
-        <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5.64 5.64l1.42 1.42M16.95 16.95l1.41 1.41M5.64 18.36l1.42-1.42M16.95 7.05l1.41-1.41" stroke="currentColor" stroke-width="1.5"/></svg>
-        <div>
-          <div class="temp">28°</div>
-          <div class="lbl">Em Piri</div>
-        </div>
-      </div>
-
+    <section class="next-stay" id="nextStayCard" aria-label="Próxima estadia">
+      <div class="ns-bg" id="nextStayImage"></div>
       <div class="ns-content">
-        <div class="ns-tag">Próxima estadia</div>
-        <h2 class="ns-title">Faltam 12 dias</h2>
-        <div class="ns-suite">Suíte Aurora · 21 a 23 maio 2026</div>
-
+        <div class="ns-tag" id="nextStayTag">Próxima estadia</div>
+        <h2 class="ns-title" id="nextStayTitle">Carregando reservas</h2>
+        <div class="ns-suite" id="nextStaySuite">Buscando sua próxima hospedagem...</div>
         <div class="ns-grid">
           <div class="ns-stat">
             <div class="l">Check-in</div>
-            <div class="v">21 mai<small> / 14h</small></div>
+            <div class="v" id="nextStayCheckIn">—</div>
           </div>
           <div class="ns-stat">
             <div class="l">Check-out</div>
-            <div class="v">23 mai<small> / 12h</small></div>
+            <div class="v" id="nextStayCheckOut">—</div>
           </div>
           <div class="ns-stat">
             <div class="l">Noites</div>
-            <div class="v">2</div>
+            <div class="v" id="nextStayNights">—</div>
           </div>
           <div class="ns-stat">
-            <div class="l">Pago</div>
-            <div class="v">R$ 1.120</div>
+            <div class="l">Valor</div>
+            <div class="v" id="nextStayTotal">—</div>
           </div>
         </div>
-
         <div class="ns-actions">
-          <a class="ns-btn primary" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074"/></svg> Falar com a pousada</a>
-          <a class="ns-btn ghost" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg> Como chegar</a>
-          <a class="ns-btn ghost" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Detalhes</a>
-          <a class="ns-btn ghost" href="#">Cancelar reserva</a>
+          <a class="ns-btn primary" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar com a pousada</a>
+          <a class="ns-btn ghost" href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/" target="_blank" rel="noopener">Como chegar</a>
+          <a class="ns-btn ghost" href="#reservas">Detalhes</a>
         </div>
       </div>
+    </section>
+
+    <div id="fnrhBanner" class="fnrh-banner" role="alert">
+      <div class="fnrh-banner-text">
+        <strong>Complete sua ficha de hóspede</strong>
+        Preencha antes do check-in para agilizar sua chegada. A ficha também atende à FNRH exigida para hospedagens no Brasil.
+      </div>
+      <a id="fnrhBannerLink" href="ficha.html" class="fnrh-banner-link">PREENCHER AGORA</a>
     </div>
 
-    <!-- QUICK ACTIONS -->
-    <h2 class="sec-title">Atalhos</h2>
-    <div class="qa-grid">
-      <a class="qa-card" href="#">
-        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+    <div class="qa-grid" aria-label="Atalhos">
+      <a class="qa-card" href="booking.html">
+        <div class="qa-icon" aria-hidden="true">+</div>
         <div>
           <h4>Reservar novamente</h4>
-          <p>Reserve sua próxima estadia em poucos cliques.</p>
+          <p>Escolha datas e suíte para sua próxima estadia.</p>
         </div>
       </a>
-      <a class="qa-card" href="#">
-        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
+      <a class="qa-card" href="#reservas">
+        <div class="qa-icon" aria-hidden="true">i</div>
         <div>
-          <h4>Dados pessoais</h4>
-          <p>Atualize seu cadastro e preferências.</p>
+          <h4>Minhas reservas</h4>
+          <p>Acompanhe pagamentos, FNRH e próximas ações.</p>
         </div>
       </a>
-      <a class="qa-card" href="#">
-        <div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/></svg></div>
+      <a class="qa-card" href="https://wa.me/5562998167654" target="_blank" rel="noopener">
+        <div class="qa-icon" aria-hidden="true">?</div>
+        <div>
+          <h4>Falar com a pousada</h4>
+          <p>Tire dúvidas pelo WhatsApp da equipe.</p>
+        </div>
+      </a>
+      <a class="qa-card" href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/" target="_blank" rel="noopener">
+        <div class="qa-icon" aria-hidden="true">★</div>
         <div>
           <h4>Avaliar estadia</h4>
           <p>Conte como foi sua experiência nas estadias anteriores.</p>
@@ -369,47 +1277,818 @@
       </a>
     </div>
 
-    <!-- RESERVAS HISTORY -->
-    <h2 class="sec-title">Estadias anteriores <a href="#">Ver todas</a></h2>
-    <div class="reservas">
-      <div class="res-card">
-        <img src="site/public/suites/divino/divino1.jpeg" alt="">
-        <div class="info">
-          <h3>Suíte do Divino</h3>
-          <div class="dates">14 — 17 fev 2026 · 3 noites</div>
-          <div class="meta">
-            <span class="badge completed">Concluída</span>
-            <span>R$ 1.560</span>
-          </div>
-        </div>
-      </div>
-      <div class="res-card">
-        <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="">
-        <div class="info">
-          <h3>Suíte das Cavalhadas</h3>
-          <div class="dates">28 nov — 1 dez 2025 · 3 noites</div>
-          <div class="meta">
-            <span class="badge completed">Concluída</span>
-            <span>R$ 1.680</span>
-          </div>
-        </div>
-      </div>
+    <div style="display:none">
+      <span id="user-email"></span>
+      <span id="user-phone"></span>
     </div>
-
-    </div>
-
   </div>
 
+  <section class="section" id="reservas">
+    <div class="wrap">
+      <div class="summary-grid">
+        <div class="summary-card">
+          <span class="summary-label">Total de reservas</span>
+          <span class="summary-value" id="total-reservations">0</span>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Aguardando pagamento</span>
+          <span class="summary-value" id="pending-reservations">0</span>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Confirmadas / Pagas</span>
+          <span class="summary-value" id="confirmed-reservations">0</span>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label">Canceladas / Expiradas</span>
+          <span class="summary-value" id="cancelled-reservations">0</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title-wrap">
+            <span class="panel-kicker">Acompanhe suas reservas</span>
+            <h2 class="panel-title">MINHAS RESERVAS</h2>
+            <p class="panel-subtitle">
+              Veja histórico, situação do pagamento, ficha de hóspede e próximas ações disponíveis.
+            </p>
+          </div>
+
+          <span class="list-count" id="reservation-count">0</span>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-card">
+            <label for="search-input">Buscar por suíte, código ou pedido especial</label>
+            <input type="text" id="search-input" placeholder="Digite para buscar..." />
+          </div>
+
+          <div class="toolbar-card">
+            <label for="status-filter">Filtrar por situação</label>
+            <select id="status-filter">
+              <option value="all">Todos</option>
+              <option value="pending">Aguardando pagamento</option>
+              <option value="confirmed">Confirmadas / Pagas</option>
+              <option value="cancelled">Canceladas / Expiradas</option>
+            </select>
+          </div>
+
+          <div class="toolbar-card">
+            <label for="sort-filter">Ordenar por</label>
+            <select id="sort-filter">
+              <option value="created_desc">Mais recentes primeiro</option>
+              <option value="created_asc">Mais antigas primeiro</option>
+              <option value="checkin_asc">Check-in mais próximo</option>
+              <option value="checkin_desc">Check-in mais distante</option>
+            </select>
+          </div>
+
+          <button id="clear-filters-btn" class="secondary-btn-light" type="button">Limpar filtros</button>
+        </div>
+
+        <div id="reservations-list">
+          <div class="empty-state">Nenhuma reserva encontrada.</div>
+        </div>
+
+        <div class="cta-card">
+          <div class="cta-text">
+            Para fazer uma nova reserva, use a página principal de reservas. O sistema valida disponibilidade, calcula valores e direciona para o pagamento seguro.
+          </div>
+          <a href="booking.html" class="cta-btn">Fazer nova reserva</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <footer>
-    <img class="footer-bg" src="site/footer.png" alt="Footer">
+    <img loading="lazy" class="footer-bg" src="footer.png" alt="Footer Chateau Pireneus">
+
     <div class="footer-overlay">
       <div class="footer-contact">
-        <a href="#">(62) 99816-7654</a>
-        <a href="#">chateaupireneus@gmail.com</a>
+        <a href="https://wa.me/5562998167654" target="_blank">(62) 99816-7654</a>
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
         <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+        <div style="margin-top:10px;font-size:13px;opacity:.75;">
+          <a href="policies.html" style="color:inherit;margin-right:16px;">Políticas da Pousada</a>
+          <a href="privacidade.html" style="color:inherit;">Política de Privacidade</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const supabaseClient = window.supabaseClient
+    const CHECKOUTSTRIPE_URL = window.FUNCTIONS_URL + "/checkoutstripe"
+
+    let currentUser = null
+    let allReservations = []
+
+    function redirectToLogin() {
+      const returnTo = window.location.pathname + window.location.search
+      if (window.redirectToLogin) {
+        window.redirectToLogin(returnTo)
+        return
+      }
+      window.location.href = `login.html?return_to=${encodeURIComponent(returnTo)}`
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "-"
+      const [year, month, day] = dateString.split("-")
+      if (!year || !month || !day) return dateString
+      return `${day}/${month}/${year}`
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "-"
+      return new Date(value).toLocaleString("pt-BR")
+    }
+
+    function formatCurrency(value) {
+      if (value === null || value === undefined || value === "") return "-"
+      const number = Number(value)
+      if (Number.isNaN(number)) return "-"
+      return number.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      })
+    }
+
+    function normalizeStatus(status) {
+      return String(status || "").toLowerCase()
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+    }
+
+    function shortReservationCode(value) {
+      const clean = String(value || "").trim()
+      if (!clean) return "-"
+      return clean.length > 12 ? clean.slice(0, 8).toUpperCase() : clean.toUpperCase()
+    }
+
+    function formatMainStatus(status) {
+      const map = {
+        pending: "Pendente",
+        confirmed: "Confirmada",
+        cancelled: "Cancelada",
+        canceled: "Cancelada",
+        completed: "Concluída",
+        paid: "Paga",
+        expired: "Expirada"
+      }
+      return map[normalizeStatus(status)] || status || "Pendente"
+    }
+
+    function formatBookingStatus(status) {
+      const map = {
+        held: "Aguardando pagamento",
+        pending: "Pendente",
+        booked: "Reservada",
+        cancelled: "Cancelada",
+        canceled: "Cancelada",
+        expired: "Expirada"
+      }
+      return map[normalizeStatus(status)] || status || "Não definido"
+    }
+
+    function formatGuestSituation(reservation) {
+      const status = normalizeStatus(reservation.status)
+      const bookingStatus = normalizeStatus(reservation.booking_status)
+      const paymentStatus = normalizeStatus(reservation.payment_status)
+
+      if (status === "confirmed" || bookingStatus === "booked" || paymentStatus === "paid") {
+        return "Reserva confirmada"
+      }
+
+      if (status === "cancelled" || status === "canceled" || bookingStatus === "cancelled" || paymentStatus === "failed") {
+        return "Reserva não concluída"
+      }
+
+      if (status === "expired" || bookingStatus === "expired" || paymentStatus === "expired") {
+        return "Prazo expirado"
+      }
+
+      return "Aguardando pagamento"
+    }
+
+    function formatPaymentStatus(status) {
+      const map = {
+        pending: "Pendente",
+        paid: "Pago",
+        failed: "Falhou",
+        cancelled: "Cancelado",
+        canceled: "Cancelado",
+        expired: "Expirado",
+        refunded: "Reembolsado"
+      }
+      return map[normalizeStatus(status)] || status || "Não iniciado"
+    }
+
+    function getMainBadgeClass(reservation) {
+      const status = normalizeStatus(reservation.status)
+      const bookingStatus = normalizeStatus(reservation.booking_status)
+      const paymentStatus = normalizeStatus(reservation.payment_status)
+
+      if (status === "confirmed" || bookingStatus === "booked" || paymentStatus === "paid") {
+        return "badge-ok"
+      }
+
+      if (status === "cancelled" || status === "canceled" || bookingStatus === "cancelled" || paymentStatus === "failed") {
+        return "badge-danger"
+      }
+
+      if (status === "expired" || bookingStatus === "expired" || paymentStatus === "expired") {
+        return "badge-info"
+      }
+
+      return "badge-warn"
+    }
+
+    function getPaymentBadgeClass(paymentStatus) {
+      const normalized = normalizeStatus(paymentStatus)
+
+      if (normalized === "paid") return "badge-ok"
+      if (normalized === "failed" || normalized === "cancelled" || normalized === "canceled") return "badge-danger"
+      if (normalized === "expired" || normalized === "refunded") return "badge-info"
+      return "badge-warn"
+    }
+
+    function isFutureReservation(reservation) {
+      if (!reservation.check_in) return false
+      return reservation.check_in >= new Date().toISOString().split("T")[0]
+    }
+
+    function isConfirmedReservation(reservation) {
+      return (
+        normalizeStatus(reservation.status) === "confirmed" ||
+        normalizeStatus(reservation.booking_status) === "booked" ||
+        normalizeStatus(reservation.payment_status) === "paid"
+      )
+    }
+
+    function isExpiredReservation(reservation) {
+      if (!reservation.expires_at) return false
+      return new Date(reservation.expires_at).getTime() <= Date.now()
+    }
+
+    function isRetryEligible(reservation) {
+      if (!reservation) return false
+
+      const allowedStatuses = ["pending", "held", "confirmed"]
+      const allowedBookingStatuses = ["pending", "held", "booked"]
+      const blockedPaymentStatuses = ["paid", "refunded", "expired", "failed", "cancelled", "canceled"]
+
+      return (
+        !isExpiredReservation(reservation) &&
+        allowedStatuses.includes(normalizeStatus(reservation.status)) &&
+        allowedBookingStatuses.includes(normalizeStatus(reservation.booking_status)) &&
+        !blockedPaymentStatuses.includes(normalizeStatus(reservation.payment_status))
+      )
+    }
+
+    async function isAdminUser(userId) {
+      if (!userId) return false
+      return window.isCurrentUserAdmin ? window.isCurrentUserAdmin() : false
+    }
+
+    function updateSummary() {
+      const total = allReservations.length
+
+      const pending = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+        return general === "pending" || booking === "held" || payment === "pending"
+      }).length
+
+      const confirmed = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+        return general === "confirmed" || booking === "booked" || payment === "paid"
+      }).length
+
+      const cancelled = allReservations.filter(r => {
+        const general = normalizeStatus(r.status)
+        const booking = normalizeStatus(r.booking_status)
+        const payment = normalizeStatus(r.payment_status)
+
+        return (
+          general === "cancelled" ||
+          general === "canceled" ||
+          general === "expired" ||
+          booking === "cancelled" ||
+          booking === "expired" ||
+          payment === "failed" ||
+          payment === "expired"
+        )
+      }).length
+
+      document.getElementById("total-reservations").textContent = total
+      document.getElementById("pending-reservations").textContent = pending
+      document.getElementById("confirmed-reservations").textContent = confirmed
+      document.getElementById("cancelled-reservations").textContent = cancelled
+      document.getElementById("reservation-count").textContent = total
+    }
+
+    function countNights(checkIn, checkOut) {
+      if (!checkIn || !checkOut) return 0
+      const start = new Date(checkIn + "T00:00:00")
+      const end = new Date(checkOut + "T00:00:00")
+      return Math.max(0, Math.round((end - start) / 86400000))
+    }
+
+    function suiteImage(roomType) {
+      const key = String(roomType || "").toLowerCase()
+      if (key.includes("aurora")) return "public/suites/aurora/aurora1.jpeg"
+      if (key.includes("divino")) return "public/suites/divino/divino1.jpeg"
+      if (key.includes("cavalhadas")) return "public/suites/cavalhadas/cavalhadas1.jpeg"
+      if (key.includes("rosário") || key.includes("rosario")) return "public/suites/rosario/rosario1.jpeg"
+      if (key.includes("bonfim")) return "public/suites/bonfim/bonfim1.jpeg"
+      return "hero.webp"
+    }
+
+    function renderNextStay() {
+      const upcoming = allReservations
+        .filter(r => isFutureReservation(r) && isConfirmedReservation(r))
+        .sort((a, b) => new Date(a.check_in || 0) - new Date(b.check_in || 0))[0]
+
+      const title = document.getElementById("nextStayTitle")
+      const suite = document.getElementById("nextStaySuite")
+      const tag = document.getElementById("nextStayTag")
+      const image = document.getElementById("nextStayImage")
+      const checkIn = document.getElementById("nextStayCheckIn")
+      const checkOut = document.getElementById("nextStayCheckOut")
+      const nights = document.getElementById("nextStayNights")
+      const total = document.getElementById("nextStayTotal")
+
+      if (!title || !suite || !tag || !image) return
+
+      if (!upcoming) {
+        tag.textContent = "Sua próxima estadia"
+        title.textContent = "Sem reserva futura"
+        suite.textContent = "Quando você fizer uma nova reserva, os detalhes aparecem aqui."
+        checkIn.textContent = "—"
+        checkOut.textContent = "—"
+        nights.textContent = "—"
+        total.textContent = "—"
+        image.style.backgroundImage = 'url("hero.webp")'
+        return
+      }
+
+      const today = new Date()
+      const checkInDate = new Date(upcoming.check_in + "T00:00:00")
+      const days = Math.max(0, Math.ceil((checkInDate - today) / 86400000))
+      const nightCount = countNights(upcoming.check_in, upcoming.check_out)
+
+      tag.textContent = "Próxima estadia"
+      title.textContent = days === 0 ? "Sua estadia começa hoje" : `Faltam ${days} dia${days === 1 ? "" : "s"}`
+      suite.textContent = `${upcoming.room_type || "Hospedagem"} · ${formatDate(upcoming.check_in)} a ${formatDate(upcoming.check_out)}`
+      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small> / 12h</small>`
+      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small> / 12h</small>`
+      nights.textContent = nightCount || "—"
+      total.textContent = formatCurrency(upcoming.total_amount)
+      image.style.backgroundImage = `url("${suiteImage(upcoming.room_type)}")`
+    }
+
+    async function loadProfile() {
+      const { data: userData, error: userError } = await supabaseClient.auth.getUser()
+
+      if (userError || !userData.user) {
+        redirectToLogin()
+        return false
+      }
+
+      currentUser = userData.user
+
+      const admin = await isAdminUser(currentUser.id)
+      if (admin) {
+        window.location.href = "admin.html"
+        return false
+      }
+
+      const { data: profile, error: profileError } = await supabaseClient
+        .from("profiles")
+        .select("full_name, phone, date_of_birth, sex, profession, nationality, address_city")
+        .eq("id", currentUser.id)
+        .maybeSingle()
+
+      if (profileError) {
+        console.error(profileError)
+      }
+
+      const firstName = ((profile && profile.full_name) || "hóspede").trim().split(/\s+/)[0]
+      document.getElementById("welcome").innerHTML = `Olá, <span>${escapeHtml(firstName)}</span>`
+      document.getElementById("user-email").textContent = currentUser.email || ""
+      document.getElementById("user-phone").textContent = (profile && profile.phone) || "Não informado"
+
+      const fnrhComplete = profile && profile.date_of_birth && profile.sex && profile.profession && profile.nationality && profile.address_city
+      if (!fnrhComplete) {
+        document.getElementById("fnrhBanner").classList.add("show")
+      }
+
+      return true
+    }
+
+    async function loadReservations() {
+      if (!currentUser) return
+
+      const refreshBtn = document.getElementById("refresh-top-btn")
+      refreshBtn.disabled = true
+      refreshBtn.textContent = "ATUALIZANDO..."
+
+      const { data, error } = await supabaseClient
+        .from("reservations")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false })
+
+      refreshBtn.disabled = false
+      refreshBtn.textContent = "ATUALIZAR"
+
+      if (error) {
+        alert(error.message)
+        return
+      }
+
+      allReservations = data || []
+      updateSummary()
+      renderNextStay()
+      renderReservations()
+
+      const bannerLink = document.getElementById("fnrhBannerLink")
+      if (bannerLink) {
+        const upcoming = allReservations.find(r =>
+          isFutureReservation(r) &&
+          isConfirmedReservation(r)
+        )
+        if (upcoming) bannerLink.href = `ficha.html?booking_id=${upcoming.id}`
+      }
+    }
+
+    function getFilteredReservations() {
+      const search = document.getElementById("search-input").value.trim().toLowerCase()
+      const statusFilter = document.getElementById("status-filter").value
+      const sortFilter = document.getElementById("sort-filter").value
+
+      const filtered = allReservations.filter(reservation => {
+        const room = String(reservation.room_type || "").toLowerCase()
+        const requests = String(reservation.special_requests || "").toLowerCase()
+        const reservationId = String(reservation.id || "").toLowerCase()
+
+        const general = normalizeStatus(reservation.status)
+        const booking = normalizeStatus(reservation.booking_status)
+        const payment = normalizeStatus(reservation.payment_status)
+
+        const matchesSearch =
+          !search ||
+          room.includes(search) ||
+          requests.includes(search) ||
+          reservationId.includes(search)
+
+        let matchesStatus = true
+
+        if (statusFilter === "pending") {
+          matchesStatus = general === "pending" || booking === "held" || payment === "pending"
+        } else if (statusFilter === "confirmed") {
+          matchesStatus = general === "confirmed" || booking === "booked" || payment === "paid"
+        } else if (statusFilter === "cancelled") {
+          matchesStatus =
+            general === "cancelled" ||
+            general === "canceled" ||
+            general === "expired" ||
+            booking === "cancelled" ||
+            booking === "expired" ||
+            payment === "failed" ||
+            payment === "expired"
+        }
+
+        return matchesSearch && matchesStatus
+      })
+
+      filtered.sort((a, b) => {
+        if (sortFilter === "created_asc") {
+          return new Date(a.created_at || 0) - new Date(b.created_at || 0)
+        }
+
+        if (sortFilter === "checkin_asc") {
+          return new Date(a.check_in || 0) - new Date(b.check_in || 0)
+        }
+
+        if (sortFilter === "checkin_desc") {
+          return new Date(b.check_in || 0) - new Date(a.check_in || 0)
+        }
+
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      })
+
+      return filtered
+    }
+
+    async function retryPayment(reservationId, button) {
+      button.disabled = true
+      button.textContent = "REDIRECIONANDO..."
+
+      try {
+        const { data: sessionData } = await supabaseClient.auth.getSession()
+        const accessToken = sessionData?.session?.access_token
+
+        if (!accessToken) {
+          redirectToLogin()
+          return
+        }
+
+        const response = await fetch(CHECKOUTSTRIPE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`,
+            "apikey": window.SUPABASE_KEY
+          },
+          body: JSON.stringify({
+            reservation_id: reservationId
+          })
+        })
+
+        const payload = await response.json().catch(() => null)
+
+        if (!response.ok || !payload?.checkout_url) {
+          alert(payload?.error || "Não foi possível iniciar uma nova tentativa de pagamento. Tente novamente em instantes ou fale conosco pelo WhatsApp.")
+          button.disabled = false
+          button.textContent = "TENTAR PAGAMENTO NOVAMENTE"
+          return
+        }
+
+        window.location.href = payload.checkout_url
+      } catch (error) {
+        console.error(error)
+        alert("Não foi possível iniciar o pagamento agora. Tente novamente em instantes ou fale conosco pelo WhatsApp.")
+        button.disabled = false
+        button.textContent = "TENTAR PAGAMENTO NOVAMENTE"
+      }
+    }
+
+    function isCancelEligible(reservation) {
+      if (!reservation) return false
+      const paymentStatus = (reservation.payment_status || "").toLowerCase()
+      const status        = (reservation.status || "").toLowerCase()
+      const isPaid = ["paid", "confirmed"].includes(paymentStatus) || status === "confirmed"
+      if (!isPaid) return false
+      if (!reservation.check_in) return false
+      const checkIn = new Date(reservation.check_in + "T12:00:00")
+      return checkIn > new Date()
+    }
+
+    function calcRefundPreview(createdAt, checkIn) {
+      const now       = new Date()
+      const normalized = (createdAt || "").replace(" ", "T").replace(/(\.\d+)?([+-]\d{2})$/, "$1$2:00")
+      const booking   = new Date(normalized)
+      const ci        = new Date(checkIn + "T12:00:00")
+      const daysSince = isNaN(booking.getTime()) ? 0 : (now - booking) / 86_400_000
+      const daysUntil = (ci - now) / 86_400_000
+      const daysB2C   = isNaN(booking.getTime()) ? 999 : (ci - booking) / 86_400_000
+      if (daysB2C >= 5 && daysSince <= 7) return { pct: 100, rule: "lei_arrependimento" }
+      if (daysB2C < 5  && daysUntil >= 2) return { pct: 100, rule: "short_notice_48h" }
+      return { pct: 0, rule: "no_refund" }
+    }
+
+    async function cancelReservation(reservationId, createdAt, checkIn, totalAmount, discount, button) {
+      const { pct } = calcRefundPreview(createdAt, checkIn)
+      const paid    = Math.max((parseFloat(totalAmount) || 0) - (parseFloat(discount) || 0), 0)
+      const refundBRL = (paid * pct / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+
+      const msg = pct === 100
+        ? `Você tem direito a reembolso de 100% (${refundBRL}).\n\nDeseja confirmar o cancelamento?`
+        : `Não há reembolso disponível para esta reserva conforme nossa política de cancelamento.\n\nDeseja confirmar o cancelamento mesmo assim?`
+
+      if (!confirm(msg)) return
+
+      button.disabled = true
+      button.textContent = "Cancelando…"
+
+      try {
+        const { data: sessionData } = await supabaseClient.auth.getSession()
+        const token = sessionData?.session?.access_token
+        if (!token) { alert("Sessão expirada. Faça login novamente."); return }
+
+        const response = await fetch(window.FUNCTIONS_URL + "/cancel-reservation", {
+          method: "POST",
+          headers: {
+            "Content-Type":  "application/json",
+            "Authorization": "Bearer " + token,
+            "apikey": window.SUPABASE_KEY,
+          },
+          body: JSON.stringify({ reservation_id: reservationId }),
+        })
+
+        const payload = await response.json().catch(() => null)
+
+        if (!response.ok) {
+          alert(payload?.error || "Não foi possível cancelar a reserva. Entre em contato com a pousada.")
+          button.disabled = false
+          button.textContent = "Cancelar reserva"
+          return
+        }
+
+        const refundMsg = payload.refund_pct === 100
+          ? `Reserva cancelada com sucesso. O reembolso de ${refundBRL} será processado em até 5 dias úteis.`
+          : "Reserva cancelada. Nenhum reembolso é devido conforme nossa política."
+
+        alert(refundMsg)
+        await loadReservations()
+      } catch (err) {
+        console.error(err)
+        alert("Não foi possível cancelar agora. Tente novamente ou entre em contato com a pousada.")
+        button.disabled = false
+        button.textContent = "Cancelar reserva"
+      }
+    }
+
+    function renderReservations() {
+      const container = document.getElementById("reservations-list")
+      const reservations = getFilteredReservations()
+
+      document.getElementById("reservation-count").textContent = reservations.length
+
+      if (!reservations.length) {
+        container.innerHTML = '<div class="empty-state">Nenhuma reserva encontrada para os filtros selecionados.</div>'
+        return
+      }
+
+      container.innerHTML = reservations.map(reservation => {
+        const canFillFnrh = isFutureReservation(reservation) && isConfirmedReservation(reservation)
+        const canRetryPayment = isRetryEligible(reservation)
+        const canCancel = isCancelEligible(reservation)
+        const guestSituation = formatGuestSituation(reservation)
+        const reservationCode = shortReservationCode(reservation.id)
+
+        return `
+        <article class="reservation-card">
+          <div class="reservation-top">
+            <div>
+              <div class="reservation-name">${escapeHtml(reservation.room_type || "Hospedagem")}</div>
+              <div class="reservation-subtext">
+                Acompanhe sua estadia, pagamento e próximos passos.
+              </div>
+              <div class="reservation-meta">
+                <span class="mini-chip" title="${escapeHtml(reservation.id || "")}">Código: ${escapeHtml(reservationCode)}</span>
+                <span class="mini-chip">Criada em: ${formatDateTime(reservation.created_at)}</span>
+              </div>
+            </div>
+
+            <div class="badge-stack">
+              <span class="status-badge ${getMainBadgeClass(reservation)}">${guestSituation}</span>
+              <span class="status-badge ${getPaymentBadgeClass(reservation.payment_status)}">${formatPaymentStatus(reservation.payment_status)}</span>
+            </div>
+          </div>
+
+          <div class="reservation-grid">
+            <div class="reservation-item">
+              <strong>Check-in</strong>
+              <span>${formatDate(reservation.check_in)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Check-out</strong>
+              <span>${formatDate(reservation.check_out)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Hóspedes</strong>
+              <span>${reservation.guests || "-"}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Valor total</strong>
+              <span>${formatCurrency(reservation.total_amount)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Reserva</strong>
+              <span>${formatBookingStatus(reservation.booking_status)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Pagamento</strong>
+              <span>${formatPaymentStatus(reservation.payment_status)}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Situação</strong>
+              <span>${guestSituation}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Meio de pagamento</strong>
+              <span>${reservation.payment_provider || "—"}</span>
+            </div>
+
+            <div class="reservation-item">
+              <strong>Expira em</strong>
+              <span>${formatDateTime(reservation.expires_at)}</span>
+            </div>
+
+            <div class="reservation-item" style="grid-column:1 / -1;">
+              <strong>Pedidos especiais</strong>
+              <span>${escapeHtml(reservation.special_requests || "Nenhum pedido especial informado.")}</span>
+            </div>
+          </div>
+
+          ${(canFillFnrh || canRetryPayment || canCancel) ? `
+            <div class="reservation-actions">
+              ${canFillFnrh ? `
+                <a class="cta-btn" href="ficha.html?booking_id=${encodeURIComponent(reservation.id)}" style="text-decoration:none">
+                  FICHA DE HÓSPEDE
+                </a>
+              ` : ""}
+              ${canRetryPayment ? `
+                <button class="retry-btn retry-payment-btn" type="button" data-id="${escapeHtml(reservation.id)}">
+                  Tentar pagamento novamente
+                </button>
+              ` : ""}
+              ${canCancel ? `
+                <a class="cancel-btn" href="https://wa.me/5562998167654?text=${encodeURIComponent(`Olá! Gostaria de cancelar minha reserva. ID: ${reservation.id}`)}" target="_blank" rel="noopener">
+                  Cancelar reserva
+                </a>
+              ` : ""}
+            </div>
+          ` : ""}
+        </article>
+      `}).join("")
+    }
+
+    function clearFilters() {
+      document.getElementById("search-input").value = ""
+      document.getElementById("status-filter").value = "all"
+      document.getElementById("sort-filter").value = "created_desc"
+      renderReservations()
+    }
+
+    async function logout() {
+      await supabaseClient.auth.signOut()
+      window.location.href = "login.html"
+    }
+
+    async function refreshDashboard() {
+      await loadReservations()
+    }
+
+    document.getElementById("logout-btn-top").addEventListener("click", logout)
+    document.getElementById("refresh-top-btn").addEventListener("click", loadReservations)
+    document.getElementById("search-input").addEventListener("input", renderReservations)
+    document.getElementById("status-filter").addEventListener("change", renderReservations)
+    document.getElementById("sort-filter").addEventListener("change", renderReservations)
+    document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
+
+    document.addEventListener("click", async (event) => {
+      const retryBtn = event.target.closest(".retry-payment-btn")
+      if (retryBtn) {
+        await retryPayment(retryBtn.getAttribute("data-id"), retryBtn)
+        return
+      }
+
+      const cancelBtn = event.target.closest(".cancel-reservation-btn")
+      if (cancelBtn) {
+        await cancelReservation(
+          cancelBtn.getAttribute("data-id"),
+          cancelBtn.getAttribute("data-created"),
+          cancelBtn.getAttribute("data-checkin"),
+          cancelBtn.getAttribute("data-amount"),
+          cancelBtn.getAttribute("data-discount"),
+          cancelBtn
+        )
+      }
+    })
+
+    async function init() {
+      const ok = await loadProfile()
+      if (!ok) return
+      await loadReservations()
+    }
+
+    window.logout = logout
+    window.refreshDashboard = refreshDashboard
+
+    init()
+  </script>
+
+  <a class="whatsapp-fab" href="https://wa.me/5562998167654?text=Ol%C3%A1%21+Preciso+de+ajuda+com+minha+reserva+no+Chateau+Pireneus.+Pode+me+ajudar%3F" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="fab-label">Fale conosco</span>
+  </a>
+  <script src="cookie-consent.js"></script>
 </body>
 </html>

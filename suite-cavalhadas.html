@@ -1,14 +1,608 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Suíte das Cavalhadas | Chateau Pireneus</title>
-  <link rel="canonical" href="https://chateaupireneus.com.br/suite.html?room=cavalhadas">
-  <meta http-equiv="refresh" content="0; url=suite.html?room=cavalhadas">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suíte das Cavalhadas — Chateau Pireneus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site/styles.css">
+  <link rel="stylesheet" href="mockup-fixes.css">
+  <style>
+    body{ margin:0; font-family:"Inter",sans-serif; background:var(--bg); color:var(--navy); overflow-x:hidden; }
+
+    /* ============ PAGE CHROME ============ */
+    .crumb {
+      max-width:var(--max); margin:0 auto;
+      padding:90px 24px 14px;
+      font-family:"Inter",sans-serif; font-size:11px; letter-spacing:1.6px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+    }
+    .crumb a { color:inherit; text-decoration:none; transition:0.2s; }
+    .crumb a:hover { color:var(--navy); }
+    .crumb span { margin:0 8px; opacity:0.4; }
+
+    /* ============ HERO ROW: carousel left + booking right ============ */
+    .suite-hero-row {
+      max-width:var(--max); margin:0 auto;
+      padding:8px 24px 0;
+      display:grid; grid-template-columns:1fr 380px; gap:36px;
+      align-items:start;
+    }
+    .gallery-card {
+      background:transparent;
+      border:none;
+      border-radius:var(--radius);
+    }
+    .carousel-box {
+      position:relative; width:100%; overflow:hidden;
+      background:#e8e1d4;
+      border-radius:var(--radius);
+      box-shadow:var(--shadowSoft);
+    }
+    .hero-img {
+      width:100%; aspect-ratio:16/10; object-fit:cover;
+      display:block; background:#eee;
+    }
+    .img-arrow {
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:46px; height:46px; border-radius:50%;
+      background:rgba(216,199,161,0.95); color:var(--navy);
+      display:flex; align-items:center; justify-content:center;
+      font-size:22px; cursor:pointer; user-select:none;
+      box-shadow:0 18px 40px rgba(0,0,0,0.20);
+      transition:0.2s ease; z-index:2;
+    }
+    .img-arrow:hover { background:#fff; transform:translateY(-50%) scale(1.04); }
+    .img-arrow.left { left:14px; }
+    .img-arrow.right { right:14px; }
+    .gallery-info { padding:16px 0 0; }
+    .gallery-info-title {
+      margin:0; font-family:"Cormorant Garamond",serif;
+      font-size:28px; font-weight:700; line-height:1.12;
+      color:var(--navy); text-wrap:balance;
+    }
+    .gallery-info-text {
+      margin:10px 0 0; color:var(--muted);
+      line-height:1.82; font-size:15px;
+    }
+    .carousel-dots {
+      display:flex; justify-content:center; gap:10px;
+      margin-top:16px; flex-wrap:wrap;
+    }
+    .carousel-dots .cdot {
+      width:10px; height:10px; border-radius:999px;
+      background:rgba(29,53,87,0.22); cursor:pointer;
+      transition:0.25s ease;
+    }
+    .carousel-dots .cdot.active {
+      width:28px; background:rgba(216,199,161,0.98);
+    }
+
+    /* ============ TITLE BAND ============ */
+    .title-band {
+      max-width:var(--max); margin:0 auto;
+      padding:36px 24px 18px;
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:24px; flex-wrap:wrap;
+    }
+    .title-eyebrow {
+      font-family:"Inter",sans-serif;
+      font-size:10px; letter-spacing:3px; text-transform:uppercase;
+      color:rgba(216,199,161,0.95); font-weight:600;
+      margin-bottom:10px;
+    }
+    .title-band h1 {
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400; font-size:54px;
+      letter-spacing:2.4px; text-transform:uppercase;
+      color:var(--navy); margin:0; line-height:1;
+    }
+    .title-meta {
+      display:flex; align-items:center; gap:18px;
+      margin-top:14px; font-family:"Inter",sans-serif;
+      font-size:13px; color:rgba(22,37,58,0.65);
+      letter-spacing:0.3px;
+    }
+    .title-meta span { display:inline-flex; align-items:center; gap:6px; }
+    .title-meta .dot { width:3px; height:3px; border-radius:50%; background:rgba(22,37,58,0.4); }
+
+    .title-price {
+      text-align:right; flex-shrink:0;
+    }
+    .title-price small {
+      display:block; font-size:10px; letter-spacing:2px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      margin-bottom:4px;
+    }
+    .title-price .price {
+      font-family:"Cormorant Garamond",serif;
+      font-size:34px; font-weight:600; color:var(--navy);
+      line-height:1;
+    }
+    .title-price .price-unit {
+      font-family:"Inter",sans-serif;
+      font-size:13px; color:rgba(22,37,58,0.55); font-weight:400;
+    }
+
+    /* ============ CONTENT (full width, below) ============ */
+    .suite-content {
+      max-width:var(--max); margin:0 auto;
+      padding:28px 24px 80px;
+    }
+
+    /* Left content */
+    .suite-section { padding:24px 0; border-top:1px solid rgba(29,53,87,0.10); }
+    .suite-section:first-child { border-top:none; padding-top:8px; }
+    .suite-section h2 {
+      font-family:"Cormorant Garamond",serif;
+      font-weight:600; font-size:24px; color:var(--navy);
+      margin:0 0 16px; letter-spacing:0.3px;
+    }
+    .suite-section p {
+      font-family:"Inter",sans-serif;
+      font-size:15.5px; line-height:1.78; color:rgba(22,37,58,0.78);
+      margin:0 0 14px;
+    }
+
+    /* Amenities chips */
+    .amenities-grid {
+      display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
+      margin-top:8px;
+    }
+    .amenity {
+      display:flex; align-items:center; gap:12px;
+      padding:14px 16px;
+      background:#fff; border:1px solid rgba(29,53,87,0.10);
+      border-radius:14px; transition:0.2s;
+    }
+    .amenity:hover { border-color:rgba(216,199,161,0.6); transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,0.05); }
+    .amenity-icon {
+      width:36px; height:36px; border-radius:10px;
+      background:rgba(216,199,161,0.16);
+      display:flex; align-items:center; justify-content:center;
+      color:var(--navy); flex-shrink:0;
+    }
+    .amenity-icon svg { width:18px; height:18px; }
+    .amenity-text {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:var(--navy); font-weight:500;
+    }
+
+    /* Policies */
+    .policies {
+      background:#fff; border:1px solid rgba(29,53,87,0.10);
+      border-radius:18px; padding:22px 26px;
+    }
+    .policy-row {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:11px 0; border-bottom:1px solid rgba(29,53,87,0.08);
+      font-family:"Inter",sans-serif; font-size:14px;
+    }
+    .policy-row:last-child { border-bottom:none; }
+    .policy-row .k { color:rgba(22,37,58,0.65); }
+    .policy-row .v { color:var(--navy); font-weight:500; }
+
+    /* ============ BOOKING SIDEBAR ============ */
+    .booking-sidebar {
+      position:sticky; top:90px;
+      background:#fff;
+      border:2px solid var(--gold2);
+      border-radius:22px;
+      padding:28px;
+      box-shadow:0 24px 60px rgba(0,0,0,0.10), 0 0 0 6px rgba(216,199,161,0.10);
+    }
+    .new-tag-block {
+      position:absolute; top:-12px; right:24px;
+      background:var(--gold); color:var(--navy);
+      padding:5px 12px; border-radius:30px;
+      font-family:"Inter",sans-serif; font-size:9px;
+      font-weight:700; letter-spacing:1.4px; text-transform:uppercase;
+      box-shadow:0 6px 16px rgba(216,199,161,0.6);
+      animation:pulseTag 2.4s ease-in-out infinite;
+    }
+    @keyframes pulseTag {
+      0%,100% { transform:scale(1); }
+      50% { transform:scale(1.06); }
+    }
+    .bk-price {
+      display:flex; align-items:baseline; justify-content:space-between;
+      margin-bottom:6px;
+    }
+    .bk-price .num {
+      font-family:"Cormorant Garamond",serif;
+      font-size:36px; font-weight:600; color:var(--navy);
+      letter-spacing:0.5px; line-height:1;
+    }
+    .bk-price .unit {
+      font-family:"Inter",sans-serif;
+      font-size:13px; color:rgba(22,37,58,0.55);
+    }
+    .bk-price .rating {
+      display:inline-flex; align-items:center; gap:4px;
+      font-family:"Inter",sans-serif; font-size:13px;
+      color:var(--navy); font-weight:600;
+    }
+    .bk-price .rating svg { width:14px; height:14px; color:var(--gold2); }
+    .bk-rating-count { color:rgba(22,37,58,0.55); font-weight:400; margin-left:2px; }
+
+    .bk-dates {
+      margin-top:20px; border:1px solid rgba(29,53,87,0.16);
+      border-radius:14px; overflow:hidden;
+    }
+    .bk-row {
+      display:grid; grid-template-columns:1fr 1fr;
+      border-bottom:1px solid rgba(29,53,87,0.10);
+    }
+    .bk-row:last-child { border-bottom:none; }
+    .bk-cell {
+      padding:12px 14px;
+      cursor:pointer;
+      transition:background 0.18s;
+    }
+    .bk-cell:not(:last-child) { border-right:1px solid rgba(29,53,87,0.10); }
+    .bk-cell:hover { background:rgba(216,199,161,0.08); }
+    .bk-cell .lbl {
+      font-family:"Inter",sans-serif; font-size:9px; letter-spacing:1.8px;
+      text-transform:uppercase; color:rgba(22,37,58,0.55);
+      font-weight:600; margin-bottom:4px;
+    }
+    .bk-cell .val {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:var(--navy); font-weight:500;
+    }
+    .bk-cell.full { grid-column:1/-1; }
+
+    .bk-cta {
+      display:block; width:100%; margin-top:14px;
+      padding:16px;
+      background:linear-gradient(180deg, #1d3557 0%, #142a45 100%);
+      color:#fff; border:none; border-radius:14px;
+      font-family:"Inter",sans-serif; font-size:12px; font-weight:700;
+      letter-spacing:2.4px; text-transform:uppercase;
+      cursor:pointer; transition:0.22s;
+      box-shadow:0 12px 30px rgba(29,53,87,0.32);
+    }
+    .bk-cta:hover { transform:translateY(-1px); box-shadow:0 18px 40px rgba(29,53,87,0.42); }
+
+    .bk-note {
+      text-align:center; margin-top:12px;
+      font-family:"Inter",sans-serif; font-size:11.5px;
+      color:rgba(22,37,58,0.55); font-style:italic;
+    }
+
+    .bk-breakdown {
+      margin-top:18px; padding-top:18px;
+      border-top:1px dashed rgba(29,53,87,0.18);
+    }
+    .bk-br-row {
+      display:flex; justify-content:space-between; gap:14px;
+      padding:5px 0;
+      font-family:"Inter",sans-serif; font-size:13.5px;
+      color:rgba(22,37,58,0.72);
+    }
+    .bk-br-row span:first-child { white-space:nowrap; }
+    .bk-br-row span:last-child { white-space:nowrap; flex-shrink:0; }
+    .bk-br-row.total {
+      margin-top:8px; padding-top:11px;
+      border-top:1px solid rgba(29,53,87,0.12);
+      color:var(--navy); font-weight:700; font-size:15px;
+    }
+
+    .bk-trust {
+      display:flex; align-items:center; justify-content:center;
+      gap:14px; margin-top:18px; padding-top:14px;
+      border-top:1px solid rgba(29,53,87,0.08);
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.6); letter-spacing:0.2px;
+    }
+    .bk-trust span { display:inline-flex; align-items:center; gap:5px; }
+    .bk-trust svg { width:12px; height:12px; color:var(--success); }
+
+    /* ============ RELATED SUITES ============ */
+    .related-section {
+      background:linear-gradient(to bottom, #fbfaf7 0%, #f8f6f1 100%);
+      border-top:1px solid rgba(29,53,87,0.08);
+      padding:64px 0 80px;
+    }
+    .related-inner { max-width:var(--max); margin:0 auto; padding:0 24px; }
+    .related-head {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      margin-bottom:24px; flex-wrap:wrap; gap:16px;
+    }
+    .related-head h2 {
+      font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
+      font-size:30px; letter-spacing:1.8px; text-transform:uppercase;
+      color:var(--navy); margin:0;
+    }
+    .related-head a {
+      font-family:"Inter",sans-serif; font-size:11px;
+      letter-spacing:2px; text-transform:uppercase; font-weight:700;
+      color:var(--navy); text-decoration:none;
+      padding-bottom:3px; border-bottom:1px solid var(--gold2);
+      transition:0.2s;
+    }
+    .related-head a:hover { border-color:var(--navy); }
+    .related-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+    }
+    .related-card {
+      background:#fff; border-radius:18px; overflow:hidden;
+      border:1px solid rgba(29,53,87,0.08);
+      transition:0.3s ease; text-decoration:none;
+      display:block;
+    }
+    .related-card:hover { transform:translateY(-4px); box-shadow:0 22px 50px rgba(0,0,0,0.10); }
+    .related-card img { width:100%; aspect-ratio:5/4; object-fit:cover; display:block; }
+    .related-card-body {
+      padding:18px 20px 22px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    .related-card h3 {
+      font-family:"Cormorant Garamond",serif; font-weight:600;
+      font-size:20px; color:var(--navy); margin:0;
+    }
+    .related-card .px {
+      font-family:"Inter",sans-serif; font-size:12.5px;
+      color:rgba(22,37,58,0.7);
+    }
+    .related-card .px b { color:var(--navy); font-weight:700; }
+
+    /* ============ MOBILE BOOKING BAR ============ */
+    .mobile-book-bar {
+      display:none;
+      position:fixed; bottom:0; left:0; right:0; z-index:90;
+      background:#fff;
+      border-top:1px solid rgba(29,53,87,0.12);
+      padding:12px 16px;
+      box-shadow:0 -8px 24px rgba(0,0,0,0.08);
+      align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .mobile-book-bar .mb-price {
+      font-family:"Cormorant Garamond",serif; font-size:22px;
+      font-weight:600; color:var(--navy); line-height:1;
+    }
+    .mobile-book-bar .mb-unit {
+      font-family:"Inter",sans-serif; font-size:11px;
+      color:rgba(22,37,58,0.6);
+    }
+    .mobile-book-bar .mb-btn {
+      padding:14px 22px;
+      background:var(--navy); color:#fff;
+      border:none; border-radius:12px;
+      font-family:"Inter",sans-serif; font-size:11px;
+      font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+      cursor:pointer;
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media(max-width:960px) {
+      .suite-hero-row { grid-template-columns:1fr; gap:0; }
+      .booking-sidebar { display:none; }
+      .mobile-book-bar { display:flex; }
+      .hero-img { aspect-ratio:4/3; }
+      .related-grid { grid-template-columns:1fr; }
+      .title-band h1 { font-size:38px; }
+    }
+    @media(max-width:560px) {
+      .title-band { flex-direction:column; align-items:flex-start; }
+      .title-price { text-align:left; }
+      .amenities-grid { grid-template-columns:1fr; }
+    }
+  </style>
 </head>
 <body>
-  <script>window.location.replace("suite.html?room=cavalhadas");</script>
-  <a href="suite.html?room=cavalhadas">Abrir Suíte das Cavalhadas</a>
+
+  <!-- HEADER -->
+  <header class="top-header presolid" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="index.html" aria-label="Chateau Pireneus">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+      <div class="header-actions">
+        <a class="instagram-btn" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="reserve-btn" href="booking.html">RESERVAR</a>
+        <button class="menu-button" aria-label="Abrir menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="crumb">
+    <a href="#">Início</a> <span>›</span>
+    <a href="#">Acomodações</a> <span>›</span>
+    Suíte das Cavalhadas
+  </div>
+
+  <!-- TITLE -->
+  <div class="title-band">
+    <div>
+      <h1>Suíte das Cavalhadas</h1>
+      <div class="title-meta">
+        <span>
+</span>
+        <span class="dot"></span>
+        <span>
+</span>
+        <span class="dot"></span>
+        <span>
+</span>
+        <span class="dot"></span>
+        <span>
+</span>
+      </div>
+    </div>
+    <div class="title-price">
+      <small>
+</small>
+      <div class="price">
+</div>
+    </div>
+  </div>
+
+  <!-- HERO ROW: carousel left + booking right -->
+  <div class="suite-hero-row">
+    <div class="gallery-card">
+      <div class="carousel-box">
+        <img id="heroImg" class="hero-img" src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="Foto da Suíte das Cavalhadas" decoding="async" style="height: 500px">
+        <div class="img-arrow left" id="prevBtn" aria-label="Foto anterior">‹</div>
+        <div class="img-arrow right" id="nextBtn" aria-label="Próxima foto">›</div>
+      </div>
+      <div class="gallery-info">
+        <div class="carousel-dots" id="dots" aria-label="Indicadores do carrossel"></div>
+      </div>
+    </div>
+
+    <!-- BOOKING SIDEBAR -->
+    <aside class="booking-sidebar" id="bookSidebar" style="position: sticky; height: 500px">
+      <div class="bk-price">
+        <div>
+          <div class="num">R$&nbsp;540<span class="unit"> /noite</span></div>
+        </div>
+        <div class="rating">
+</div>
+      </div>
+
+      <div class="bk-dates">
+        <div class="bk-row">
+          <div class="bk-cell">
+            <div class="lbl">Check-in</div>
+            <div class="val">21 mai 2026</div>
+          </div>
+          <div class="bk-cell">
+            <div class="lbl">Check-out</div>
+            <div class="val">23 mai 2026</div>
+          </div>
+        </div>
+        <div class="bk-row">
+          <div class="bk-cell full">
+            <div class="lbl">Hóspedes</div>
+            <div class="val">2 adultos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bk-breakdown">
+        <div class="bk-br-row"><span>R$ 540 × 2 noites</span><span>R$ 1.080</span></div>
+        <div class="bk-br-row total"><span>Total</span><span>R$ 1.080</span></div>
+      </div>
+
+      <button class="bk-cta">Reservar agora</button>
+      <p class="bk-note" style="height: 10px">
+</p>
+
+      <div class="bk-trust" style="height: 5px">
+        <span></span>
+        <span></span>
+      </div>
+    </aside>
+  </div>
+
+  <!-- CONTENT BELOW -->
+  <div class="suite-content">
+    <div class="suite-section">
+      <h2>
+</h2>
+      <p>
+</p>
+      <p>
+</p>
+    </div>
+
+    <div class="suite-section">
+      <h2>Regras e políticas</h2>
+      <div class="policies">
+        <div class="policy-row"><span class="k">Check-in</span><span class="v">A partir das 14h</span></div>
+        <div class="policy-row"><span class="k">Check-out</span><span class="v">Até 12h</span></div>
+        <div class="policy-row"><span class="k">Capacidade</span><span class="v">2 adultos</span></div>
+        <div class="policy-row"><span class="k">Cancelamento</span><span class="v">Gratuito até 7 dias antes</span></div>
+        <div class="policy-row"><span class="k">Animais</span><span class="v">Não permitido</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <img loading="lazy" class="footer-bg" src="site/footer.png" alt="Footer Chateau Pireneus">
+    <div class="footer-overlay" style="justify-content: flex-end">
+      <div class="footer-contact">
+        <a href="#">(62) 99816-7654</a>
+        <a href="#">chateaupireneus@gmail.com</a>
+        <div>Rua Tupinambás, Quadra 09, Lote 16 • Setor Meia Ponte • Pirenópolis - GO</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE BOOKING BAR -->
+  <div class="mobile-book-bar">
+    <div>
+      <div class="mb-price">R$ 540</div>
+      <div class="mb-unit">por noite · 2 hóspedes</div>
+    </div>
+    <button class="mb-btn">Reservar</button>
+  </div>
+
+  <script>
+    // Header solid on scroll
+    const header = document.getElementById('topHeader');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 30) header.classList.add('solid');
+      else header.classList.remove('solid');
+    });
+
+    // ===== Hero carousel (original behaviour) =====
+    (function(){
+      const photos = [
+        'site/public/suites/cavalhadas/cavalhadas1.jpeg',
+        'site/public/suites/cavalhadas/cavalhadas2.jpeg',
+        'site/public/suites/cavalhadas/cavalhadas3.jpeg',
+        'site/public/suites/cavalhadas/redes4.jpeg'
+      ];
+      const heroImg = document.getElementById('heroImg');
+      const dotsWrap = document.getElementById('dots');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      if(!heroImg) return;
+      let i = 0, timer = null;
+
+      dotsWrap.innerHTML = photos.map((_, idx) =>
+        `<div class="cdot" data-i="${idx}" aria-label="Ir para foto ${idx + 1}"></div>`
+      ).join('');
+
+      function setActive(idx){
+        i = idx;
+        heroImg.src = photos[i];
+        heroImg.alt = `Foto da Suíte das Cavalhadas (${i + 1}/${photos.length})`;
+        Array.from(dotsWrap.children).forEach((d, di) => d.classList.toggle('active', di === i));
+      }
+      function next(){ setActive((i + 1) % photos.length); }
+      function prev(){ setActive((i - 1 + photos.length) % photos.length); }
+      function restartTimer(){ if(timer) clearInterval(timer); timer = setInterval(next, 4500); }
+
+      setActive(0);
+      restartTimer();
+
+      const box = document.querySelector('.carousel-box');
+      box.addEventListener('mouseenter', () => { if(timer) clearInterval(timer); });
+      box.addEventListener('mouseleave', restartTimer);
+      nextBtn.addEventListener('click', () => { next(); restartTimer(); });
+      prevBtn.addEventListener('click', () => { prev(); restartTimer(); });
+      dotsWrap.addEventListener('click', (e) => {
+        const dot = e.target.closest('.cdot');
+        if(!dot) return;
+        setActive(Number(dot.dataset.i));
+        restartTimer();
+      });
+    })();
+  </script>
 </body>
 </html>

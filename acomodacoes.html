@@ -545,6 +545,184 @@
       line-height:1.78;
     }
 
+    .editorial{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:84px 24px 92px;
+    }
+
+    .editorial-intro{
+      max-width:900px;
+      margin:0 auto 58px;
+      text-align:center;
+    }
+
+    .editorial-intro p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.88;
+      font-size:15.5px;
+    }
+
+    .suite-row{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(0, 1fr);
+      gap:56px;
+      align-items:center;
+      margin-bottom:88px;
+    }
+
+    .suite-row:last-child{margin-bottom:0}
+    .suite-row.reverse .suite-row-text{order:1}
+    .suite-row.reverse .suite-row-img{order:2}
+
+    .suite-row-img{
+      position:relative;
+      aspect-ratio:5 / 4;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 24px 60px rgba(0,0,0,0.12);
+      background:#f3eee4;
+    }
+
+    .suite-row-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transition:transform 0.55s ease;
+    }
+
+    .suite-row:hover .suite-row-img img{transform:scale(1.04)}
+
+    .suite-row-text{padding:0 8px}
+
+    .suite-row-tag{
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:3px;
+      text-transform:uppercase;
+      color:var(--gold2);
+      margin-bottom:14px;
+    }
+
+    .suite-row-title{
+      margin:0 0 18px;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:clamp(26px, 2.6vw, 34px);
+      color:var(--navy);
+      letter-spacing:1.4px;
+      line-height:1.2;
+      text-transform:uppercase;
+      text-wrap:balance;
+    }
+
+    .suite-row-copy{
+      padding:18px 0 24px;
+      border-top:1px dashed rgba(29,53,87,0.15);
+      border-bottom:1px dashed rgba(29,53,87,0.15);
+      margin-bottom:22px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.86;
+    }
+
+    .suite-row-copy p{
+      margin:0 0 10px;
+    }
+
+    .suite-row-copy p:last-child{margin-bottom:0}
+
+    .suite-row-bottom{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .suite-row-price small{
+      display:block;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      color:rgba(22,37,58,0.55);
+      margin-bottom:2px;
+    }
+
+    .suite-row-price .num{
+      font-family:"Cormorant Garamond",serif;
+      font-size:34px;
+      font-weight:600;
+      color:var(--navy);
+      line-height:1;
+    }
+
+    .suite-row-price .unit{
+      font-family:"Inter",sans-serif;
+      font-size:13px;
+      color:rgba(22,37,58,0.6);
+      font-weight:400;
+    }
+
+    .suite-row-ctas{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .suite-row-btn{
+      min-height:46px;
+      padding:13px 22px;
+      border-radius:12px;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+      transition:0.22s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      white-space:nowrap;
+    }
+
+    .suite-row-btn.ghost{
+      background:transparent;
+      color:var(--navy);
+      border:1.5px solid rgba(29,53,87,0.20);
+    }
+
+    .suite-row-btn.ghost:hover{
+      border-color:var(--navy);
+      transform:translateY(-1px);
+    }
+
+    .suite-row-btn.solid{
+      background:var(--navy);
+      color:#fff;
+      border:1.5px solid var(--navy);
+      box-shadow:0 8px 20px rgba(29,53,87,0.25);
+    }
+
+    .suite-row-btn.solid:hover{
+      background:var(--navy2);
+      transform:translateY(-1px);
+    }
+
+    .suite-row-note{
+      margin-top:16px;
+      padding:14px 14px;
+      border-radius:16px;
+      background:rgba(216,199,161,0.14);
+      border:1px solid rgba(203,181,140,0.20);
+      color:#7e6540;
+      font-size:13px;
+      line-height:1.78;
+    }
+
     footer{
       position:relative;
       overflow:hidden;
@@ -593,6 +771,24 @@
     @media (max-width:1024px){
       .grid{
         grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+
+      .editorial{
+        padding:72px 22px 82px;
+      }
+
+      .suite-row{
+        gap:34px;
+        margin-bottom:74px;
+      }
+
+      .suite-row-title{
+        font-size:30px;
+      }
+
+      .suite-row-bottom{
+        align-items:flex-start;
+        flex-direction:column;
       }
 
       .trust-strip{
@@ -693,6 +889,55 @@
       .section-sub{
         font-size:14.5px;
         line-height:1.78;
+      }
+
+      .editorial{
+        padding:58px 18px 72px;
+      }
+
+      .editorial-intro{
+        margin-bottom:34px;
+        text-align:left;
+      }
+
+      .editorial-intro p{
+        font-size:14.5px;
+        line-height:1.78;
+      }
+
+      .suite-row,
+      .suite-row.reverse{
+        grid-template-columns:1fr;
+        gap:22px;
+        margin-bottom:54px;
+      }
+
+      .suite-row.reverse .suite-row-text,
+      .suite-row.reverse .suite-row-img{
+        order:initial;
+      }
+
+      .suite-row-img{
+        border-radius:20px;
+        aspect-ratio:4 / 3;
+      }
+
+      .suite-row-text{
+        padding:0;
+      }
+
+      .suite-row-title{
+        font-size:28px;
+      }
+
+      .suite-row-copy{
+        padding:16px 0 20px;
+        font-size:14px;
+      }
+
+      .suite-row-ctas,
+      .suite-row-btn{
+        width:100%;
       }
 
       .grid{
@@ -1020,177 +1265,166 @@
     </div>
   </section>
 
-  <section class="section" id="acomodacoes">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="section-sub">
-          Cada suíte foi pensada para oferecer uma experiência confortável, charmosa e acolhedora. Ao escolher uma acomodação e clicar em reservar, ela já segue pré-selecionada na página de reserva para deixar o processo mais rápido.
-        </p>
-        <div class="orn"></div>
-      </div>
-
-      <div class="grid">
-
-        <article class="card">
-          <div class="card-image">
-            <span class="card-badge">Suíte 01</span>
-            <img loading="lazy" src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
-          </div>
-          <div class="card-body">
-            <h3>Suíte do Divino</h3>
-            <p class="card-lead">Suíte padrão com TV</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Cama queen, ar-condicionado, frigobar e varanda privativa com rede.</div>
-              <div class="card-highlight">Boa escolha para quem quer descansar e aproveitar Pirenópolis em ritmo mais leve.</div>
-            </div>
-
-            <div class="card-foot">
-              <span class="card-capacity">2 hóspedes</span>
-              <span class="card-capacity">Com TV</span>
-            </div>
-
-            <div class="card-actions">
-              <a href="suite.html?room=divino" class="btn-outline">Conhecer suíte</a>
-              <a href="booking.html?room_id=1" class="btn-solid">Reservar agora</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-image">
-            <span class="card-badge">Suíte 02</span>
-            <img loading="lazy" src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
-          </div>
-          <div class="card-body">
-            <h3>Suíte das Cavalhadas</h3>
-            <p class="card-lead">Suíte padrão com TV</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Ambiente acolhedor com itens essenciais para uma hospedagem leve e confortável.</div>
-              <div class="card-highlight">Ideal para casais que querem curtir a cidade e voltar para um espaço agradável ao fim do dia.</div>
-            </div>
-
-            <div class="card-foot">
-              <span class="card-capacity">2 hóspedes</span>
-              <span class="card-capacity">Com TV</span>
-            </div>
-
-            <div class="card-actions">
-              <a href="suite.html?room=cavalhadas" class="btn-outline">Conhecer suíte</a>
-              <a href="booking.html?room_id=2" class="btn-solid">Reservar agora</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-image">
-            <span class="card-badge">Suíte 03</span>
-            <img loading="lazy" src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
-          </div>
-          <div class="card-body">
-            <h3>Suíte do Rosário</h3>
-            <p class="card-lead">Suíte padrão com TV</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Boa combinação entre funcionalidade, privacidade e atmosfera tranquila.</div>
-              <div class="card-highlight">Excelente para casais que querem desacelerar e aproveitar a viagem com mais calma.</div>
-            </div>
-
-            <div class="card-foot">
-              <span class="card-capacity">2 hóspedes</span>
-              <span class="card-capacity">Com TV</span>
-            </div>
-
-            <div class="card-actions">
-              <a href="suite.html?room=rosario" class="btn-outline">Conhecer suíte</a>
-              <a href="booking.html?room_id=3" class="btn-solid">Reservar agora</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card master">
-          <div class="card-image">
-            <span class="card-badge">Em breve</span>
-            <img loading="lazy" src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
-          </div>
-          <div class="card-body">
-            <h3>Suíte dos Pireneus (Master)</h3>
-            <p class="card-lead">Nossa suíte master está sendo preparada para oferecer uma experiência ainda mais especial, com banheira de imersão e proposta premium.</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Uma acomodação pensada para elevar a experiência romântica dentro do Chateau Pireneus.</div>
-              <div class="card-highlight">Ideal para hóspedes que desejam um nível extra de exclusividade e conforto.</div>
-            </div>
-
-            <div class="master-note">
-              Lançamento em breve. Se quiser ser avisado primeiro sobre a disponibilidade, fale com a pousada pelo WhatsApp.
-            </div>
-
-            <div class="card-actions">
-              <a href="https://wa.me/5562998167654?text=Olá!%20Tenho%20interesse%20na%20Suíte%20dos%20Pireneus%20(Master).%20Gostaria%20de%20entrar%20na%20lista%20para%20ser%20avisado(a)%20assim%20que%20ela%20estiver%20disponível%20e,%20se%20possível,%20receber%20informações%20sobre%20valores%20e%20previsão." target="_blank" class="btn-outline">Quero ser avisado</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-image">
-            <span class="card-badge">Suíte 05</span>
-            <img loading="lazy" src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
-          </div>
-          <div class="card-body">
-            <h3>Suíte Aurora</h3>
-            <p class="card-lead">Suíte padrão com TV</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Ideal para casais que querem transformar a hospedagem em parte especial da viagem.</div>
-              <div class="card-highlight">Combina praticidade, aconchego e clima romântico na medida certa.</div>
-            </div>
-
-            <div class="card-foot">
-              <span class="card-capacity">2 hóspedes</span>
-              <span class="card-capacity">Com TV</span>
-            </div>
-
-            <div class="card-actions">
-              <a href="suite.html?room=aurora" class="btn-outline">Conhecer suíte</a>
-              <a href="booking.html?room_id=5" class="btn-solid">Reservar agora</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-image">
-            <span class="card-badge">Suíte 06</span>
-            <img loading="lazy" src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
-          </div>
-          <div class="card-body">
-            <h3>Suíte do Bonfim</h3>
-            <p class="card-lead">Suíte padrão sem TV</p>
-
-            <div class="card-highlights">
-              <div class="card-highlight">Boa escolha para hóspedes que querem um ambiente confortável com proposta mais leve e contemplativa.</div>
-              <div class="card-highlight">Perfeita para desacelerar e aproveitar a viagem com mais presença.</div>
-            </div>
-
-            <div class="card-foot">
-              <span class="card-capacity">2 hóspedes</span>
-              <span class="card-capacity">Sem TV</span>
-            </div>
-
-            <div class="card-actions">
-              <a href="suite.html?room=bonfim" class="btn-outline">Conhecer suíte</a>
-              <a href="booking.html?room_id=6" class="btn-solid">Reservar agora</a>
-            </div>
-
-            <div class="card-note">
-              Uma opção interessante para quem prefere um clima mais tranquilo e menos estímulo dentro da suíte.
-            </div>
-          </div>
-        </article>
-
-      </div>
+  <section class="editorial" id="acomodacoes">
+    <div class="editorial-intro">
+      <p>
+        Cada suíte foi pensada para oferecer uma experiência confortável, charmosa e acolhedora. Ao escolher uma acomodação e clicar em reservar, ela já segue pré-selecionada na página de reserva para deixar o processo mais rápido.
+      </p>
     </div>
+
+    <article class="suite-row">
+      <a class="suite-row-img" href="suite.html?room=divino" aria-label="Conhecer Suíte do Divino">
+        <img loading="lazy" src="public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+      </a>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Suíte 01</div>
+        <h2 class="suite-row-title">Suíte do Divino</h2>
+        <div class="suite-row-copy">
+          <p>Cama queen, ar-condicionado, frigobar e varanda privativa com rede.</p>
+          <p>Boa escolha para quem quer descansar e aproveitar Pirenópolis em ritmo mais leve.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>A partir de</small>
+            <span class="num">R$ 480</span>
+            <span class="unit">/noite</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="suite.html?room=divino" class="suite-row-btn ghost">Conhecer suíte</a>
+            <a href="booking.html?room_id=1" class="suite-row-btn solid">Reservar agora</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="suite-row reverse">
+      <a class="suite-row-img" href="suite.html?room=cavalhadas" aria-label="Conhecer Suíte das Cavalhadas">
+        <img loading="lazy" src="public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+      </a>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Suíte 02</div>
+        <h2 class="suite-row-title">Suíte das Cavalhadas</h2>
+        <div class="suite-row-copy">
+          <p>Ambiente acolhedor com itens essenciais para uma hospedagem leve e confortável.</p>
+          <p>Ideal para casais que querem curtir a cidade e voltar para um espaço agradável ao fim do dia.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>A partir de</small>
+            <span class="num">R$ 540</span>
+            <span class="unit">/noite</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="suite.html?room=cavalhadas" class="suite-row-btn ghost">Conhecer suíte</a>
+            <a href="booking.html?room_id=2" class="suite-row-btn solid">Reservar agora</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="suite-row">
+      <a class="suite-row-img" href="suite.html?room=rosario" aria-label="Conhecer Suíte do Rosário">
+        <img loading="lazy" src="public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+      </a>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Suíte 03</div>
+        <h2 class="suite-row-title">Suíte do Rosário</h2>
+        <div class="suite-row-copy">
+          <p>Boa combinação entre funcionalidade, privacidade e atmosfera tranquila.</p>
+          <p>Excelente para casais que querem desacelerar e aproveitar a viagem com mais calma.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>A partir de</small>
+            <span class="num">R$ 460</span>
+            <span class="unit">/noite</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="suite.html?room=rosario" class="suite-row-btn ghost">Conhecer suíte</a>
+            <a href="booking.html?room_id=3" class="suite-row-btn solid">Reservar agora</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="suite-row reverse">
+      <div class="suite-row-img" aria-label="Suíte dos Pireneus em breve">
+        <img loading="lazy" src="public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus">
+      </div>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Em breve</div>
+        <h2 class="suite-row-title">Suíte dos Pireneus (Master)</h2>
+        <div class="suite-row-copy">
+          <p>Nossa suíte master está sendo preparada para oferecer uma experiência ainda mais especial, com banheira de imersão e proposta premium.</p>
+          <p>Ideal para hóspedes que desejam um nível extra de exclusividade e conforto.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>Lançamento</small>
+            <span class="num">Em breve</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="https://wa.me/5562998167654?text=Olá!%20Tenho%20interesse%20na%20Suíte%20dos%20Pireneus%20(Master).%20Gostaria%20de%20entrar%20na%20lista%20para%20ser%20avisado(a)%20assim%20que%20ela%20estiver%20disponível%20e,%20se%20possível,%20receber%20informações%20sobre%20valores%20e%20previsão." target="_blank" rel="noopener" class="suite-row-btn ghost">Quero ser avisado</a>
+          </div>
+        </div>
+        <div class="suite-row-note">
+          Se quiser ser avisado primeiro sobre a disponibilidade, fale com a pousada pelo WhatsApp.
+        </div>
+      </div>
+    </article>
+
+    <article class="suite-row">
+      <a class="suite-row-img" href="suite.html?room=aurora" aria-label="Conhecer Suíte Aurora">
+        <img loading="lazy" src="public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
+      </a>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Suíte 05</div>
+        <h2 class="suite-row-title">Suíte Aurora</h2>
+        <div class="suite-row-copy">
+          <p>Ideal para casais que querem transformar a hospedagem em parte especial da viagem.</p>
+          <p>Combina praticidade, aconchego e clima romântico na medida certa.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>A partir de</small>
+            <span class="num">R$ 520</span>
+            <span class="unit">/noite</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="suite.html?room=aurora" class="suite-row-btn ghost">Conhecer suíte</a>
+            <a href="booking.html?room_id=5" class="suite-row-btn solid">Reservar agora</a>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="suite-row reverse">
+      <a class="suite-row-img" href="suite.html?room=bonfim" aria-label="Conhecer Suíte do Bonfim">
+        <img loading="lazy" src="public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
+      </a>
+      <div class="suite-row-text">
+        <div class="suite-row-tag">Suíte 06</div>
+        <h2 class="suite-row-title">Suíte do Bonfim</h2>
+        <div class="suite-row-copy">
+          <p>Boa escolha para hóspedes que querem um ambiente confortável com proposta mais leve e contemplativa.</p>
+          <p>Perfeita para desacelerar e aproveitar a viagem com mais presença.</p>
+        </div>
+        <div class="suite-row-bottom">
+          <div class="suite-row-price">
+            <small>A partir de</small>
+            <span class="num">R$ 420</span>
+            <span class="unit">/noite</span>
+          </div>
+          <div class="suite-row-ctas">
+            <a href="suite.html?room=bonfim" class="suite-row-btn ghost">Conhecer suíte</a>
+            <a href="booking.html?room_id=6" class="suite-row-btn solid">Reservar agora</a>
+          </div>
+        </div>
+        <div class="suite-row-note">
+          Uma opção interessante para quem prefere um clima mais tranquilo e menos estímulo dentro da suíte.
+        </div>
+      </div>
+    </article>
   </section>
 
   <footer>

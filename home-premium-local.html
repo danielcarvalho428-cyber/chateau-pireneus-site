@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chateau Pireneus - Premium Home Concept</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="site/styles.css">
+  <style>
+    :root{
+      --paper:#f7f2e9;
+      --paper2:#ede4d5;
+      --inkDeep:#17273d;
+      --wine:#6f2f2f;
+      --moss:#52604a;
+      --cream:#fffaf0;
+      --hair:rgba(29,53,87,.16);
+    }
+
+    body{
+      margin:0;
+      color:var(--inkDeep);
+      background:var(--paper);
+      font-family:"Inter",sans-serif;
+      overflow-x:hidden;
+    }
+
+    .top-header .brand{
+      gap:1px;
+      max-width:220px;
+    }
+
+    .top-header .brand .line1{
+      font-size:10px;
+      line-height:1;
+      letter-spacing:.18em;
+    }
+
+    .top-header .brand .line2{
+      font-family:"Cormorant Garamond",serif;
+      font-size:18px;
+      font-weight:700;
+      line-height:1.08;
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
+
+    .concept-note{
+      position:fixed;
+      left:18px;
+      bottom:18px;
+      z-index:13000;
+      padding:9px 12px;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(23,39,61,.72);
+      color:#fff;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      backdrop-filter:blur(12px);
+    }
+
+    .hero-editorial{
+      position:relative;
+      min-height:100svh;
+      display:grid;
+      align-items:end;
+      overflow:hidden;
+      color:#fff;
+      background:#101a28;
+    }
+
+    .hero-editorial::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(9,17,28,.76) 0%, rgba(9,17,28,.38) 45%, rgba(9,17,28,.12) 100%),
+        linear-gradient(0deg, rgba(9,17,28,.76) 0%, rgba(9,17,28,.08) 45%, rgba(9,17,28,.45) 100%),
+        url("site/hero.webp") center/cover no-repeat;
+      transform:scale(1.01);
+    }
+
+    .hero-inner{
+      position:relative;
+      z-index:2;
+      width:min(1180px, calc(100% - 44px));
+      margin:0 auto;
+      padding:150px 0 48px;
+      display:grid;
+      grid-template-columns:minmax(0, 660px) minmax(260px, 320px);
+      gap:42px;
+      align-items:end;
+      justify-content:space-between;
+    }
+
+    .hero-kicker{
+      margin:0 0 18px;
+      font-size:12px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.78);
+    }
+
+    .hero-title{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:clamp(52px, 7.2vw, 88px);
+      line-height:1;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      max-width:640px;
+      text-shadow:0 22px 70px rgba(0,0,0,.42);
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .hero-title span{
+      display:block;
+    }
+
+    .hero-copy{
+      max-width:620px;
+      margin:28px 0 0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(22px, 2.4vw, 34px);
+      line-height:1.2;
+      color:rgba(255,255,255,.9);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:30px;
+    }
+
+    .btn-main,
+    .btn-text{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      text-decoration:none;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-weight:700;
+      font-size:11px;
+    }
+
+    .btn-main{
+      padding:0 22px;
+      background:#f2dfad;
+      color:#152337;
+    }
+
+    .btn-text{
+      color:#fff;
+      border-bottom:1px solid rgba(255,255,255,.55);
+    }
+
+    .arrival-strip{
+      border-top:1px solid rgba(255,255,255,.28);
+      padding-top:20px;
+      color:rgba(255,255,255,.88);
+    }
+
+    .arrival-strip span{
+      display:block;
+      margin-bottom:16px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:25px;
+      line-height:1.12;
+    }
+
+    .arrival-grid{
+      display:grid;
+      gap:14px;
+      font-size:12px;
+      line-height:1.6;
+      color:rgba(255,255,255,.72);
+    }
+
+    .section{
+      position:relative;
+      padding:110px 0;
+    }
+
+    .wrap-local{
+      width:min(1180px, calc(100% - 44px));
+      margin:0 auto;
+    }
+
+    .story{
+      background:
+        linear-gradient(90deg, rgba(247,242,233,.98) 0%, rgba(247,242,233,.88) 48%, rgba(237,228,213,.9) 100%);
+    }
+
+    .story-grid{
+      display:grid;
+      grid-template-columns:.9fr 1.1fr;
+      gap:70px;
+      align-items:center;
+    }
+
+    .eyebrow{
+      margin:0 0 14px;
+      color:var(--wine);
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+    }
+
+    .section-title{
+      margin:0;
+      max-width:760px;
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(42px, 5vw, 78px);
+      font-weight:500;
+      line-height:.98;
+      letter-spacing:0;
+      color:var(--inkDeep);
+    }
+
+    .section-copy{
+      margin:28px 0 0;
+      max-width:610px;
+      font-size:16px;
+      line-height:2;
+      color:rgba(23,39,61,.75);
+    }
+
+    .quiet-list{
+      margin:30px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:13px;
+      color:rgba(23,39,61,.72);
+      font-size:14px;
+    }
+
+    .quiet-list li{
+      display:grid;
+      grid-template-columns:72px 1fr;
+      gap:16px;
+      align-items:baseline;
+      border-top:1px solid var(--hair);
+      padding-top:13px;
+    }
+
+    .quiet-list b{
+      font-family:"Cormorant Garamond",serif;
+      font-size:18px;
+      color:var(--inkDeep);
+    }
+
+    .image-stack{
+      position:relative;
+      min-height:650px;
+    }
+
+    .image-stack img{
+      position:absolute;
+      object-fit:cover;
+      box-shadow:0 30px 80px rgba(21,35,55,.22);
+    }
+
+    .image-stack .large{
+      right:0;
+      top:0;
+      width:76%;
+      height:520px;
+    }
+
+    .image-stack .small{
+      left:0;
+      bottom:0;
+      width:45%;
+      height:320px;
+      border:12px solid var(--paper);
+    }
+
+    .rooms{
+      background:
+        linear-gradient(110deg, rgba(237,228,213,.96) 0%, rgba(247,242,233,.98) 62%, rgba(231,218,199,.9) 100%);
+      color:var(--inkDeep);
+      overflow:hidden;
+    }
+
+    .rooms::before{
+      content:none;
+    }
+
+    .rooms .wrap-local{
+      position:relative;
+      z-index:2;
+    }
+
+    .rooms-head{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(280px, 390px);
+      gap:54px;
+      align-items:end;
+    }
+
+    .rooms-portrait{
+      width:100%;
+      height:430px;
+      object-fit:cover;
+      box-shadow:0 32px 90px rgba(21,35,55,.22);
+      transform:translateY(-28px);
+    }
+
+    .rooms .section-copy{
+      color:rgba(23,39,61,.74);
+    }
+
+    .suite-lineup{
+      margin-top:34px;
+      display:grid;
+      gap:1px;
+      background:transparent;
+      border-top:1px solid rgba(23,39,61,.18);
+      border-bottom:1px solid rgba(23,39,61,.18);
+    }
+
+    .suite-row{
+      display:grid;
+      grid-template-columns:130px 1fr 190px 120px;
+      gap:26px;
+      align-items:center;
+      padding:24px 0;
+      color:var(--inkDeep);
+      background:transparent;
+      text-decoration:none;
+      border-top:1px solid rgba(23,39,61,.12);
+      transition:background .24s ease, padding-left .24s ease;
+    }
+
+    .suite-row:first-child{border-top:none;}
+
+    .suite-row:hover{
+      background:rgba(255,255,255,.42);
+      padding-left:14px;
+    }
+
+    .suite-row img{
+      width:130px;
+      height:92px;
+      object-fit:cover;
+    }
+
+    .suite-row h3{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-weight:500;
+      font-size:31px;
+      letter-spacing:0;
+    }
+
+    .suite-row p{
+      margin:8px 0 0;
+      max-width:540px;
+      color:rgba(23,39,61,.66);
+      font-size:14px;
+      line-height:1.65;
+    }
+
+    .suite-row small{
+      color:rgba(23,39,61,.58);
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .suite-row em{
+      justify-self:end;
+      font-style:normal;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--wine);
+    }
+
+    .atmosphere{
+      padding-bottom:80px;
+      background:var(--paper);
+    }
+
+    .mosaic{
+      margin-top:58px;
+      display:grid;
+      grid-template-columns:1fr .72fr;
+      grid-template-rows:360px 220px;
+      gap:18px;
+    }
+
+    .mosaic figure{
+      margin:0;
+      position:relative;
+      overflow:hidden;
+      background:#ddd;
+    }
+
+    .mosaic figure:first-child{
+      grid-row:1 / span 2;
+      transform:translateY(-30px);
+    }
+
+    .mosaic img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .mosaic figcaption{
+      position:absolute;
+      left:22px;
+      bottom:20px;
+      color:#fff;
+      font-family:"Cormorant Garamond",serif;
+      font-size:25px;
+      text-shadow:0 12px 30px rgba(0,0,0,.55);
+    }
+
+    .reserve-close{
+      min-height:620px;
+      display:grid;
+      align-items:center;
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(18,29,45,.84), rgba(18,29,45,.30)),
+        url("site/public/galeria/piscina2.jpeg") center/cover no-repeat;
+    }
+
+    .reserve-close .section-title{
+      color:#fff;
+      max-width:780px;
+    }
+
+    .reserve-close .section-copy{
+      color:rgba(255,255,255,.78);
+      max-width:540px;
+    }
+
+    .reserve-panel{
+      margin-top:42px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:14px 28px;
+      border-top:1px solid rgba(255,255,255,.32);
+      padding-top:24px;
+      max-width:760px;
+    }
+
+    .reserve-panel span{
+      font-size:13px;
+      color:rgba(255,255,255,.72);
+      line-height:1.7;
+    }
+
+    footer{
+      position:relative;
+      min-height:165px;
+      overflow:hidden;
+      color:#fff;
+      background:#101a28;
+    }
+
+    .footer-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.2;
+    }
+
+    .footer-local{
+      position:relative;
+      z-index:2;
+      width:min(1180px, calc(100% - 44px));
+      margin:0 auto;
+      padding:34px 0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:30px;
+      align-items:end;
+    }
+
+    .footer-local h2{
+      margin:0;
+      font-family:"Gyahegi","Cormorant Garamond",serif;
+      font-weight:400;
+      font-size:30px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .footer-local p,
+    .footer-local a{
+      color:rgba(255,255,255,.76);
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    .footer-links{
+      display:grid;
+      justify-items:end;
+      gap:6px;
+    }
+
+    @media (max-width:900px){
+      .concept-note{display:none;}
+      .hero-inner{
+        grid-template-columns:1fr;
+        padding:130px 0 38px;
+        gap:34px;
+      }
+      .arrival-strip{max-width:520px;}
+      .section{padding:76px 0;}
+      .story-grid{grid-template-columns:1fr; gap:42px;}
+      .rooms-head{grid-template-columns:1fr; gap:22px;}
+      .rooms-portrait{height:310px; transform:none;}
+      .image-stack{min-height:480px;}
+      .image-stack .large{width:86%; height:380px;}
+      .image-stack .small{width:52%; height:230px;}
+      .suite-row{
+        grid-template-columns:96px 1fr;
+        gap:16px;
+        padding:18px 0;
+      }
+      .suite-row img{width:96px;height:78px;}
+      .suite-row small,
+      .suite-row em{display:none;}
+      .suite-row h3{font-size:24px;}
+      .mosaic{
+        grid-template-columns:1fr;
+        grid-template-rows:360px 240px 240px;
+      }
+      .mosaic figure:first-child{
+        grid-row:auto;
+        transform:none;
+      }
+      .footer-local{
+        grid-template-columns:1fr;
+      }
+      .footer-links{
+        justify-items:start;
+      }
+    }
+
+    @media (max-width:560px){
+      .top-header{padding:10px 12px;}
+      .top-header .brand{max-width:145px;}
+      .top-header .brand .line1{font-size:8px;}
+      .top-header .brand .line2{font-size:13px; letter-spacing:.06em;}
+      .hero-title{font-size:31px; line-height:1; letter-spacing:.02em; max-width:300px; gap:34px;}
+      .hero-copy{font-size:23px;}
+      .section-title{font-size:42px;}
+      .quiet-list li{grid-template-columns:1fr; gap:4px;}
+      .image-stack{min-height:420px;}
+      .image-stack .large{width:100%; height:320px;}
+      .image-stack .small{width:58%; height:190px; border-width:8px;}
+      .footer-local h2{font-size:28px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="concept-note">Local concept - not live</div>
+
+  <header class="top-header" id="topHeader">
+    <div class="top-header-inner">
+      <a class="brand" href="home-premium-local.html">
+        <span class="line1">Pousada</span>
+        <span class="line2">Chateau Pireneus</span>
+      </a>
+      <div class="header-actions">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
+          </svg>
+        </a>
+        <a class="account-btn" href="login.html">Entrar</a>
+        <a class="reserve-btn" href="booking.html">Reservar</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-editorial">
+      <div class="hero-inner">
+        <div>
+          <p class="hero-kicker">Pirenopolis, Goias</p>
+          <h1 class="hero-title"><span>Chateau</span><span>Pireneus</span></h1>
+          <p class="hero-copy">Uma pousada boutique para dias lentos, encontros a dois e o silencio bom depois da cidade.</p>
+          <div class="hero-actions">
+            <a class="btn-main" href="booking.html">Reservar estadia</a>
+            <a class="btn-text" href="#suites">Ver suites</a>
+          </div>
+        </div>
+        <aside class="arrival-strip" aria-label="Resumo da experiencia">
+          <span>Seis suites, uma atmosfera intima e o charme de Piri sem pressa.</span>
+          <div class="arrival-grid">
+            <p>Check-in acolhedor, reserva direta e uma casa pensada para casais que querem descansar com privacidade.</p>
+            <p>Piscina, varanda com rede, cafe e detalhes simples que fazem a estadia parecer mais pessoal.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section story" id="pousada">
+      <div class="wrap-local story-grid">
+        <div>
+          <p class="eyebrow">A pousada</p>
+          <h2 class="section-title">Mais casa de descanso do que hotel de passagem.</h2>
+          <p class="section-copy">O Chateau Pireneus foi pensado para quem chega a Pirenopolis querendo desacelerar. A proposta e simples: uma hospedagem pequena, acolhedora e bonita, onde cada ambiente ajuda a viagem a ficar mais leve.</p>
+          <ul class="quiet-list">
+            <li><b>Intima</b><span>Apenas seis acomodacoes para preservar calma, silencio e atencao.</span></li>
+            <li><b>Local</b><span>Uma base charmosa para viver Piri com conforto, natureza e cultura por perto.</span></li>
+            <li><b>Direta</b><span>Reserva sem intermediarios, com atendimento pelo WhatsApp quando precisar.</span></li>
+          </ul>
+        </div>
+        <div class="image-stack" aria-hidden="true">
+          <img class="large" src="site/public/galeria/sala-jantar2.jpeg" alt="">
+          <img class="small" src="site/public/galeria/lazer2.jpeg" alt="">
+        </div>
+      </div>
+    </section>
+
+    <section class="section rooms" id="suites">
+      <div class="wrap-local">
+        <div class="rooms-head">
+          <div>
+            <p class="eyebrow">Suites</p>
+            <h2 class="section-title">Acomodacoes com clima reservado, sem excesso de formalidade.</h2>
+            <p class="section-copy">A ideia aqui nao e impressionar com grandiosidade. E criar um quarto gostoso de voltar: cama confortavel, varanda, rede, ar-condicionado e uma sensacao de pausa.</p>
+          </div>
+          <img class="rooms-portrait" src="site/public/suites/aurora/aurora2.jpeg" alt="Suite aconchegante do Chateau Pireneus">
+        </div>
+
+        <div class="suite-lineup">
+          <a class="suite-row" href="suite.html?room=divino">
+            <img src="site/public/suites/divino/divino1.jpeg" alt="Suite do Divino">
+            <div><h3>Suite do Divino</h3><p>Conforto e tranquilidade para uma estadia a dois.</p></div>
+            <small>Varanda privativa<br>2 hospedes</small>
+            <em>Conhecer</em>
+          </a>
+          <a class="suite-row" href="suite.html?room=cavalhadas">
+            <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suite das Cavalhadas">
+            <div><h3>Suite das Cavalhadas</h3><p>Ambiente acolhedor com varanda privativa e rede.</p></div>
+            <small>Smart TV<br>2 hospedes</small>
+            <em>Conhecer</em>
+          </a>
+          <a class="suite-row" href="suite.html?room=rosario">
+            <img src="site/public/suites/rosario/rosario1.jpeg" alt="Suite do Rosario">
+            <div><h3>Suite do Rosario</h3><p>Para relaxar e curtir o charme de Pirenopolis.</p></div>
+            <small>Wi-Fi e ar<br>2 hospedes</small>
+            <em>Conhecer</em>
+          </a>
+          <a class="suite-row" href="suite.html?room=aurora">
+            <img src="site/public/suites/aurora/aurora1.jpeg" alt="Suite Aurora">
+            <div><h3>Suite Aurora</h3><p>Uma experiencia romantica com conforto e tranquilidade.</p></div>
+            <small>Reserva direta<br>2 hospedes</small>
+            <em>Conhecer</em>
+          </a>
+          <a class="suite-row" href="suite.html?room=bonfim">
+            <img src="site/public/suites/bonfim/bonfim1.jpeg" alt="Suite do Bonfim">
+            <div><h3>Suite do Bonfim</h3><p>Essencial, aconchegante e perfeita para descansar.</p></div>
+            <small>Varanda com rede<br>2 hospedes</small>
+            <em>Conhecer</em>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section atmosphere">
+      <div class="wrap-local">
+        <p class="eyebrow">Ambientes</p>
+        <h2 class="section-title">Piscina, cafe e pequenos rituais de descanso.</h2>
+        <p class="section-copy">Em vez de muitos blocos explicando tudo, a pousada aparece pelo que importa: luz, agua, mesa posta, rede, textura e tempo. O visitante entende a experiencia antes de ler demais.</p>
+        <div class="mosaic">
+          <figure>
+            <img src="site/public/galeria/piscina1.jpeg" alt="Piscina da pousada">
+            <figcaption>Piscina</figcaption>
+          </figure>
+          <figure>
+            <img src="site/public/galeria/sala-jantar1.jpeg" alt="Sala de jantar">
+            <figcaption>Cafe</figcaption>
+          </figure>
+          <figure>
+            <img src="site/public/galeria/lazer3.jpeg" alt="Area de lazer">
+            <figcaption>Descanso</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reserve-close">
+      <div class="wrap-local">
+        <p class="eyebrow">Reserva direta</p>
+        <h2 class="section-title">Escolha suas datas. O resto pode ser simples.</h2>
+        <p class="section-copy">Veja disponibilidade, escolha a suite e finalize com pagamento seguro. Se preferir, chame pelo WhatsApp e fale direto com a pousada.</p>
+        <div class="reserve-panel">
+          <a class="btn-main" href="booking.html">Ver disponibilidade</a>
+          <a class="btn-text" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar no WhatsApp</a>
+          <span>Rua Tupinambas, Quadra 09, Lote 16 - Setor Meia Ponte - Pirenopolis, GO</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <img class="footer-bg" src="site/footer.png" alt="">
+    <div class="footer-local">
+      <div>
+        <h2>Chateau Pireneus</h2>
+        <p>Pousada boutique em Pirenopolis para casais que buscam conforto, privacidade e uma experiencia acolhedora.</p>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+        <a href="https://wa.me/5562998167654" target="_blank" rel="noopener">(62) 99816-7654</a>
+        <a href="policies.html">Politicas da pousada</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById("topHeader");
+    window.addEventListener("scroll", function(){
+      header.classList.toggle("solid", window.scrollY > 40);
+    });
+  </script>
+</body>
+</html>

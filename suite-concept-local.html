@@ -10,7 +10,7 @@
     content="Conheça as suítes do Chateau Pireneus em Pirenópolis, com conforto, charme e praticidade para uma hospedagem especial."
   />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://chateaupireneus.com.br/suite.html" />
+  <meta name="robots" content="noindex,nofollow" />
 
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:type" content="website" />
@@ -19,7 +19,7 @@
     property="og:description"
     content="Veja detalhes das suítes do Chateau Pireneus em Pirenópolis e escolha a acomodação ideal para sua estadia."
   />
-  <meta property="og:url" content="https://chateaupireneus.com.br/suite.html" />
+  <meta property="og:url" content="http://127.0.0.1:5177/suite-concept-local.html" />
   <meta property="og:site_name" content="Chateau Pireneus" />
   <meta property="og:image" content="https://chateaupireneus.com.br/hero-piri.jpeg" />
   <meta property="og:image:type" content="image/jpeg" />
@@ -42,8 +42,8 @@
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "@id": "https://chateaupireneus.com.br/suite.html#webpage",
-      "url": "https://chateaupireneus.com.br/suite.html",
+      "@id": "http://127.0.0.1:5177/suite-concept-local.html#webpage",
+      "url": "http://127.0.0.1:5177/suite-concept-local.html",
       "name": "Suíte | Chateau Pireneus",
       "description": "Conheça as suítes do Chateau Pireneus em Pirenópolis, com conforto, charme e praticidade para uma hospedagem especial.",
       "isPartOf": {
@@ -1548,6 +1548,230 @@
         gap:10px;
       }
     }
+
+    /* Local concept: make the in-suite booking area feel less like a widget. */
+    #reservaSection{
+      position:relative;
+      overflow:hidden;
+      padding:108px 0 118px;
+      background:
+        linear-gradient(180deg, #f5efe4 0%, #ece0cd 54%, #f5efe4 100%);
+    }
+    #reservaSection::before{
+      content:"";
+      position:absolute;
+      right:-10vw;
+      top:76px;
+      width:42vw;
+      height:72%;
+      background:url("site/public/galeria/piscina2.jpeg") center/cover no-repeat;
+      opacity:.13;
+      filter:saturate(.85);
+      pointer-events:none;
+    }
+    #reservaSection .wrap{
+      position:relative;
+      z-index:1;
+    }
+    #reservaSection .booking-section-head{
+      display:grid;
+      grid-template-columns:minmax(0, .82fr) minmax(280px, .72fr);
+      gap:58px;
+      align-items:end;
+      text-align:left;
+      margin:0 0 52px;
+    }
+    #reservaSection .booking-section-kicker{
+      color:#7a3431;
+      letter-spacing:.22em;
+      font-weight:900;
+    }
+    #reservaSection .booking-section-title{
+      font-family:"Cormorant Garamond",serif;
+      font-size:clamp(44px, 5.7vw, 76px);
+      line-height:.98;
+      letter-spacing:0;
+      text-transform:none;
+      color:#172235;
+      margin:0;
+    }
+    #reservaSection .booking-section-sub{
+      max-width:520px;
+      margin:0;
+      align-self:end;
+      font-size:15px;
+      line-height:1.9;
+      color:rgba(23,34,53,.68);
+    }
+    #reservaSection .booking-layout-live-card{
+      grid-template-columns:minmax(0, 590px) minmax(280px, 1fr);
+      max-width:1120px;
+      gap:58px;
+      align-items:start;
+    }
+    #reservaSection .live-booking-card{
+      background:rgba(255,250,241,.86);
+      border:1px solid rgba(23,34,53,.14);
+      border-radius:0;
+      box-shadow:0 32px 86px rgba(23,34,53,.16);
+      padding:34px;
+      backdrop-filter:blur(10px);
+    }
+    #reservaSection .new-tag-block{
+      display:none;
+    }
+    #reservaSection .bk-price{
+      padding-bottom:20px;
+      border-bottom:1px solid rgba(23,34,53,.14);
+    }
+    #reservaSection .bk-price .num{
+      font-family:"Cormorant Garamond",serif;
+      font-size:38px;
+      color:#172235;
+    }
+    #reservaSection .bk-price .unit{
+      color:rgba(23,34,53,.62);
+    }
+    #reservaSection .locked-room-display.compact,
+    #reservaSection .b-info-card,
+    #reservaSection .payment-option,
+    #reservaSection .addon-item{
+      border-radius:0;
+      box-shadow:none;
+    }
+    #reservaSection .locked-room-display.compact{
+      background:transparent;
+      border:0;
+      border-bottom:1px solid rgba(23,34,53,.12);
+      padding:0 0 18px;
+    }
+    #reservaSection .live-booking-grid{
+      gap:14px;
+    }
+    #reservaSection .b-field label{
+      color:rgba(23,34,53,.68);
+    }
+    #reservaSection .b-field input,
+    #reservaSection .b-field select,
+    #reservaSection #bFnrhBlock input,
+    #reservaSection #bCpfField input{
+      border-radius:0;
+      background:rgba(255,255,255,.66);
+      border:1px solid rgba(23,34,53,.16);
+    }
+    #reservaSection .booking-summary-card{
+      background:transparent;
+      border:0;
+      border-top:1px solid rgba(23,34,53,.16);
+      margin-top:24px;
+      padding:20px 0 0;
+    }
+    #reservaSection .b-summary-total{
+      font-family:"Cormorant Garamond",serif;
+      font-size:25px;
+      color:#172235;
+    }
+    #reservaSection .b-submit-btn{
+      border-radius:0;
+      background:#172235;
+      color:#f3dfad;
+      box-shadow:none;
+    }
+    #reservaSection .bk-trust{
+      justify-content:flex-start;
+    }
+    #reservaSection .booking-support-panel{
+      align-content:start;
+      gap:22px;
+    }
+    #reservaSection .booking-side-photo{
+      position:relative;
+      margin:0 0 8px;
+      min-height:330px;
+      overflow:hidden;
+      box-shadow:0 28px 70px rgba(23,34,53,.16);
+    }
+    #reservaSection .booking-side-photo img{
+      width:100%;
+      height:100%;
+      min-height:330px;
+      object-fit:cover;
+    }
+    #reservaSection .booking-side-photo figcaption{
+      position:absolute;
+      left:20px;
+      bottom:18px;
+      color:#fff;
+      font-family:"Cormorant Garamond",serif;
+      font-size:27px;
+      text-shadow:0 14px 34px rgba(0,0,0,.55);
+    }
+    #reservaSection .booking-support-panel .b-info-card{
+      background:transparent;
+      border:0;
+      border-top:1px solid rgba(23,34,53,.18);
+      padding:18px 0 0;
+      margin:0;
+    }
+    #reservaSection .booking-support-panel .b-info-card strong{
+      color:#7a3431;
+    }
+    @media (max-width:980px){
+      #reservaSection{
+        padding:76px 0 84px;
+      }
+      #reservaSection::before{
+        display:none;
+      }
+      #reservaSection .booking-section-head,
+      #reservaSection .booking-layout-live-card{
+        grid-template-columns:1fr;
+        gap:30px;
+      }
+      #reservaSection .booking-section-sub{
+        max-width:640px;
+      }
+    }
+    @media (max-width:640px){
+      #reservaSection .live-booking-card{
+        padding:24px 18px;
+      }
+      #reservaSection .booking-side-photo,
+      #reservaSection .booking-side-photo img{
+        min-height:250px;
+      }
+    }
+
+    /* Local concept header: keep the brand readable on small screens. */
+    .top-header .brand{
+      gap:1px;
+      max-width:230px;
+    }
+    .top-header .brand .line1{
+      font-size:10px;
+      line-height:1;
+      letter-spacing:.18em;
+    }
+    .top-header .brand .line2{
+      font-family:"Cormorant Garamond",serif;
+      font-size:22px;
+      font-weight:700;
+      line-height:1.02;
+      letter-spacing:.08em;
+      white-space:nowrap;
+    }
+    @media (max-width:640px){
+      .top-header .brand{
+        max-width:150px;
+      }
+      .top-header .brand .line1{
+        font-size:8px;
+      }
+      .top-header .brand .line2{
+        font-size:13px;
+        letter-spacing:.05em;
+      }
+    }
   </style>
 </head>
 
@@ -1555,11 +1779,10 @@
   <div class="backdrop" id="backdrop" onclick="toggleMenu(false)"></div>
 
   <nav class="side-menu" id="sideMenu" aria-label="Menu">
-    <a href="index.html" onclick="toggleMenu(false)">Home</a>
-    <a href="index.html#welcome" onclick="toggleMenu(false)">A pousada</a>
+    <a href="home-impact-local.html" onclick="toggleMenu(false)">Home</a>
+    <a href="home-impact-local.html#suites" onclick="toggleMenu(false)">A pousada</a>
     <a href="acomodacoes.html" onclick="toggleMenu(false)">Acomodações</a>
-    <a href="booking.html" onclick="toggleMenu(false)">Reservar</a>
-    <a href="index.html#piri" onclick="toggleMenu(false)">Conheça Piri</a>
+    <a href="booking-concept-local.html" onclick="toggleMenu(false)">Reservar</a>
 
     <hr>
 
@@ -1580,7 +1803,7 @@
 
   <header class="top-header presolid">
     <div class="top-header-inner">
-      <a class="brand" href="index.html" aria-label="Chateau Pireneus">
+      <a class="brand" href="home-impact-local.html" aria-label="Chateau Pireneus">
         <span class="line1">Pousada</span>
         <span class="line2">Chateau Pireneus</span>
       </a>
@@ -1605,7 +1828,6 @@
             <circle cx="17.4" cy="6.6" r="1.2" fill="currentColor"/>
           </svg>
         </a>
-        <a class="whatsapp-btn" href="https://wa.me/5562998167654" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
       </div>
@@ -1653,8 +1875,6 @@
 
           <p class="subtitle" id="roomDesc">Carregando informações da suíte…</p>
 
-          <div class="mini-benefits" id="miniBenefits"></div>
-
           <div class="section-title">Comodidades</div>
           <ul id="amenities"></ul>
 
@@ -1670,9 +1890,11 @@
   <section class="booking-section" id="reservaSection">
     <div class="wrap">
       <div class="booking-section-head">
-        <div class="booking-section-kicker">Reserve agora</div>
-        <h2 class="booking-section-title" id="bookingSectionTitle">Reservar</h2>
-        <p class="booking-section-sub">Escolha as datas, revise valores e siga para pagamento seguro. A reserva só é confirmada após aprovação do pagamento.</p>
+        <div>
+          <div class="booking-section-kicker">Reserva direta</div>
+          <h2 class="booking-section-title" id="bookingSectionTitle">Escolha suas datas</h2>
+        </div>
+        <p class="booking-section-sub">Confira disponibilidade, veja o valor calculado automaticamente e siga para pagamento seguro sem sair da experiência da suíte.</p>
       </div>
 
       <div class="booking-layout booking-layout-live-card">
@@ -1683,10 +1905,6 @@
               <div>
                 <div class="num" id="bSidebarPrice">A definir</div>
                 <div class="unit" id="bSidebarUnit">Escolha suas datas</div>
-              </div>
-              <div class="rating" aria-label="Avaliação">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                4.9 <span class="bk-rating-count">(127)</span>
               </div>
             </div>
 
@@ -1837,6 +2055,10 @@
         </form>
 
         <div class="booking-support-panel">
+          <figure class="booking-side-photo">
+            <img src="site/public/galeria/lazer2.jpeg" alt="Área externa do Chateau Pireneus">
+            <figcaption>Antes da chegada, a pausa já começa.</figcaption>
+          </figure>
           <div class="b-info-card">
             <strong>Como funciona</strong>
             <p>Escolha as datas, confira o total calculado automaticamente e siga para o pagamento seguro. As datas ficam separadas por tempo limitado enquanto você conclui a reserva.</p>
@@ -1874,11 +2096,7 @@
           detailHighlightText: "Um detalhe especial para relaxar com mais calma ao longo da estadia.",
           heroChips: ["2 hóspedes", "Varanda privativa", "Reserva direta"],
           whatsappMessage: "Olá! Tenho interesse na Suíte do Divino. Pode me enviar disponibilidade, valores e confirmar como funciona a reserva para 2 hóspedes?",
-          miniBenefits: [
-            { title: "Atmosfera acolhedora", text: "Uma suíte pensada para quem quer desacelerar e aproveitar a estadia com mais conforto." },
-            { title: "Praticidade no essencial", text: "Ar-condicionado, frigobar, Wi-Fi e banheiro privativo para uma experiência completa." },
-            { title: "Perfeita para momentos a dois", text: "Um ambiente ideal para casais que querem curtir Pirenópolis com mais charme." }
-          ],
+          miniBenefits: [],
           photos: [
             "public/suites/divino/divino1.jpeg",
             "public/suites/divino/divino2.jpeg",
@@ -1918,11 +2136,7 @@
           detailHighlightText: "A proposta da suíte é unir simplicidade, charme e bem-estar na medida certa.",
           heroChips: ["2 hóspedes", "Smart TV", "Reserva rápida"],
           whatsappMessage: "Olá! Tenho interesse na Suíte das Cavalhadas. Pode me enviar disponibilidade, valores e confirmar os detalhes da hospedagem para 2 hóspedes?",
-          miniBenefits: [
-            { title: "Estadia confortável", text: "Um quarto agradável para relaxar com privacidade e praticidade durante a viagem." },
-            { title: "Boa estrutura", text: "Itens essenciais para um dia a dia mais fácil, com conforto para descansar melhor." },
-            { title: "Ritmo romântico", text: "Uma opção acolhedora para quem quer viver momentos especiais a dois." }
-          ],
+          miniBenefits: [],
           photos: [
             "public/suites/cavalhadas/cavalhadas1.jpeg",
             "public/suites/cavalhadas/cavalhadas2.jpeg",
@@ -1962,11 +2176,7 @@
           detailHighlightText: "Um ambiente ideal para descansar com tranquilidade depois de aproveitar a cidade.",
           heroChips: ["2 hóspedes", "Wi-Fi e ar", "Varanda com rede"],
           whatsappMessage: "Olá! Tenho interesse na Suíte do Rosário. Pode me enviar disponibilidade, valores e confirmar as informações da hospedagem para 2 hóspedes?",
-          miniBenefits: [
-            { title: "Clima acolhedor", text: "Uma suíte pensada para receber bem e tornar a estadia mais confortável." },
-            { title: "Estrutura funcional", text: "Tudo o que você precisa para viver dias leves com mais praticidade." },
-            { title: "Experiência a dois", text: "Uma ótima opção para casais que querem unir descanso e charme." }
-          ],
+          miniBenefits: [],
           photos: [
             "public/suites/rosario/rosario1.jpeg",
             "public/suites/rosario/rosario2.jpeg",
@@ -2006,11 +2216,7 @@
           detailHighlightText: "Um espaço equilibrado entre praticidade, descanso e clima especial.",
           heroChips: ["2 hóspedes", "Experiência romântica", "Reserva direta"],
           whatsappMessage: "Olá! Tenho interesse na Suíte Aurora. Pode me enviar disponibilidade, valores e confirmar os detalhes da reserva para 2 hóspedes?",
-          miniBenefits: [
-            { title: "Momentos especiais", text: "Uma suíte pensada para casais que querem viver a viagem com mais charme." },
-            { title: "Descanso com conforto", text: "Itens essenciais para tornar a estadia mais agradável do check-in ao check-out." },
-            { title: "Ambiente acolhedor", text: "Um espaço agradável para desacelerar e aproveitar o tempo a dois." }
-          ],
+          miniBenefits: [],
           photos: [
             "public/suites/aurora/aurora1.jpeg",
             "public/suites/aurora/aurora2.jpeg",
@@ -2050,11 +2256,7 @@
           detailHighlightText: "Conforto, privacidade e praticidade em uma proposta mais leve e acolhedora.",
           heroChips: ["2 hóspedes", "Ambiente tranquilo", "Varanda com rede"],
           whatsappMessage: "Olá! Tenho interesse na Suíte do Bonfim. Pode me enviar disponibilidade, valores e confirmar os detalhes da hospedagem para 2 hóspedes?",
-          miniBenefits: [
-            { title: "Estadia mais serena", text: "Uma proposta ideal para quem valoriza descanso e um ritmo mais calmo durante a viagem." },
-            { title: "Conforto no essencial", text: "Tudo o que importa para uma hospedagem agradável, acolhedora e prática." },
-            { title: "Mais conexão a dois", text: "Uma ótima opção para casais que querem viver a experiência com mais presença." }
-          ],
+          miniBenefits: [],
           photos: [
             "public/suites/bonfim/bonfim1.jpeg",
             "public/suites/bonfim/bonfim2.jpeg",
@@ -2129,7 +2331,7 @@
         const meta = ROOM_META[roomKey];
         if (!meta) return;
 
-        const canonicalUrl = `https://chateaupireneus.com.br/suite.html?room=${encodeURIComponent(roomKey)}`;
+        const canonicalUrl = `http://127.0.0.1:5177/suite-concept-local.html?room=${encodeURIComponent(roomKey)}`;
 
         document.title = meta.title;
 
@@ -2151,7 +2353,7 @@
         const script = document.getElementById("suiteRoomStructuredData");
         if (!meta || !script) return;
 
-        const canonicalUrl = `https://chateaupireneus.com.br/suite.html?room=${encodeURIComponent(roomKey)}`;
+        const canonicalUrl = `http://127.0.0.1:5177/suite-concept-local.html?room=${encodeURIComponent(roomKey)}`;
         const roomImages = roomData.photos.map(photo => `https://chateaupireneus.com.br/${photo}`);
 
         const structuredData = {
@@ -2227,14 +2429,6 @@
 
       document.getElementById("amenities").innerHTML =
         room.amenities.map(x => `<li>${x}</li>`).join("");
-
-      document.getElementById("miniBenefits").innerHTML =
-        room.miniBenefits.map(item => `
-          <div class="mini-benefit">
-            <strong>${item.title}</strong>
-            <span>${item.text}</span>
-          </div>
-        `).join("");
 
       const waBtn = document.getElementById("waBtn");
       const msg = encodeURIComponent(room.whatsappMessage || `Olá! Tenho interesse na ${room.name}. Pode me enviar disponibilidade e valores?`);
@@ -2312,7 +2506,7 @@
       window._suiteRoomName = room.name;
       const _bTitle = document.getElementById("bookingSectionTitle");
       const _bLocked = document.getElementById("bLockedRoomName");
-      if(_bTitle) _bTitle.textContent = "Reservar — " + room.name;
+      if(_bTitle) _bTitle.textContent = "Datas para " + room.name;
       if(_bLocked) _bLocked.textContent = room.name;
     })();
   </script>
@@ -2933,6 +3127,5 @@
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
     <span class="fab-label">Fale conosco</span>
   </a>
-  <script src="cookie-consent.js"></script>
 </body>
 </html>

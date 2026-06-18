@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chateau Pireneus - Impact Home Concept</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="site/styles.css">
+  <style>
+    :root{
+      --night:#101927;
+      --ink:#172235;
+      --wine:#7a3431;
+      --leaf:#4f6049;
+      --paper:#f5efe4;
+      --paper2:#e7dac7;
+      --mist:#dfe8e3;
+      --mist2:#cfdcd8;
+      --goldSoft:#ebd8a4;
+      --line:rgba(23,34,53,.16);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:"Inter",sans-serif;
+      overflow-x:hidden;
+    }
+
+    .impact-header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:20;
+      padding:18px 26px;
+      color:#fff;
+      background:linear-gradient(to bottom, rgba(7,13,21,.55), rgba(7,13,21,0));
+    }
+
+    .impact-nav{
+      width:min(1200px, 100%);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .impact-brand{
+      color:#fff;
+      text-decoration:none;
+      display:grid;
+      gap:2px;
+      line-height:1;
+    }
+
+    .impact-brand small{
+      font-size:10px;
+      font-weight:700;
+      text-transform:uppercase;
+    }
+
+    .impact-brand strong{
+      font-family:"Cormorant Garamond",serif;
+      font-size:23px;
+      line-height:1;
+      font-weight:700;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .nav-link,
+    .nav-reserve{
+      min-height:38px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      color:#fff;
+    }
+
+    .nav-reserve{
+      padding:0 15px;
+      color:#101927;
+      background:var(--goldSoft);
+    }
+
+    .hero-impact{
+      min-height:100svh;
+      position:relative;
+      color:#fff;
+      display:grid;
+      align-items:end;
+      overflow:hidden;
+      background:#0b111b;
+    }
+
+    .hero-impact::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(9,15,24,.82), rgba(9,15,24,.36) 48%, rgba(9,15,24,.12)),
+        linear-gradient(0deg, rgba(9,15,24,.82), rgba(9,15,24,.08) 48%, rgba(9,15,24,.48)),
+        url("site/hero.webp") center/cover no-repeat;
+      transform:scale(1.03);
+    }
+
+    .hero-impact::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-1px;
+      height:40px;
+      background:linear-gradient(to bottom, rgba(245,239,228,0), var(--paper));
+    }
+
+    .hero-layout{
+      position:relative;
+      z-index:2;
+      width:min(1200px, calc(100% - 44px));
+      margin:0 auto;
+      padding:150px 0 78px;
+      display:grid;
+      grid-template-columns:minmax(0, 760px) 280px;
+      gap:60px;
+      align-items:end;
+    }
+
+    .place{
+      margin:0 0 18px;
+      font-size:12px;
+      font-weight:800;
+      color:rgba(255,255,255,.78);
+      text-transform:uppercase;
+    }
+
+    .impact-title{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:104px;
+      font-weight:600;
+      line-height:.88;
+      letter-spacing:0;
+      max-width:760px;
+      text-shadow:0 24px 70px rgba(0,0,0,.42);
+    }
+
+    .impact-lead{
+      max-width:640px;
+      margin:28px 0 0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:35px;
+      line-height:1.12;
+      color:rgba(255,255,255,.9);
+    }
+
+    .impact-actions{
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:18px;
+      margin-top:32px;
+    }
+
+    .solid-action,
+    .line-action{
+      min-height:48px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      color:#fff;
+    }
+
+    .solid-action{
+      padding:0 22px;
+      color:#101927;
+      background:var(--goldSoft);
+    }
+
+    .line-action{
+      border-bottom:1px solid rgba(255,255,255,.6);
+    }
+
+    .hero-facts{
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.34);
+      display:grid;
+      gap:18px;
+      color:rgba(255,255,255,.76);
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .hero-facts b{
+      display:block;
+      margin-bottom:3px;
+      color:#fff;
+      font-family:"Cormorant Garamond",serif;
+      font-size:24px;
+      font-weight:600;
+    }
+
+    .wrap{
+      width:min(1200px, calc(100% - 44px));
+      margin:0 auto;
+    }
+
+    .section{
+      position:relative;
+      padding:74px 0;
+    }
+
+    .intro{
+      z-index:3;
+      margin-top:-18px;
+      padding-top:70px;
+      background:linear-gradient(to bottom, var(--paper), rgba(245,239,228,.94));
+    }
+
+    .intro-grid{
+      display:grid;
+      grid-template-columns:minmax(0, 520px) 1fr;
+      gap:80px;
+      align-items:center;
+    }
+
+    .kicker{
+      margin:0 0 14px;
+      color:var(--wine);
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .big-line{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:70px;
+      line-height:.98;
+      font-weight:500;
+      letter-spacing:0;
+    }
+
+    .body-copy{
+      margin:28px 0 0;
+      max-width:580px;
+      font-size:16px;
+      line-height:2;
+      color:rgba(23,34,53,.72);
+    }
+
+    .photo-composition{
+      position:relative;
+      min-height:620px;
+    }
+
+    .photo-composition img{
+      position:absolute;
+      object-fit:cover;
+      box-shadow:0 36px 90px rgba(23,34,53,.2);
+    }
+
+    .photo-composition .one{
+      right:0;
+      top:0;
+      width:70%;
+      height:430px;
+    }
+
+    .photo-composition .two{
+      left:0;
+      bottom:34px;
+      width:48%;
+      height:330px;
+    }
+
+    .photo-composition .three{
+      right:12%;
+      bottom:0;
+      width:34%;
+      height:210px;
+    }
+
+    .experience{
+      padding-top:10px;
+      padding-bottom:70px;
+      background:transparent;
+    }
+
+    .experience-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:80px;
+      align-items:start;
+      padding-top:56px;
+      border-top:1px solid rgba(23,34,53,.12);
+    }
+
+    .experience-copy{
+      position:sticky;
+      top:110px;
+    }
+
+    .room-flow{
+      display:grid;
+      gap:0;
+      border-top:1px solid var(--line);
+    }
+
+    .room-flow a{
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:22px;
+      align-items:center;
+      padding:26px 0;
+      border-bottom:1px solid var(--line);
+      color:var(--ink);
+      text-decoration:none;
+    }
+
+    .room-flow img{
+      width:120px;
+      height:150px;
+      object-fit:cover;
+      filter:saturate(.92);
+    }
+
+    .room-flow h3{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:32px;
+      font-weight:600;
+      letter-spacing:0;
+    }
+
+    .room-flow p{
+      margin:8px 0 0;
+      color:rgba(23,34,53,.66);
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    .room-flow span{
+      display:inline-block;
+      margin-top:14px;
+      color:var(--wine);
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .image-break{
+      width:min(1200px, calc(100% - 44px));
+      margin:0 auto 36px;
+      min-height:76svh;
+      display:grid;
+      align-items:end;
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(9,15,24,.76), rgba(9,15,24,.12)),
+        url("site/public/galeria/lazer2.jpeg") center/cover no-repeat;
+    }
+
+    .image-break .wrap{
+      width:auto;
+      margin:0;
+      padding:0 42px 54px;
+    }
+
+    .image-break h2{
+      max-width:700px;
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:82px;
+      line-height:.98;
+      font-weight:500;
+      letter-spacing:0;
+      text-shadow:0 22px 70px rgba(0,0,0,.42);
+    }
+
+    .image-break p{
+      max-width:480px;
+      margin:24px 0 0;
+      color:rgba(255,255,255,.78);
+      line-height:1.9;
+    }
+
+    .gallery-rhythm{
+      background:transparent;
+      padding-top:44px;
+      padding-bottom:80px;
+    }
+
+    .rhythm-grid{
+      margin-top:60px;
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+      align-items:end;
+    }
+
+    .rhythm-grid figure{
+      margin:0;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .rhythm-grid img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .rhythm-grid figcaption{
+      position:absolute;
+      left:20px;
+      bottom:18px;
+      color:#fff;
+      font-family:"Cormorant Garamond",serif;
+      font-size:26px;
+      text-shadow:0 14px 34px rgba(0,0,0,.5);
+    }
+
+    .rhythm-tall{height:620px;}
+    .rhythm-stack{
+      display:grid;
+      gap:18px;
+    }
+    .rhythm-stack figure{height:300px;}
+
+    .closing{
+      width:min(1200px, calc(100% - 44px));
+      margin:0 auto 72px;
+      min-height:520px;
+      display:grid;
+      align-items:center;
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(16,25,39,.86), rgba(16,25,39,.3)),
+        url("site/public/galeria/piscina2.jpeg") center/cover no-repeat;
+    }
+
+    .closing .wrap{
+      width:auto;
+      margin:0;
+      padding:0 42px;
+    }
+
+    .closing h2{
+      max-width:760px;
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:78px;
+      line-height:.98;
+      font-weight:500;
+      letter-spacing:0;
+    }
+
+    .closing p{
+      max-width:520px;
+      margin:24px 0 0;
+      color:rgba(255,255,255,.78);
+      line-height:1.9;
+    }
+
+    .closing-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      align-items:center;
+      margin-top:32px;
+    }
+
+    .impact-footer{
+      background:#0f1826;
+      color:#fff;
+      padding:34px 26px;
+    }
+
+    .journey{
+      position:relative;
+      padding:88px 0 110px;
+      background:
+        linear-gradient(180deg, var(--paper) 0%, #edf2ee 28%, #d9e4e0 52%, #ece3d4 76%, var(--paper) 100%);
+    }
+
+    .journey::before{
+      content:"";
+      position:absolute;
+      inset:20% 0 24%;
+      background:linear-gradient(90deg, rgba(16,25,39,.94), rgba(30,54,70,.86));
+      opacity:.96;
+      pointer-events:none;
+    }
+
+    .journey .wrap{
+      position:relative;
+      z-index:1;
+    }
+
+    .journey-grid{
+      display:grid;
+      grid-template-columns:repeat(12, minmax(0, 1fr));
+      gap:24px;
+      align-items:start;
+    }
+
+    .journey-text{
+      position:relative;
+      z-index:2;
+    }
+
+    .journey-text.story{
+      grid-column:1 / span 5;
+      padding-top:42px;
+    }
+
+    .journey-text.suites-copy{
+      grid-column:1 / span 3;
+      margin-top:150px;
+      scroll-margin-top:130px;
+    }
+
+    .journey-text.suites-copy .kicker,
+    .journey-text.suites-copy .big-line,
+    .journey-text.suites-copy .body-copy{
+      color:#fff;
+    }
+
+    .journey-text.suites-copy .body-copy{
+      color:rgba(255,255,255,.76);
+    }
+
+    .journey-photo{
+      position:relative;
+      margin:0;
+      overflow:hidden;
+      box-shadow:0 34px 90px rgba(23,34,53,.18);
+      background:#ddd;
+    }
+
+    .journey-photo img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .journey-photo.concept-carousel img{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity .8s ease;
+    }
+
+    .journey-photo.concept-carousel img.active{
+      opacity:1;
+    }
+
+    .carousel-dots{
+      position:absolute;
+      right:16px;
+      bottom:17px;
+      z-index:3;
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+
+    .carousel-dot{
+      width:7px;
+      height:7px;
+      border:0;
+      border-radius:50%;
+      padding:0;
+      background:rgba(255,255,255,.45);
+      cursor:pointer;
+    }
+
+    .carousel-dot.active{
+      background:#ebd8a4;
+      box-shadow:0 0 0 4px rgba(235,216,164,.18);
+    }
+
+    .journey-photo figcaption{
+      display:none;
+    }
+
+    .photo-main{
+      grid-column:8 / span 5;
+      height:520px;
+    }
+
+    .photo-overlap{
+      grid-column:6 / span 4;
+      height:340px;
+      margin-top:-165px;
+      z-index:3;
+    }
+
+    .photo-small{
+      grid-column:10 / span 3;
+      height:240px;
+      margin-top:-120px;
+      z-index:4;
+    }
+
+    .suite-river{
+      grid-column:5 / span 8;
+      margin-top:156px;
+      border-top:1px solid rgba(255,255,255,.2);
+    }
+
+    .suite-river a{
+      display:grid;
+      grid-template-columns:285px 1fr auto;
+      gap:34px;
+      align-items:center;
+      padding:30px 0;
+      border-bottom:1px solid rgba(255,255,255,.16);
+      color:#fff;
+      text-decoration:none;
+    }
+
+    .suite-river img{
+      width:285px;
+      height:190px;
+      object-fit:cover;
+    }
+
+    .suite-river h3{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:28px;
+      font-weight:600;
+      letter-spacing:0;
+    }
+
+    .suite-river p{
+      display:none;
+      margin:6px 0 0;
+      color:rgba(255,255,255,.68);
+      font-size:13px;
+      line-height:1.65;
+    }
+
+    .suite-river span{
+      color:#ebd8a4;
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .wide-photo{
+      grid-column:1 / span 8;
+      height:560px;
+      margin-top:88px;
+    }
+
+    .quote-piece{
+      grid-column:8 / span 5;
+      z-index:4;
+      margin-top:-260px;
+      color:#fff;
+      text-shadow:0 18px 50px rgba(0,0,0,.45);
+    }
+
+    .quote-piece h2{
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:64px;
+      line-height:.98;
+      font-weight:500;
+      letter-spacing:0;
+    }
+
+    .quote-piece p{
+      max-width:390px;
+      margin:20px 0 0;
+      color:rgba(255,255,255,.82);
+      line-height:1.9;
+    }
+
+    .gallery-pair{
+      grid-column:4 / span 9;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:22px;
+      margin-top:86px;
+      align-items:end;
+    }
+
+    .gallery-pair .journey-photo:first-child{height:470px;}
+    .gallery-pair .journey-photo:last-child{height:330px;}
+
+    .final-invite{
+      grid-column:2 / span 10;
+      min-height:440px;
+      margin-top:90px;
+      display:grid;
+      align-items:end;
+      padding:42px;
+      color:#fff;
+      background:
+        linear-gradient(90deg, rgba(16,25,39,.84), rgba(16,25,39,.22)),
+        url("site/public/galeria/piscina2.jpeg") center/cover no-repeat;
+    }
+
+    .final-invite h2{
+      max-width:680px;
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:66px;
+      line-height:.98;
+      font-weight:500;
+      letter-spacing:0;
+    }
+
+    .final-invite p{
+      max-width:500px;
+      margin:22px 0 0;
+      color:rgba(255,255,255,.8);
+      line-height:1.9;
+    }
+
+    .footer-inner{
+      width:min(1200px, 100%);
+      margin:0 auto;
+      display:flex;
+      justify-content:space-between;
+      gap:24px;
+      align-items:center;
+    }
+
+    .footer-inner .footer-brand{
+      display:grid;
+      gap:2px;
+      line-height:1;
+      color:#fff;
+    }
+    .footer-inner .footer-brand small{
+      font-size:10px;
+      font-weight:700;
+      text-transform:uppercase;
+      color:#fff;
+    }
+    .footer-inner .footer-brand strong{
+      font-family:"Cormorant Garamond",serif;
+      font-size:23px;
+      line-height:1;
+      font-weight:700;
+      color:#fff;
+    }
+
+    .footer-inner span,
+    .footer-inner a{
+      color:rgba(255,255,255,.72);
+      font-size:13px;
+      line-height:1.7;
+      text-decoration:none;
+    }
+
+    @media (max-width:900px){
+      .impact-header{padding:12px;}
+      .impact-brand strong{font-size:15px;}
+      .impact-brand small{font-size:8px;}
+      .nav-link{display:none;}
+      .hero-layout{
+        grid-template-columns:1fr;
+        gap:38px;
+        padding:126px 0 54px;
+      }
+      .impact-title{font-size:62px; line-height:.92; max-width:360px;}
+      .impact-lead{font-size:28px; max-width:330px;}
+      .hero-facts{max-width:340px;}
+      .intro-grid,
+      .experience-grid{
+        grid-template-columns:1fr;
+        gap:46px;
+      }
+      .big-line{font-size:48px;}
+      .photo-composition{min-height:500px;}
+      .photo-composition .one{width:82%; height:340px;}
+      .photo-composition .two{width:58%; height:260px;}
+      .photo-composition .three{display:none;}
+      .experience-copy{position:relative; top:auto;}
+      .room-flow a{grid-template-columns:96px 1fr; gap:16px; padding:20px 0;}
+      .room-flow img{width:96px; height:118px;}
+      .room-flow h3{font-size:25px;}
+      .image-break h2,
+      .closing h2{font-size:50px;}
+      .rhythm-grid{grid-template-columns:1fr;}
+      .rhythm-tall{height:420px;}
+      .rhythm-stack figure{height:260px;}
+      .footer-inner{display:grid;}
+      .journey{padding:64px 0 86px;}
+      .journey-grid{display:block;}
+      .journey-text.story,
+      .journey-text.suites-copy,
+      .suite-river,
+      .wide-photo,
+      .quote-piece,
+      .gallery-pair,
+      .final-invite{
+        margin-top:46px;
+      }
+      .photo-main,
+      .photo-overlap,
+      .photo-small,
+      .wide-photo{
+        height:auto;
+        margin-top:24px;
+      }
+      .photo-main img,
+      .photo-overlap img,
+      .photo-small img,
+      .wide-photo img{
+        aspect-ratio:4/5;
+      }
+      .journey-photo.concept-carousel::before{
+        content:"";
+        display:block;
+        aspect-ratio:var(--carousel-ratio, 4/5);
+      }
+      .gallery-pair .journey-photo.concept-carousel::before{
+        aspect-ratio:4/3;
+      }
+      .photo-small{display:none;}
+      .suite-river a{grid-template-columns:1fr; gap:12px; padding:26px 0;}
+      .suite-river img{width:100%; height:auto; aspect-ratio:16/9;}
+      .suite-river span{grid-column:auto;}
+      .gallery-pair{display:grid; grid-template-columns:1fr; gap:16px;}
+      .gallery-pair .journey-photo:first-child,
+      .gallery-pair .journey-photo:last-child{height:auto;}
+      .gallery-pair img{aspect-ratio:4/3;}
+      .quote-piece{
+        color:var(--ink);
+        text-shadow:none;
+      }
+      .quote-piece h2{font-size:47px;}
+      .quote-piece p{color:rgba(23,34,53,.72);}
+      .final-invite{
+        min-height:420px;
+        padding:26px;
+      }
+      .final-invite h2{font-size:44px;}
+    }
+
+    @media (max-width:520px){
+      .impact-title{font-size:51px; max-width:310px;}
+      .impact-lead{font-size:25px;}
+      .place{font-size:11px;}
+      .solid-action{padding:0 18px;}
+      .line-action{min-height:40px;}
+      .section{padding:74px 0;}
+      .image-break{min-height:72svh;}
+      .closing{min-height:560px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="impact-header">
+    <nav class="impact-nav">
+      <a class="impact-brand" href="home-impact-local.html">
+        <small>Pousada</small>
+        <strong>Chateau Pireneus</strong>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link" href="#suites">Suites</a>
+        <a class="nav-reserve" href="booking-concept-local.html">Reservar</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-impact">
+      <div class="hero-layout">
+        <div>
+          <p class="place">Pirenopolis, Goias</p>
+          <h1 class="impact-title">Chateau Pireneus</h1>
+          <p class="impact-lead">Uma pousada para sumir um pouco: piscina, rede, silencio e suites pequenas o bastante para a estadia parecer sua.</p>
+          <div class="impact-actions">
+            <a class="solid-action" href="booking-concept-local.html">Ver disponibilidade</a>
+            <a class="line-action" href="#suites">Escolher suite</a>
+          </div>
+        </div>
+        <aside class="hero-facts">
+          <p><b>Chateau Pireneus</b> Seis suites para casais, reserva direta e uma rotina mais lenta em Piri.</p>
+          <p><b>Chegue sem pressa</b> A pousada fica no Setor Meia Ponte, perto do charme historico e longe da sensacao de correria.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="journey" id="suites">
+      <div class="wrap journey-grid">
+        <div class="journey-text story">
+          <p class="kicker">A sensacao</p>
+          <h2 class="big-line">Menos roteiro. Mais tempo.</h2>
+          <p class="body-copy">O Chateau Pireneus nao precisa parecer grande para ser memoravel. A forca esta nos detalhes: a agua da piscina no fim da tarde, a rede na varanda, a mesa de cafe, o quarto quieto depois de um passeio por Pirenopolis.</p>
+        </div>
+
+        <figure class="journey-photo photo-main concept-carousel" data-delay="4700">
+          <img class="active" src="site/public/galeria/piscina1.jpeg" alt="Piscina do Chateau Pireneus">
+          <img src="site/public/galeria/piscina2.jpeg" alt="Piscina e área externa do Chateau Pireneus">
+          <img src="site/public/galeria/piscina3.jpeg" alt="Detalhe da piscina da pousada">
+        </figure>
+        <figure class="journey-photo photo-overlap concept-carousel" data-delay="5300">
+          <img class="active" src="site/public/galeria/lazer3.jpeg" alt="Area de descanso com rede">
+          <img src="site/public/galeria/lazer1.jpeg" alt="Varanda com rede no Chateau Pireneus">
+          <img src="site/public/galeria/lazer2.jpeg" alt="Area externa da pousada">
+        </figure>
+        <figure class="journey-photo photo-small concept-carousel" data-delay="6100">
+          <img class="active" src="site/public/galeria/sala-jantar1.jpeg" alt="Sala de jantar do Chateau Pireneus">
+          <img src="site/public/galeria/sala-jantar2.jpeg" alt="Mesa de café do Chateau Pireneus">
+          <img src="site/public/galeria/sala-jantar3.jpeg" alt="Ambiente de café da pousada">
+        </figure>
+
+        <div class="journey-text suites-copy">
+          <p class="kicker">Suites</p>
+          <h2 class="big-line">Quartos com cara de pausa.</h2>
+          <p class="body-copy">Escolha a suíte que combina com o ritmo da sua viagem: quartos tranquilos, varanda com rede e o essencial para descansar bem em Pirenópolis.</p>
+        </div>
+
+        <div class="suite-river">
+          <a href="suite-concept-local.html?room=divino">
+            <img src="site/public/suites/divino/divino1.jpeg" alt="Suite do Divino">
+            <div><h3>Suite do Divino</h3><p>Conforto e tranquilidade para uma estadia a dois.</p></div>
+            <span>Conhecer</span>
+          </a>
+          <a href="suite-concept-local.html?room=cavalhadas">
+            <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suite das Cavalhadas">
+            <div><h3>Suite das Cavalhadas</h3><p>Varanda privativa com rede e um ritmo tranquilo para descansar.</p></div>
+            <span>Conhecer</span>
+          </a>
+          <a href="suite-concept-local.html?room=rosario">
+            <img src="site/public/suites/rosario/rosario1.jpeg" alt="Suite do Rosario">
+            <div><h3>Suite do Rosario</h3><p>Para relaxar e curtir o charme de Pirenopolis.</p></div>
+            <span>Conhecer</span>
+          </a>
+          <a href="suite-concept-local.html?room=aurora">
+            <img src="site/public/suites/aurora/aurora1.jpeg" alt="Suite Aurora">
+            <div><h3>Suite Aurora</h3><p>Uma experiencia romantica com conforto e tranquilidade.</p></div>
+            <span>Conhecer</span>
+          </a>
+          <a href="suite-concept-local.html?room=bonfim">
+            <img src="site/public/suites/bonfim/bonfim1.jpeg" alt="Suite do Bonfim">
+            <div><h3>Suite do Bonfim</h3><p>Essencial, aconchegante e perfeita para descansar.</p></div>
+            <span>Conhecer</span>
+          </a>
+        </div>
+
+        <figure class="journey-photo wide-photo concept-carousel" data-delay="5600">
+          <img class="active" src="site/public/galeria/lazer2.jpeg" alt="Piscina e area externa">
+          <img src="site/public/galeria/piscina1.jpeg" alt="Piscina em dia de céu aberto">
+          <img src="site/public/galeria/piscina2.jpeg" alt="Piscina e varanda com rede">
+          <img src="site/public/galeria/lazer1.jpeg" alt="Área de lazer com redes">
+        </figure>
+        <div class="quote-piece">
+          <h2>O luxo aqui e nao precisar correr.</h2>
+          <p>Voltar da cidade, entrar na agua, escolher uma rede e deixar a noite chegar sem transformar tudo em programacao.</p>
+        </div>
+
+        <div class="gallery-pair">
+          <figure class="journey-photo concept-carousel" data-delay="4900">
+            <img class="active" src="site/public/galeria/piscina2.jpeg" alt="Piscina do Chateau Pireneus">
+            <img src="site/public/galeria/piscina1.jpeg" alt="Piscina da pousada em Pirenopolis">
+            <img src="site/public/galeria/piscina3.jpeg" alt="Área da piscina">
+          </figure>
+          <figure class="journey-photo concept-carousel" data-delay="5700">
+            <img class="active" src="site/public/galeria/sala-jantar2.jpeg" alt="Sala de jantar">
+            <img src="site/public/galeria/sala-jantar1.jpeg" alt="Mesa de café">
+            <img src="site/public/galeria/sala-jantar3.jpeg" alt="Detalhes da sala de jantar">
+          </figure>
+        </div>
+
+        <div class="final-invite">
+          <div>
+            <h2>Quando a data encaixa, a viagem comeca.</h2>
+            <p>Veja disponibilidade, escolha sua suite e finalize sua reserva direta com pagamento seguro.</p>
+            <div class="closing-actions">
+              <a class="solid-action" href="booking-concept-local.html">Reservar agora</a>
+              <a class="line-action" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar no WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="impact-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <small>Pousada</small>
+        <strong>Chateau Pireneus</strong>
+      </div>
+      <span>Rua Tupinambas, Quadra 09, Lote 16 - Pirenopolis, GO</span>
+      <a href="mailto:chateaupireneus@gmail.com">chateaupireneus@gmail.com</a>
+    </div>
+  </footer>
+  <script>
+    document.querySelectorAll(".concept-carousel").forEach(function(carousel, carouselIndex){
+      const slides = Array.from(carousel.querySelectorAll(":scope > img"));
+      if (slides.length < 2) return;
+
+      const dots = document.createElement("div");
+      dots.className = "carousel-dots";
+      slides.forEach(function(_, index){
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "carousel-dot" + (index === 0 ? " active" : "");
+        dot.setAttribute("aria-label", "Ver imagem " + (index + 1));
+        dot.addEventListener("click", function(){
+          show(index);
+          start();
+        });
+        dots.appendChild(dot);
+      });
+      carousel.appendChild(dots);
+
+      let current = 0;
+      let timer = null;
+      const delay = Number(carousel.dataset.delay || 5200);
+
+      function show(index){
+        current = index;
+        slides.forEach(function(slide, slideIndex){
+          slide.classList.toggle("active", slideIndex === current);
+        });
+        Array.from(dots.children).forEach(function(dot, dotIndex){
+          dot.classList.toggle("active", dotIndex === current);
+        });
+      }
+
+      function start(){
+        clearInterval(timer);
+        timer = setInterval(function(){
+          show((current + 1) % slides.length);
+        }, delay);
+      }
+
+      carousel.addEventListener("mouseenter", function(){ clearInterval(timer); });
+      carousel.addEventListener("mouseleave", start);
+      setTimeout(start, carouselIndex * 650);
+    });
+  </script>
+</body>
+</html>

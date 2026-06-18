@@ -46,6 +46,7 @@
       <a href="index.html#welcome">A pousada</a>
       <a href="acomodacoes.html">Acomodações</a>
       <a href="booking.html">Reservar</a>
+      <a href="index.html#piri">Conheça Piri</a>
       <hr>
       <a href="login.html">Login / Criar Conta</a>
       <a href="dashboard.html">Minha área</a>

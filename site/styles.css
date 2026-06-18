@@ -478,12 +478,31 @@ footer{
   align-items:flex-start;
 }
 
-.footer-inner strong{
+.footer-brand{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  color:#fff;
+}
+
+.footer-brand .line1{
+  font-family:"Cormorant Garamond",serif;
+  font-weight:600;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  font-size:12px;
+  opacity:0.92;
+  color:#fff;
+}
+
+.footer-brand .line2{
   font-family:"Gyahegi","Cormorant Garamond",serif;
-  font-size:28px;
   font-weight:400;
-  line-height:1.15;
-  letter-spacing:1.2px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-size:18px;
+  line-height:1.14;
+  color:#fff;
 }
 
 .footer-contact-info{
@@ -583,8 +602,9 @@ footer{
   .impact-footer{
     padding:30px 18px 20px;
   }
-  .footer-inner strong{
-    font-size:24px;
+  .footer-brand .line2{
+    font-size:15px;
+    letter-spacing:1.4px;
   }
   .footer-bottom-links{
     gap:8px 16px;

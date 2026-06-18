@@ -459,58 +459,69 @@ img{ max-width:100%; display:block; }
    ============================================================ */
 
 footer{
-  position:relative !important;
-  min-height:160px !important;
-  max-height:none !important;
-  overflow:hidden !important;
+  position:relative;
   margin-top:0 !important;
-  background:#032c52 !important;
 }
 
-.footer-bg{
-  position:absolute !important;
-  top:0 !important;
-  left:0 !important;
-  display:block !important;
-  width:auto !important;
-  height:100% !important;
-  max-width:none !important;
-  object-fit:contain !important;
-  object-position:left center !important;
-  transform:none !important;
-  opacity:1 !important;
+.impact-footer{
+  background:#0f1826 !important;
+  color:#fff !important;
+  padding:34px 26px 22px !important;
 }
 
-.footer-overlay{
-  position:relative !important;
-  inset:auto !important;
-  z-index:2 !important;
+.footer-inner{
+  width:min(1200px, 100%) !important;
+  margin:0 auto !important;
   display:flex !important;
-  align-items:center !important;
-  justify-content:flex-end !important;
-  min-height:160px !important;
-  padding:18px 40px 18px 24px !important;
+  justify-content:space-between !important;
+  gap:24px !important;
+  align-items:flex-start !important;
 }
 
-.footer-contact{
-  width:min(420px, 60%) !important;
+.footer-inner strong{
+  font-family:"Gyahegi","Cormorant Garamond",serif !important;
+  font-size:28px !important;
+  font-weight:400 !important;
+  line-height:1.15 !important;
+  letter-spacing:1.2px !important;
+}
+
+.footer-contact-info{
   display:flex !important;
   flex-direction:column !important;
-  gap:6px !important;
-  font-family:"Cormorant Garamond", serif !important;
-  font-size:18px !important;
-  line-height:1.2 !important;
+  gap:4px !important;
+  max-width:560px !important;
+  text-align:right !important;
+}
+
+.footer-inner span,
+.footer-inner a,
+.footer-bottom-links a{
+  color:rgba(255,255,255,.72) !important;
+  font-family:"Inter",sans-serif !important;
+  font-size:13px !important;
+  line-height:1.7 !important;
+  text-decoration:none !important;
+}
+
+.footer-inner a:hover,
+.footer-inner a:focus-visible,
+.footer-bottom-links a:hover,
+.footer-bottom-links a:focus-visible{
   color:#fff !important;
-  text-align:left !important;
+  text-decoration:underline !important;
+  outline:none !important;
 }
-.footer-contact a{
-  color:inherit;
-  text-decoration:none;
-}
-.footer-contact a:hover,
-.footer-contact a:focus-visible{
-  text-decoration:underline;
-  outline:none;
+
+.footer-bottom-links{
+  width:min(1200px, 100%) !important;
+  margin:22px auto 0 !important;
+  padding-top:16px !important;
+  border-top:1px solid rgba(255,255,255,.14) !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:18px !important;
+  justify-content:flex-end !important;
 }
 
 /* ============================================================
@@ -518,13 +529,14 @@ footer{
    ============================================================ */
 
 @media (max-width:980px){
-  .footer-overlay{
-    padding:14px 20px !important;
+  .footer-inner{
+    display:grid !important;
   }
-  .footer-contact{
-    width:min(340px, 54%) !important;
-    font-size:16.5px !important;
-    gap:7px !important;
+  .footer-contact-info{
+    text-align:left !important;
+  }
+  .footer-bottom-links{
+    justify-content:flex-start !important;
   }
 }
 
@@ -568,25 +580,14 @@ footer{
     padding:8px 10px;
   }
 
-  .footer-overlay{
-    flex-direction:column !important;
-    justify-content:flex-start !important;
-    align-items:center !important;
-    min-height:auto !important;
-    padding:140px 16px 18px !important;
+  .impact-footer{
+    padding:30px 18px 20px !important;
   }
-  .footer-bg{
-    top:8px !important;
-    left:50% !important;
-    height:120px !important;
-    transform:translateX(-50%) !important;
-    object-position:center top !important;
+  .footer-inner strong{
+    font-size:24px !important;
   }
-  .footer-contact{
-    width:100% !important;
-    font-size:16px !important;
-    line-height:1.16 !important;
-    text-align:center !important;
+  .footer-bottom-links{
+    gap:8px 16px !important;
   }
 }
 

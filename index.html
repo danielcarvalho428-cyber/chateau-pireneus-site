@@ -132,6 +132,52 @@
       white-space:nowrap;
     }
     .sb-search-btn:hover { transform:translateY(-1px); box-shadow:0 12px 30px rgba(29,53,87,0.4); }
+    .sb-field .sb-date {
+      font-family:"Inter",sans-serif; font-size:14px;
+      color:var(--navy); font-weight:500;
+      border:none; background:transparent; padding:0; margin:0;
+      width:100%; cursor:pointer; outline:none;
+    }
+    .sb-field .sb-date::-webkit-calendar-picker-indicator { cursor:pointer; opacity:0.45; }
+
+    /* Quick-availability results modal */
+    .qa-overlay {
+      position:fixed; inset:0; z-index:60;
+      background:rgba(16,25,39,0.55); backdrop-filter:blur(3px);
+      display:none; align-items:center; justify-content:center; padding:20px;
+    }
+    .qa-overlay.open { display:flex; }
+    .qa-modal {
+      background:#fff; border-radius:20px; width:min(560px,100%);
+      max-height:84vh; overflow:hidden; display:flex; flex-direction:column;
+      box-shadow:0 40px 100px rgba(0,0,0,0.4);
+    }
+    .qa-head {
+      padding:22px 24px; border-bottom:1px solid rgba(29,53,87,0.10);
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    }
+    .qa-head h3 { margin:0; font-family:"Cormorant Garamond",serif; font-size:24px; color:var(--navy); font-weight:600; }
+    .qa-head .qa-dates { font-family:"Inter",sans-serif; font-size:12.5px; color:rgba(22,37,58,0.65); margin-top:3px; }
+    .qa-close { background:none; border:none; font-size:26px; line-height:1; cursor:pointer; color:rgba(22,37,58,0.5); padding:0 2px; }
+    .qa-body { padding:8px 24px 22px; overflow-y:auto; }
+    .qa-room {
+      display:flex; align-items:center; gap:14px; padding:13px 0;
+      border-bottom:1px solid rgba(29,53,87,0.08);
+    }
+    .qa-room:last-child { border-bottom:none; }
+    .qa-room img { width:64px; height:64px; border-radius:12px; object-fit:cover; flex-shrink:0; }
+    .qa-room .qa-info { flex:1; min-width:0; }
+    .qa-room .qa-info b { display:block; font-family:"Cormorant Garamond",serif; font-size:19px; color:var(--navy); font-weight:600; }
+    .qa-room .qa-info span { font-size:12px; color:rgba(22,37,58,0.6); }
+    .qa-room a {
+      flex-shrink:0; padding:9px 16px; border-radius:10px;
+      background:var(--navy); color:#fff; font-family:"Inter",sans-serif;
+      font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
+      transition:0.2s ease;
+    }
+    .qa-room a:hover { background:#142a45; }
+    .qa-msg { padding:26px 0; text-align:center; color:rgba(22,37,58,0.7); font-family:"Inter",sans-serif; font-size:14px; line-height:1.7; }
+    .qa-msg a { color:var(--navy); font-weight:700; text-decoration:underline; }
 
     /* WELCOME (matches existing) */
     .welcome {
@@ -463,26 +509,40 @@
       <p class="hero-slogan">Uma experiência única e pitoresca na cidade mais charmosa de Goiás!</p>
     </div>
 
-    <!-- THE NEW ADDITION -->
-    <div class="search-bar" onclick="location.href='booking.html'">
-      <div class="sb-field">
+    <!-- Quick availability search -->
+    <div class="search-bar">
+      <label class="sb-field">
         <div class="lbl">Check-in</div>
-        <div class="val">Selecionar data</div>
-      </div>
-      <div class="sb-field">
+        <input type="date" id="qaCheckin" class="sb-date" aria-label="Data de check-in">
+      </label>
+      <label class="sb-field">
         <div class="lbl">Check-out</div>
-        <div class="val">Selecionar data</div>
-      </div>
+        <input type="date" id="qaCheckout" class="sb-date" aria-label="Data de check-out">
+      </label>
       <div class="sb-field">
         <div class="lbl">Hóspedes</div>
         <div class="val">2 adultos</div>
       </div>
-      <a href="booking.html" class="sb-search-btn">
+      <button class="sb-search-btn" id="qaSearchBtn" type="button">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
         Verificar disponibilidade
-      </a>
+      </button>
     </div>
   </section>
+
+  <!-- Quick availability results modal -->
+  <div class="qa-overlay" id="qaOverlay">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Suítes disponíveis">
+      <div class="qa-head">
+        <div>
+          <h3>Suítes disponíveis</h3>
+          <div class="qa-dates" id="qaDatesLbl"></div>
+        </div>
+        <button class="qa-close" id="qaClose" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="qa-body" id="qaBody"></div>
+    </div>
+  </div>
 
   <!-- WELCOME (unchanged from existing) -->
   <section class="welcome">
@@ -692,8 +752,114 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="design-polish.js"></script>
   <script src="cookie-consent.js"></script>
+  <script>
+    // Quick availability widget — cross-references room_availability in Supabase
+    (function(){
+      const ci = document.getElementById('qaCheckin');
+      const co = document.getElementById('qaCheckout');
+      const btn = document.getElementById('qaSearchBtn');
+      const overlay = document.getElementById('qaOverlay');
+      const body = document.getElementById('qaBody');
+      const datesLbl = document.getElementById('qaDatesLbl');
+      if (!ci || !btn) return;
+
+      const sb = (window.supabase && window.SUPABASE_URL)
+        ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY)
+        : null;
+
+      // Pireneus (id 4) is "em breve" — excluded from bookable rooms
+      const ROOMS = [
+        { id:1, key:'divino',     name:'Suíte do Divino',      sub:'Suíte Padrão com TV' },
+        { id:2, key:'cavalhadas', name:'Suíte das Cavalhadas', sub:'Suíte Padrão com TV' },
+        { id:3, key:'rosario',    name:'Suíte do Rosário',     sub:'Suíte Padrão com TV' },
+        { id:5, key:'aurora',     name:'Suíte Aurora',         sub:'Suíte Padrão com TV' },
+        { id:6, key:'bonfim',     name:'Suíte do Bonfim',      sub:'Suíte Padrão sem TV' }
+      ];
+
+      const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+      function fmtLocal(d){
+        return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+      }
+      function fmtBR(str){ const p = str.split('-'); return p[2] + ' ' + MONTHS[+p[1]-1] + ' ' + p[0]; }
+      function nightsBetween(a,b){
+        const out = []; let cur = new Date(a+'T00:00:00'); const end = new Date(b+'T00:00:00');
+        while (cur < end) { out.push(fmtLocal(cur)); cur.setDate(cur.getDate()+1); }
+        return out;
+      }
+
+      const todayStr = fmtLocal(new Date());
+      ci.min = todayStr; co.min = todayStr;
+      ci.addEventListener('change', function(){
+        if (ci.value) {
+          const next = new Date(ci.value+'T00:00:00'); next.setDate(next.getDate()+1);
+          co.min = fmtLocal(next);
+          if (co.value && co.value <= ci.value) co.value = co.min;
+        }
+      });
+
+      function openModal(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
+      function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+      overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
+      document.getElementById('qaClose').addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+      btn.addEventListener('click', async function(){
+        if (!ci.value || !co.value) { alert('Selecione as datas de check-in e check-out.'); return; }
+        if (co.value <= ci.value) { alert('A data de check-out deve ser depois do check-in.'); return; }
+
+        datesLbl.textContent = fmtBR(ci.value) + ' — ' + fmtBR(co.value);
+        body.innerHTML = '<div class="qa-msg">Verificando disponibilidade…</div>';
+        openModal();
+
+        if (!sb) {
+          body.innerHTML = '<div class="qa-msg">Não foi possível conectar agora.<br><a href="booking.html">Abrir página de reservas</a></div>';
+          return;
+        }
+
+        const nights = nightsBetween(ci.value, co.value);
+        const { data, error } = await sb.from('room_availability')
+          .select('room_id,date,status')
+          .in('room_id', ROOMS.map(function(r){ return r.id; }))
+          .gte('date', nights[0])
+          .lte('date', nights[nights.length-1]);
+
+        if (error) {
+          console.error(error);
+          body.innerHTML = '<div class="qa-msg">Erro ao verificar disponibilidade.<br>Tente pela <a href="booking.html">página de reservas</a>.</div>';
+          return;
+        }
+
+        const openByRoom = {};
+        (data || []).forEach(function(r){
+          if (r.status === 'open') {
+            (openByRoom[r.room_id] = openByRoom[r.room_id] || new Set()).add(r.date);
+          }
+        });
+        const available = ROOMS.filter(function(room){
+          const s = openByRoom[room.id];
+          if (!s) return false;
+          return nights.every(function(n){ return s.has(n); });
+        });
+
+        if (available.length === 0) {
+          body.innerHTML = '<div class="qa-msg">Nenhuma suíte disponível para essas datas.<br>Tente outras datas ou <a href="https://wa.me/5562998167654" target="_blank" rel="noopener">fale conosco no WhatsApp</a>.</div>';
+          return;
+        }
+
+        body.innerHTML = available.map(function(room){
+          return '<div class="qa-room">' +
+            '<img loading="lazy" src="site/public/suites/'+room.key+'/'+room.key+'1.jpeg" alt="'+room.name+'">' +
+            '<div class="qa-info"><b>'+room.name+'</b><span>'+room.sub+'</span></div>' +
+            '<a href="suite.html?room='+room.key+'#reservaSection">Reservar</a>' +
+          '</div>';
+        }).join('');
+      });
+    })();
+  </script>
   <script>
     const header = document.getElementById('topHeader');
     window.addEventListener('scroll', () => {

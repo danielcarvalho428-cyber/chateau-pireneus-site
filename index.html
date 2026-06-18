@@ -799,7 +799,9 @@
           co.min = fmtLocal(next);
           if (co.value && co.value <= ci.value) co.value = co.min;
         }
+        maybeAutoCheck();
       });
+      co.addEventListener('change', maybeAutoCheck);
 
       function openModal(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
       function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
@@ -807,10 +809,18 @@
       document.getElementById('qaClose').addEventListener('click', closeModal);
       document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
 
-      btn.addEventListener('click', async function(){
+      // Auto-run the moment both valid dates are chosen
+      function maybeAutoCheck(){
+        if (ci.value && co.value && co.value > ci.value) runCheck();
+      }
+
+      btn.addEventListener('click', function(){
         if (!ci.value || !co.value) { alert('Selecione as datas de check-in e check-out.'); return; }
         if (co.value <= ci.value) { alert('A data de check-out deve ser depois do check-in.'); return; }
+        runCheck();
+      });
 
+      async function runCheck(){
         datesLbl.textContent = fmtBR(ci.value) + ' — ' + fmtBR(co.value);
         body.innerHTML = '<div class="qa-msg">Verificando disponibilidade…</div>';
         openModal();
@@ -857,7 +867,7 @@
             '<a href="suite.html?room='+room.key+'#reservaSection">Reservar</a>' +
           '</div>';
         }).join('');
-      });
+      }
     })();
   </script>
   <script>

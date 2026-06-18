@@ -210,8 +210,9 @@ img{ max-width:100%; display:block; }
   gap:8px;
 }
 
-/* Instagram icon button */
-.instagram-btn{
+/* Instagram / WhatsApp icon buttons */
+.instagram-btn,
+.whatsapp-btn{
   width:40px;
   height:40px;
   display:inline-flex;
@@ -228,19 +229,24 @@ img{ max-width:100%; display:block; }
   flex-shrink:0;
 }
 .instagram-btn:hover,
-.instagram-btn:focus-visible{
+.instagram-btn:focus-visible,
+.whatsapp-btn:hover,
+.whatsapp-btn:focus-visible{
   transform:translateY(-1px);
   background:rgba(0,0,0,0.28);
   outline:none;
 }
-.instagram-btn svg{
+.instagram-btn svg,
+.whatsapp-btn svg{
   width:18px;
   height:18px;
   display:block;
 }
 
 .top-header.solid .instagram-btn,
-.top-header.presolid .instagram-btn{
+.top-header.presolid .instagram-btn,
+.top-header.solid .whatsapp-btn,
+.top-header.presolid .whatsapp-btn{
   color:var(--navy);
   background:rgba(29,53,87,0.08);
   border:1px solid rgba(29,53,87,0.08);
@@ -249,7 +255,11 @@ img{ max-width:100%; display:block; }
 .top-header.solid .instagram-btn:hover,
 .top-header.solid .instagram-btn:focus-visible,
 .top-header.presolid .instagram-btn:hover,
-.top-header.presolid .instagram-btn:focus-visible{ background:rgba(29,53,87,0.12); }
+.top-header.presolid .instagram-btn:focus-visible,
+.top-header.solid .whatsapp-btn:hover,
+.top-header.solid .whatsapp-btn:focus-visible,
+.top-header.presolid .whatsapp-btn:hover,
+.top-header.presolid .whatsapp-btn:focus-visible{ background:rgba(29,53,87,0.12); }
 
 /* Nav buttons — shared base */
 .reserve-btn,
@@ -575,12 +585,14 @@ footer{
 
   .header-actions{ gap:8px; }
 
-  .instagram-btn{
+  .instagram-btn,
+  .whatsapp-btn{
     width:36px;
     height:36px;
     border-radius:10px;
   }
-  .instagram-btn svg{
+  .instagram-btn svg,
+  .whatsapp-btn svg{
     width:16px;
     height:16px;
   }

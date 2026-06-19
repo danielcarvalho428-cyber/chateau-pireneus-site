@@ -530,20 +530,6 @@
     </div>
   </section>
 
-  <!-- Quick availability results modal -->
-  <div class="qa-overlay" id="qaOverlay">
-    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Suítes disponíveis">
-      <div class="qa-head">
-        <div>
-          <h3>Suítes disponíveis</h3>
-          <div class="qa-dates" id="qaDatesLbl"></div>
-        </div>
-        <button class="qa-close" id="qaClose" aria-label="Fechar">&times;</button>
-      </div>
-      <div class="qa-body" id="qaBody"></div>
-    </div>
-  </div>
-
   <!-- WELCOME (unchanged from existing) -->
   <section class="welcome">
     <div class="wrap">
@@ -752,45 +738,19 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
   <script src="design-polish.js"></script>
   <script src="cookie-consent.js"></script>
   <script>
-    // Quick availability widget — cross-references room_availability in Supabase
+    // Hero quick-search — pick dates, go to booking page (which shows only available suites)
     (function(){
       const ci = document.getElementById('qaCheckin');
       const co = document.getElementById('qaCheckout');
       const btn = document.getElementById('qaSearchBtn');
-      const overlay = document.getElementById('qaOverlay');
-      const body = document.getElementById('qaBody');
-      const datesLbl = document.getElementById('qaDatesLbl');
       if (!ci || !btn) return;
 
-      const sb = (window.supabase && window.SUPABASE_URL)
-        ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY)
-        : null;
-
-      // Pireneus (id 4) is "em breve" — excluded from bookable rooms
-      const ROOMS = [
-        { id:1, key:'divino',     name:'Suíte do Divino',      sub:'Suíte Padrão com TV' },
-        { id:2, key:'cavalhadas', name:'Suíte das Cavalhadas', sub:'Suíte Padrão com TV' },
-        { id:3, key:'rosario',    name:'Suíte do Rosário',     sub:'Suíte Padrão com TV' },
-        { id:5, key:'aurora',     name:'Suíte Aurora',         sub:'Suíte Padrão com TV' },
-        { id:6, key:'bonfim',     name:'Suíte do Bonfim',      sub:'Suíte Padrão sem TV' }
-      ];
-
-      const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
       function fmtLocal(d){
         return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
       }
-      function fmtBR(str){ const p = str.split('-'); return p[2] + ' ' + MONTHS[+p[1]-1] + ' ' + p[0]; }
-      function nightsBetween(a,b){
-        const out = []; let cur = new Date(a+'T00:00:00'); const end = new Date(b+'T00:00:00');
-        while (cur < end) { out.push(fmtLocal(cur)); cur.setDate(cur.getDate()+1); }
-        return out;
-      }
-
       const todayStr = fmtLocal(new Date());
       ci.min = todayStr; co.min = todayStr;
       ci.addEventListener('change', function(){
@@ -799,75 +759,13 @@
           co.min = fmtLocal(next);
           if (co.value && co.value <= ci.value) co.value = co.min;
         }
-        maybeAutoCheck();
       });
-      co.addEventListener('change', maybeAutoCheck);
-
-      function openModal(){ overlay.classList.add('open'); document.body.style.overflow='hidden'; }
-      function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
-      overlay.addEventListener('click', function(e){ if (e.target === overlay) closeModal(); });
-      document.getElementById('qaClose').addEventListener('click', closeModal);
-      document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
-
-      // Auto-run the moment both valid dates are chosen
-      function maybeAutoCheck(){
-        if (ci.value && co.value && co.value > ci.value) runCheck();
-      }
 
       btn.addEventListener('click', function(){
         if (!ci.value || !co.value) { alert('Selecione as datas de check-in e check-out.'); return; }
         if (co.value <= ci.value) { alert('A data de check-out deve ser depois do check-in.'); return; }
-        runCheck();
+        window.location.href = 'booking.html?checkin=' + ci.value + '&checkout=' + co.value;
       });
-
-      async function runCheck(){
-        datesLbl.textContent = fmtBR(ci.value) + ' — ' + fmtBR(co.value);
-        body.innerHTML = '<div class="qa-msg">Verificando disponibilidade…</div>';
-        openModal();
-
-        if (!sb) {
-          body.innerHTML = '<div class="qa-msg">Não foi possível conectar agora.<br><a href="booking.html">Abrir página de reservas</a></div>';
-          return;
-        }
-
-        const nights = nightsBetween(ci.value, co.value);
-        const { data, error } = await sb.from('room_availability')
-          .select('room_id,date,status')
-          .in('room_id', ROOMS.map(function(r){ return r.id; }))
-          .gte('date', nights[0])
-          .lte('date', nights[nights.length-1]);
-
-        if (error) {
-          console.error(error);
-          body.innerHTML = '<div class="qa-msg">Erro ao verificar disponibilidade.<br>Tente pela <a href="booking.html">página de reservas</a>.</div>';
-          return;
-        }
-
-        const openByRoom = {};
-        (data || []).forEach(function(r){
-          if (r.status === 'open') {
-            (openByRoom[r.room_id] = openByRoom[r.room_id] || new Set()).add(r.date);
-          }
-        });
-        const available = ROOMS.filter(function(room){
-          const s = openByRoom[room.id];
-          if (!s) return false;
-          return nights.every(function(n){ return s.has(n); });
-        });
-
-        if (available.length === 0) {
-          body.innerHTML = '<div class="qa-msg">Nenhuma suíte disponível para essas datas.<br>Tente outras datas ou <a href="https://wa.me/5562998167654" target="_blank" rel="noopener">fale conosco no WhatsApp</a>.</div>';
-          return;
-        }
-
-        body.innerHTML = available.map(function(room){
-          return '<div class="qa-room">' +
-            '<img loading="lazy" src="site/public/suites/'+room.key+'/'+room.key+'1.jpeg" alt="'+room.name+'">' +
-            '<div class="qa-info"><b>'+room.name+'</b><span>'+room.sub+'</span></div>' +
-            '<a href="suite.html?room='+room.key+'#reservaSection">Reservar</a>' +
-          '</div>';
-        }).join('');
-      }
     })();
   </script>
   <script>

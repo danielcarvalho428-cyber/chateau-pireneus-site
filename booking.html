@@ -430,10 +430,10 @@
     <!-- STEP CARD (showing step 2) -->
     <div class="step-card">
       <h2>Escolha sua suíte</h2>
-      <p class="step-sub">5 acomodações disponíveis para suas datas selecionadas (21 — 23 mai 2026)</p>
+      <p class="step-sub" id="stepSub">5 acomodações disponíveis para suas datas selecionadas</p>
 
       <div class="suite-picker">
-        <label class="pick-card selected">
+        <label class="pick-card selected" data-room-id="5" data-room-key="aurora">
           <div class="pick-img"><img src="site/public/suites/aurora/aurora1.jpeg" alt=""></div>
           <div class="pick-info">
             <h3>Suíte Aurora</h3>
@@ -447,7 +447,7 @@
           </div>
         </label>
 
-        <label class="pick-card">
+        <label class="pick-card" data-room-id="1" data-room-key="divino">
           <div class="pick-img"><img src="site/public/suites/divino/divino1.jpeg" alt=""></div>
           <div class="pick-info">
             <h3>Suíte do Divino</h3>
@@ -461,7 +461,7 @@
           </div>
         </label>
 
-        <label class="pick-card">
+        <label class="pick-card" data-room-id="2" data-room-key="cavalhadas">
           <div class="pick-img"><img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt=""></div>
           <div class="pick-info">
             <h3>Suíte das Cavalhadas</h3>
@@ -475,7 +475,7 @@
           </div>
         </label>
 
-        <label class="pick-card">
+        <label class="pick-card" data-room-id="3" data-room-key="rosario">
           <div class="pick-img"><img src="site/public/suites/rosario/rosario1.jpeg" alt=""></div>
           <div class="pick-info">
             <h3>Suíte do Rosário</h3>
@@ -489,7 +489,7 @@
           </div>
         </label>
 
-        <label class="pick-card">
+        <label class="pick-card" data-room-id="6" data-room-key="bonfim">
           <div class="pick-img"><img src="site/public/suites/bonfim/bonfim1.jpeg" alt=""></div>
           <div class="pick-info">
             <h3>Suíte do Bonfim</h3>
@@ -524,8 +524,8 @@
 
       <div class="sum-section">
         <div class="lbl">Datas</div>
-        <div class="val">21 — 23 mai 2026</div>
-        <div class="sub">2 noites · qui & sex</div>
+        <div class="val" id="sumDates">Selecione as datas</div>
+        <div class="sub" id="sumNights"></div>
       </div>
 
       <div class="sum-section">
@@ -570,16 +570,80 @@
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="design-polish.js"></script>
   <script src="cookie-consent.js"></script>
   <script>
-    // Click to select suite
-    document.querySelectorAll('.pick-card').forEach(card => {
-      card.addEventListener('click', () => {
-        document.querySelectorAll('.pick-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
+    (function(){
+      const params   = new URLSearchParams(location.search);
+      const checkin  = params.get('checkin');
+      const checkout = params.get('checkout');
+      const cards    = Array.from(document.querySelectorAll('.pick-card'));
+      const stepSub  = document.getElementById('stepSub');
+      const sumDates = document.getElementById('sumDates');
+      const sumNights= document.getElementById('sumNights');
+
+      const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+      const WD = ['dom','seg','ter','qua','qui','sex','sáb'];
+      function fmtLocal(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+      function fmtBR(s){ const p=s.split('-'); return p[2]+' '+MONTHS[+p[1]-1]+' '+p[0]; }
+      function nightsBetween(a,b){ const out=[]; let cur=new Date(a+'T00:00:00'); const end=new Date(b+'T00:00:00'); while(cur<end){ out.push(fmtLocal(cur)); cur.setDate(cur.getDate()+1);} return out; }
+
+      // Clicking a suite goes straight to its real booking flow, carrying the dates
+      cards.forEach(card => {
+        card.addEventListener('click', () => {
+          cards.forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          let url = 'suite.html?room=' + card.dataset.roomKey;
+          if (checkin && checkout) url += '&checkin=' + checkin + '&checkout=' + checkout;
+          window.location.href = url + '#reservaSection';
+        });
       });
-    });
+
+      if (!checkin || !checkout) return; // no dates → keep default view
+
+      const nights = nightsBetween(checkin, checkout);
+      sumDates.textContent = fmtBR(checkin) + ' — ' + fmtBR(checkout);
+      const ciD = new Date(checkin+'T00:00:00'), coD = new Date(checkout+'T00:00:00');
+      sumNights.textContent = nights.length + (nights.length===1?' noite':' noites') + ' · ' + WD[ciD.getDay()] + ' a ' + WD[coD.getDay()];
+
+      const sb = (window.supabase && window.SUPABASE_URL)
+        ? window.supabase.createClient(window.SUPABASE_URL, window.SUPABASE_KEY)
+        : null;
+      if (!sb) return;
+
+      (async function(){
+        const ids = cards.map(c => Number(c.dataset.roomId));
+        const { data, error } = await sb.from('room_availability')
+          .select('room_id,date,status')
+          .in('room_id', ids)
+          .gte('date', nights[0])
+          .lte('date', nights[nights.length-1]);
+        if (error) { console.error(error); return; }
+
+        const openByRoom = {};
+        (data||[]).forEach(r => { if (r.status==='open') (openByRoom[r.room_id]=openByRoom[r.room_id]||new Set()).add(r.date); });
+
+        let availCount = 0;
+        cards.forEach(card => {
+          const s = openByRoom[Number(card.dataset.roomId)];
+          const ok = s && nights.every(n => s.has(n));
+          card.style.display = ok ? '' : 'none';
+          card.classList.remove('selected');
+          if (ok) availCount++;
+        });
+
+        const firstVisible = cards.find(c => c.style.display !== 'none');
+        if (firstVisible) firstVisible.classList.add('selected');
+
+        if (availCount === 0) {
+          stepSub.innerHTML = 'Nenhuma suíte disponível para essas datas. Tente outras datas ou <a href="https://wa.me/5562998167654" target="_blank" rel="noopener">fale conosco no WhatsApp</a>.';
+        } else {
+          stepSub.textContent = availCount + (availCount===1?' acomodação disponível':' acomodações disponíveis') + ' para ' + fmtBR(checkin) + ' — ' + fmtBR(checkout);
+        }
+      })();
+    })();
   </script>
 </body>
 </html>

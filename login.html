@@ -91,12 +91,13 @@
       position:relative;
       z-index:3;
       width:100%;
-      max-width:var(--max);
+      max-width:980px;
       margin:0 auto;
       display:grid;
-      grid-template-columns:1fr 520px;
+      grid-template-columns:minmax(220px, 320px) 520px;
       gap:34px;
       align-items:center;
+      justify-content:center;
     }
 
     .hero-copy{
@@ -140,7 +141,7 @@
     }
 
     .hero-links{
-      margin-top:20px;
+      margin-top:0;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -373,52 +374,6 @@
       text-decoration:underline;
     }
 
-    footer{
-      position:relative;
-      overflow:hidden;
-      margin-top:0;
-      background:#032c52;
-    }
-
-    .footer-bg{
-      display:block;
-      width:100%;
-      height:200px;
-      object-fit:cover;
-      object-position:center center;
-    }
-
-    .footer-overlay{
-      position:absolute;
-      inset:0;
-      z-index:2;
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      padding:18px 34px;
-    }
-
-    .footer-contact{
-      width:min(410px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-family:"Cormorant Garamond", serif;
-      font-size:20px;
-      line-height:1.22;
-      color:#fff;
-      text-align:left;
-    }
-
-    .footer-contact a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    .footer-contact a:hover{
-      text-decoration:underline;
-    }
-
     @media (max-width:980px){
       .hero-shell{
         grid-template-columns:1fr;
@@ -436,18 +391,6 @@
 
       .hero-links{
         justify-content:center;
-      }
-
-      .footer-overlay{
-        align-items:flex-end;
-        justify-content:center;
-        padding:18px 18px 20px;
-      }
-
-      .footer-contact{
-        width:100%;
-        font-size:18px;
-        gap:10px;
       }
     }
 
@@ -494,9 +437,6 @@
         border-radius:22px;
       }
 
-      .footer-contact{
-        font-size:17px;
-      }
     }
   </style>
 </head>
@@ -552,12 +492,6 @@
   <section class="hero" aria-label="Login">
     <div class="hero-shell">
       <div class="hero-copy">
-        <div class="hero-kicker">Acesse sua conta</div>
-        <h1 class="hero-title">ENTRE PARA CONTINUAR SUA EXPERIÊNCIA</h1>
-        <p class="hero-text">
-          Faça login para acompanhar reservas, concluir pagamentos e acessar sua área exclusiva no Chateau Pireneus.
-        </p>
-
         <div class="hero-links">
           <a class="ghost" href="acomodacoes.html">CONHECER ACOMODAÇÕES</a>
         </div>
@@ -596,7 +530,6 @@
 
         <div class="bottom-links">
           <a href="index.html">Voltar para a página inicial</a>
-          <a href="booking.html">Ir para reservas</a>
         </div>
       </div>
     </div>

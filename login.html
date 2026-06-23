@@ -598,16 +598,16 @@
     const registerInlineLink = document.getElementById("registerInlineLink")
     const sideRegisterLink = document.getElementById("sideRegisterLink")
 
-    function getReturnTo() {
+    function getLoginReturnTo() {
       return window.getReturnTo ? window.getReturnTo("dashboard.html") : "dashboard.html"
     }
 
-    function sanitizeReturnTo(value) {
+    function sanitizeLoginReturnTo(value) {
       return window.sanitizeReturnTo ? window.sanitizeReturnTo(value, "dashboard.html") : "dashboard.html"
     }
 
-    function buildRegisterHref() {
-      return window.buildRegisterHref ? window.buildRegisterHref(getReturnTo()) : "register.html"
+    function buildLoginRegisterHref() {
+      return window.buildRegisterHref ? window.buildRegisterHref(getLoginReturnTo()) : "register.html"
     }
 
     function setStatus(type, text) {
@@ -676,9 +676,9 @@
     })
 
     ;(async function init() {
-      registerHeaderBtn.href = buildRegisterHref()
-      registerInlineLink.href = buildRegisterHref()
-      sideRegisterLink.href = buildRegisterHref()
+      registerHeaderBtn.href = buildLoginRegisterHref()
+      registerInlineLink.href = buildLoginRegisterHref()
+      sideRegisterLink.href = buildLoginRegisterHref()
 
       const redirected = await redirectIfLoggedIn()
       if (redirected) return

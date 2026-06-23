@@ -601,7 +601,8 @@
 
     .toolbar{
       display:grid;
-      grid-template-columns:1.3fr auto;
+      grid-template-columns:minmax(0, 280px) auto;
+      justify-content:start;
       gap:14px;
       align-items:end;
       margin-bottom:18px;

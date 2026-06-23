@@ -26,7 +26,10 @@
     body{
       margin:0;
       font-family:"Inter", sans-serif;
-      background:var(--bg);
+      background:
+        radial-gradient(900px 280px at 8% 8%, rgba(216,199,161,0.10), transparent 58%),
+        radial-gradient(740px 240px at 92% 24%, rgba(29,53,87,0.05), transparent 62%),
+        var(--bg);
       color:var(--navy);
       overflow-x:hidden;
     }
@@ -223,16 +226,16 @@
     }
 
     .dash-wrap{
-      max-width:1080px;
+      max-width:1120px;
       margin:0 auto;
-      padding:108px 24px 18px;
+      padding:112px 24px 18px;
     }
 
     .greet{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      margin-bottom:28px;
+      margin-bottom:24px;
       gap:24px;
       flex-wrap:wrap;
     }
@@ -240,7 +243,7 @@
     .greet h1{
       font-family:"Gyahegi","Cormorant Garamond",serif;
       font-weight:400;
-      font-size:42px;
+      font-size:clamp(30px, 4vw, 42px);
       color:var(--navy);
       margin:0;
       letter-spacing:1.2px;
@@ -268,6 +271,7 @@
       padding:5px;
       border:1px solid rgba(29,53,87,.10);
       border-radius:14px;
+      box-shadow:0 12px 28px rgba(0,0,0,0.05);
     }
 
     .greet-nav a,
@@ -293,10 +297,10 @@
       position:relative;
       overflow:hidden;
       margin-bottom:32px;
-      border-radius:28px;
+      border-radius:24px;
       background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);
       color:#fff;
-      box-shadow:0 30px 70px rgba(29,53,87,.20);
+      box-shadow:0 24px 54px rgba(29,53,87,.18);
     }
 
     .ns-bg{
@@ -438,12 +442,13 @@
       display:flex;
       gap:14px;
       align-items:flex-start;
-      padding:22px;
+      padding:20px;
       border:1px solid rgba(29,53,87,.08);
-      border-radius:18px;
-      background:#fff;
+      border-radius:16px;
+      background:rgba(255,255,255,0.86);
       text-decoration:none;
       transition:.2s ease;
+      box-shadow:0 10px 22px rgba(0,0,0,0.035);
     }
 
     .qa-card:hover{
@@ -503,7 +508,7 @@
     .summary-card{
       background:rgba(255,255,255,0.72);
       border:1px solid rgba(29,53,87,0.10);
-      border-radius:20px;
+      border-radius:18px;
       padding:18px;
       box-shadow:var(--shadowSoft);
     }
@@ -531,8 +536,8 @@
     .panel{
       background:rgba(255,255,255,0.78);
       border:1px solid rgba(29,53,87,0.10);
-      border-radius:24px;
-      box-shadow:var(--shadowSoft);
+      border-radius:22px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.08);
       padding:24px 22px;
     }
 
@@ -604,7 +609,7 @@
     .toolbar-card{
       background:rgba(255,255,255,0.82);
       border:1px solid rgba(29,53,87,0.08);
-      border-radius:18px;
+      border-radius:16px;
       padding:14px;
     }
 
@@ -663,10 +668,10 @@
     .reservation-card{
       border:1px solid rgba(29,53,87,0.08);
       background:rgba(255,255,255,0.84);
-      border-radius:22px;
-      padding:18px 18px 16px;
+      border-radius:18px;
+      padding:20px;
       margin-bottom:14px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.04);
+      box-shadow:0 12px 28px rgba(0,0,0,0.045);
     }
 
     .reservation-top{
@@ -762,7 +767,7 @@
 
     .reservation-grid{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
       gap:12px 16px;
     }
 
@@ -939,52 +944,6 @@
       max-width:720px;
     }
 
-    footer{
-      position:relative;
-      overflow:hidden;
-      margin-top:0;
-      background:#032c52;
-    }
-
-    .footer-bg{
-      display:block;
-      width:100%;
-      height:200px;
-      object-fit:cover;
-      object-position:center center;
-    }
-
-    .footer-overlay{
-      position:absolute;
-      inset:0;
-      z-index:2;
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      padding:18px 34px;
-    }
-
-    .footer-contact{
-      width:min(410px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      font-family:"Cormorant Garamond", serif;
-      font-size:22px;
-      line-height:1.18;
-      color:#fff;
-      text-align:left;
-    }
-
-    .footer-contact a{
-      color:inherit;
-      text-decoration:none;
-    }
-
-    .footer-contact a:hover{
-      text-decoration:underline;
-    }
-
     @media (max-width:980px){
       .dash-wrap{
         padding:94px 18px 10px;
@@ -1048,16 +1007,8 @@
         grid-template-columns:1fr;
       }
 
-      .footer-overlay{
-        align-items:flex-end;
-        justify-content:center;
-        padding:18px 18px 20px;
-      }
-
-      .footer-contact{
-        width:100%;
-        font-size:18px;
-        gap:10px;
+      .reservation-grid{
+        grid-template-columns:1fr 1fr;
       }
     }
 
@@ -1158,7 +1109,6 @@
     <hr>
 
     <a href="dashboard.html" onclick="toggleMenu(false)">Minha área</a>
-    <button type="button" onclick="refreshDashboard(); toggleMenu(false)">Atualizar reservas</button>
     <button type="button" onclick="logout(); toggleMenu(false)">Sair</button>
 
     <hr>
@@ -1177,7 +1127,7 @@
       </a>
 
       <div class="header-actions">
-        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" aria-label="Instagram">
+        <a class="instagram-btn" href="https://www.instagram.com/chateaupireneus?igsh=MXM4MDV3bmFmanZjag==" target="_blank" rel="noopener" aria-label="Instagram">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5.2" stroke="currentColor" stroke-width="1.8"/>
             <circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/>
@@ -1186,7 +1136,6 @@
         </a>
         <a class="whatsapp-btn" href="https://wa.me/5562998167654" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
 
-        <button id="refresh-top-btn" class="ghost-btn" type="button">ATUALIZAR</button>
         <a href="booking.html" class="reserve-btn">RESERVAR</a>
         <button id="logout-btn-top" class="logout-btn-public" type="button">SAIR</button>
         <button class="menu-button" aria-label="Abrir menu" onclick="toggleMenu()">☰</button>
@@ -1201,9 +1150,8 @@
         <div class="greet-sub">Bem-vindo de volta à sua área pessoal</div>
       </div>
       <div class="greet-nav" aria-label="Atalhos da área do hóspede">
-        <a class="active" href="#reservas">Próximas</a>
-        <a href="#reservas">Histórico</a>
-        <button type="button" onclick="refreshDashboard()">Atualizar</button>
+        <a class="active" href="#reservas">Reservas</a>
+        <a href="booking.html">Nova reserva</a>
       </div>
     </div>
 
@@ -1710,18 +1658,11 @@
     async function loadReservations() {
       if (!currentUser) return
 
-      const refreshBtn = document.getElementById("refresh-top-btn")
-      refreshBtn.disabled = true
-      refreshBtn.textContent = "ATUALIZANDO..."
-
       const { data, error } = await supabaseClient
         .from("reservations")
         .select("*")
         .eq("user_id", currentUser.id)
         .order("created_at", { ascending: false })
-
-      refreshBtn.disabled = false
-      refreshBtn.textContent = "ATUALIZAR"
 
       if (error) {
         alert(error.message)
@@ -2046,12 +1987,7 @@
       window.location.href = "login.html"
     }
 
-    async function refreshDashboard() {
-      await loadReservations()
-    }
-
     document.getElementById("logout-btn-top").addEventListener("click", logout)
-    document.getElementById("refresh-top-btn").addEventListener("click", loadReservations)
     document.getElementById("search-input").addEventListener("input", renderReservations)
     document.getElementById("status-filter").addEventListener("change", renderReservations)
     document.getElementById("sort-filter").addEventListener("change", renderReservations)
@@ -2084,15 +2020,10 @@
     }
 
     window.logout = logout
-    window.refreshDashboard = refreshDashboard
 
     init()
   </script>
 
-  <a class="whatsapp-fab" href="https://wa.me/5562998167654?text=Ol%C3%A1%21+Preciso+de+ajuda+com+minha+reserva+no+Chateau+Pireneus.+Pode+me+ajudar%3F" target="_blank" rel="noopener" aria-label="Fale conosco pelo WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-    <span class="fab-label">Fale conosco</span>
-  </a>
   <script src="cookie-consent.js"></script>
 </body>
 </html>

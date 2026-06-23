@@ -372,8 +372,8 @@
       </a>
     </nav>
     <div class="sb-foot">
-      <div class="sb-avatar">G</div>
-      <div><span>Geovana</span></div>
+      <div class="sb-avatar">D</div>
+      <div><span>Daniel</span></div>
     </div>
   </aside>
 
@@ -382,8 +382,8 @@
 
     <div class="top">
       <div>
-        <h1>Bom dia, Geovana ✦</h1>
-        <div class="sub">Terça-feira · 19 de maio de 2026</div>
+        <h1 id="adminGreeting">Olá, Daniel ✦</h1>
+        <div class="sub" id="currentDateLabel"></div>
       </div>
       <div class="top-actions">
         <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
@@ -401,9 +401,9 @@
     <!-- KPIs -->
     <div class="kpis">
       <div class="kpi">
-        <div class="l">Receita · Maio</div>
+        <div class="l" id="revenueMonthLabel">Receita</div>
         <div class="v">R$&nbsp;18.400</div>
-        <div class="trend up">↑ 12% vs. abril</div>
+        <div class="trend up" id="revenueComparison">↑ 12%</div>
       </div>
       <div class="kpi">
         <div class="l">Ocupação hoje</div>
@@ -436,10 +436,10 @@
             </div>
           </div>
           <div class="cal-controls">
-            <button>‹</button>
-            <span class="cal-month">19 — 31 maio 2026</span>
-            <button>›</button>
-            <button style="margin-left:8px;padding:0 10px;width:auto;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;">Hoje</button>
+            <button id="previousPeriodBtn" type="button" aria-label="Período anterior">‹</button>
+            <span class="cal-month" id="calendarRangeLabel"></span>
+            <button id="nextPeriodBtn" type="button" aria-label="Próximo período">›</button>
+            <button id="todayBtn" type="button" style="margin-left:8px;padding:0 10px;width:auto;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;">Hoje</button>
           </div>
         </div>
 
@@ -628,7 +628,7 @@
       <div>
         <!-- Today's panel -->
         <div class="panel">
-          <h3>Hoje <span class="pill">19 mai</span></h3>
+          <h3>Hoje <span class="pill" id="todayPill"></span></h3>
 
           <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin-bottom:6px;">Check-ins (2)</div>
           <div class="check-row">
@@ -687,6 +687,111 @@
 
   </main>
 
+  <script>
+    ;(() => {
+      const dayCount = 14
+      const today = startOfDay(new Date())
+      let rangeStart = new Date(today)
+
+      const weekdayShort = new Intl.DateTimeFormat("pt-BR", { weekday: "short" })
+      const monthLong = new Intl.DateTimeFormat("pt-BR", { month: "long" })
+      const fullDate = new Intl.DateTimeFormat("pt-BR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      })
+
+      function startOfDay(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate())
+      }
+
+      function addDays(date, amount) {
+        const next = new Date(date)
+        next.setDate(next.getDate() + amount)
+        return next
+      }
+
+      function capitalize(value) {
+        return value ? value.charAt(0).toLocaleUpperCase("pt-BR") + value.slice(1) : ""
+      }
+
+      function sameDay(first, second) {
+        return first.getFullYear() === second.getFullYear() &&
+          first.getMonth() === second.getMonth() &&
+          first.getDate() === second.getDate()
+      }
+
+      function formatRange(start, end) {
+        const startMonth = monthLong.format(start)
+        const endMonth = monthLong.format(end)
+
+        if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth()) {
+          return `${start.getDate()} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
+        }
+
+        if (start.getFullYear() === end.getFullYear()) {
+          return `${start.getDate()} ${startMonth} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
+        }
+
+        return `${start.getDate()} ${startMonth} ${start.getFullYear()} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
+      }
+
+      function updateCalendar() {
+        const dates = Array.from({ length: dayCount }, (_, index) => addDays(rangeStart, index))
+        const end = dates[dates.length - 1]
+        document.getElementById("calendarRangeLabel").textContent = formatRange(rangeStart, end)
+
+        document.querySelectorAll(".cal-row").forEach(row => {
+          const cells = Array.from(row.querySelectorAll(".cal-day-cell"))
+          cells.forEach((cell, index) => {
+            const date = dates[index]
+            if (!date) return
+
+            cell.classList.toggle("weekend", date.getDay() === 0 || date.getDay() === 6)
+            cell.classList.toggle("today", sameDay(date, today))
+
+            if (row.classList.contains("header")) {
+              const dayName = weekdayShort.format(date).replace(".", "")
+              cell.innerHTML = `<span class="dn">${capitalize(dayName)}</span><span class="num">${date.getDate()}</span>`
+            }
+          })
+        })
+      }
+
+      function updateCurrentDate() {
+        const hour = new Date().getHours()
+        const greeting = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite"
+        document.getElementById("adminGreeting").textContent = `${greeting}, Daniel ✦`
+        document.getElementById("currentDateLabel").textContent = capitalize(fullDate.format(today))
+
+        const currentMonth = monthLong.format(today)
+        const previousMonth = monthLong.format(new Date(today.getFullYear(), today.getMonth() - 1, 1))
+        document.getElementById("revenueMonthLabel").textContent = `Receita · ${capitalize(currentMonth)}`
+        document.getElementById("revenueComparison").textContent = `↑ 12% vs. ${previousMonth}`
+        document.getElementById("todayPill").textContent =
+          `${today.getDate()} ${monthLong.format(today).slice(0, 3)}`
+      }
+
+      document.getElementById("previousPeriodBtn").addEventListener("click", () => {
+        rangeStart = addDays(rangeStart, -dayCount)
+        updateCalendar()
+      })
+
+      document.getElementById("nextPeriodBtn").addEventListener("click", () => {
+        rangeStart = addDays(rangeStart, dayCount)
+        updateCalendar()
+      })
+
+      document.getElementById("todayBtn").addEventListener("click", () => {
+        rangeStart = new Date(today)
+        updateCalendar()
+      })
+
+      updateCurrentDate()
+      updateCalendar()
+    })()
+  </script>
   <script src="design-polish.js"></script>
   <script src="cookie-consent.js"></script>
 </body>

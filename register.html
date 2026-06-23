@@ -268,6 +268,43 @@
       box-shadow:0 0 0 4px rgba(216,199,161,0.18);
     }
 
+    .pwd-wrap{
+      position:relative;
+    }
+
+    .pwd-wrap input{
+      padding-right:48px;
+    }
+
+    .pwd-toggle{
+      position:absolute;
+      top:50%;
+      right:8px;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:36px;
+      height:36px;
+      padding:0;
+      border:none;
+      background:none;
+      color:var(--muted);
+      cursor:pointer;
+      border-radius:10px;
+      transition:color 0.2s ease, background 0.2s ease;
+    }
+
+    .pwd-toggle:hover{
+      color:var(--navy);
+      background:rgba(29,53,87,0.06);
+    }
+
+    .pwd-toggle svg{
+      width:20px;
+      height:20px;
+    }
+
     .helper-row{
       display:flex;
       justify-content:space-between;
@@ -581,12 +618,22 @@
 
           <div class="field">
             <label for="password">Senha</label>
-            <input type="password" id="password" autocomplete="new-password" required />
+            <div class="pwd-wrap">
+              <input type="password" id="password" autocomplete="new-password" required />
+              <button type="button" class="pwd-toggle" data-target="password" aria-label="Mostrar senha">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
 
           <div class="field">
             <label for="confirmPassword">Confirmar senha</label>
-            <input type="password" id="confirmPassword" autocomplete="new-password" required />
+            <div class="pwd-wrap">
+              <input type="password" id="confirmPassword" autocomplete="new-password" required />
+              <button type="button" class="pwd-toggle" data-target="confirmPassword" aria-label="Mostrar senha">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
           </div>
 
           <div class="field">
@@ -860,6 +907,18 @@
 
       setStatus("info", "Preencha seus dados para criar sua conta.")
     })()
+  </script>
+  <script>
+    document.querySelectorAll(".pwd-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const input = document.getElementById(btn.dataset.target)
+        if (!input) return
+        const show = input.type === "password"
+        input.type = show ? "text" : "password"
+        btn.setAttribute("aria-label", show ? "Ocultar senha" : "Mostrar senha")
+        btn.classList.toggle("is-visible", show)
+      })
+    })
   </script>
   <script src="cookie-consent.js"></script>
 </body>

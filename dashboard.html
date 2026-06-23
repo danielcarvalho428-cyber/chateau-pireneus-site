@@ -1184,7 +1184,7 @@
         <div class="ns-actions">
           <a class="ns-btn primary" href="https://wa.me/5562998167654" target="_blank" rel="noopener">Falar com a pousada</a>
           <a class="ns-btn ghost" href="https://www.google.com/maps/place/Chateau+Pireneus/@-15.850463,-48.9506312,17z/" target="_blank" rel="noopener">Como chegar</a>
-          <a class="ns-btn ghost" href="#reservas">Detalhes</a>
+          <a class="ns-btn ghost" id="nextStayDetails" href="#reservas">Detalhes da acomodação</a>
         </div>
       </div>
     </section>
@@ -1559,6 +1559,16 @@
       return "hero.webp"
     }
 
+    function suitePage(roomType) {
+      const key = String(roomType || "").toLowerCase()
+      if (key.includes("aurora")) return "suite-aurora.html"
+      if (key.includes("divino")) return "suite-divino.html"
+      if (key.includes("cavalhadas")) return "suite-cavalhadas.html"
+      if (key.includes("rosário") || key.includes("rosario")) return "suite-rosario.html"
+      if (key.includes("bonfim")) return "suite-bonfim.html"
+      return ""
+    }
+
     function renderNextStay() {
       const upcoming = allReservations
         .filter(r => isFutureReservation(r) && isConfirmedReservation(r))
@@ -1572,6 +1582,7 @@
       const checkOut = document.getElementById("nextStayCheckOut")
       const nights = document.getElementById("nextStayNights")
       const total = document.getElementById("nextStayTotal")
+      const details = document.getElementById("nextStayDetails")
 
       if (!title || !suite || !tag || !image) return
 
@@ -1584,6 +1595,7 @@
         nights.textContent = "—"
         total.textContent = "—"
         image.style.backgroundImage = 'url("hero.webp")'
+        if (details) details.href = "#reservas"
         return
       }
 
@@ -1600,6 +1612,10 @@
       nights.textContent = nightCount || "—"
       total.textContent = formatCurrency(upcoming.total_amount)
       image.style.backgroundImage = `url("${suiteImage(upcoming.room_type)}")`
+      if (details) {
+        const page = suitePage(upcoming.room_type)
+        details.href = page || "#reservas"
+      }
     }
 
     async function loadProfile() {

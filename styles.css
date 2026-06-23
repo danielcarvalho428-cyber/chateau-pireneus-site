@@ -495,6 +495,34 @@ footer{
   letter-spacing:1.2px !important;
 }
 
+.footer-brand{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:2px !important;
+  color:#fff !important;
+}
+
+.footer-brand .line1{
+  font-family:"Cormorant Garamond",serif !important;
+  font-weight:600 !important;
+  letter-spacing:1.4px !important;
+  text-transform:uppercase !important;
+  font-size:14px !important;
+  line-height:1.7 !important;
+  opacity:0.92 !important;
+  color:#fff !important;
+}
+
+.footer-brand .line2{
+  font-family:"Gyahegi","Cormorant Garamond",serif !important;
+  font-weight:400 !important;
+  letter-spacing:2px !important;
+  text-transform:uppercase !important;
+  font-size:24px !important;
+  line-height:1.14 !important;
+  color:#fff !important;
+}
+
 .footer-contact-info{
   display:flex !important;
   flex-direction:column !important;
@@ -601,6 +629,10 @@ footer{
   }
   .footer-inner strong{
     font-size:24px !important;
+  }
+  .footer-brand .line2{
+    font-size:15px !important;
+    letter-spacing:1.4px !important;
   }
   .footer-bottom-links{
     gap:8px 16px !important;

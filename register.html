@@ -799,7 +799,7 @@
       return new Promise(resolve => setTimeout(resolve, ms))
     }
 
-    async function saveRegistrationProfile(userId, profileUpdate) {
+    async function saveRegistrationProfile(user, profileUpdate) {
       const retryDelays = [0, 300, 700, 1400]
 
       for (const delay of retryDelays) {
@@ -807,8 +807,11 @@
 
         const { data, error } = await supabaseClient
           .from("profiles")
-          .update(profileUpdate)
-          .eq("id", userId)
+          .upsert({
+            id: user.id,
+            email: user.email,
+            ...profileUpdate
+          }, { onConflict: "id" })
           .select("id")
           .maybeSingle()
 
@@ -817,6 +820,54 @@
       }
 
       return false
+    }
+
+    function isConnectionError(error) {
+      return !!error && (
+        error.status === 0 ||
+        /failed to fetch|network|fetch failed/i.test(error.message || "")
+      )
+    }
+
+    async function recoverAccountCreation(email, password, options, signUpError) {
+      // If the response was lost after Supabase created the account,
+      // signing in recovers the new session without creating a duplicate.
+      await wait(800)
+
+      try {
+        const recovered = await withTimeout(
+          supabaseClient.auth.signInWithPassword({ email, password }),
+          10000
+        )
+        if (!recovered.error && recovered.data.session) return recovered
+        if (isConnectionError(recovered.error)) throw signUpError
+
+        // The server is reachable and the account was not created, so retry once.
+        const retried = await withTimeout(
+          supabaseClient.auth.signUp({ email, password, options }),
+          20000
+        )
+        if (isConnectionError(retried.error)) throw signUpError
+        return retried
+      } catch (recoveryError) {
+        console.error("Recuperação do cadastro falhou:", recoveryError)
+        throw signUpError
+      }
+    }
+
+    async function createAccount(email, password, options) {
+      try {
+        const result = await withTimeout(
+          supabaseClient.auth.signUp({ email, password, options }),
+          20000
+        )
+        if (isConnectionError(result.error)) {
+          return await recoverAccountCreation(email, password, options, result.error)
+        }
+        return result
+      } catch (signUpError) {
+        return await recoverAccountCreation(email, password, options, signUpError)
+      }
     }
 
     function setStatus(type, text) {
@@ -898,22 +949,15 @@
           marketing_consent: marketingConsent
         }
 
-        ({ data, error } = await withTimeout(
-          supabaseClient.auth.signUp({
-            email,
-            password,
-            options: {
-              emailRedirectTo: buildEmailRedirectTo(),
-              data: registrationData
-            }
-          }),
-          20000
-        ))
+        ({ data, error } = await createAccount(email, password, {
+          emailRedirectTo: buildEmailRedirectTo(),
+          data: registrationData
+        }))
       } catch (err) {
         setLoading(false)
         const message = err && err.message === "signup_timeout"
-          ? "O cadastro demorou mais que o esperado. Tente novamente."
-          : "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente."
+          ? "O cadastro demorou mais que o esperado. Tente novamente usando outra rede."
+          : "Não foi possível acessar o servidor de cadastro. Tente novamente, desative VPN ou bloqueadores e, se necessário, use outra rede."
         setStatus("error", message)
         console.error("signUp falhou:", err)
         return
@@ -921,7 +965,10 @@
 
       if (error) {
         setLoading(false)
-        setStatus("error", error.message || "Não foi possível criar sua conta.")
+        const message = isConnectionError(error)
+          ? "Não foi possível acessar o servidor de cadastro. Tente novamente, desative VPN ou bloqueadores e, se necessário, use outra rede."
+          : error.message || "Não foi possível criar sua conta."
+        setStatus("error", message)
         return
       }
 
@@ -943,8 +990,8 @@
           }
 
           try {
-            const saved = await saveRegistrationProfile(data.user.id, profileUpdate)
-            if (!saved) console.warn("Perfil ainda não estava disponível; os dados permanecem salvos na conta.")
+            const saved = await saveRegistrationProfile(data.user, profileUpdate)
+            if (!saved) console.warn("Não foi possível confirmar a criação do perfil.")
           } catch (err) {
             console.error("Falha ao salvar perfil:", err)
           }

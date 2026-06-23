@@ -1047,8 +1047,12 @@
 
       const { error: profileError } = await supabaseClient
         .from("profiles")
-        .update(profileUpdate)
-        .eq("id", currentUser.id)
+        .upsert({
+          id: currentUser.id,
+          email: currentUser.email,
+          full_name: el("fullName").value.trim(),
+          ...profileUpdate
+        }, { onConflict: "id" })
 
       if (profileError){
         setLoading(false)

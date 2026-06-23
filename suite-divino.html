@@ -200,29 +200,25 @@
       padding:22px;
       box-shadow:0 18px 46px rgba(0,0,0,0.10), 0 0 0 5px rgba(216,199,161,0.08);
     }
-    .bk-card-head {
-      padding-bottom:14px;
-      border-bottom:1px solid rgba(29,53,87,0.10);
-      margin-bottom:14px;
+    .bk-features {
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 0 16px;
     }
-    .bk-card-title {
-      margin:0;
-      font-family:"Cormorant Garamond",serif;
-      font-size:25px;
-      font-weight:700;
-      line-height:1.05;
-      color:var(--navy);
-    }
-    .bk-description {
-      margin:0 0 14px;
-      padding:14px 15px;
+    .bk-features span {
+      display:inline-flex;
+      align-items:center;
+      min-height:30px;
+      padding:7px 10px;
       border:1px solid rgba(29,53,87,0.08);
-      border-radius:14px;
-      background:rgba(216,199,161,0.11);
-      font-family:"Inter",sans-serif;
-      font-size:13.5px;
-      line-height:1.62;
+      border-radius:999px;
+      background:rgba(216,199,161,0.12);
       color:rgba(22,37,58,0.76);
+      font-family:"Inter",sans-serif;
+      font-size:12px;
+      font-weight:600;
+      line-height:1;
     }
     .bk-panel-label {
       margin:0 0 8px;
@@ -510,10 +506,16 @@
 
     <!-- BOOKING SIDEBAR -->
     <aside class="booking-sidebar" id="bookSidebar">
-      <div class="bk-card-head">
-        <h2 class="bk-card-title">Reserva direta</h2>
+      <div class="bk-features" aria-label="Detalhes da su&iacute;te">
+        <span>Cama Queen</span>
+        <span>Enxoval 200 fios</span>
+        <span>TV</span>
+        <span>Ar condicionado</span>
+        <span>Cortina blackout</span>
+        <span>Arara de roupas</span>
+        <span>Frigobar</span>
+        <span>Varanda com rede</span>
       </div>
-      <p class="bk-description">Su&iacute;te com cama Queen, enxoval 200 fios, Tv, ar condicionado, cortina blackout, arara de roupas, frigobar e varanda com rede.</p>
 
       <p class="bk-panel-label">Datas e h&oacute;spedes</p>
       <div class="bk-dates">
@@ -553,12 +555,12 @@
     <div class="suite-section">
       <h2>Regras e políticas</h2>
       <div class="policies">
-        <div class="policy-row"><span class="k">Check-in</span><span class="v">A partir das 14h</span></div>
-        <div class="policy-row"><span class="k">Check-out</span><span class="v">Até 12h</span></div>
+        <div class="policy-row"><span class="k">Check-in</span><span class="v">14h &agrave;s 19h</span></div>
+        <div class="policy-row"><span class="k">Check-out</span><span class="v">At&eacute; 12h</span></div>
         <div class="policy-row"><span class="k">Capacidade</span><span class="v">2 adultos</span></div>
-        <div class="policy-row"><span class="k">Crianças</span><span class="v">Não permitido</span></div>
-        <div class="policy-row"><span class="k">Cancelamento</span><span class="v">Gratuito até 7 dias antes</span></div>
-        <div class="policy-row"><span class="k">Animais</span><span class="v">Não permitido</span></div>
+        <div class="policy-row"><span class="k">Crian&ccedil;as</span><span class="v">N&atilde;o permitido</span></div>
+        <div class="policy-row"><span class="k">Animais</span><span class="v">N&atilde;o permitido</span></div>
+        <div class="policy-row"><span class="k">Cancelamento</span><span class="v">Gratuito at&eacute; 14 dias antes</span></div>
       </div>
     </div>
   </div>

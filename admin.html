@@ -55,9 +55,46 @@
     .sb-link.active { background:rgba(216,199,161,0.16); color:var(--gold); }
     .sb-link svg { width:16px; height:16px; }
     .sb-foot {
-      padding:14px 22px; border-top:1px solid rgba(255,255,255,0.08);
+      position:relative;
+      padding:12px 14px; border-top:1px solid rgba(255,255,255,0.08);
       font-family:"Inter",sans-serif; font-size:11.5px; color:rgba(255,255,255,0.4);
-      display:flex; align-items:center; gap:10px;
+    }
+    .sb-account-trigger {
+      width:100%; display:flex; align-items:center; gap:10px;
+      padding:8px; border:0; border-radius:10px;
+      background:transparent; color:rgba(255,255,255,.72);
+      cursor:pointer; text-align:left; font:600 11.5px "Inter",sans-serif;
+      transition:.18s ease;
+    }
+    .sb-account-trigger:hover,
+    .sb-account-trigger[aria-expanded="true"] {
+      background:rgba(255,255,255,.07); color:#fff;
+    }
+    .sb-account-trigger .chevron {
+      width:14px; height:14px; margin-left:auto;
+      transition:transform .18s ease;
+    }
+    .sb-account-trigger[aria-expanded="true"] .chevron { transform:rotate(180deg); }
+    .sb-account-menu {
+      position:absolute; left:14px; right:14px; bottom:68px;
+      display:none; padding:6px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:11px; background:#203b5d;
+      box-shadow:0 18px 44px rgba(0,0,0,.28);
+    }
+    .sb-account-menu.open { display:block; }
+    .sb-account-action {
+      width:100%; display:flex; align-items:center; gap:9px;
+      padding:10px; border:0; border-radius:8px;
+      background:transparent; color:rgba(255,255,255,.78);
+      text-decoration:none; cursor:pointer; text-align:left;
+      font:500 11.5px "Inter",sans-serif;
+    }
+    .sb-account-action:hover { background:rgba(255,255,255,.08); color:#fff; }
+    .sb-account-action svg { width:15px; height:15px; flex-shrink:0; }
+    .sb-account-action.danger { color:#f0c5c5; }
+    .sb-account-action + .sb-account-action {
+      border-top:1px solid rgba(255,255,255,.07);
     }
     .sb-avatar {
       width:30px; height:30px; border-radius:50%;
@@ -433,19 +470,21 @@
     .detail-item { padding:12px; border-radius:9px; background:rgba(29,53,87,.04); }
     .detail-item strong { display:block; margin-bottom:4px; color:rgba(22,37,58,.5); font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
     .detail-item span { color:var(--navy); font-size:12px; }
-    .sb-logout {
-      margin-left:auto; border:0; background:transparent;
-      color:rgba(255,255,255,.55); cursor:pointer; font-size:11px;
-    }
-
     @media (max-width:1100px) {
       .kpis { grid-template-columns:repeat(2, 1fr); }
       .grid { grid-template-columns:1fr; }
     }
     @media (max-width:760px) {
       .sidebar { width:60px; }
-      .sb-brand, .sb-section, .sb-link span, .sb-foot { display:none; }
+      .sb-brand, .sb-section, .sb-link span { display:none; }
       .sb-link { justify-content:center; padding:12px; }
+      .sb-foot { display:block; padding:8px; }
+      .sb-account-trigger { justify-content:center; padding:7px; }
+      .sb-account-trigger .account-name,
+      .sb-account-trigger .chevron { display:none; }
+      .sb-account-menu {
+        left:52px; right:auto; bottom:8px; width:190px;
+      }
       .main { margin-left:60px; padding:18px; }
       .top-actions { width:100%; }
       .btn-primary { margin-left:auto; }
@@ -503,9 +542,25 @@
       </a>
     </nav>
     <div class="sb-foot">
-      <div class="sb-avatar">D</div>
-      <div><span>Daniel</span></div>
-      <button type="button" class="sb-logout" id="adminLogoutBtn">Sair</button>
+      <button type="button" class="sb-account-trigger" id="adminAccountBtn" aria-expanded="false" aria-controls="adminAccountMenu">
+        <span class="sb-avatar">D</span>
+        <span class="account-name">Daniel</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg>
+      </button>
+      <div class="sb-account-menu" id="adminAccountMenu">
+        <a class="sb-account-action" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg>
+          Voltar para o site
+        </a>
+        <button type="button" class="sb-account-action" id="switchAdminAccountBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M16 3h5v5"/><path d="M21 3l-6 6"/><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7 2 0 3.7.7 5 1.8"/></svg>
+          Trocar de conta
+        </button>
+        <button type="button" class="sb-account-action danger" id="adminLogoutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/><path d="M14 3h7v18h-7"/></svg>
+          Sair
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -1277,8 +1332,21 @@
         event.stopPropagation()
         document.getElementById("notificationMenu").classList.toggle("open")
       })
+      function setAccountMenu(open) {
+        document.getElementById("adminAccountMenu").classList.toggle("open", open)
+        document.getElementById("adminAccountBtn").setAttribute("aria-expanded", String(open))
+      }
+      document.getElementById("adminAccountBtn").addEventListener("click", event => {
+        event.stopPropagation()
+        const isOpen = document.getElementById("adminAccountMenu").classList.contains("open")
+        setAccountMenu(!isOpen)
+      })
+      document.getElementById("adminAccountMenu").addEventListener("click", event => {
+        event.stopPropagation()
+      })
       document.addEventListener("click", event => {
         if (!event.target.closest("#notificationMenu")) document.getElementById("notificationMenu").classList.remove("open")
+        if (!event.target.closest(".sb-foot")) setAccountMenu(false)
         const target = event.target.closest("[data-reservation-id]")
         if (target) {
           event.preventDefault()
@@ -1301,7 +1369,12 @@
         if (event.key === "Escape") {
           document.getElementById("reservationModal").classList.remove("open")
           document.getElementById("notificationMenu").classList.remove("open")
+          setAccountMenu(false)
         }
+      })
+      document.getElementById("switchAdminAccountBtn").addEventListener("click", async () => {
+        await supabaseClient.auth.signOut()
+        window.location.href = "login.html?return_to=%2Fadmin.html"
       })
       document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
         await supabaseClient.auth.signOut()

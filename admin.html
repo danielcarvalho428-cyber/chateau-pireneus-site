@@ -8,8 +8,10 @@
   <meta name="description" content="Painel administrativo interno do Chateau Pireneus." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site/styles.css">
-  <link rel="stylesheet" href="mockup-fixes.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="auth.js"></script>
   <style>
     body{ margin:0; font-family:"Inter",sans-serif; background:#f4f1ea; color:var(--navy); overflow-x:hidden; display:flex; min-height:100vh; }
 
@@ -88,6 +90,7 @@
       display:inline-flex; align-items:center; justify-content:center;
     }
     .btn-icon svg { width:16px; height:16px; }
+    .btn-icon.active { background:var(--navy); color:#fff; }
     .btn-primary {
       padding:0 18px; height:38px;
       background:var(--navy); color:#fff;
@@ -267,11 +270,11 @@
     .check-row .ci-info { flex:1; min-width:0; }
     .check-row .gn {
       font-family:"Inter",sans-serif; font-size:13px; font-weight:600;
-      color:var(--navy); margin-bottom:2px;
+      color:var(--navy); margin-bottom:2px; display:block;
     }
     .check-row .sn {
       font-family:"Inter",sans-serif; font-size:11.5px;
-      color:rgba(22,37,58,0.6);
+      color:rgba(22,37,58,0.6); display:block;
     }
     .check-row .time {
       font-family:"Cormorant Garamond",serif; font-weight:700; font-size:14px;
@@ -292,6 +295,7 @@
       border-radius:11px;
       font-family:"Inter",sans-serif; font-size:11.5px;
       background:rgba(29,53,87,0.04);
+      min-width:0;
     }
     .room-status .dot {
       width:8px; height:8px; border-radius:50%;
@@ -301,10 +305,11 @@
     .room-status.dirty .dot { background:var(--danger); }
     .room-status.ready .dot { background:var(--gold2); }
     .room-status.occupied .dot { background:var(--navy); }
-    .room-status .nm { color:var(--navy); font-weight:600; }
+    .room-status .nm { color:var(--navy); font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; }
     .room-status .st {
       margin-left:auto; font-size:10px;
       color:rgba(22,37,58,0.55); letter-spacing:0.3px;
+      min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
     }
 
     /* LEGEND */
@@ -320,6 +325,119 @@
       width:16px; height:10px; border-radius:3px;
     }
 
+    .loading-screen {
+      position:fixed; inset:0; z-index:200;
+      display:flex; align-items:center; justify-content:center;
+      background:#f4f1ea; color:var(--navy);
+      font-size:13px; font-weight:600; letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .loading-screen.hidden { display:none; }
+    .search-bar {
+      display:none; align-items:center; gap:10px;
+      margin:-8px 0 20px; padding:12px 14px;
+      background:#fff; border:1px solid rgba(29,53,87,.1);
+      border-radius:12px;
+    }
+    .search-bar.open { display:flex; }
+    .search-bar input {
+      flex:1; min-width:0; border:0; outline:0;
+      color:var(--navy); font:500 13px "Inter",sans-serif;
+    }
+    .search-bar button {
+      border:0; background:transparent; color:rgba(22,37,58,.6);
+      cursor:pointer; font:600 12px "Inter",sans-serif;
+    }
+    .notification-menu {
+      position:absolute; top:46px; right:0; z-index:30;
+      width:min(340px, calc(100vw - 36px)); display:none;
+      padding:12px; border-radius:12px; background:#fff;
+      border:1px solid rgba(29,53,87,.1);
+      box-shadow:0 18px 45px rgba(22,37,58,.18);
+    }
+    .notification-menu.open { display:block; }
+    .notification-item {
+      display:block; padding:10px; border-radius:8px;
+      color:var(--navy); text-decoration:none;
+      font-size:12px; line-height:1.45;
+    }
+    .notification-item:hover { background:rgba(29,53,87,.05); }
+    .notification-empty,.empty-state {
+      padding:18px; text-align:center; color:rgba(22,37,58,.56);
+      font-size:12px; line-height:1.6;
+    }
+    .calendar-list { display:none; padding:14px 22px 22px; }
+    .calendar-list.active { display:block; }
+    .cal-timeline.hidden { display:none; }
+    .calendar-list-item {
+      width:100%; display:grid; grid-template-columns:1.2fr 1fr 1fr auto;
+      gap:12px; align-items:center; padding:12px 10px;
+      border:0; border-bottom:1px solid rgba(29,53,87,.07);
+      background:transparent; color:var(--navy); text-align:left; cursor:pointer;
+      font:500 12px "Inter",sans-serif;
+    }
+    .calendar-list-item:hover { background:rgba(29,53,87,.035); }
+    .cal-booking { border:0; }
+    .operational-section {
+      margin-top:20px; padding:20px 22px; border-radius:18px;
+      background:#fff; border:1px solid rgba(29,53,87,.08);
+    }
+    .section-head {
+      display:flex; justify-content:space-between; align-items:end;
+      gap:16px; margin-bottom:14px; flex-wrap:wrap;
+    }
+    .section-head h2 {
+      margin:0; color:var(--navy);
+      font:700 22px "Cormorant Garamond",serif;
+    }
+    .section-head p { margin:3px 0 0; color:rgba(22,37,58,.58); font-size:12px; }
+    .filter-select {
+      height:36px; padding:0 34px 0 11px;
+      border:1px solid rgba(29,53,87,.12); border-radius:9px;
+      background:#fff; color:var(--navy); font:600 11px "Inter",sans-serif;
+    }
+    .reservation-table { width:100%; border-collapse:collapse; }
+    .reservation-table th {
+      padding:10px; text-align:left; color:rgba(22,37,58,.5);
+      font-size:9px; letter-spacing:.12em; text-transform:uppercase;
+      border-bottom:1px solid rgba(29,53,87,.08);
+    }
+    .reservation-table td {
+      padding:12px 10px; color:var(--navy); font-size:12px;
+      border-bottom:1px solid rgba(29,53,87,.06);
+    }
+    .reservation-row { cursor:pointer; }
+    .reservation-row:hover { background:rgba(29,53,87,.03); }
+    .status-chip {
+      display:inline-flex; padding:5px 8px; border-radius:99px;
+      background:rgba(184,149,95,.16); color:#8f6c3c;
+      font-size:9px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+    }
+    .status-chip.confirmed { background:rgba(47,122,75,.12); color:#2f7a4b; }
+    .status-chip.cancelled { background:rgba(181,74,74,.11); color:#a54040; }
+    .admin-modal {
+      position:fixed; inset:0; z-index:160; display:none;
+      align-items:center; justify-content:center; padding:20px;
+      background:rgba(12,23,37,.54);
+    }
+    .admin-modal.open { display:flex; }
+    .modal-card {
+      width:min(540px, 100%); max-height:85vh; overflow:auto;
+      padding:22px; border-radius:16px; background:#fff;
+      box-shadow:0 24px 70px rgba(0,0,0,.24);
+    }
+    .modal-head { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+    .modal-head h2 { margin:0; color:var(--navy); font:700 22px "Cormorant Garamond",serif; }
+    .modal-close { border:0; background:transparent; cursor:pointer; color:var(--navy); font-size:24px; }
+    .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:18px; }
+    .detail-item { padding:12px; border-radius:9px; background:rgba(29,53,87,.04); }
+    .detail-item strong { display:block; margin-bottom:4px; color:rgba(22,37,58,.5); font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
+    .detail-item span { color:var(--navy); font-size:12px; }
+    .sb-logout {
+      margin-left:auto; border:0; background:transparent;
+      color:rgba(255,255,255,.55); cursor:pointer; font-size:11px;
+    }
+
     @media (max-width:1100px) {
       .kpis { grid-template-columns:repeat(2, 1fr); }
       .grid { grid-template-columns:1fr; }
@@ -329,10 +447,23 @@
       .sb-brand, .sb-section, .sb-link span, .sb-foot { display:none; }
       .sb-link { justify-content:center; padding:12px; }
       .main { margin-left:60px; padding:18px; }
+      .top-actions { width:100%; }
+      .btn-primary { margin-left:auto; }
+      .cal-head { align-items:flex-start; gap:12px; flex-direction:column; }
+      .cal-controls { width:100%; }
+      .cal-month { flex:1; text-align:center; padding:0 4px; font-size:11px; }
+      .calendar-list-item { grid-template-columns:1fr; gap:4px; }
+      .reservation-table thead { display:none; }
+      .reservation-table,.reservation-table tbody,.reservation-table tr,.reservation-table td { display:block; width:100%; }
+      .reservation-row { padding:10px 0; border-bottom:1px solid rgba(29,53,87,.08); }
+      .reservation-table td { padding:4px 8px; border:0; }
+      .detail-grid { grid-template-columns:1fr; }
+      #guestList { grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
+  <div class="loading-screen" id="loadingScreen">Carregando painel administrativo...</div>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
@@ -341,32 +472,32 @@
       <div class="l2">Pireneus</div>
     </div>
     <nav class="sb-nav">
-      <a class="sb-link active" href="#">
+      <a class="sb-link active" href="#calendario">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
         <span>Calendário</span>
       </a>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="#reservas">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
         <span>Reservas</span>
       </a>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="#hospedes">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         <span>Hóspedes</span>
       </a>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="admin-availability.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
         <span>Suítes</span>
       </a>
       <div class="sb-section">Gestão</div>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="#indicadores">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3v18h18M7 14l4-4 4 4 6-6"/></svg>
         <span>Financeiro</span>
       </a>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="https://wa.me/5562998167654" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         <span>Mensagens</span>
       </a>
-      <a class="sb-link" href="#">
+      <a class="sb-link" href="admin-availability.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
         <span>Configurações</span>
       </a>
@@ -374,51 +505,60 @@
     <div class="sb-foot">
       <div class="sb-avatar">D</div>
       <div><span>Daniel</span></div>
+      <button type="button" class="sb-logout" id="adminLogoutBtn">Sair</button>
     </div>
   </aside>
 
   <!-- MAIN -->
   <main class="main">
 
-    <div class="top">
+    <div class="top" id="indicadores">
       <div>
         <h1 id="adminGreeting">Olá, Daniel ✦</h1>
         <div class="sub" id="currentDateLabel"></div>
       </div>
       <div class="top-actions">
-        <button class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
-        <button class="btn-icon" style="position:relative;">
+        <button class="btn-icon" id="searchToggleBtn" type="button" aria-label="Buscar reservas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
+        <div style="position:relative">
+        <button class="btn-icon" id="notificationBtn" type="button" aria-label="Ver notificações" style="position:relative;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 01-3.4 0"/></svg>
-          <span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--danger);"></span>
+          <span id="notificationDot" style="display:none;position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--danger);"></span>
         </button>
-        <button class="btn-primary">
+        <div class="notification-menu" id="notificationMenu"></div>
+        </div>
+        <button class="btn-primary" id="newReservationBtn" type="button">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
           Nova reserva
         </button>
       </div>
     </div>
 
+    <div class="search-bar" id="searchBar">
+      <input id="adminSearchInput" type="search" placeholder="Buscar por hóspede, suíte, email ou código da reserva">
+      <button type="button" id="clearSearchBtn">Limpar</button>
+    </div>
+
     <!-- KPIs -->
     <div class="kpis">
       <div class="kpi">
         <div class="l" id="revenueMonthLabel">Receita</div>
-        <div class="v">R$&nbsp;18.400</div>
-        <div class="trend up" id="revenueComparison">↑ 12%</div>
+        <div class="v" id="monthlyRevenue">R$ 0,00</div>
+        <div class="trend flat" id="revenueComparison">Reservas pagas no mês</div>
       </div>
       <div class="kpi">
         <div class="l">Ocupação hoje</div>
-        <div class="v">4<small> /6 suítes</small></div>
-        <div class="trend flat">67% de ocupação</div>
+        <div class="v" id="todayOccupancy">0<small> /6 suítes</small></div>
+        <div class="trend flat" id="occupancyRate">0% de ocupação</div>
       </div>
       <div class="kpi">
         <div class="l">Check-ins hoje</div>
-        <div class="v">2</div>
-        <div class="trend flat">Aurora · Cavalhadas</div>
+        <div class="v" id="todayCheckins">0</div>
+        <div class="trend flat" id="checkinSuites">Nenhum check-in</div>
       </div>
       <div class="kpi">
         <div class="l">Reservas pendentes</div>
-        <div class="v">3</div>
-        <div class="trend down">Aguardando confirmação</div>
+        <div class="v" id="pendingReservations">0</div>
+        <div class="trend flat">Aguardando confirmação</div>
       </div>
     </div>
 
@@ -426,13 +566,13 @@
     <div class="grid">
 
       <!-- CALENDAR TIMELINE -->
-      <div class="cal-card">
+      <div class="cal-card" id="calendario">
         <div class="cal-head">
           <div style="display:flex;align-items:center;gap:12px;">
             <div class="cal-title">Calendário de reservas</div>
             <div class="cal-view-toggle">
-              <button class="active">Timeline</button>
-              <button>Lista</button>
+              <button class="active" id="timelineViewBtn" type="button">Timeline</button>
+              <button id="listViewBtn" type="button">Lista</button>
             </div>
           </div>
           <div class="cal-controls">
@@ -445,7 +585,7 @@
 
         <div class="cal-timeline">
           <!-- header row -->
-          <div class="cal-row header">
+          <div class="cal-row header" id="calendarHeader">
             <div class="cal-suite-name" style="font-size:11px;color:rgba(22,37,58,0.5);letter-spacing:1px;text-transform:uppercase;">Suítes</div>
             <div class="cal-day-cell today"><span class="dn">Ter</span><span class="num">19</span></div>
             <div class="cal-day-cell"><span class="dn">Qua</span><span class="num">20</span></div>
@@ -462,7 +602,7 @@
             <div class="cal-day-cell weekend"><span class="dn">Dom</span><span class="num">31</span></div>
             <div class="cal-day-cell"><span class="dn">Seg</span><span class="num">1</span></div>
           </div>
-
+          <div id="calendarRows">
           <div class="cal-row">
             <div class="cal-suite-name"><img src="site/public/suites/aurora/aurora1.jpeg" alt=""> Aurora</div>
             <div class="cal-day-cell today" style="position:relative;">
@@ -610,14 +750,16 @@
             <div class="cal-day-cell weekend"></div>
             <div class="cal-day-cell"></div>
           </div>
+          </div>
         </div>
+        <div class="calendar-list" id="calendarList"></div>
 
         <div class="legend">
           <span class="legend-item"><span class="legend-swatch" style="background:var(--navy)"></span> Check-in hoje</span>
           <span class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span> Confirmada</span>
           <span class="legend-item"><span class="legend-swatch" style="background:rgba(184,149,95,0.20);border:1.5px dashed #8f6c3c"></span> Pendente</span>
           <span class="legend-item"><span class="legend-swatch" style="background:repeating-linear-gradient(45deg,#ccc 0,#ccc 4px,#ddd 4px,#ddd 8px);"></span> Bloqueado</span>
-          <button class="btn-icon" style="margin-left:auto;width:auto;padding:0 12px;height:30px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--navy);gap:6px;">
+          <button class="btn-icon" id="blockDatesBtn" type="button" style="margin-left:auto;width:auto;padding:0 12px;height:30px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.5px;color:var(--navy);gap:6px;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M12 10v6M9 13h6"/></svg>
             Bloquear data
           </button>
@@ -630,77 +772,101 @@
         <div class="panel">
           <h3>Hoje <span class="pill" id="todayPill"></span></h3>
 
-          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin-bottom:6px;">Check-ins (2)</div>
-          <div class="check-row">
-            <img src="site/public/suites/aurora/aurora1.jpeg" alt="">
-            <div class="ci-info">
-              <div class="gn">Mariana Ferreira</div>
-              <div class="sn">Suíte Aurora · 2 noites</div>
-            </div>
-            <div class="time">14:00<small>chegada</small></div>
-          </div>
-          <div class="check-row">
-            <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="">
-            <div class="ci-info">
-              <div class="gn">Juliana Costa</div>
-              <div class="sn">Cavalhadas · 4 noites</div>
-            </div>
-            <div class="time">16:30<small>chegada</small></div>
-          </div>
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin-bottom:6px;" id="checkinTitle">Check-ins (0)</div>
+          <div id="todayCheckinList" class="empty-state">Nenhum check-in para hoje.</div>
 
-          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin:14px 0 6px;">Check-outs (1)</div>
-          <div class="check-row">
-            <img src="site/public/suites/rosario/rosario1.jpeg" alt="">
-            <div class="ci-info">
-              <div class="gn">Beatriz Andrade</div>
-              <div class="sn">Suíte Rosário · 3 noites</div>
-            </div>
-            <div class="time">12:00<small>partida</small></div>
-          </div>
+          <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(22,37,58,0.5);font-weight:600;margin:14px 0 6px;" id="checkoutTitle">Check-outs (0)</div>
+          <div id="todayCheckoutList" class="empty-state">Nenhum check-out para hoje.</div>
         </div>
 
         <!-- Room status -->
         <div class="panel">
           <h3>Status dos quartos</h3>
-          <div class="room-status-grid">
-            <div class="room-status occupied"><span class="dot"></span><span class="nm">Aurora</span><span class="st">Ocupado</span></div>
-            <div class="room-status occupied"><span class="dot"></span><span class="nm">Divino</span><span class="st">Ocupado</span></div>
-            <div class="room-status dirty"><span class="dot"></span><span class="nm">Cavalhadas</span><span class="st">Limpar</span></div>
-            <div class="room-status ready"><span class="dot"></span><span class="nm">Rosário</span><span class="st">Pronto</span></div>
-            <div class="room-status clean"><span class="dot"></span><span class="nm">Bonfim</span><span class="st">Limpo</span></div>
-            <div class="room-status" style="background:rgba(22,37,58,0.06);"><span class="dot" style="background:rgba(22,37,58,0.3);"></span><span class="nm" style="color:rgba(22,37,58,0.6);">Pireneus</span><span class="st">Inativa</span></div>
-          </div>
+          <div class="room-status-grid" id="roomStatusGrid"></div>
         </div>
 
         <!-- Recent activity -->
         <div class="panel">
           <h3>Atividade recente</h3>
-          <div style="font-family:'Inter',sans-serif;font-size:12.5px;color:rgba(22,37,58,0.7);line-height:1.65;">
-            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">+ Nova reserva</b> · Roberto N. · há 12 min</div>
-            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✓ Pagamento</b> · Mariana F. · há 1h</div>
-            <div style="padding:6px 0;border-bottom:1px solid rgba(29,53,87,0.06);"><b style="color:var(--navy);">✉ Mensagem</b> · Juliana C. · há 2h</div>
-            <div style="padding:6px 0;"><b style="color:var(--navy);">★ Avaliação 5★</b> · Carlos & Sofia · ontem</div>
-          </div>
+          <div id="recentActivity" style="font-family:'Inter',sans-serif;font-size:12.5px;color:rgba(22,37,58,0.7);line-height:1.65;"></div>
         </div>
       </div>
     </div>
 
+    <section class="operational-section" id="reservas">
+      <div class="section-head">
+        <div>
+          <h2>Reservas</h2>
+          <p id="reservationCountLabel">Carregando reservas...</p>
+        </div>
+        <select class="filter-select" id="reservationStatusFilter" aria-label="Filtrar reservas">
+          <option value="all">Todas</option>
+          <option value="confirmed">Confirmadas</option>
+          <option value="pending">Pendentes</option>
+          <option value="cancelled">Canceladas</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="reservation-table">
+          <thead>
+            <tr>
+              <th>Hóspede</th>
+              <th>Suíte</th>
+              <th>Estadia</th>
+              <th>Valor</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <tbody id="reservationTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="operational-section" id="hospedes">
+      <div class="section-head">
+        <div>
+          <h2>Hóspedes recentes</h2>
+          <p>Contatos vinculados às reservas mais recentes.</p>
+        </div>
+      </div>
+      <div id="guestList" class="room-status-grid"></div>
+    </section>
+
   </main>
+
+  <div class="admin-modal" id="reservationModal" role="dialog" aria-modal="true" aria-labelledby="reservationModalTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="reservationModalTitle">Detalhes da reserva</h2>
+        <button class="modal-close" id="closeReservationModal" type="button" aria-label="Fechar">×</button>
+      </div>
+      <div class="detail-grid" id="reservationModalContent"></div>
+    </div>
+  </div>
 
   <script>
     ;(() => {
+      const supabaseClient = window.supabaseClient
       const dayCount = 14
       const today = startOfDay(new Date())
-      let rangeStart = new Date(today)
-
+      const suites = [
+        { name: "Aurora", image: "public/suites/aurora/aurora1.jpeg" },
+        { name: "Divino", image: "public/suites/divino/divino1.jpeg" },
+        { name: "Cavalhadas", image: "public/suites/cavalhadas/cavalhadas1.jpeg" },
+        { name: "Rosário", image: "public/suites/rosario/rosario1.jpeg" },
+        { name: "Bonfim", image: "public/suites/bonfim/bonfim1.jpeg" },
+        { name: "Pireneus", image: "public/suites/pireneus/breve1.jpeg" }
+      ]
       const weekdayShort = new Intl.DateTimeFormat("pt-BR", { weekday: "short" })
       const monthLong = new Intl.DateTimeFormat("pt-BR", { month: "long" })
       const fullDate = new Intl.DateTimeFormat("pt-BR", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
       })
+
+      let rangeStart = new Date(today)
+      let reservations = []
+      let profilesById = new Map()
+      let searchTerm = ""
 
       function startOfDay(date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate())
@@ -712,50 +878,112 @@
         return next
       }
 
+      function localIso(date) {
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, "0")
+        const day = String(date.getDate()).padStart(2, "0")
+        return `${year}-${month}-${day}`
+      }
+
       function capitalize(value) {
         return value ? value.charAt(0).toLocaleUpperCase("pt-BR") + value.slice(1) : ""
       }
 
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;")
+      }
+
+      function normalize(value) {
+        return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+      }
+
       function sameDay(first, second) {
-        return first.getFullYear() === second.getFullYear() &&
-          first.getMonth() === second.getMonth() &&
-          first.getDate() === second.getDate()
+        return localIso(first) === localIso(second)
+      }
+
+      function parseDate(value) {
+        return value ? new Date(`${value}T00:00:00`) : null
+      }
+
+      function formatDate(value) {
+        const date = parseDate(value)
+        return date ? date.toLocaleDateString("pt-BR") : "-"
+      }
+
+      function formatCurrency(value) {
+        const number = Number(value || 0)
+        return number.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
       }
 
       function formatRange(start, end) {
         const startMonth = monthLong.format(start)
         const endMonth = monthLong.format(end)
-
         if (start.getFullYear() === end.getFullYear() && start.getMonth() === end.getMonth()) {
           return `${start.getDate()} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
         }
-
         if (start.getFullYear() === end.getFullYear()) {
           return `${start.getDate()} ${startMonth} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
         }
-
         return `${start.getDate()} ${startMonth} ${start.getFullYear()} — ${end.getDate()} ${endMonth} ${end.getFullYear()}`
       }
 
-      function updateCalendar() {
-        const dates = Array.from({ length: dayCount }, (_, index) => addDays(rangeStart, index))
-        const end = dates[dates.length - 1]
-        document.getElementById("calendarRangeLabel").textContent = formatRange(rangeStart, end)
+      function reservationState(reservation) {
+        const status = normalize(reservation.status)
+        const booking = normalize(reservation.booking_status)
+        const payment = normalize(reservation.payment_status)
+        if (["cancelled", "canceled", "expired"].includes(status) ||
+            ["cancelled", "canceled", "expired"].includes(booking) ||
+            ["failed", "cancelled", "canceled", "expired", "refunded"].includes(payment)) return "cancelled"
+        if (status === "confirmed" || booking === "booked" || payment === "paid") return "confirmed"
+        return "pending"
+      }
 
-        document.querySelectorAll(".cal-row").forEach(row => {
-          const cells = Array.from(row.querySelectorAll(".cal-day-cell"))
-          cells.forEach((cell, index) => {
-            const date = dates[index]
-            if (!date) return
+      function stateLabel(state) {
+        return state === "confirmed" ? "Confirmada" : state === "cancelled" ? "Cancelada" : "Pendente"
+      }
 
-            cell.classList.toggle("weekend", date.getDay() === 0 || date.getDay() === 6)
-            cell.classList.toggle("today", sameDay(date, today))
+      function profileFor(reservation) {
+        return profilesById.get(String(reservation.user_id || "")) || {}
+      }
 
-            if (row.classList.contains("header")) {
-              const dayName = weekdayShort.format(date).replace(".", "")
-              cell.innerHTML = `<span class="dn">${capitalize(dayName)}</span><span class="num">${date.getDate()}</span>`
-            }
-          })
+      function guestName(reservation) {
+        const profile = profileFor(reservation)
+        return profile.full_name || reservation.guest_name || reservation.customer_name || "Hóspede"
+      }
+
+      function guestEmail(reservation) {
+        const profile = profileFor(reservation)
+        return profile.email || reservation.guest_email || reservation.customer_email || ""
+      }
+
+      function roomName(reservation) {
+        return reservation.room_name || reservation.room_type || "Suíte"
+      }
+
+      function matchingReservations() {
+        if (!searchTerm) return reservations
+        return reservations.filter(reservation => {
+          const haystack = [
+            reservation.id,
+            guestName(reservation),
+            guestEmail(reservation),
+            roomName(reservation)
+          ].map(normalize).join(" ")
+          return haystack.includes(normalize(searchTerm))
+        })
+      }
+
+      function reservationsInRange() {
+        const rangeEnd = addDays(rangeStart, dayCount - 1)
+        return matchingReservations().filter(reservation => {
+          const start = parseDate(reservation.check_in)
+          const end = parseDate(reservation.check_out)
+          return start && end && start <= rangeEnd && end > rangeStart && reservationState(reservation) !== "cancelled"
         })
       }
 
@@ -764,32 +992,334 @@
         const greeting = hour < 12 ? "Bom dia" : hour < 18 ? "Boa tarde" : "Boa noite"
         document.getElementById("adminGreeting").textContent = `${greeting}, Daniel ✦`
         document.getElementById("currentDateLabel").textContent = capitalize(fullDate.format(today))
-
-        const currentMonth = monthLong.format(today)
-        const previousMonth = monthLong.format(new Date(today.getFullYear(), today.getMonth() - 1, 1))
-        document.getElementById("revenueMonthLabel").textContent = `Receita · ${capitalize(currentMonth)}`
-        document.getElementById("revenueComparison").textContent = `↑ 12% vs. ${previousMonth}`
+        document.getElementById("revenueMonthLabel").textContent =
+          `Receita · ${capitalize(monthLong.format(today))}`
         document.getElementById("todayPill").textContent =
           `${today.getDate()} ${monthLong.format(today).slice(0, 3)}`
       }
 
+      function renderCalendar() {
+        const dates = Array.from({ length: dayCount }, (_, index) => addDays(rangeStart, index))
+        const rangeEnd = dates[dates.length - 1]
+        document.getElementById("calendarRangeLabel").textContent = formatRange(rangeStart, rangeEnd)
+
+        document.getElementById("calendarHeader").innerHTML =
+          '<div class="cal-suite-name" style="font-size:11px;color:rgba(22,37,58,0.5);letter-spacing:1px;text-transform:uppercase;">Suítes</div>' +
+          dates.map(date => {
+            const weekend = date.getDay() === 0 || date.getDay() === 6
+            const classes = ["cal-day-cell", weekend ? "weekend" : "", sameDay(date, today) ? "today" : ""].filter(Boolean).join(" ")
+            const dayName = capitalize(weekdayShort.format(date).replace(".", ""))
+            return `<div class="${classes}"><span class="dn">${dayName}</span><span class="num">${date.getDate()}</span></div>`
+          }).join("")
+
+        const visible = reservationsInRange()
+        document.getElementById("calendarRows").innerHTML = suites.map(suite => {
+          const suiteKey = normalize(suite.name)
+          const suiteReservations = visible.filter(item => normalize(roomName(item)).includes(suiteKey))
+          const cells = dates.map((date, index) => {
+            const weekend = date.getDay() === 0 || date.getDay() === 6
+            const classes = ["cal-day-cell", weekend ? "weekend" : "", sameDay(date, today) ? "today" : ""].filter(Boolean).join(" ")
+            const starting = suiteReservations.filter(item => {
+              const itemStart = parseDate(item.check_in)
+              const clippedStart = itemStart < rangeStart ? rangeStart : itemStart
+              return sameDay(clippedStart, date)
+            })
+            const bars = starting.map(item => {
+              const itemEnd = parseDate(item.check_out)
+              const clippedEnd = itemEnd > addDays(rangeEnd, 1) ? addDays(rangeEnd, 1) : itemEnd
+              const nights = Math.max(1, Math.round((clippedEnd - date) / 86400000))
+              const width = Math.max(48, nights * 56 - 8)
+              const state = reservationState(item)
+              const barClass = sameDay(parseDate(item.check_in), today) ? "checkin" : state
+              return `<button type="button" class="cal-booking ${barClass}" data-reservation-id="${escapeHtml(item.id)}" style="left:4px;width:${width}px"><span class="gn">${escapeHtml(guestName(item))} · ${formatDate(item.check_in)}–${formatDate(item.check_out)}</span></button>`
+            }).join("")
+            return `<div class="${classes}" style="position:relative">${bars}</div>`
+          }).join("")
+          return `<div class="cal-row"><div class="cal-suite-name"><img src="${suite.image}" alt="">${suite.name}</div>${cells}</div>`
+        }).join("")
+
+        document.getElementById("calendarList").innerHTML = visible.length
+          ? visible.sort((a, b) => String(a.check_in).localeCompare(String(b.check_in))).map(item =>
+              `<button class="calendar-list-item" type="button" data-reservation-id="${escapeHtml(item.id)}">
+                <strong>${escapeHtml(guestName(item))}</strong>
+                <span>${escapeHtml(roomName(item))}</span>
+                <span>${formatDate(item.check_in)} — ${formatDate(item.check_out)}</span>
+                <span class="status-chip ${reservationState(item)}">${stateLabel(reservationState(item))}</span>
+              </button>`).join("")
+          : '<div class="empty-state">Nenhuma reserva neste período.</div>'
+      }
+
+      function renderKpis() {
+        const todayIso = localIso(today)
+        const monthPrefix = todayIso.slice(0, 7)
+        const confirmed = reservations.filter(item => reservationState(item) === "confirmed")
+        const monthlyRevenue = confirmed
+          .filter(item => String(item.check_in || "").startsWith(monthPrefix))
+          .reduce((sum, item) => sum + Number(item.total_amount || 0), 0)
+        const occupiedRooms = new Set(confirmed
+          .filter(item => item.check_in <= todayIso && item.check_out > todayIso)
+          .map(item => normalize(roomName(item))))
+        const checkins = confirmed.filter(item => item.check_in === todayIso)
+        const pending = reservations.filter(item => reservationState(item) === "pending")
+
+        document.getElementById("monthlyRevenue").textContent = formatCurrency(monthlyRevenue)
+        document.getElementById("revenueComparison").textContent = "Reservas confirmadas com check-in no mês"
+        document.getElementById("todayOccupancy").innerHTML = `${occupiedRooms.size}<small> /${suites.length} suítes</small>`
+        document.getElementById("occupancyRate").textContent = `${Math.round((occupiedRooms.size / suites.length) * 100)}% de ocupação`
+        document.getElementById("todayCheckins").textContent = checkins.length
+        document.getElementById("checkinSuites").textContent =
+          checkins.length ? checkins.map(roomName).join(" · ") : "Nenhum check-in"
+        document.getElementById("pendingReservations").textContent = pending.length
+      }
+
+      function renderToday() {
+        const todayIso = localIso(today)
+        const confirmed = reservations.filter(item => reservationState(item) === "confirmed")
+        const checkins = confirmed.filter(item => item.check_in === todayIso)
+        const checkouts = confirmed.filter(item => item.check_out === todayIso)
+        document.getElementById("checkinTitle").textContent = `Check-ins (${checkins.length})`
+        document.getElementById("checkoutTitle").textContent = `Check-outs (${checkouts.length})`
+        document.getElementById("todayCheckinList").className = checkins.length ? "" : "empty-state"
+        document.getElementById("todayCheckoutList").className = checkouts.length ? "" : "empty-state"
+        document.getElementById("todayCheckinList").innerHTML = renderMovementRows(checkins, "14:00", "chegada", "Nenhum check-in para hoje.")
+        document.getElementById("todayCheckoutList").innerHTML = renderMovementRows(checkouts, "12:00", "partida", "Nenhum check-out para hoje.")
+      }
+
+      function renderMovementRows(items, time, label, emptyText) {
+        if (!items.length) return emptyText
+        return items.map(item =>
+          `<button type="button" class="check-row" data-reservation-id="${escapeHtml(item.id)}" style="width:100%;border-left:0;border-right:0;border-top:0;background:transparent;text-align:left;cursor:pointer">
+            <img src="${suiteImage(roomName(item))}" alt="">
+            <span class="ci-info"><span class="gn">${escapeHtml(guestName(item))}</span><span class="sn">${escapeHtml(roomName(item))}</span></span>
+            <span class="time">${time}<small>${label}</small></span>
+          </button>`).join("")
+      }
+
+      function suiteImage(name) {
+        const key = normalize(name)
+        const suite = suites.find(item => key.includes(normalize(item.name)))
+        return suite ? suite.image : "hero.webp"
+      }
+
+      function renderRoomStatus() {
+        const todayIso = localIso(today)
+        const occupied = reservations.filter(item =>
+          reservationState(item) === "confirmed" && item.check_in <= todayIso && item.check_out > todayIso
+        )
+        document.getElementById("roomStatusGrid").innerHTML = suites.map(suite => {
+          const isOccupied = occupied.some(item => normalize(roomName(item)).includes(normalize(suite.name)))
+          return `<div class="room-status ${isOccupied ? "occupied" : "clean"}"><span class="dot"></span><span class="nm">${suite.name}</span><span class="st">${isOccupied ? "Ocupado" : "Disponível"}</span></div>`
+        }).join("")
+      }
+
+      function renderRecentActivity() {
+        const recent = [...reservations].sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || ""))).slice(0, 4)
+        document.getElementById("recentActivity").innerHTML = recent.length
+          ? recent.map(item =>
+              `<button type="button" data-reservation-id="${escapeHtml(item.id)}" style="display:block;width:100%;padding:8px 0;border:0;border-bottom:1px solid rgba(29,53,87,.06);background:transparent;text-align:left;color:rgba(22,37,58,.7);cursor:pointer">
+                <b style="color:var(--navy)">Reserva ${stateLabel(reservationState(item)).toLowerCase()}</b> · ${escapeHtml(guestName(item))} · ${formatDate(item.check_in)}
+              </button>`).join("")
+          : '<div class="empty-state">Nenhuma atividade recente.</div>'
+      }
+
+      function renderReservationTable() {
+        const filter = document.getElementById("reservationStatusFilter").value
+        const filtered = matchingReservations().filter(item => filter === "all" || reservationState(item) === filter)
+        document.getElementById("reservationCountLabel").textContent =
+          `${filtered.length} reserva${filtered.length === 1 ? "" : "s"} encontrada${filtered.length === 1 ? "" : "s"}`
+        document.getElementById("reservationTableBody").innerHTML = filtered.length
+          ? filtered.map(item =>
+              `<tr class="reservation-row" data-reservation-id="${escapeHtml(item.id)}">
+                <td><strong>${escapeHtml(guestName(item))}</strong><br><span style="color:rgba(22,37,58,.5)">${escapeHtml(guestEmail(item))}</span></td>
+                <td>${escapeHtml(roomName(item))}</td>
+                <td>${formatDate(item.check_in)} — ${formatDate(item.check_out)}</td>
+                <td>${formatCurrency(item.total_amount)}</td>
+                <td><span class="status-chip ${reservationState(item)}">${stateLabel(reservationState(item))}</span></td>
+              </tr>`).join("")
+          : '<tr><td colspan="5"><div class="empty-state">Nenhuma reserva corresponde aos filtros.</div></td></tr>'
+      }
+
+      function renderGuests() {
+        const seen = new Set()
+        const guests = []
+        reservations.forEach(item => {
+          const key = item.user_id || guestEmail(item) || guestName(item)
+          if (!key || seen.has(key)) return
+          seen.add(key)
+          guests.push(item)
+        })
+        document.getElementById("guestList").innerHTML = guests.length
+          ? guests.slice(0, 10).map(item =>
+              `<button type="button" class="room-status clean" data-reservation-id="${escapeHtml(item.id)}" style="border:0;cursor:pointer;text-align:left">
+                <span class="dot"></span><span class="nm">${escapeHtml(guestName(item))}</span><span class="st">${escapeHtml(guestEmail(item) || "Sem email")}</span>
+              </button>`).join("")
+          : '<div class="empty-state">Nenhum hóspede encontrado.</div>'
+      }
+
+      function renderNotifications() {
+        const pending = reservations.filter(item => reservationState(item) === "pending")
+        document.getElementById("notificationDot").style.display = pending.length ? "block" : "none"
+        document.getElementById("notificationMenu").innerHTML = pending.length
+          ? pending.slice(0, 6).map(item =>
+              `<a href="#reservas" class="notification-item" data-reservation-id="${escapeHtml(item.id)}"><strong>${escapeHtml(guestName(item))}</strong><br>${escapeHtml(roomName(item))} · aguardando confirmação</a>`).join("")
+          : '<div class="notification-empty">Nenhuma reserva pendente.</div>'
+      }
+
+      function renderAll() {
+        renderKpis()
+        renderCalendar()
+        renderToday()
+        renderRoomStatus()
+        renderRecentActivity()
+        renderReservationTable()
+        renderGuests()
+        renderNotifications()
+      }
+
+      function openReservation(id) {
+        const item = reservations.find(reservation => String(reservation.id) === String(id))
+        if (!item) return
+        const details = [
+          ["Hóspede", guestName(item)],
+          ["Email", guestEmail(item) || "Não informado"],
+          ["Suíte", roomName(item)],
+          ["Check-in", formatDate(item.check_in)],
+          ["Check-out", formatDate(item.check_out)],
+          ["Hóspedes", item.guests || "Não informado"],
+          ["Valor", formatCurrency(item.total_amount)],
+          ["Situação", stateLabel(reservationState(item))],
+          ["Pagamento", item.payment_status || "Não informado"],
+          ["Código", String(item.id || "").slice(0, 8).toUpperCase()]
+        ]
+        document.getElementById("reservationModalContent").innerHTML = details.map(([label, value]) =>
+          `<div class="detail-item"><strong>${label}</strong><span>${escapeHtml(value)}</span></div>`).join("")
+        document.getElementById("reservationModal").classList.add("open")
+      }
+
+      async function loadData() {
+        const { data: userData, error: userError } = await supabaseClient.auth.getUser()
+        if (userError || !userData.user) {
+          window.location.href = "login.html?return_to=%2Fadmin.html"
+          return
+        }
+        const isAdmin = window.isCurrentUserAdmin ? await window.isCurrentUserAdmin() : false
+        if (!isAdmin) {
+          window.location.href = "dashboard.html"
+          return
+        }
+
+        const { data: reservationData, error: reservationError } = await supabaseClient
+          .from("reservations")
+          .select("*")
+          .order("created_at", { ascending: false })
+        if (reservationError) throw reservationError
+        reservations = reservationData || []
+
+        const userIds = [...new Set(reservations.map(item => item.user_id).filter(Boolean))]
+        if (userIds.length) {
+          const { data: profileData, error: profileError } = await supabaseClient
+            .from("profiles")
+            .select("id, full_name, email, phone")
+            .in("id", userIds)
+          if (profileError) {
+            console.error("Não foi possível carregar todos os perfis:", profileError)
+          } else {
+            profilesById = new Map((profileData || []).map(profile => [String(profile.id), profile]))
+          }
+        }
+
+        renderAll()
+        document.getElementById("loadingScreen").classList.add("hidden")
+      }
+
       document.getElementById("previousPeriodBtn").addEventListener("click", () => {
         rangeStart = addDays(rangeStart, -dayCount)
-        updateCalendar()
+        renderCalendar()
       })
-
       document.getElementById("nextPeriodBtn").addEventListener("click", () => {
         rangeStart = addDays(rangeStart, dayCount)
-        updateCalendar()
+        renderCalendar()
       })
-
       document.getElementById("todayBtn").addEventListener("click", () => {
         rangeStart = new Date(today)
-        updateCalendar()
+        renderCalendar()
+      })
+      document.getElementById("timelineViewBtn").addEventListener("click", () => {
+        document.querySelector(".cal-timeline").classList.remove("hidden")
+        document.getElementById("calendarList").classList.remove("active")
+        document.getElementById("timelineViewBtn").classList.add("active")
+        document.getElementById("listViewBtn").classList.remove("active")
+      })
+      document.getElementById("listViewBtn").addEventListener("click", () => {
+        document.querySelector(".cal-timeline").classList.add("hidden")
+        document.getElementById("calendarList").classList.add("active")
+        document.getElementById("listViewBtn").classList.add("active")
+        document.getElementById("timelineViewBtn").classList.remove("active")
+      })
+      document.getElementById("searchToggleBtn").addEventListener("click", () => {
+        const open = document.getElementById("searchBar").classList.toggle("open")
+        document.getElementById("searchToggleBtn").classList.toggle("active", open)
+        if (open) document.getElementById("adminSearchInput").focus()
+      })
+      document.getElementById("adminSearchInput").addEventListener("input", event => {
+        searchTerm = event.target.value.trim()
+        renderCalendar()
+        renderReservationTable()
+      })
+      document.getElementById("clearSearchBtn").addEventListener("click", () => {
+        document.getElementById("adminSearchInput").value = ""
+        searchTerm = ""
+        renderCalendar()
+        renderReservationTable()
+      })
+      document.getElementById("reservationStatusFilter").addEventListener("change", renderReservationTable)
+      document.getElementById("notificationBtn").addEventListener("click", event => {
+        event.stopPropagation()
+        document.getElementById("notificationMenu").classList.toggle("open")
+      })
+      document.addEventListener("click", event => {
+        if (!event.target.closest("#notificationMenu")) document.getElementById("notificationMenu").classList.remove("open")
+        const target = event.target.closest("[data-reservation-id]")
+        if (target) {
+          event.preventDefault()
+          openReservation(target.dataset.reservationId)
+        }
+      })
+      document.getElementById("newReservationBtn").addEventListener("click", () => {
+        window.location.href = "booking.html"
+      })
+      document.getElementById("blockDatesBtn").addEventListener("click", () => {
+        window.location.href = "admin-availability.html"
+      })
+      document.getElementById("closeReservationModal").addEventListener("click", () => {
+        document.getElementById("reservationModal").classList.remove("open")
+      })
+      document.getElementById("reservationModal").addEventListener("click", event => {
+        if (event.target.id === "reservationModal") event.currentTarget.classList.remove("open")
+      })
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          document.getElementById("reservationModal").classList.remove("open")
+          document.getElementById("notificationMenu").classList.remove("open")
+        }
+      })
+      document.getElementById("adminLogoutBtn").addEventListener("click", async () => {
+        await supabaseClient.auth.signOut()
+        window.location.href = "login.html"
+      })
+      document.querySelectorAll(".sb-link").forEach(link => {
+        link.addEventListener("click", () => {
+          document.querySelectorAll(".sb-link").forEach(item => item.classList.remove("active"))
+          link.classList.add("active")
+        })
       })
 
       updateCurrentDate()
-      updateCalendar()
+      loadData().catch(error => {
+        console.error(error)
+        document.getElementById("loadingScreen").textContent =
+          "Não foi possível carregar o painel. Atualize a página ou verifique sua conexão."
+      })
     })()
   </script>
   <script src="design-polish.js"></script>

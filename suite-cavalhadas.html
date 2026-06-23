@@ -200,6 +200,13 @@
       padding:28px;
       box-shadow:0 24px 60px rgba(0,0,0,0.10), 0 0 0 6px rgba(216,199,161,0.10);
     }
+    .bk-description {
+      margin:0 0 18px;
+      font-family:"Inter",sans-serif;
+      font-size:14px;
+      line-height:1.65;
+      color:rgba(22,37,58,0.76);
+    }
     .new-tag-block {
       position:absolute; top:-12px; right:24px;
       background:var(--gold); color:var(--navy);
@@ -477,13 +484,7 @@
 
     <!-- BOOKING SIDEBAR -->
     <aside class="booking-sidebar" id="bookSidebar" style="position: sticky; height: 500px">
-      <div class="bk-price">
-        <div>
-          <div class="num">R$&nbsp;540<span class="unit"> /noite</span></div>
-        </div>
-        <div class="rating">
-</div>
-      </div>
+      <p class="bk-description">Su&iacute;te com cama Queen, enxoval 200 fios, Tv, ar condicionado, cortina blackout, arara de roupas, frigobar e varanda com rede.</p>
 
       <div class="bk-dates">
         <div class="bk-row">
@@ -502,11 +503,6 @@
             <div class="val">2 adultos</div>
           </div>
         </div>
-      </div>
-
-      <div class="bk-breakdown">
-        <div class="bk-br-row"><span>R$ 540 × 2 noites</span><span>R$ 1.080</span></div>
-        <div class="bk-br-row total"><span>Total</span><span>R$ 1.080</span></div>
       </div>
 
       <button class="bk-cta" type="button" onclick="window.location.href='booking.html'">Reservar agora</button>
@@ -565,11 +561,8 @@
 
   <!-- MOBILE BOOKING BAR -->
   <div class="mobile-book-bar">
-    <div>
-      <div class="mb-price">R$ 540</div>
-      <div class="mb-unit">por noite · 2 hóspedes</div>
-    </div>
-    <button class="mb-btn" type="button" onclick="window.location.href='booking.html'">Reservar</button>
+    <div class="mb-unit">2 h&oacute;spedes</div>
+    <button class="mb-btn" type="button" onclick="window.location.href='booking.html'">Reservar agora</button>
   </div>
 
   <script src="design-polish.js"></script>

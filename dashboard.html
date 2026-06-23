@@ -1173,7 +1173,7 @@
             <div class="v" id="nextStayCheckOut">—</div>
           </div>
           <div class="ns-stat">
-            <div class="l">Noites</div>
+            <div class="l">Diárias</div>
             <div class="v" id="nextStayNights">—</div>
           </div>
           <div class="ns-stat">
@@ -1274,9 +1274,9 @@
           <div class="toolbar-card">
             <label for="status-filter">Filtrar por situação</label>
             <select id="status-filter">
+              <option value="confirmed">Confirmadas / Pagas</option>
               <option value="all">Todos</option>
               <option value="pending">Aguardando pagamento</option>
-              <option value="confirmed">Confirmadas / Pagas</option>
               <option value="cancelled">Canceladas / Expiradas</option>
             </select>
           </div>
@@ -1607,8 +1607,8 @@
       tag.textContent = "Próxima estadia"
       title.textContent = days === 0 ? "Sua estadia começa hoje" : `Faltam ${days} dia${days === 1 ? "" : "s"}`
       suite.textContent = `${upcoming.room_type || "Hospedagem"} · ${formatDate(upcoming.check_in)} a ${formatDate(upcoming.check_out)}`
-      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small> / 12h</small>`
-      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small> / 12h</small>`
+      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small> / das 14h às 19h</small>`
+      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small> / até 12h</small>`
       nights.textContent = nightCount || "—"
       total.textContent = formatCurrency(upcoming.total_amount)
       image.style.backgroundImage = `url("${suiteImage(upcoming.room_type)}")`
@@ -1948,7 +1948,7 @@
     }
 
     function clearFilters() {
-      document.getElementById("status-filter").value = "all"
+      document.getElementById("status-filter").value = "confirmed"
       renderReservations()
     }
 

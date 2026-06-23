@@ -194,18 +194,53 @@
     /* ============ BOOKING SIDEBAR ============ */
     .booking-sidebar {
       position:sticky; top:90px;
-      background:#fff;
-      border:2px solid var(--gold2);
-      border-radius:22px;
-      padding:28px;
-      box-shadow:0 24px 60px rgba(0,0,0,0.10), 0 0 0 6px rgba(216,199,161,0.10);
+      background:linear-gradient(180deg, #fff 0%, #fbfaf7 100%);
+      border:1px solid rgba(216,199,161,0.78);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 18px 46px rgba(0,0,0,0.10), 0 0 0 5px rgba(216,199,161,0.08);
+    }
+    .bk-card-head {
+      padding-bottom:14px;
+      border-bottom:1px solid rgba(29,53,87,0.10);
+      margin-bottom:14px;
+    }
+    .bk-card-kicker {
+      margin:0 0 5px;
+      font-family:"Inter",sans-serif;
+      font-size:9px;
+      font-weight:700;
+      letter-spacing:1.8px;
+      text-transform:uppercase;
+      color:var(--gold2);
+    }
+    .bk-card-title {
+      margin:0;
+      font-family:"Cormorant Garamond",serif;
+      font-size:25px;
+      font-weight:700;
+      line-height:1.05;
+      color:var(--navy);
     }
     .bk-description {
-      margin:0 0 18px;
+      margin:0 0 14px;
+      padding:14px 15px;
+      border:1px solid rgba(29,53,87,0.08);
+      border-radius:14px;
+      background:rgba(216,199,161,0.11);
       font-family:"Inter",sans-serif;
-      font-size:14px;
-      line-height:1.65;
+      font-size:13.5px;
+      line-height:1.62;
       color:rgba(22,37,58,0.76);
+    }
+    .bk-panel-label {
+      margin:0 0 8px;
+      font-family:"Inter",sans-serif;
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1.5px;
+      text-transform:uppercase;
+      color:rgba(22,37,58,0.58);
     }
     .new-tag-block {
       position:absolute; top:-12px; right:24px;
@@ -242,7 +277,7 @@
     .bk-rating-count { color:rgba(22,37,58,0.55); font-weight:400; margin-left:2px; }
 
     .bk-dates {
-      margin-top:20px; border:1px solid rgba(29,53,87,0.16);
+      margin-top:0; border:1px solid rgba(29,53,87,0.16);
       border-radius:14px; overflow:hidden;
     }
     .bk-row {
@@ -484,8 +519,13 @@
 
     <!-- BOOKING SIDEBAR -->
     <aside class="booking-sidebar" id="bookSidebar">
+      <div class="bk-card-head">
+        <p class="bk-card-kicker">Reserva direta</p>
+        <h2 class="bk-card-title">Reserve sua estadia</h2>
+      </div>
       <p class="bk-description">Su&iacute;te com cama Queen, enxoval 200 fios, ar condicionado, cortina blackout, arara de roupas, frigobar e varanda com rede.</p>
 
+      <p class="bk-panel-label">Datas e h&oacute;spedes</p>
       <div class="bk-dates">
         <div class="bk-row">
           <div class="bk-cell">

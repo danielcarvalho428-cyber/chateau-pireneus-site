@@ -52,7 +52,7 @@
       <a href="dashboard.html">Minha área</a>
       <hr>
       <a href="${WA_URL}" target="_blank" rel="noopener">Entre em contato</a>
-      <a href="${MAP_URL}" target="_blank" rel="noopener">Mapa e Localização</a>
+      <a href="${MAP_URL}" target="_blank" rel="noopener">Mapa e Localiza&ccedil;&atilde;o</a>
       <a href="policies.html">Políticas da Pousada</a>
       <a href="privacidade.html">Política de Privacidade</a>
     `;

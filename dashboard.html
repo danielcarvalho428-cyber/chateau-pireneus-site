@@ -243,7 +243,7 @@
     .greet h1{
       font-family:"Gyahegi","Cormorant Garamond",serif;
       font-weight:400;
-      font-size:clamp(30px, 4vw, 42px);
+      font-size:clamp(20px, 2.4vw, 26px);
       color:var(--navy);
       margin:0;
       letter-spacing:1.2px;
@@ -256,6 +256,7 @@
       font-family:"Cormorant Garamond",serif;
       font-style:italic;
       text-transform:none;
+      font-size:clamp(34px, 4.8vw, 50px);
     }
 
     .greet-sub{
@@ -950,7 +951,11 @@
       }
 
       .greet h1{
-        font-size:32px;
+        font-size:22px;
+      }
+
+      .greet h1 span{
+        font-size:38px;
       }
 
       .greet-nav{
@@ -1146,8 +1151,8 @@
   <div class="dash-wrap">
     <div class="greet">
       <div>
-        <h1 id="welcome">Olá, <span>hóspede</span></h1>
-        <div class="greet-sub">Bem-vindo de volta à sua área pessoal</div>
+        <h1 id="welcome">Olá, <span>Hóspede</span></h1>
+        <div class="greet-sub">Bem-vindo à sua área pessoal</div>
       </div>
       <div class="greet-nav" aria-label="Atalhos da área do hóspede">
         <a class="active" href="#reservas">Reservas</a>
@@ -1642,7 +1647,8 @@
         console.error(profileError)
       }
 
-      const firstName = ((profile && profile.full_name) || "hóspede").trim().split(/\s+/)[0]
+      const rawFirstName = ((profile && profile.full_name) || "hóspede").trim().split(/\s+/)[0]
+      const firstName = rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1)
       document.getElementById("welcome").innerHTML = `Olá, <span>${escapeHtml(firstName)}</span>`
       document.getElementById("user-email").textContent = currentUser.email || ""
       document.getElementById("user-phone").textContent = (profile && profile.phone) || "Não informado"

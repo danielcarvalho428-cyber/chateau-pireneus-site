@@ -1645,8 +1645,17 @@
         console.error(profileError)
       }
 
-      const rawFirstName = ((profile && profile.full_name) || "hóspede").trim().split(/\s+/)[0]
-      const firstName = rawFirstName.charAt(0).toUpperCase() + rawFirstName.slice(1)
+      const accountName =
+        currentUser.user_metadata?.full_name ||
+        currentUser.user_metadata?.name ||
+        ""
+      const emailName = (currentUser.email || "").split("@")[0].replace(/[._-]+/g, " ")
+      const rawFirstName = ((profile && profile.full_name) || accountName || emailName || "hóspede")
+        .trim()
+        .split(/\s+/)[0]
+      const firstName = rawFirstName
+        ? rawFirstName.charAt(0).toLocaleUpperCase("pt-BR") + rawFirstName.slice(1)
+        : "Hóspede"
       document.getElementById("welcome").innerHTML = `Olá, <span>${escapeHtml(firstName)}</span>`
       document.getElementById("user-email").textContent = currentUser.email || ""
       document.getElementById("user-phone").textContent = (profile && profile.phone) || "Não informado"

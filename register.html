@@ -769,21 +769,30 @@
     const loginInlineLink = document.getElementById("loginInlineLink")
     const sideLoginLink = document.getElementById("sideLoginLink")
 
-    function getReturnTo() {
+    function getRegisterReturnTo() {
       return window.getReturnTo ? window.getReturnTo("dashboard.html") : "dashboard.html"
     }
 
-    function sanitizeReturnTo(value) {
+    function sanitizeRegisterReturnTo(value) {
       return window.sanitizeReturnTo ? window.sanitizeReturnTo(value, "dashboard.html") : "dashboard.html"
     }
 
-    function buildLoginHref() {
-      return window.buildLoginHref ? window.buildLoginHref(getReturnTo()) : "login.html"
+    function buildRegisterLoginHref() {
+      return window.buildLoginHref ? window.buildLoginHref(getRegisterReturnTo()) : "login.html"
     }
 
     function buildEmailRedirectTo() {
-      const returnTo = sanitizeReturnTo(getReturnTo())
+      const returnTo = sanitizeRegisterReturnTo(getRegisterReturnTo())
       return `${window.location.origin}/login.html?return_to=${encodeURIComponent(returnTo)}`
+    }
+
+    function withTimeout(promise, timeoutMs) {
+      let timeoutId
+      const timeout = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => reject(new Error("signup_timeout")), timeoutMs)
+      })
+
+      return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId))
     }
 
     function setStatus(type, text) {
@@ -801,7 +810,7 @@
 
       if (error || !data.user) return false
 
-      const returnTo = sanitizeReturnTo(getReturnTo())
+      const returnTo = sanitizeRegisterReturnTo(getRegisterReturnTo())
       window.location.href = returnTo
       return true
     }
@@ -844,19 +853,25 @@
 
       let data, error
       try {
-        ({ data, error } = await supabaseClient.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: buildEmailRedirectTo(),
-            data: {
-              full_name: fullName
+        ({ data, error } = await withTimeout(
+          supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: buildEmailRedirectTo(),
+              data: {
+                full_name: fullName
+              }
             }
-          }
-        }))
+          }),
+          20000
+        ))
       } catch (err) {
         setLoading(false)
-        setStatus("error", "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.")
+        const message = err && err.message === "signup_timeout"
+          ? "O cadastro demorou mais que o esperado. Tente novamente."
+          : "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente."
+        setStatus("error", message)
         console.error("signUp falhou:", err)
         return
       }
@@ -893,7 +908,7 @@
         }
 
         setStatus("success", "Conta criada com sucesso. Redirecionando...")
-        const returnTo = sanitizeReturnTo(getReturnTo())
+        const returnTo = sanitizeRegisterReturnTo(getRegisterReturnTo())
 
         setTimeout(() => {
           window.location.href = returnTo
@@ -910,7 +925,7 @@
     })
 
     ;(async function init() {
-      const loginHref = buildLoginHref()
+      const loginHref = buildRegisterLoginHref()
 
       loginHeaderBtn.href = loginHref
       loginInlineLink.href = loginHref

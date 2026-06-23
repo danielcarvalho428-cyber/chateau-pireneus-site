@@ -855,8 +855,8 @@
           <p id="reservationCountLabel">Carregando reservas...</p>
         </div>
         <select class="filter-select" id="reservationStatusFilter" aria-label="Filtrar reservas">
+          <option value="confirmed" selected>Confirmadas</option>
           <option value="all">Todas</option>
-          <option value="confirmed">Confirmadas</option>
           <option value="pending">Pendentes</option>
           <option value="cancelled">Canceladas</option>
         </select>
@@ -905,12 +905,12 @@
       const dayCount = 14
       const today = startOfDay(new Date())
       const suites = [
-        { name: "Aurora", image: "public/suites/aurora/aurora1.jpeg" },
         { name: "Divino", image: "public/suites/divino/divino1.jpeg" },
         { name: "Cavalhadas", image: "public/suites/cavalhadas/cavalhadas1.jpeg" },
         { name: "Rosário", image: "public/suites/rosario/rosario1.jpeg" },
-        { name: "Bonfim", image: "public/suites/bonfim/bonfim1.jpeg" },
-        { name: "Pireneus", image: "public/suites/pireneus/breve1.jpeg" }
+        { name: "Pireneus", image: "public/suites/pireneus/breve1.jpeg" },
+        { name: "Aurora", image: "public/suites/aurora/aurora1.jpeg" },
+        { name: "Bonfim", image: "public/suites/bonfim/bonfim1.jpeg" }
       ]
       const weekdayShort = new Intl.DateTimeFormat("pt-BR", { weekday: "short" })
       const monthLong = new Intl.DateTimeFormat("pt-BR", { month: "long" })

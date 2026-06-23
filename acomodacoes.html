@@ -100,10 +100,8 @@
       transform:translateY(-5px);
       box-shadow:0 22px 52px rgba(0,0,0,0.12);
     }
-    .row.reverse .row-text,
-    .row.reverse .row-img { order:initial; }
-
     .row-img {
+      order:1;
       position:relative; aspect-ratio:4/3;
       overflow:hidden;
       background:#f3eee4;
@@ -112,6 +110,7 @@
     .row-img:hover img { transform:scale(1.04); }
 
     .row-text {
+      order:2;
       padding:20px;
       display:flex;
       flex-direction:column;

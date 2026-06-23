@@ -1607,8 +1607,8 @@
       tag.textContent = "Próxima estadia"
       title.textContent = days === 0 ? "Sua estadia começa hoje" : `Faltam ${days} dia${days === 1 ? "" : "s"}`
       suite.textContent = `${upcoming.room_type || "Hospedagem"} · ${formatDate(upcoming.check_in)} até ${formatDate(upcoming.check_out)}`
-      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small style="display:block">das 14h às 19h</small>`
-      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small style="display:block">até 12h</small>`
+      checkIn.innerHTML = `${formatDate(upcoming.check_in)}<small style="display:block;margin-top:4px">das 14h às 19h</small>`
+      checkOut.innerHTML = `${formatDate(upcoming.check_out)}<small style="display:block;margin-top:4px">até 12h</small>`
       nights.textContent = nightCount || "—"
       total.textContent = formatCurrency(upcoming.total_amount)
       image.style.backgroundImage = `url("${suiteImage(upcoming.room_type)}")`

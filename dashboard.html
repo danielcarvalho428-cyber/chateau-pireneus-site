@@ -1276,27 +1276,12 @@
 
         <div class="toolbar">
           <div class="toolbar-card">
-            <label for="search-input">Buscar por suíte, código ou pedido especial</label>
-            <input type="text" id="search-input" placeholder="Digite para buscar..." />
-          </div>
-
-          <div class="toolbar-card">
             <label for="status-filter">Filtrar por situação</label>
             <select id="status-filter">
               <option value="all">Todos</option>
               <option value="pending">Aguardando pagamento</option>
               <option value="confirmed">Confirmadas / Pagas</option>
               <option value="cancelled">Canceladas / Expiradas</option>
-            </select>
-          </div>
-
-          <div class="toolbar-card">
-            <label for="sort-filter">Ordenar por</label>
-            <select id="sort-filter">
-              <option value="created_desc">Mais recentes primeiro</option>
-              <option value="created_asc">Mais antigas primeiro</option>
-              <option value="checkin_asc">Check-in mais próximo</option>
-              <option value="checkin_desc">Check-in mais distante</option>
             </select>
           </div>
 
@@ -1691,24 +1676,12 @@
     }
 
     function getFilteredReservations() {
-      const search = document.getElementById("search-input").value.trim().toLowerCase()
       const statusFilter = document.getElementById("status-filter").value
-      const sortFilter = document.getElementById("sort-filter").value
 
       const filtered = allReservations.filter(reservation => {
-        const room = String(reservation.room_type || "").toLowerCase()
-        const requests = String(reservation.special_requests || "").toLowerCase()
-        const reservationId = String(reservation.id || "").toLowerCase()
-
         const general = normalizeStatus(reservation.status)
         const booking = normalizeStatus(reservation.booking_status)
         const payment = normalizeStatus(reservation.payment_status)
-
-        const matchesSearch =
-          !search ||
-          room.includes(search) ||
-          requests.includes(search) ||
-          reservationId.includes(search)
 
         let matchesStatus = true
 
@@ -1727,24 +1700,10 @@
             payment === "expired"
         }
 
-        return matchesSearch && matchesStatus
+        return matchesStatus
       })
 
-      filtered.sort((a, b) => {
-        if (sortFilter === "created_asc") {
-          return new Date(a.created_at || 0) - new Date(b.created_at || 0)
-        }
-
-        if (sortFilter === "checkin_asc") {
-          return new Date(a.check_in || 0) - new Date(b.check_in || 0)
-        }
-
-        if (sortFilter === "checkin_desc") {
-          return new Date(b.check_in || 0) - new Date(a.check_in || 0)
-        }
-
-        return new Date(b.created_at || 0) - new Date(a.created_at || 0)
-      })
+      filtered.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
 
       return filtered
     }
@@ -1951,11 +1910,6 @@
               <strong>Expira em</strong>
               <span>${formatDateTime(reservation.expires_at)}</span>
             </div>
-
-            <div class="reservation-item" style="grid-column:1 / -1;">
-              <strong>Pedidos especiais</strong>
-              <span>${escapeHtml(reservation.special_requests || "Nenhum pedido especial informado.")}</span>
-            </div>
           </div>
 
           ${(canFillFnrh || canRetryPayment || canCancel) ? `
@@ -1982,9 +1936,7 @@
     }
 
     function clearFilters() {
-      document.getElementById("search-input").value = ""
       document.getElementById("status-filter").value = "all"
-      document.getElementById("sort-filter").value = "created_desc"
       renderReservations()
     }
 
@@ -1994,9 +1946,7 @@
     }
 
     document.getElementById("logout-btn-top").addEventListener("click", logout)
-    document.getElementById("search-input").addEventListener("input", renderReservations)
     document.getElementById("status-filter").addEventListener("change", renderReservations)
-    document.getElementById("sort-filter").addEventListener("change", renderReservations)
     document.getElementById("clear-filters-btn").addEventListener("click", clearFilters)
 
     document.addEventListener("click", async (event) => {

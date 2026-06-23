@@ -946,21 +946,22 @@
 
       if (error) console.error("profile load error:", error)
 
-      if (profile){
-        el("fullName").value      = profile.full_name      || ""
-        el("cpfCnpj").value       = profile.cpf_cnpj       || ""
-        el("dateOfBirth").value   = profile.date_of_birth  || ""
-        el("sex").value           = profile.sex            || ""
-        el("profession").value    = profile.profession     || ""
-        el("nationality").value   = profile.nationality    || "Brasileira"
-        el("phone").value         = profile.phone          || ""
-        el("addressZip").value    = profile.address_zip    || ""
-        el("addressStreet").value = profile.address_street || ""
-        el("addressNumber").value = profile.address_number || ""
-        el("addressCity").value   = profile.address_city   || ""
-        el("addressState").value  = (profile.address_state || "").toUpperCase()
-        el("addressCountry").value = profile.address_country || "Brasil"
-      }
+      const accountData = currentUser.user_metadata || {}
+      const valueFrom = field => (profile && profile[field]) || accountData[field] || ""
+
+      el("fullName").value       = valueFrom("full_name")
+      el("cpfCnpj").value        = valueFrom("cpf_cnpj")
+      el("dateOfBirth").value    = valueFrom("date_of_birth")
+      el("sex").value            = valueFrom("sex")
+      el("profession").value     = valueFrom("profession")
+      el("nationality").value    = valueFrom("nationality")
+      el("phone").value          = valueFrom("phone")
+      el("addressZip").value     = valueFrom("address_zip")
+      el("addressStreet").value  = valueFrom("address_street")
+      el("addressNumber").value  = valueFrom("address_number")
+      el("addressCity").value    = valueFrom("address_city")
+      el("addressState").value   = valueFrom("address_state").toUpperCase()
+      el("addressCountry").value = valueFrom("address_country")
     }
 
     // ── Load reservation (if booking_id provided) ──────────────────
@@ -1034,14 +1035,14 @@
         date_of_birth:  el("dateOfBirth").value           || null,
         sex:            el("sex").value                   || null,
         profession:     el("profession").value.trim()     || null,
-        nationality:    el("nationality").value.trim()    || "Brasileira",
+        nationality:    el("nationality").value.trim()    || null,
         phone:          el("phone").value.trim()          || null,
         address_zip:    el("addressZip").value.trim()     || null,
         address_street: el("addressStreet").value.trim()  || null,
         address_number: el("addressNumber").value.trim()  || null,
         address_city:   el("addressCity").value.trim()    || null,
         address_state:  el("addressState").value.trim().toUpperCase() || null,
-        address_country: el("addressCountry").value.trim() || "Brasil",
+        address_country: el("addressCountry").value.trim() || null,
       }
 
       const { error: profileError } = await supabaseClient
@@ -1053,6 +1054,24 @@
         setLoading(false)
         setStatus("error", "Erro ao salvar seus dados: " + profileError.message)
         return
+      }
+
+      try {
+        const accountData = {
+          ...(currentUser.user_metadata || {}),
+          full_name: el("fullName").value.trim(),
+          ...profileUpdate
+        }
+        const { data: updatedUser, error: accountError } = await supabaseClient.auth.updateUser({
+          data: accountData
+        })
+        if (accountError) {
+          console.error("account metadata save error:", accountError)
+        } else if (updatedUser.user) {
+          currentUser = updatedUser.user
+        }
+      } catch (accountError) {
+        console.error("account metadata save error:", accountError)
       }
 
       if (bookingId && el("purposeOfVisit").value){

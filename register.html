@@ -795,6 +795,30 @@
       return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId))
     }
 
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    async function saveRegistrationProfile(userId, profileUpdate) {
+      const retryDelays = [0, 300, 700, 1400]
+
+      for (const delay of retryDelays) {
+        if (delay) await wait(delay)
+
+        const { data, error } = await supabaseClient
+          .from("profiles")
+          .update(profileUpdate)
+          .eq("id", userId)
+          .select("id")
+          .maybeSingle()
+
+        if (error) throw error
+        if (data) return true
+      }
+
+      return false
+    }
+
     function setStatus(type, text) {
       statusBox.className = `status-box ${type} show`
       statusBox.textContent = text
@@ -823,6 +847,14 @@
       const password = document.getElementById("password").value
       const confirmPassword = document.getElementById("confirmPassword").value
       const cpfCnpjValue = cpfCnpjInput.value.trim()
+      const dateOfBirth = document.getElementById("dateOfBirth").value
+      const phone = document.getElementById("phone").value.trim()
+      const sex = document.getElementById("sex").value
+      const profession = document.getElementById("profession").value.trim()
+      const nationality = document.getElementById("nationality").value.trim()
+      const addressCity = document.getElementById("addressCity").value.trim()
+      const addressState = document.getElementById("addressState").value.trim().toUpperCase()
+      const marketingConsent = document.getElementById("marketingConsent").checked
 
       if (!fullName || !email || !password || !confirmPassword) {
         setStatus("error", "Preencha todos os campos para continuar.")
@@ -853,15 +885,26 @@
 
       let data, error
       try {
+        const registrationData = {
+          full_name: fullName,
+          cpf_cnpj: cpfCnpjValue || null,
+          date_of_birth: dateOfBirth || null,
+          phone: phone || null,
+          sex: sex || null,
+          profession: profession || null,
+          nationality: nationality || null,
+          address_city: addressCity || null,
+          address_state: addressState || null,
+          marketing_consent: marketingConsent
+        }
+
         ({ data, error } = await withTimeout(
           supabaseClient.auth.signUp({
             email,
             password,
             options: {
               emailRedirectTo: buildEmailRedirectTo(),
-              data: {
-                full_name: fullName
-              }
+              data: registrationData
             }
           }),
           20000
@@ -886,24 +929,24 @@
         // Save all profile fields collected at registration.
         // A failure here must NOT block the account: log it and continue.
         if (data.user) {
-          const profileUpdate = {}
-          if (cpfCnpjValue)                                      profileUpdate.cpf_cnpj          = cpfCnpjValue
-          if (document.getElementById("dateOfBirth").value)     profileUpdate.date_of_birth      = document.getElementById("dateOfBirth").value
-          if (document.getElementById("phone").value)           profileUpdate.phone               = document.getElementById("phone").value
-          if (document.getElementById("sex").value)             profileUpdate.sex                 = document.getElementById("sex").value
-          if (document.getElementById("profession").value)      profileUpdate.profession          = document.getElementById("profession").value
-          if (document.getElementById("nationality").value)     profileUpdate.nationality         = document.getElementById("nationality").value
-          if (document.getElementById("addressCity").value)     profileUpdate.address_city        = document.getElementById("addressCity").value
-          if (document.getElementById("addressState").value)    profileUpdate.address_state       = document.getElementById("addressState").value.toUpperCase()
-          profileUpdate.marketing_consent = document.getElementById("marketingConsent").checked
+          const profileUpdate = {
+            full_name: fullName,
+            cpf_cnpj: cpfCnpjValue || null,
+            date_of_birth: dateOfBirth || null,
+            phone: phone || null,
+            sex: sex || null,
+            profession: profession || null,
+            nationality: nationality || null,
+            address_city: addressCity || null,
+            address_state: addressState || null,
+            marketing_consent: marketingConsent
+          }
 
-          if (Object.keys(profileUpdate).length) {
-            try {
-              const { error: profileError } = await supabaseClient.from("profiles").update(profileUpdate).eq("id", data.user.id)
-              if (profileError) console.error("Falha ao salvar perfil:", profileError)
-            } catch (err) {
-              console.error("Falha ao salvar perfil:", err)
-            }
+          try {
+            const saved = await saveRegistrationProfile(data.user.id, profileUpdate)
+            if (!saved) console.warn("Perfil ainda não estava disponível; os dados permanecem salvos na conta.")
+          } catch (err) {
+            console.error("Falha ao salvar perfil:", err)
           }
         }
 

@@ -35,11 +35,11 @@
 
     const backdrop = document.createElement("div");
     backdrop.id = "designMenuBackdrop";
-    backdrop.className = "design-menu-backdrop";
+    backdrop.className = "backdrop";
 
     const menu = document.createElement("nav");
     menu.id = "designSideMenu";
-    menu.className = "design-side-menu";
+    menu.className = "side-menu";
     menu.setAttribute("aria-label", "Menu");
     menu.innerHTML = `
       <a href="index.html">Home</a>

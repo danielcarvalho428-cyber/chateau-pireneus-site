@@ -394,7 +394,7 @@ img{ max-width:100%; display:block; }
 .top-header.presolid .menu-button:focus-visible{ background:rgba(29,53,87,0.12); }
 
 /* ============================================================
-   BACKDROP + SIDE MENU
+   BACKDROP + DROPDOWN MENU
    ============================================================ */
 
 .backdrop{
@@ -404,25 +404,34 @@ img{ max-width:100%; display:block; }
   opacity:0;
   pointer-events:none;
   transition:0.25s;
-  z-index:12300;
+  z-index:11950;
 }
 .backdrop.open{ opacity:1; pointer-events:auto; }
 
 .side-menu{
   position:fixed;
-  top:0;
-  left:0;
-  width:270px;
-  height:100vh;
+  top:76px;
+  right:22px;
+  width:min(280px, calc(100vw - 44px));
+  max-height:calc(100svh - 96px);
   background:#fff;
-  padding:96px 26px 28px;
-  box-shadow:12px 0 50px rgba(0,0,0,0.22);
-  transform:translateX(-100%);
-  transition:0.3s ease;
+  padding:18px;
+  border:1px solid rgba(29,53,87,0.12);
+  border-radius:14px;
+  box-shadow:0 22px 60px rgba(0,0,0,0.24);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(-8px);
+  transform-origin:top right;
+  transition:opacity 0.22s ease, transform 0.22s ease;
   z-index:12500;
   overflow-y:auto;
 }
-.side-menu.open{ transform:translateX(0); }
+.side-menu.open{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
 
 .side-menu a,
 .side-menu button{
@@ -449,7 +458,7 @@ img{ max-width:100%; display:block; }
 }
 
 .side-menu hr{
-  margin:28px 0;
+  margin:18px 0;
   border:none;
   border-top:1px solid rgba(29,53,87,0.12);
 }
@@ -578,6 +587,13 @@ footer{
   .menu-button{
     font-size:24px;
     padding:8px 10px;
+  }
+
+  .side-menu{
+    top:64px;
+    right:14px;
+    width:calc(100vw - 28px);
+    max-height:calc(100svh - 80px);
   }
 
   .impact-footer{

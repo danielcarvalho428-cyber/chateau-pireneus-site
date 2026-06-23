@@ -123,8 +123,9 @@
     }
     .row-text h2 {
       font-family:"Gyahegi","Cormorant Garamond",serif; font-weight:400;
-      font-size:24px; color:var(--navy); margin:0 0 14px;
+      font-size:22px; color:var(--navy); margin:0 0 14px;
       letter-spacing:1.2px; line-height:1.16;
+      white-space:nowrap;
     }
 
     .row-blank {
@@ -195,9 +196,16 @@
         padding:42px 16px 56px;
       }
       .row-text { padding:18px; }
-      .row-text h2 { font-size:23px; }
+      .row-text h2 { font-size:20px; }
       .row-blank { min-height:0; }
       .row-ctas { grid-template-columns:1fr; }
+    }
+
+    @media (max-width:380px) {
+      .row-text h2 {
+        font-size:18px;
+        letter-spacing:0.8px;
+      }
     }
   </style>
 </head>
@@ -233,11 +241,94 @@
 
     <div class="row">
       <div class="row-img">
+        <img src="site/public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
+      </div>
+      <div class="row-text">
+        <div class="tag">Suíte</div>
+        <h2>01 - Suíte do Divino</h2>
+        <div class="row-blank">Conforto simples e elegante para uma estadia a dois, com ar-condicionado, frigobar e uma atmosfera calma para descansar.</div>
+        <div class="row-bottom">
+          <div class="row-price">
+            <small>A partir de</small>
+            <div class="num">R$&nbsp;480<span class="unit"> /noite</span></div>
+          </div>
+          <div class="row-ctas">
+            <a href="suite-divino.html" class="row-btn ghost">Conhecer</a>
+            <a href="suite.html?room=divino#reservaSection" class="row-btn solid">Reservar →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row reverse">
+      <div class="row-text">
+        <div class="tag">Suíte</div>
+        <h2>02 - Suíte das Cavalhadas</h2>
+        <div class="row-blank">Inspirada na tradição local, combina privacidade, varanda com rede e uma vista agradável para aproveitar a pousada em ritmo leve.</div>
+        <div class="row-bottom">
+          <div class="row-price">
+            <small>A partir de</small>
+            <div class="num">R$&nbsp;540<span class="unit"> /noite</span></div>
+          </div>
+          <div class="row-ctas">
+            <a href="suite-cavalhadas.html" class="row-btn ghost">Conhecer</a>
+            <a href="suite.html?room=cavalhadas#reservaSection" class="row-btn solid">Reservar →</a>
+          </div>
+        </div>
+      </div>
+      <div class="row-img">
+        <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-img">
+        <img src="site/public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
+      </div>
+      <div class="row-text">
+        <div class="tag">Suíte</div>
+        <h2>03 - Suíte do Rosário</h2>
+        <div class="row-blank">Uma opção equilibrada para casais que querem conforto, silêncio e praticidade, mantendo o charme íntimo da pousada.</div>
+        <div class="row-bottom">
+          <div class="row-price">
+            <small>A partir de</small>
+            <div class="num">R$&nbsp;460<span class="unit"> /noite</span></div>
+          </div>
+          <div class="row-ctas">
+            <a href="suite-rosario.html" class="row-btn ghost">Conhecer</a>
+            <a href="suite.html?room=rosario#reservaSection" class="row-btn solid">Reservar →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row reverse">
+      <div class="row-text">
+        <div class="tag">Suíte</div>
+        <h2>04 - Suíte dos Pireneus</h2>
+        <div class="row-blank">Nossa suíte master está em preparação para uma experiência ainda mais especial, com proposta premium e clima exclusivo.</div>
+        <div class="row-bottom">
+          <div class="row-price">
+            <small>A partir de</small>
+            <div class="num">R$&nbsp;—</div>
+          </div>
+          <div class="row-ctas">
+            <a href="https://wa.me/5562998167654?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Su%C3%ADte%20Pireneus.%20Gostaria%20de%20ser%20avisado(a)%20quando%20estiver%20dispon%C3%ADvel." target="_blank" rel="noopener" class="row-btn ghost">Ser avisado</a>
+          </div>
+        </div>
+      </div>
+      <div class="row-img" style="background:#f3eee4;">
+        <img src="site/public/suites/pireneus/breve1.jpeg" alt="Suíte dos Pireneus — em breve" style="object-fit:contain;">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-img">
         <img src="site/public/suites/aurora/aurora1.jpeg" alt="Suíte Aurora">
       </div>
       <div class="row-text">
-        <div class="tag">Suíte 01</div>
-        <h2>Suíte Aurora</h2>
+        <div class="tag">Suíte</div>
+        <h2>05 - Suíte Aurora</h2>
         <div class="row-blank">Uma suíte romântica e tranquila, com cama confortável, clima acolhedor e varanda privativa para desacelerar depois de um dia em Pirenópolis.</div>
         <div class="row-bottom">
           <div class="row-price">
@@ -254,74 +345,8 @@
 
     <div class="row reverse">
       <div class="row-text">
-        <div class="tag">Suíte 02</div>
-        <h2>Suíte do Divino</h2>
-        <div class="row-blank">Conforto simples e elegante para uma estadia a dois, com ar-condicionado, frigobar e uma atmosfera calma para descansar.</div>
-        <div class="row-bottom">
-          <div class="row-price">
-            <small>A partir de</small>
-            <div class="num">R$&nbsp;480<span class="unit"> /noite</span></div>
-          </div>
-          <div class="row-ctas">
-            <a href="suite-divino.html" class="row-btn ghost">Conhecer</a>
-            <a href="suite.html?room=divino#reservaSection" class="row-btn solid">Reservar →</a>
-          </div>
-        </div>
-      </div>
-      <div class="row-img">
-        <img src="site/public/suites/divino/divino1.jpeg" alt="Suíte do Divino">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="row-img">
-        <img src="site/public/suites/cavalhadas/cavalhadas1.jpeg" alt="Suíte das Cavalhadas">
-      </div>
-      <div class="row-text">
-        <div class="tag">Suíte 03</div>
-        <h2>Suíte das Cavalhadas</h2>
-        <div class="row-blank">Inspirada na tradição local, combina privacidade, varanda com rede e uma vista agradável para aproveitar a pousada em ritmo leve.</div>
-        <div class="row-bottom">
-          <div class="row-price">
-            <small>A partir de</small>
-            <div class="num">R$&nbsp;540<span class="unit"> /noite</span></div>
-          </div>
-          <div class="row-ctas">
-            <a href="suite-cavalhadas.html" class="row-btn ghost">Conhecer</a>
-            <a href="suite.html?room=cavalhadas#reservaSection" class="row-btn solid">Reservar →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row reverse">
-      <div class="row-text">
-        <div class="tag">Suíte 04</div>
-        <h2>Suíte do Rosário</h2>
-        <div class="row-blank">Uma opção equilibrada para casais que querem conforto, silêncio e praticidade, mantendo o charme íntimo da pousada.</div>
-        <div class="row-bottom">
-          <div class="row-price">
-            <small>A partir de</small>
-            <div class="num">R$&nbsp;460<span class="unit"> /noite</span></div>
-          </div>
-          <div class="row-ctas">
-            <a href="suite-rosario.html" class="row-btn ghost">Conhecer</a>
-            <a href="suite.html?room=rosario#reservaSection" class="row-btn solid">Reservar →</a>
-          </div>
-        </div>
-      </div>
-      <div class="row-img">
-        <img src="site/public/suites/rosario/rosario1.jpeg" alt="Suíte do Rosário">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="row-img">
-        <img src="site/public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
-      </div>
-      <div class="row-text">
-        <div class="tag">Suíte 05</div>
-        <h2>Suíte do Bonfim</h2>
+        <div class="tag">Suíte</div>
+        <h2>06 - Suíte do Bonfim</h2>
         <div class="row-blank">Essencial e aconchegante, perfeita para quem prefere uma estadia mais contemplativa e quer se desligar com tranquilidade.</div>
         <div class="row-bottom">
           <div class="row-price">
@@ -334,25 +359,8 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row reverse">
-      <div class="row-text">
-        <div class="tag">Suíte 06</div>
-        <h2>Suíte Pireneus</h2>
-        <div class="row-blank">Nossa suíte master está em preparação para uma experiência ainda mais especial, com proposta premium e clima exclusivo.</div>
-        <div class="row-bottom">
-          <div class="row-price">
-            <small>A partir de</small>
-            <div class="num">R$&nbsp;—</div>
-          </div>
-          <div class="row-ctas">
-            <a href="https://wa.me/5562998167654?text=Ol%C3%A1!%20Tenho%20interesse%20na%20Su%C3%ADte%20Pireneus.%20Gostaria%20de%20ser%20avisado(a)%20quando%20estiver%20dispon%C3%ADvel." target="_blank" rel="noopener" class="row-btn ghost">Ser avisado</a>
-          </div>
-        </div>
-      </div>
-      <div class="row-img" style="background:#f3eee4;">
-        <img src="site/public/suites/pireneus/breve1.jpeg" alt="Suíte Pireneus — em breve" style="object-fit:contain;">
+      <div class="row-img">
+        <img src="site/public/suites/bonfim/bonfim1.jpeg" alt="Suíte do Bonfim">
       </div>
     </div>
 
